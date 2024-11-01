@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
+//hi
+using Stage0;
 using System;
 namespace stage0
 {
-    partial class Program
+    partial class Welocome
     {
         static partial void Welcome1716();
         static void Main(String[] args)
@@ -18,7 +20,11 @@ namespace stage0
             string name = Console.ReadLine();
             Console.WriteLine("{0}, welcome to my first console application", name);
         }
-        //static partial void Welcome1716();
+
+        static partial void welcome1716();
+        
+
     }
+    //Hello World 
 }
 
