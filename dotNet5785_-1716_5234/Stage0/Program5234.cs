@@ -1,6 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-//hi
-
 using targil0;
 namespace targil0
 {
