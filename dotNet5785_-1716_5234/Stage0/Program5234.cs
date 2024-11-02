@@ -4,7 +4,7 @@ using Stage0;
 using System;
 namespace stage0
 {
-    partial class Welocome
+    static partial class Program
     {
         static void Main(String[] args)
         {
