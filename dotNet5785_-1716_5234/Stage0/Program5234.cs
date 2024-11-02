@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-//hi
+
 using Stage0;
 using System;
 namespace stage0
@@ -25,6 +25,6 @@ namespace stage0
         
 
     }
-    //hello world
+  
 }
 
