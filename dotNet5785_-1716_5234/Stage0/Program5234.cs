@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+//hi
+using Stage0;
 
 using Stage0;
 using System;
@@ -23,6 +25,7 @@ namespace stage0
 
         static partial void welcome1716();
         
+
 
     }
   
