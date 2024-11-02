@@ -1,29 +1,26 @@
 ﻿// See https://aka.ms/new-console-template for more information
 //hi
-using Stage0;
 
-using Stage0;
-using System;
-namespace stage0
+using targil0;
+namespace targil0
 {
-    partial class Welocome
+    partial class Program
     {
-        static partial void Welcome1716();
-        static void Main(String[] args)
+       
+        static void Main(string[] args)
         {
             Welcome5234();
             Welcome1716();
             Console.ReadKey();
         }
-       
+
+        static partial void Welcome1716();
         private static void Welcome5234()
         {
             Console.WriteLine("Enter your name:");
             string name = Console.ReadLine();
             Console.WriteLine("{0}, welcome to my first console application", name);
         }
-
-        static partial void welcome1716();
         
 
 
