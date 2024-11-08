@@ -34,7 +34,7 @@ namespace DO
     /// <param name="Latitude">Latitude coordinate for the volunteer's location.</param>
     /// <param name="MaxDistance">Maximum distance the volunteer is willing to travel.</param>
     /// <param name="Active">Indicates if the volunteer is currently active in the system.</param>
-    public record Volunteer
+public record Volunteer
     (
         int Id,
         string Name,
@@ -46,10 +46,11 @@ namespace DO
         double? MaxDistance = null,
         bool Active = false
     )
-    {
+{
         /// <summary>
         /// Initializes a new instance of the Volunteer record with default values.
         /// </summary>
         public Volunteer() : this(0, " ", " ", " ", null, null, null, null) { } // Empty constructor for stage 3
     }
 }
+
