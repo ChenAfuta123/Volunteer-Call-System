@@ -42,7 +42,17 @@ internal class Program
         Call,
         Assignment
     }
-
+    public enum ConfigMenu
+    {
+        Exit = 0,
+        AdvanceClockByMinute,
+        AdvanceClockByHour,
+        AdvanceClockByDay,
+        DisplayClock,
+        SetConfigVariable,
+        DisplayConfigVariable,
+        ResetConfig
+    }
 
     void CreateVolunteer()
     {
