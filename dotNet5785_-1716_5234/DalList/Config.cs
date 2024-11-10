@@ -8,8 +8,8 @@ private static int nextCallId = startCallId;
 internal static int NextCallId { get => nextCallId++; }
 
 internal const int startAssignmentId = 0;
-private static int nextAssignmentId = startAssignmentId;
-internal static int NextAssignmentId { get => nextAssignmentId++; }
+private static int next_assignment_id = startAssignmentId;
+internal static int NextAssignmentId { get => next_assignment_id++; }
 
 
 
@@ -19,7 +19,7 @@ internal static int NextAssignmentId { get => nextAssignmentId++; }
     internal static void Reset()
     {
         nextCallId = startCallId;
-        nextAssignmentId = startAssignmentId;
+        next_assignment_id = startAssignmentId;
         Clock = DateTime.Now;
         RiskRange= TimeSpan.FromHours(12);
     }

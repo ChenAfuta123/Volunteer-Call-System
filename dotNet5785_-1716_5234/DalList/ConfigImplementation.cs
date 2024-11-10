@@ -2,7 +2,6 @@
 using DalApi;
 
 namespace Dal;
-
 public class ConfigImplementation : IConfig
 {
     public DateTime Clock
@@ -15,12 +14,12 @@ public class ConfigImplementation : IConfig
         get => Config.RiskRange;
         set => Config.RiskRange = value;
     }
-    public int NextCallId
+    public int nextCallId
     {
         get => Config.NextCallId;
  
     }
-   public int NextAssignmentId
+   public int nextAssignmentId
     {
         get => Config.NextAssignmentId;
     }
