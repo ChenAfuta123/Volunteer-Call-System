@@ -57,7 +57,7 @@ internal class Program
     void CreateVolunteer()
     {
         Console.WriteLine("Enter volunteer's Id:");
-        int Id = Console.ReadLine();
+        int.TryParse(Console.ReadLine(), out int Id);
 
         Console.WriteLine("Enter volunteer's name:");
         string name = Console.ReadLine() ?? string.Empty;
@@ -88,7 +88,7 @@ internal class Program
     void CreateCall()
     {
         Console.WriteLine("Enter call Id:");
-        int Id = Console.ReadLine();
+        int.TryParse(Console.ReadLine(), out int Id);
 
         Console.WriteLine("Enter call address:");
         string address = Console.ReadLine() ?? string.Empty;
