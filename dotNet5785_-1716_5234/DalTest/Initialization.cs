@@ -6,7 +6,7 @@ using DO;
 public static class Initialization
 {
     private static IVolunteer? s_dalVolunteer;
-    private static Icall? s_dalcall;
+    private static ICall? s_dalCall;
     private static IAssignment? s_dalAssignment;
     private static IConfig? s_dalConfig;
 
@@ -70,7 +70,7 @@ public static class Initialization
             while (s_dalAssignment!.Read(id) != null);
 
             // בחירת קריאה ומתנדב רנדומליים מתוך הקריאות והמתנדבים הקיימים
-            var calls = s_dalcall!.ReadAll();
+            var calls = s_dalCall!.ReadAll();
             var volunteers = s_dalVolunteer!.ReadAll();
 
             if (calls.Count == 0 || volunteers.Count == 0)
@@ -103,7 +103,7 @@ private static void create_call()
             {
                 id = s_rand.Next(1000,9999 ); // יצירת מזהה רנדומלי בטווח מסוים
             }
-            while (s_dalcall!.Read(id) != null); // בדיקה אם המזהה כבר קיים
+            while (s_dalCall!.Read(id) != null); // בדיקה אם המזהה כבר קיים
 
             // בחירת נתונים רנדומליים לכתובת ולתיאור
             string address = addresses[s_rand.Next(addresses.Length)];
@@ -125,21 +125,21 @@ private static void create_call()
             }; 
 
             // הוספת הקריאה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
-            s_dalcall!.Create(newCall);
+            s_dalCall!.Create(newCall);
         }
     }
-    public static void Do(IVolunteer? dalVolunteer, Icall? dalcall, IAssignment? dalAssignment, IConfig? dalConfig) 
+    public static void Do(IVolunteer? dalVolunteer, ICall? dalcall, IAssignment? dalAssignment, IConfig? dalConfig) 
     {
         s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
         s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalcall = dalcall ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dalCall = dalcall ?? throw new NullReferenceException("DAL object can not be null!");
         s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");
 
         Console.WriteLine("Reset Configuration values and List values...");
         s_dalConfig.Reset(); //stage 1
         s_dalVolunteer.DeleteAll(); //stage 1
         s_dalAssignment.DeleteAll();
-        s_dalcall.DeleteAll();
+        s_dalCall.DeleteAll();
         Console.WriteLine("Initializing Students list ...");
         create_volunteer();
         create_assignment();
