@@ -6,7 +6,7 @@ using DO;
 
 namespace Dal;
 
-public class CallImplementation : Icall
+public class CallImplementation : ICall
 {
     public void Create(Call item)
     {

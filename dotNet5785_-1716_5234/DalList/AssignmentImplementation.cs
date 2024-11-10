@@ -5,7 +5,7 @@ using DalApi;
 
 namespace Dal;
 
-public class AssignmentImplementationcs : IAssignment
+public class AssignmentImplementation : IAssignment
 {
    
      public void Create(Assignment item)
@@ -17,9 +17,10 @@ public class AssignmentImplementationcs : IAssignment
         DataSource.Assignments.Add(copy);
     }
     
-
+    
     public void Delete(int id)
     {
+        
         Assignment? existId = Read(id);
         if (existId == null)
         {
