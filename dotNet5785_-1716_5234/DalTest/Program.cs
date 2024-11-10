@@ -120,11 +120,9 @@ internal class Program
         Console.WriteLine("Assignment added successfully.");
     }
 
-    void ViewVolunteer()
+    void ViewVolunteer(int id)
     {
-        Console.WriteLine("Enter volunteer ID:");
-        int.TryParse(Console.ReadLine(), out int id);
-
+       
         var volunteer = s_dalVolunteer!.Read(id);
         if (volunteer != null)
             Console.WriteLine(volunteer);
@@ -132,11 +130,9 @@ internal class Program
             Console.WriteLine("Volunteer not found.");
     }
 
-    void ViewCall()
+    void ViewCall(int id)
     {
-        Console.WriteLine("Enter call ID:");
-        int.TryParse(Console.ReadLine(), out int id);
-
+       
         var call = s_dalCall!.Read(id);
         if (call != null)
             Console.WriteLine(call);
@@ -144,10 +140,8 @@ internal class Program
             Console.WriteLine("Call not found.");
     }
 
-    void ViewAssignment()
+    void ViewAssignment(int id)
     {
-        Console.WriteLine("Enter assignment ID:");
-        int.TryParse(Console.ReadLine(), out int id);
 
         var assignment = s_dalAssignment!.Read(id);
         if (assignment != null)
@@ -194,16 +188,19 @@ internal class Program
                     }
                     break;
                 case EntityMenu.View:
+                    Console.WriteLine($"Enter {entityType} ID:");
+                    int.TryParse(Console.ReadLine(), out int id);
+
                     switch (entityType)
                     {
                         case EntityType.Volunteer:
-                            ViewVolunteer();
+                            ViewVolunteer(id);
                             break;
                         case EntityType.Call:
-                            ViewCall();
+                            ViewCall(id);
                             break;
                         case EntityType.Assignment:
-                            ViewAssignment();
+                            ViewAssignment(id);
                             break;
                     }
                     break;
