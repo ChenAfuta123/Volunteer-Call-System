@@ -16,6 +16,15 @@ internal static int NextAssignmentId { get => next_assignment_id++; }
 
     internal static DateTime Clock {  get; set; }=DateTime.Now;
     internal static TimeSpan RiskRange = TimeSpan.FromHours(12);
+    private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
+    internal static void SetConfigValue(string variableName, string newValue)
+    {
+        configVariables[variableName] = newValue;
+    }
+    internal static string GetConfigValue(string variableName)
+    {
+        return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
+    }
     internal static void Reset()
     {
         nextCallId = startCallId;
