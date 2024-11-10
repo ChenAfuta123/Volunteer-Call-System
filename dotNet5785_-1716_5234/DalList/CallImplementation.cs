@@ -10,7 +10,12 @@ public class CallImplementation : Icall
 {
     public void Create(Call item)
     {
-        throw new NotImplementedException();
+        int id = Config.NextCallId;
+        Call temp = new Call();
+        temp = item;
+        temp.Id = id;
+        DataSource.Calls.Add(temp);
+        return id;
     }
 
     public void Delete(int id)
@@ -25,16 +30,30 @@ public class CallImplementation : Icall
 
     public Call? Read(int id)
     {
-        throw new NotImplementedException();
+        foreach (var item in DataSource.Calls)
+        {
+            if (item.Id == id)
+            {
+                return item; // החזרה של הפניה לאובייקט אם נמצא
+            }
+        }
+        return null;
     }
 
     public List<Call> ReadAll()
     {
-        throw new NotImplementedException();
+        return new List<Call>(DataSource.Calls);
     }
 
     public void Update(Call item)
     {
-        throw new NotImplementedException();
+        Call? ExistId = Read(item.Id);
+        if (ExistId == null)
+        {
+            throw new NotImplementedException("An object of type Call with such an ID does not exist\n");
+        }
+        DataSource.Calls.Remove(ExistId);
+        DataSource.Calls.Add(item);
+
     }
 }
