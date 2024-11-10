@@ -1,38 +1,67 @@
 ﻿namespace DalList;
 
+using Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
 
 public class VolunteerImplementation : IVolunteer
 {
-    public void Create(Volunteer item)
-    {
-        throw new NotImplementedException();
-    }
+   
+        public void Create(Volunteer item)
+        {
+         Volunteer? existId = Read(item.Id);
+            if (existId != null)
+            {
+                throw new NotImplementedException($"Volunteer with ID={item.Id} already exists\n");
+            }
+
+
+            DataSource.Volunteers.Add(item);
+            //return item.Id;
+        }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        Volunteer? existId = Read(id);
+        if (existId == null)
+        {
+            throw new NotImplementedException($"Volunteer with ID={id} is not exists\n");
+        }
+        DataSource.Volunteers.Remove(existId);
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        DataSource.Volunteers.Clear();
     }
 
     public Volunteer? Read(int id)
     {
-        throw new NotImplementedException();
+
+        foreach (var item in DataSource.Volunteers)
+        {
+            if (item.Id == id)
+            {
+                return item;
+            }
+        }
+        return null;
     }
 
     public List<Volunteer> ReadAll()
     {
-        throw new NotImplementedException();
+        return new List<Volunteer>(DataSource.Volunteers);
     }
 
     public void Update(Volunteer item)
     {
-        throw new NotImplementedException();
+        Volunteer? existId = Read(item.Id);
+        if (existId == null)
+        {
+            throw new NotImplementedException($"Volunteer with ID={item.Id} is not exists\n");
+        }
+        DataSource.Volunteers.Remove(existId);
+        DataSource.Volunteers.Add(item);
     }
 }

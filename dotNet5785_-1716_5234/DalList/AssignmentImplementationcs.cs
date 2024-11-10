@@ -7,33 +7,58 @@ namespace Dal;
 
 public class AssignmentImplementationcs : IAssignment
 {
-    public void Create(Assignment item)
-    {
-        throw new NotImplementedException();
+   
+     public void Create(Assignment item)
+     {
+
+        
+        int id = /*datasource.*/Config.NextAssignmentId;
+        Assignment copy = item with { Id = id };
+        DataSource.Assignments.Add(copy);
     }
+    
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        Assignment? existId = Read(id);
+        if (existId == null)
+        {
+            throw new NotImplementedException($"Assignment with ID={id} is not exists\n");
+        }
+        DataSource.Assignments.Remove(existId); 
+
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        DataSource.Assignments.Clear();
     }
 
     public Assignment? Read(int id)
     {
-        throw new NotImplementedException();
+        foreach (var item in DataSource.Assignments)
+        {
+            if (item.Id == id)
+            {
+                return item;
+            }
+        }
+       return null;
     }
 
     public List<Assignment> ReadAll()
     {
-        throw new NotImplementedException();
+        return new List<Assignment>(DataSource.Assignments);
     }
 
     public void Update(Assignment item)
     {
-        throw new NotImplementedException();
+        Assignment? existId= Read(item.Id);
+        if (existId == null)
+        {
+            throw new NotImplementedException($"Assignment with ID={item.Id} is not exists\n");
+        }
+        DataSource.Assignments.Remove(existId);
+        DataSource.Assignments.Add(item);
     }
 }
