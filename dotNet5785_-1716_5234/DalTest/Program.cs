@@ -41,36 +41,142 @@ internal class Program
         Call,
         Assignment
     }
+    //void CreateVolunteer()
+    //{
+    //    //...
+    //}
+    //void CreateCall()
+    //{            
+    //    //...
+    //}
+    //void CreateAssignment() 
+    //{
+
+    //    //...
+
+    //}
+    //void ViewVolunteer()
+    //{
+    //    //...
+    //}
+
+
+    //void  ViewCall()
+    //{
+    //    //...
+    //}
+
+
+    //void  ViewAssignment()
+    //{
+    //    //...
+    //}
     void CreateVolunteer()
     {
-        //...
+        Console.WriteLine("Enter volunteer's Id:");
+        int Id = Console.ReadLine();
+
+        Console.WriteLine("Enter volunteer's name:");
+        string name = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's phone number:");
+        string phoneNumber = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's email:");
+        string email = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Password:");
+        string Password = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Address:");
+        string Address = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Latitude:");
+        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0 ;
+
+        Console.WriteLine("Enter volunteer's MaxDistance:");
+        double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
+
+        Volunteer newVolunteer = new(Id, name, phoneNumber, email, Password,Address,Latitude, MaxDistance);
+        s_dalVolunteer!.Create(newVolunteer);
+        Console.WriteLine("Volunteer added successfully.");
     }
+
     void CreateCall()
-    {            
-        //...
-    }
-    void CreateAssignment() 
     {
+        Console.WriteLine("Enter call Id:");
+        int Id = Console.ReadLine();
 
-        //...
+        Console.WriteLine("Enter call address:");
+        string address = Console.ReadLine() ?? string.Empty;
 
+        Console.WriteLine("Enter call description:");
+        string description = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter call Latitude:");
+        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
+
+        Console.WriteLine("Enter call Longitude:");
+        double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
+        
+        Call newCall = new(Id, address, description, Latitude, Longitude);
+        s_dalCall!.Create(newCall);
+        Console.WriteLine("Call added successfully.");
     }
+
+    void CreateAssignment()
+    {
+        Console.WriteLine("Enter call ID:");
+        int.TryParse(Console.ReadLine(), out int callId);
+
+        Console.WriteLine("Enter volunteer ID:");
+        int.TryParse(Console.ReadLine(), out int volunteerId);
+
+        Assignment newAssignment = new(0, callId, volunteerId);
+        s_dalAssignment!.Create(newAssignment);
+        Console.WriteLine("Assignment added successfully.");
+    }
+
     void ViewVolunteer()
     {
-        //...
+        Console.WriteLine("Enter volunteer ID:");
+        int.TryParse(Console.ReadLine(), out int id);
+
+        var volunteer = s_dalVolunteer!.Read(id);
+        if (volunteer != null)
+            Console.WriteLine(volunteer);
+        else
+            Console.WriteLine("Volunteer not found.");
     }
 
-
-    void  ViewCall()
+    void ViewCall()
     {
-        //...
+        Console.WriteLine("Enter call ID:");
+        int.TryParse(Console.ReadLine(), out int id);
+
+        var call = s_dalCall!.Read(id);
+        if (call != null)
+            Console.WriteLine(call);
+        else
+            Console.WriteLine("Call not found.");
     }
 
-
-    void  ViewAssignment()
+    void ViewAssignment()
     {
-        //...
+        Console.WriteLine("Enter assignment ID:");
+        int.TryParse(Console.ReadLine(), out int id);
+
+        var assignment = s_dalAssignment!.Read(id);
+        if (assignment != null)
+            Console.WriteLine(assignment);
+        else
+            Console.WriteLine("Assignment not found.");
     }
+
+
+
+
+
 
     public void entityMenu(EntityType entityType)
     {
