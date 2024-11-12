@@ -239,7 +239,7 @@ internal class Program
                     switch (entityType)
                     {
                         case EntityType.Volunteer:
-                            //...
+                            
                             break;
                         case EntityType.Call:
                             //...

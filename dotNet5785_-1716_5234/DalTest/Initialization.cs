@@ -19,7 +19,8 @@ public static class Initialization
     {
         string[] names = { "Dani Levy", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof" };
         string[] emails = { "dani@example.com", "eli@example.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com" };
-        string[] addresses = { "Tel Aviv", "Jerusalem", "Haifa", "Ashdod", "Beersheba" };
+        string[] addresses = {  "Tel Aviv, Rothschild Blvd 15",  "Jerusalem, Jaffa St 23", "Haifa, Ben Gurion Blvd 33", "Beer Sheva, Rager Blvd 12", "Eilat, Derech Yotam 4"};
+        double[] latitudes = { 32.0655,31.7833, 32.8191,31.2529, 29.5581 };
 
         // יצירת 5 מתנדבים לדוגמה
         for (int i = 0; i < 5; i++)
@@ -36,7 +37,9 @@ public static class Initialization
             // בחירת נתונים רנדומליים עבור שם, כתובת, ואימייל
             string name = names[s_rand.Next(names.Length)];
             string email = emails[s_rand.Next(emails.Length)];
-            string address = addresses[s_rand.Next(addresses.Length)];
+            int index = s_rand.Next(addresses.Length);
+            string address = addresses[index];
+            double latitude = latitudes[index];
 
             // יצירת מספר טלפון רנדומלי
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
@@ -45,7 +48,7 @@ public static class Initialization
             double maxDistance = s_rand.Next(1, 50); // למשל 1-50 ק"מ
 
             // יצירת אובייקט `Volunteer` חדש
-            Volunteer newVolunteer = new(id, name, phoneNumber, email, null, address, null, maxDistance, true);
+            Volunteer newVolunteer = new(id, name, phoneNumber, email, null, address, latitude, maxDistance, true);
 
             // הוספת המתנדב החדש לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalVolunteer!.Create(newVolunteer);
@@ -90,8 +93,11 @@ public static class Initialization
 private static void create_call()
     {
         // מערכים לדוגמאות עבור כתובות ותיאורים
-        string[] addresses = { "123 Main St", "456 Maple Ave", "789 Oak Dr", "101 Pine Rd", "202 Birch Blvd" };
+        string[] addresses = { "Ashdod, Herzl St 30", "Netanya, Sderot Ben Gurion 18", "Rishon LeZion, Rothschild St 45", "Holon, HaHistadrut St 12", "Bat Yam, Balfour St 50" };
         string[] descriptions = { "Emergency", "Routine Check", "Suspicious Activity", "Medical Assistance", "Noise Complaint" };
+        double[] longitudes = { 34.6403, 34.8600, 34.8044, 34.7722, 34.7454 };
+        double[] latitudes = { 31.8014, 32.3215, 31.9701, 32.0153, 32.0161 };
+
 
         // יצירת 5 קריאות לדוגמה
         for (int i = 0; i < 5; i++)
@@ -105,13 +111,15 @@ private static void create_call()
             }
             while (s_dalCall!.Read(id) != null); // בדיקה אם המזהה כבר קיים
 
-            // בחירת נתונים רנדומליים לכתובת ולתיאור
-            string address = addresses[s_rand.Next(addresses.Length)];
+            // בחירת נתונים רנדומליים לכתובת ולתיאו
             string description = descriptions[s_rand.Next(descriptions.Length)];
+            int index = s_rand.Next(addresses.Length);
 
-            // יצירת קואורדינטות רנדומליות (לדוגמה: בישראל)
-            double latitude = s_rand.NextDouble() * (33.3 - 29.5) + 29.5;   // טווח קווי הרוחב של ישראל
-            double longitude = s_rand.NextDouble() * (35.6 - 34.2) + 34.2; // טווח קווי האורך של ישראל
+            // שליפת כתובת עם קואורדינטות מסונכרנות
+            string address = addresses[index];
+            double latitude = latitudes[index];
+            double longitude = longitudes[index];
+
 
             // קבלת זמן פתיחה באמצעות שעון המערכת
             DateTime openingTime = s_dalConfig!.Clock;
@@ -120,7 +128,8 @@ private static void create_call()
             Call newCall = new(id, address, description, latitude, longitude)
             {
                 // עדכון זמן פתיחה
-                openingTime = openingTime
+                //openingTime = openingTime
+                
 
             }; 
 
@@ -140,10 +149,13 @@ private static void create_call()
         s_dalVolunteer.DeleteAll(); //stage 1
         s_dalAssignment.DeleteAll();
         s_dalCall.DeleteAll();
-        Console.WriteLine("Initializing Students list ...");
+        Console.WriteLine("Initializing Volunteers list ...");
         create_volunteer();
-        create_assignment();
+        Console.WriteLine("Initializing Calls list ...");
         create_call();
+        Console.WriteLine("Initializing Assignment list ...");
+        create_assignment();
+      
     }
 
 
