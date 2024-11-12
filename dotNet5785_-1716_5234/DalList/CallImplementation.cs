@@ -22,7 +22,7 @@ public class CallImplementation : ICall
         Call? existId = Read(id);
         if (existId == null)
         {
-            throw new NotImplementedException($"Call with ID={id} is not exists\n");
+            throw new Exception($"Call with ID={id} is not exists\n");
         }
         DataSource.Calls.Remove(existId);
     }
@@ -55,7 +55,7 @@ public class CallImplementation : ICall
         Call? existId = Read(item.Id);
         if (existId==null)
         {
-            throw new NotImplementedException($"Volunteer with ID={item.Id} is not exists\n");
+            throw new Exception($"Volunteer with ID={item.Id} is not exists\n");
         }
         DataSource.Calls.Remove(existId);
         DataSource.Calls.Add(item);

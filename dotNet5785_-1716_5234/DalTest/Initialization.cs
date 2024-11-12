@@ -20,7 +20,7 @@ public static class Initialization
         string[] names = { "Dani Levy", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof" };
         string[] emails = { "dani@example.com", "eli@example.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com" };
         string[] addresses = { "Tel Aviv", "Jerusalem", "Haifa", "Ashdod", "Beersheba" };
-
+        
         // יצירת 5 מתנדבים לדוגמה
         for (int i = 0; i < 5; i++)
         {
@@ -114,15 +114,19 @@ private static void create_call()
             double longitude = s_rand.NextDouble() * (35.6 - 34.2) + 34.2; // טווח קווי האורך של ישראל
 
             // קבלת זמן פתיחה באמצעות שעון המערכת
-            DateTime openingTime = s_dalConfig!.Clock;
+            //DateTime openingTime = s_dalConfig!.Clock;
+            DateTime start = new DateTime(s_dalConfig!.Clock.Year - 2, 1, 1); //stage 1
+            int range = (s_dalConfig.Clock - start).Days; //stage 1
+            DateTime openingTime= start.AddDays(s_rand.Next(range));
+
 
             // יצירת אובייקט `Call` חדש
             Call newCall = new(id, address, description, latitude, longitude)
             {
                 // עדכון זמן פתיחה
-                openingTime = openingTime
-
-            }; 
+                //OpeningTime = openingTime
+            };
+            
 
             // הוספת הקריאה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalCall!.Create(newCall);

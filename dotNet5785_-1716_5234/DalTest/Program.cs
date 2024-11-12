@@ -2,6 +2,7 @@
 using DalApi;
 using DalList;
 using DO;
+using System;
 using static DalTest.Program;
 
 namespace DalTest;
@@ -87,8 +88,7 @@ internal class Program
 
     void CreateCall()
     {
-        Console.WriteLine("Enter call Id:");
-        int.TryParse(Console.ReadLine(), out int Id);
+       
 
         Console.WriteLine("Enter call address:");
         string address = Console.ReadLine() ?? string.Empty;
@@ -101,21 +101,23 @@ internal class Program
 
         Console.WriteLine("Enter call Longitude:");
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
+
         
-        Call newCall = new(Id, address, description, Latitude, Longitude);
+        int newCallId = s_dalConfig!.NextCallId;
+
+        Call newCall = new(newCallId, address, description, Latitude, Longitude);
         s_dalCall!.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
 
     void CreateAssignment()
     {
-        Console.WriteLine("Enter call ID:");
-        int.TryParse(Console.ReadLine(), out int callId);
+        int newAssignmentId = s_dalConfig!.NextAssignmentId;
 
         Console.WriteLine("Enter volunteer ID:");
         int.TryParse(Console.ReadLine(), out int volunteerId);
 
-        Assignment newAssignment = new(0, callId, volunteerId);
+        Assignment newAssignment = new(0, newAssignmentId, volunteerId);
         s_dalAssignment!.Create(newAssignment);
         Console.WriteLine("Assignment added successfully.");
     }
@@ -167,24 +169,31 @@ internal class Program
                 ", 5-Delete, 6-DeleteAll):");
             int.TryParse(Console.ReadLine(), out int choice);
             EntityMenu selectedMenu = (EntityMenu)choice;
-
+             
             switch (selectedMenu)
             {
                 case EntityMenu.Exit:
                     continueMenu = false;
                     break;
                 case EntityMenu.Add:
-                    switch (entityType)
+                    try
                     {
-                        case EntityType.Volunteer:
-                            CreateVolunteer();
-                            break;
-                        case EntityType.Call:
-                            CreateCall();
-                            break;
-                        case EntityType.Assignment:
-                            CreateAssignment();
-                            break;
+                        switch (entityType)
+                        {
+                            case EntityType.Volunteer:
+                                CreateVolunteer();
+                                break;
+                            case EntityType.Call:
+                                CreateCall();
+                                break;
+                            case EntityType.Assignment:
+                                CreateAssignment();
+                                break;
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"{ex.Message}");
                     }
                     break;
                 case EntityMenu.View:
@@ -210,47 +219,246 @@ internal class Program
                     switch (entityType)
                     {
                         case EntityType.Volunteer:
-                            //...
+                          
+                            List<Volunteer> volunteers = s_dalVolunteer!.ReadAll();
+
+                            foreach (var volunteer in volunteers)
+                            {
+                                ViewVolunteer(volunteer.Id);
+
+                            }
                             break;
                         case EntityType.Call:
-                            //...
+
+                            List<Call> calls = s_dalCall!.ReadAll();
+                            foreach (var call in calls)
+                            {
+                                ViewCall(call.Id);
+                            }
                             break;
+
                         case EntityType.Assignment:
-                            //...
+
+                            List<Assignment> assignments = s_dalAssignment!.ReadAll();
+                            foreach (var assignment in assignments)
+                            {
+                                ViewAssignment(assignment.Id);
+                            }
                             break;
                     }
                     break;
 
                 case EntityMenu.Update:
-                    switch (entityType)
+
+                    try
                     {
-                        case EntityType.Volunteer:
-                            //...
-                            break;
-                        case EntityType.Call:
-                            //...
-                            break;
-                        case EntityType.Assignment:
-                            //...
-                            break;
+                        switch (entityType)
+                        {
+                            case EntityType.Volunteer:
+
+
+                                // בקשה למשתמש להזין את ה-ID של המתנדב
+                                Console.WriteLine("Enter volunteer ID:");
+                                int.TryParse(Console.ReadLine(), out int volunteerId);
+
+                                // קריאה לקריאת המתנדב לפי ה-ID
+                                Volunteer? exist = s_dalVolunteer!.Read(volunteerId);
+
+                                if (exist == null)
+                                {
+                                    Console.WriteLine("Volunteer not found.");
+                                    break; // אם המתנדב לא קיים, יוצאים מהשיטה
+                                }
+
+                                // בקשה מהמשתמש להכניס את הנתונים החדשים לעדכון
+                                Console.WriteLine("Enter new data to update:");
+
+                                // קבלת שם המתנדב
+                                Console.WriteLine($"Enter new Name (current: {exist.Name}):");
+                                string newName = Console.ReadLine() ?? exist.Name; // אם המשתמש לא הכניס שם חדש, נשאיר את השם הקיים
+
+                                // קבלת מספר הטלפון של המתנדב
+                                Console.WriteLine($"Enter new PhoneNumber (current: {exist.PhoneNumber}):");
+                                string newPhoneNumber = Console.ReadLine() ?? exist.PhoneNumber;
+
+                                // קבלת כתובת האימייל של המתנדב
+                                Console.WriteLine($"Enter new Email (current: {exist.Email}):");
+                                string newEmail = Console.ReadLine() ?? exist.Email;
+
+                                // קבלת הסיסמה של המתנדב (אפשרי להשאיר את הסיסמה הקיימת)
+                                Console.WriteLine($"Enter new Password (current: {exist.Password ?? "N/A"}):");
+                                string? newPassword = Console.ReadLine();
+                                if (string.IsNullOrEmpty(newPassword))
+                                {
+                                    newPassword = exist.Password; // אם המשתמש לא הכניס סיסמה חדשה, נשאיר את הקיימת
+                                }
+
+                                // קבלת הכתובת של המתנדב
+                                Console.WriteLine($"Enter new Address (current: {exist.Address ?? "N/A"}):");
+                                string? newAddress = Console.ReadLine();
+                                if (string.IsNullOrEmpty(newAddress))
+                                {
+                                    newAddress = exist.Address; // אם המשתמש לא הכניס כתובת חדשה, נשאיר את הקיימת
+                                }
+
+                                // קבלת המיקום של המתנדב (Latitude)
+                                Console.WriteLine($"Enter new Latitude (current: {exist.Latitude?.ToString() ?? "N/A"}):");
+                                double? newLatitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : exist.Latitude;
+
+                                // קבלת המרחק המקסימלי של המתנדב (MaxDistance)
+                                Console.WriteLine($"Enter new MaxDistance (current: {exist.MaxDistance?.ToString() ?? "N/A"}):");
+                                double? newMaxDistance = double.TryParse(Console.ReadLine(), out double maxDist) ? maxDist : exist.MaxDistance;
+
+                                // קבלת מצב המתנדב (Active)
+                                Console.WriteLine($"Enter new Active status (current: {(exist.Active ? "Yes" : "No")}) - Enter true or false:");
+                                bool newActive = bool.TryParse(Console.ReadLine(), out bool activeStatus) ? activeStatus : exist.Active;
+
+                                // יצירת אובייקט מתנדב חדש עם הנתונים שהוזנו
+                                Volunteer updatedVolunteer = new Volunteer(
+                                    volunteerId, // לא משתנה
+                                    newName,
+                                    newPhoneNumber,
+                                    newEmail,
+                                    newPassword,
+                                    newAddress,
+                                    newLatitude,
+                                    newMaxDistance,
+                                    newActive
+                                );
+
+
+                                s_dalVolunteer.Update(updatedVolunteer);
+
+                                Console.WriteLine("Volunteer updated successfully.");
+
+                                break;
+
+
+
+                            case EntityType.Call:
+
+                                // Prompt user to enter the ID of the call
+                                Console.WriteLine("Enter call ID:");
+                                int.TryParse(Console.ReadLine(), out int callId);
+
+                                // Fetch the existing call by ID
+                                Call? existingCall = s_dalCall!.Read(callId);
+
+                                if (existingCall == null)
+                                {
+                                    Console.WriteLine("Call not found.");
+                                    break; // Exit if the call doesn't exist
+                                }
+
+                                // Ask the user to input the new data for the update
+                                Console.WriteLine("Enter new data to update:");
+
+                                // Get the call address
+                                Console.WriteLine($"Enter new Address (current: {existingCall.Address}):");
+                                string newaddress = Console.ReadLine() ?? existingCall.Address;
+
+                                // Get the call description
+                                Console.WriteLine($"Enter new Description (current: {existingCall.Description ?? "N/A"}):");
+                                string? newDescription = Console.ReadLine();
+                                if (string.IsNullOrEmpty(newDescription))
+                                {
+                                    newDescription = existingCall.Description; // Keep the current description if none provided
+                                }
+
+                                // Get the latitude
+                                Console.WriteLine($"Enter new Latitude (current: {existingCall.Latitude?.ToString() ?? "N/A"}):");
+                                double? newlatitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : existingCall.Latitude;
+
+                                // Get the longitude
+                                Console.WriteLine($"Enter new Longitude (current: {existingCall.Longitude?.ToString() ?? "N/A"}):");
+                                double? newLongitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : existingCall.Longitude;
+
+                                // Get the ending time of the call
+                                Console.WriteLine($"Enter new EndTime (current: {existingCall.EndTime?.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
+                                string? endTimeInput = Console.ReadLine();
+                                //DateTime? newEndTime = !string.IsNullOrEmpty(endTimeInput) && DateTime.TryParse(endTimeInput, out DateTime endTime) ? endTime : existingCall.EndTime;
+
+                                // Create a new Call object with the updated data
+                                Call updatedCall = new Call(
+                                    callId,
+                                    newaddress,
+                                    newDescription,
+                                    newlatitude,
+                                    newLongitude
+                                );
+
+                                // Call the update function to update the call
+                                s_dalCall.Update(updatedCall);
+                                Console.WriteLine("Call updated successfully.");
+                                break;
+
+
+                            case EntityType.Assignment:
+
+                                Console.WriteLine("Unable to update an Assignment.");
+
+                                break;
+                        }
+ 
+                    }
+                    catch (Exception ex)
+                    {
+                            // טיפול בחריגה: להדפיס את ההודעה אם יש בעיה
+                         Console.WriteLine($"{ex.Message}");
                     }
                     break;
                 case EntityMenu.Delete:
-                    switch (entityType)
+                    try
                     {
-                        case EntityType.Volunteer:
-                            //...
-                            break;
-                        case EntityType.Call:
-                            //...
-                            break;
-                        case EntityType.Assignment:
-                            //...
-                            break;
+                        switch (entityType)
+                        {
+                            case EntityType.Volunteer:
+                                Console.WriteLine("Enter the volunteer's ID to delete");
+                                int.TryParse(Console.ReadLine(), out int volunteerId);
+                                s_dalVolunteer!.Delete(volunteerId);
+                                Console.WriteLine("The volunteer deleted successfully");
+                                break;
+                            case EntityType.Call:
+                                Console.WriteLine("Enter the call's ID to delete");
+                                int.TryParse(Console.ReadLine(), out int callId);
+                                s_dalCall!.Delete(callId);
+                                Console.WriteLine("The call deleted successfully");
+                                break;
+                            case EntityType.Assignment:
+                                Console.WriteLine("Enter the assignment's ID to delete");
+                                int.TryParse(Console.ReadLine(), out int assignmentId);
+                                s_dalAssignment!.Delete(assignmentId);
+                                Console.WriteLine("The assignment deleted successfully");
+                                break;
+                        }
+                    }
+                    catch(Exception ex) 
+                    {
+                        Console.WriteLine($"{ex.Message}");
                     }
                     break;
                 case EntityMenu.DeleteAll:
-                    //...
+
+                    switch (entityType)
+                    {
+                        case EntityType.Volunteer:
+                           
+                            s_dalVolunteer!.DeleteAll();
+
+                            break;
+                        case EntityType.Call:
+                           
+                            s_dalCall!.DeleteAll();
+                
+                            break;
+                        case EntityType.Assignment:
+                            
+                            s_dalAssignment!.DeleteAll();
+                           
+                            break;
+                    }
+
+
                     Console.WriteLine($"Deleting all {entityType} entries.");
                     break;
                 default:
@@ -286,15 +494,15 @@ internal class Program
                     continueMenu = false;
                     break;
                 case ConfigMenu.AdvanceClockByMinute:
-                    s_dalConfig.Clock = s_dalConfig.Clock.AddMinutes(1);
+                    s_dalConfig!.Clock = s_dalConfig.Clock.AddMinutes(1);
                     Console.WriteLine("System clock advanced by one minute.");
                     break;
                 case ConfigMenu.AdvanceClockByHour:
-                    s_dalConfig.Clock = s_dalConfig.Clock.AddHours(1);
+                    s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(1);
                     Console.WriteLine("System clock advanced by one hour.");
                     break;
                 case ConfigMenu.AdvanceClockByDay:
-                    s_dalConfig.Clock = s_dalConfig.Clock.AddDays(1);
+                    s_dalConfig!.Clock = s_dalConfig.Clock.AddDays(1);
                     Console.WriteLine("System clock advanced by one Day.");
                     break;
                 case ConfigMenu.DisplayClock:
@@ -305,17 +513,17 @@ internal class Program
                     string? variableName = Console.ReadLine();
                     Console.Write("Enter the new value for the configuration variable: ");
                     string newValue = Console.ReadLine()!;
-                    s_dalConfig.SetConfigValue(variableName, newValue);
+                    s_dalConfig!.SetConfigValue(variableName, newValue);
                     Console.WriteLine($"{variableName} has been updated to the new value.");
                     break;
                 case ConfigMenu.DisplayConfigVariable:
                     Console.Write("Enter the name of the configuration variable to display: ");
                     string configVarName = Console.ReadLine()!;
-                    string currentValue = s_dalConfig.GetConfigValue(configVarName);
+                    string currentValue = s_dalConfig!.GetConfigValue(configVarName);
                     Console.WriteLine($"Current value of {configVarName}: {currentValue}");
                     break;
                 case ConfigMenu.ResetConfig:
-                    s_dalConfig.Reset();
+                    s_dalConfig!.Reset();
                     Console.WriteLine("All configuration variables have been reset.");
                     break;
                 default:
@@ -354,11 +562,27 @@ internal class Program
                     break;
                 case MainMenu.DataInitialization:
                     Console.WriteLine("Initializing data.");
-                    //Initialization.Do(s_dalAssignment, s_dalCall, s_dalVolunteer, s_dalConfig);
+                    Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
                     break;
                 case MainMenu.ViewAllData:
-                    //...
-                    Console.WriteLine("Viewing all data.");
+                    List<Volunteer> volunteers = s_dalVolunteer!.ReadAll();
+                    foreach (var volunteer in volunteers)
+                    {
+                        Console.WriteLine($"{volunteer} ");
+                    }
+                    List<Call> calls = s_dalCall!.ReadAll();
+                    foreach (var call in calls)
+                    {
+                        Console.WriteLine($"{call} ");
+                    }
+                    List<Assignment> assignments = s_dalAssignment!.ReadAll();
+                    foreach (var assignment in assignments)
+                    {
+                        Console.WriteLine($"{assignment} ");
+                    }
+                    
+
+    Console.WriteLine("Viewing all data.");
                     break;
                 case MainMenu.ConfigMenu:
                     configMenu();
@@ -366,10 +590,10 @@ internal class Program
                 case MainMenu.Database_and_configuration_reset:
                     Console.WriteLine("Resetting database and configuration.");
 
-                    //s_dalAssignment.DeleteAll(); //stage 1
-                    //s_dalCall.DeleteAll();
-                    //s_dalVolunteer.DeleteAll();
-                    //s_dalConfig.ResetConfig(); 
+                    s_dalAssignment!.DeleteAll(); //stage 1
+                    s_dalCall!.DeleteAll();
+                    s_dalVolunteer!.DeleteAll();
+                    //s_dalConfig!.ResetConfig();
 
 
                     break;
@@ -383,12 +607,16 @@ internal class Program
     }
 
 
-    static void Main(string[] args)
-    {
-        Console.WriteLine("Program has exited.");
-        //    mainMenu();
-        //
-    }
+    //static void Main(string[] args)
+    //{
+        
+    //    catch (Exception ex)
+    //    {
+    //        // טיפול בחריגה: להדפיס את ההודעה אם יש בעיה
+    //        Console.WriteLine($"{ex.Message}");
+    //    }
+
+    //}
 
 
 
@@ -400,10 +628,5 @@ internal class Program
     //    // קריאה למתודה Delete (החריגה תיזרק אם לא נמצא אובייקט)
     //    /*someClassInstance.Delete(123); */ // 123 הוא ה-ID שאתה רוצה למחוק
     //}
-    //catch (Exception ex)
-    //{
-    //    // טיפול בחריגה: להדפיס את ההודעה אם יש בעיה
-    //    Console.WriteLine($"{ex.Message}");
-    //}
-
+    
 

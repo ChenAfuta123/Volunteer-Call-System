@@ -13,7 +13,7 @@ public class VolunteerImplementation : IVolunteer
          Volunteer? existId = Read(item.Id);
             if (existId != null)
             {
-                throw new NotImplementedException($"Volunteer with ID={item.Id} already exists\n");
+                throw new Exception($"Volunteer with ID={item.Id} already exists\n");
             }
 
 
@@ -26,7 +26,7 @@ public class VolunteerImplementation : IVolunteer
         Volunteer? existId = Read(id);
         if (existId == null)
         {
-            throw new NotImplementedException($"Volunteer with ID={id} is not exists\n");
+            throw new Exception($"Volunteer with ID={id} is not exists\n");
         }
         DataSource.Volunteers.Remove(existId);
     }
@@ -59,7 +59,7 @@ public class VolunteerImplementation : IVolunteer
         Volunteer? existId = Read(item.Id);
         if (existId == null)
         {
-            throw new NotImplementedException($"Volunteer with ID={item.Id} is not exists\n");
+            throw new Exception($"Volunteer with ID={item.Id} is not exists\n");
         }
         DataSource.Volunteers.Remove(existId);
         DataSource.Volunteers.Add(item);
