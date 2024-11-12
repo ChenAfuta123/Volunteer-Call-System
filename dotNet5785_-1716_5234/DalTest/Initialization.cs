@@ -1,7 +1,8 @@
-﻿namespace DalTest;
+﻿
+
+namespace DalTest;
 using DalApi;
 using DO;
-
 public static class Initialization
 {
     private static IVolunteer? s_dalVolunteer;
@@ -16,138 +17,183 @@ public static class Initialization
     /// </summary>
     private static void create_volunteer()
     {
-        // שמות לדוגמה עבור מתנדבים
-        string[] names = { "Dani Levy", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof", "Lior Mazor", "Gal Ben David", "Nir Avrahami", "Nofar Shani", "Tomer Klein", "Avi Mordechai", "Or Eliyahu", "Roni Levi", "Noa Shahar", "Dana Alon", "Itay Cohen", "Yafit Azulay", "Moran Levy", "Ofir Segal" };
+        string[] names = { "Dani Levy", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof" };
+        string[] emails = { "dani@example.com", "eli@example.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com" };
+        string[] addresses = {  "Tel Aviv, Rothschild Blvd 15",  "Jerusalem, Jaffa St 23", "Haifa, Ben Gurion Blvd 33", "Beer Sheva, Rager Blvd 12", "Eilat, Derech Yotam 4"};
+        double[] latitudes = { 32.0655,31.7833, 32.8191,31.2529, 29.5581 };
 
-        // יצירת מתנדבים, כאשר הראשון מוגדר כמנהל
-        for (int i = 0; i < 20; i++)
+        // יצירת 5 מתנדבים לדוגמה
+        for (int i = 0; i < 5; i++)
         {
             int id;
 
             // יצירת מזהה ייחודי עבור המתנדב
             do
             {
-                id = s_rand.Next(200000000, 400000000);
+                id = s_rand.Next(200000000, 400000000); // הגרלת ת"ז בטווח 200000000-400000000
             }
             while (s_dalVolunteer!.Read(id) != null);
 
-            // בחירת נתונים עבור המתנדב
-            string name = names[i % names.Length];
-            string email = $"{name.ToLower().Replace(" ", ".")}@example.com";
+            // בחירת נתונים רנדומליים עבור שם, כתובת, ואימייל
+            string name = names[s_rand.Next(names.Length)];
+            string email = emails[s_rand.Next(emails.Length)];
+            int index = s_rand.Next(addresses.Length);
+            string address = addresses[index];
+            double latitude = latitudes[index];
+
+            // יצירת מספר טלפון רנדומלי
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
 
-            // כתובת ונתוני Geocoding רנדומליים
-            string address = $"City {s_rand.Next(1, 10)}, Street {s_rand.Next(1, 50)}";
-            double latitude = s_rand.NextDouble() * 2 + 31;  // תחום קווי רוחב בישראל
-            double longitude = s_rand.NextDouble() * 2 + 34; // תחום קווי אורך בישראל
-            double maxDistance = s_rand.Next(1, 50);
+            // יצירת מרחק מקסימלי רנדומלי
+            double maxDistance = s_rand.Next(1, 50); // למשל 1-50 ק"מ
 
-            // הגדרת המתנדב הראשון כמנהל
-            bool isAdmin = i == 0;
+            // יצירת אובייקט `Volunteer` חדש
+            Volunteer newVolunteer = new(id, name, phoneNumber, email, null, address, latitude, maxDistance, true);
 
-            // יצירת אובייקט Volunteer חדש
-            Volunteer newVolunteer = new(id, name, phoneNumber, email, isAdmin, address, latitude, longitude, maxDistance, true);
-
+            // הוספת המתנדב החדש לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalVolunteer!.Create(newVolunteer);
         }
     }
 
     /// <summary>
-    /// Creates a list of calls with random attributes and adds them to the data source.
-    /// </summary>
-    private static void create_call()
-    {
-        string[] descriptions = { "Medical Assistance", "Fire Alert", "Roadside Assistance", "Noise Complaint", "Suspicious Activity" };
-
-        // יצירת 55 קריאות
-        for (int i = 0; i < 55; i++)
-        {
-            int id;
-
-            // יצירת מזהה ייחודי עבור הקריאה
-            do
-            {
-                id = s_rand.Next(1000, 9999);
-            }
-            while (s_dalCall!.Read(id) != null);
-
-            // פרטי הקריאה
-            string description = descriptions[s_rand.Next(descriptions.Length)];
-            string address = $"City {s_rand.Next(1, 10)}, Street {s_rand.Next(1, 50)}";
-            double latitude = s_rand.NextDouble() * 2 + 31;
-            double longitude = s_rand.NextDouble() * 2 + 34;
-
-            // זמן פתיחה
-            DateTime openingTime = s_dalConfig!.Clock.AddMinutes(-s_rand.Next(10, 1000));
-
-            // זמן סיום עם סיכוי להשאר null
-            DateTime? closingTime = i < 15 ? null : openingTime.AddMinutes(s_rand.Next(30, 200));
-            bool isExpired = closingTime != null && closingTime < DateTime.Now && i < 5;
-
-            // יצירת אובייקט Call חדש
-            Call newCall = new(id, address, description, latitude, longitude, openingTime, closingTime, isExpired);
-
-            s_dalCall!.Create(newCall);
-        }
-    }
-
-    /// <summary>
-    /// Creates assignments linking volunteers to calls.
+    /// Creates a list of assignments linking volunteers to calls.
     /// </summary>
     private static void create_assignment()
     {
-        var calls = s_dalCall!.ReadAll();
-        var volunteers = s_dalVolunteer!.ReadAll();
-
-        // יצירת 50 הקצאות
-        for (int i = 0; i < 50; i++)
+        // יצירת 5 משימות לדוגמה
+        for (int i = 0; i < 5; i++)
         {
             int id;
 
             // יצירת מזהה ייחודי עבור המשימה
             do
             {
-                id = s_rand.Next(1000, 9999);
+                id = s_rand.Next(1000, 9999); // מזהה רנדומלי
             }
             while (s_dalAssignment!.Read(id) != null);
+
+            // בחירת קריאה ומתנדב רנדומליים מתוך הקריאות והמתנדבים הקיימים
+            var calls = s_dalCall!.ReadAll();
+            var volunteers = s_dalVolunteer!.ReadAll();
+
+            if (calls.Count == 0 || volunteers.Count == 0)
+                throw new InvalidOperationException("There are no calls or volunteers available to create a task\n");
 
             int callId = calls[s_rand.Next(calls.Count)].Id;
             int volunteerId = volunteers[s_rand.Next(volunteers.Count)].Id;
 
-            DateTime openingTime = calls.Find(c => c.Id == callId)!.OpeningTime;
-            DateTime entryTime = openingTime.AddMinutes(s_rand.Next(10, 60));
-            DateTime? exitTime = entryTime.AddMinutes(s_rand.Next(20, 180));
+            // יצירת אובייקט `Assignment` חדש
+            Assignment newAssignment = new(id, callId, volunteerId);
 
-            // סטטוס סיום אקראי
-            string endStatus = exitTime != null && exitTime < DateTime.Now ? "Completed" : "Pending";
-
-            // יצירת אובייקט Assignment חדש
-            Assignment newAssignment = new(id, callId, volunteerId, entryTime, exitTime, endStatus);
-
+            // הוספת המשימה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalAssignment!.Create(newAssignment);
         }
-    }
+}
 
-    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+private static void create_call()
     {
-        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object cannot be null!");
-        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object cannot be null!");
-        s_dalCall = dalCall ?? throw new NullReferenceException("DAL object cannot be null!");
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object cannot be null!");
+        // מערכים לדוגמאות עבור כתובות ותיאורים 
+        string[] addresses = {
+    "Tel Aviv, Dizengoff St 50", "Jerusalem, Jaffa St 10", "Haifa, HaNassi Blvd 80", "Beersheba, Rager Blvd 15", "Eilat, HaTmarim Blvd 20",
+    "Petah Tikva, Em Hamoshavot Rd 45", "Netanya, Herzl St 12", "Ashdod, HaNamal St 30", "Rehovot, Herzl St 65", "Holon, Sokolov St 22",
+    "Bat Yam, Ben Gurion Blvd 15", "Rishon Lezion, Rothschild St 35", "Ramat Gan, Abba Hillel Silver Rd 100", "Herzliya, Ben Yehuda St 55",
+    "Kfar Saba, Weizmann St 28", "Ra'anana, Ahuza St 90", "Modiin, Yigal Alon St 17", "Ashkelon, Ben Gurion Blvd 60", "Nahariya, Sokolov St 18",
+    "Acre, Ben Ami Blvd 5", "Karmiel, HaGalil St 7", "Dimona, Haim Bar Lev St 40", "Yokneam, HaTzabar St 2", "Beit Shemesh, Nahar Hayarden St 8",
+    "Afula, HaRakevet St 10", "Tiberias, HaBanim St 15", "Sderot, HaDekel St 3", "Or Yehuda, HaTamar St 25", "Ramat HaSharon, Sokolov St 40",
+    "Giv'atayim, Katznelson St 5", "Shoham, HaAtzmaut St 6", "Even Yehuda, HaShaked St 13", "Gedera, HaZayit St 12", "Yavne, HaGefen St 4",
+    "Omer, HaShikma St 9", "Shlomi, HaZayit St 16", "Migdal HaEmek, HaDekel St 7", "Kiryat Shmona, David Elazar St 11",
+    "Kiryat Bialik, HaTzafon St 3", "Rosh HaAyin, HaHagana St 1", "Kiryat Ata, HaYovel St 25", "Lod, HaHistadrut St 30",
+    "Ramla, Herzl St 27", "Eilot, HaNegev St 2", "Arad, HaShalom St 14", "Ma'alot Tarshiha, HaTeena St 12", "Zichron Yaakov, HaEtrog St 19",
+    "Ramat Efal, HaRakevet St 8", "Tel Mond, HaGoren St 15", "Mazkeret Batya, HaDekel St 3"
+};
+
+        double[] latitudes = {
+    32.0805, 31.7683, 32.7940, 31.2518, 29.5577, 32.084, 32.321, 31.804, 31.894, 32.011,
+    32.017, 31.972, 32.082, 32.162, 32.175, 32.185, 31.896, 31.668, 33.008, 32.923,
+    32.919, 31.071, 32.656, 31.739, 32.607, 32.792, 31.527, 32.031, 32.145, 32.068,
+    32.035, 31.938, 31.888, 31.878, 32.946, 32.802, 33.207, 32.799, 32.813, 32.123,
+    32.052, 31.951, 31.246, 31.27, 33.015, 32.573, 32.062, 32.180, 31.861, 31.845
+};
+
+        double[] longitudes = {
+    34.7818, 35.2137, 34.9896, 34.7915, 34.9501, 34.871, 34.853, 34.645, 34.812, 34.772,
+    34.748, 34.804, 34.823, 34.839, 34.906, 34.870, 35.010, 34.599, 35.093, 35.082,
+    35.297, 35.034, 35.104, 34.989, 35.289, 35.540, 34.596, 34.839, 34.839, 34.810,
+    34.915, 34.779, 34.701, 34.775, 35.302, 35.571, 35.573, 35.033, 35.113, 34.880,
+    34.900, 34.873, 34.792, 34.736, 35.276, 35.046, 34.814, 34.935, 34.851, 34.836
+};
+
+        string[] descriptions = {
+            "Food delivery – providing essential food and drinks to evacuees in shelters.",
+    "Temporary housing – assisting an evacuee family in finding temporary accommodation.",
+    "Trauma support – escorting evacuees needing mental health assistance.",
+    "Children’s activities – organizing activities for children in shelters.",
+    "Transport help – assisting with moving personal belongings to safe housing.",
+    "Medication delivery – collecting and delivering essential medications.",
+    "Mental health support – connecting evacuees to counseling services.",
+    "Heating supplies – providing blankets and heaters for cold weather.",
+    "Evacuee transport – arranging safe transport to temporary shelters.",
+    "Legal aid – offering guidance on government aid and legal support."
+};
+
+
+        // יצירת 5 קריאות לדוגמה
+        for (int i = 0; i < 50; i++)
+        {
+            int id=s_dalConfig!.NextCallId;
+
+            // בחירת נתונים רנדומליים לכתובת ולתיאו
+            string description = descriptions[s_rand.Next(descriptions.Length)];
+            int index = s_rand.Next(addresses.Length);
+
+            // שליפת כתובת עם קואורדינטות מסונכרנות
+            string address = addresses[index];
+            double latitude = latitudes[index];
+            double longitude = longitudes[index];
+
+
+            // קבלת זמן פתיחה באמצעות שעון המערכת
+            //DateTime openingTime = s_dalConfig!.Clock;
+            DateTime start = new DateTime(s_dalConfig!.Clock.Year - 2, 1, 1); //stage 1
+            int range = (s_dalConfig.Clock - start).Days; //stage 1
+            DateTime openingTime= start.AddDays(s_rand.Next(range));
+
+            //DateTime? closingTime = null;
+            //    int hoursRange = s_rand.Next(1, 48); // טווח של 1 עד 48 שעות לאחר זמן הפתיחה
+            //    closingTime = openingTime.AddHours(hoursRange);
+                // יצירת אובייקט `Call` חדש
+                Call newCall = new(id, address, description, latitude, longitude)
+            {
+                // עדכון זמן פתיחה
+                //openingTime = openingTime
+
+                
+            }; 
+
+            // הוספת הקריאה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
+            s_dalCall!.Create(newCall);
+        }
+    }
+    public static void Do(IVolunteer? dalVolunteer, ICall? dalcall, IAssignment? dalAssignment, IConfig? dalConfig) 
+    {
+        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dalCall = dalcall ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");
 
         Console.WriteLine("Reset Configuration values and List values...");
-        s_dalConfig.Reset();
-        s_dalVolunteer.DeleteAll();
+        s_dalConfig.Reset(); //stage 1
+        s_dalVolunteer.DeleteAll(); //stage 1
         s_dalAssignment.DeleteAll();
         s_dalCall.DeleteAll();
-
-        Console.WriteLine("Initializing Volunteers list...");
+        Console.WriteLine("Initializing Volunteers list ...");
         create_volunteer();
-
-        Console.WriteLine("Initializing Calls list...");
+        Console.WriteLine("Initializing Calls list ...");
         create_call();
-
-        Console.WriteLine("Initializing Assignment list...");
+        Console.WriteLine("Initializing Assignment list ...");
         create_assignment();
+      
     }
+
+
 }
