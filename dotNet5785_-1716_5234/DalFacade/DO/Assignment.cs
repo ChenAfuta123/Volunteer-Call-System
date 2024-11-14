@@ -1,5 +1,5 @@
 ﻿//Module  Assignment.cs
-using static DalFacade.Enums;
+//using static DalFacade.Enums;
 
 namespace DO;
 /// <summary>
@@ -18,8 +18,8 @@ public record Assignment
     int CallId,
     int VolunteerId,
     DateTime EntryTime,
-    DateTime? EndTime = null,
-    EndTimeType? EndTimeType = null
+    EndTimeType? EndTimeType = null,
+     DateTime? EndTime = null
 
 
 )
