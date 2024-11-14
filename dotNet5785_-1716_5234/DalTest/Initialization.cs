@@ -130,7 +130,7 @@ public static class Initialization
 
             // יצירת זמן סיום טיפול (יכול להיות גם אחרי הזמן המקסימלי של הקריאה)
             DateTime? endTime = null;
-            EndTimeType? endTimeType = null;
+            EndTimeType endTimeType ;
 
             // חצי מההקצאות יסתיימו בזמן סביר (תוך זמן סיום הקריאה), והשאר יסתיימו לאחר זמן הסיום
             if (s_rand.NextDouble() < 0.5)  // חצי מההקצאות יסתיימו בזמן סביר
@@ -160,12 +160,8 @@ public static class Initialization
             }
 
             // יצירת אובייקט `Assignment` חדש
-            Assignment newAssignment = new(id, callId, volunteerId)
-            {
-                //EntryTime = entryTime,
-                //EndTime = endTime,
-            };
-
+            Assignment newAssignment = new(id, callId, volunteerId, entryTime, endTime) { };
+            
             // הוספת המשימה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalAssignment!.Create(newAssignment);
         }
