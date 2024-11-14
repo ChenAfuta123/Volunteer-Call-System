@@ -13,5 +13,9 @@ public interface IConfig
     // void SetConfigValue(string variableName, string newValue);
 
     //string GetConfigValue(string variableName);
+    void SetConfigValue(string variableName, string newValue);
 
+    // פונקציה להשיג ערך של משתנה תצורה
+    string GetConfigValue(string variableName);
 }
+

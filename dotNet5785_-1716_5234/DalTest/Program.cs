@@ -3,6 +3,7 @@ using DalApi;
 using DalList;
 using DO;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using static DalTest.Program;
 
 namespace DalTest;
@@ -254,9 +255,7 @@ internal class Program
 
                 case EntityMenu.Update:
 
-                    try
-                    {
-                        switch (entityType)
+                    switch (entityType)
                         {
                             case EntityType.Volunteer:
 
@@ -414,16 +413,10 @@ internal class Program
                                 break;
                         }
  
-                    }
-                    catch (Exception ex)
-                    {
-                            // טיפול בחריגה: להדפיס את ההודעה אם יש בעיה
-                         Console.WriteLine($"{ex.Message}");
-                    }
+                  
                     break;
                 case EntityMenu.Delete:
-                    try
-                    {
+                   
                         switch (entityType)
                         {
                             case EntityType.Volunteer:
@@ -445,11 +438,7 @@ internal class Program
                                 Console.WriteLine("The assignment deleted successfully");
                                 break;
                         }
-                    }
-                    catch(Exception ex) 
-                    {
-                        Console.WriteLine($"{ex.Message}");
-                    }
+                    
                     break;
                 case EntityMenu.DeleteAll:
 
@@ -520,22 +509,42 @@ internal class Program
                     Console.WriteLine("System clock advanced by one Day.");
                     break;
                 case ConfigMenu.DisplayClock:
-                    Console.WriteLine(value:$"Current system clock value: {s_dalConfig.Clock}");
+                    Console.WriteLine(value:$"Current system clock value: {s_dalConfig!.Clock}");
                     break;
                 case ConfigMenu.SetConfigVariable:
                     Console.Write("Enter the name of the configuration variable to set: ");
                     string? variableName = Console.ReadLine();
                     Console.Write("Enter the new value for the configuration variable: ");
                     string newValue = Console.ReadLine()!;
-                    //s_dalConfig!.SetConfigValue(variableName, newValue);
-                    Console.WriteLine($"{variableName} has been updated to the new value.");
+
+                    if (!string.IsNullOrWhiteSpace(variableName) && !string.IsNullOrWhiteSpace(newValue))
+                    {
+                        s_dalConfig!.SetConfigValue(variableName, newValue);
+                        Console.WriteLine($"Configuration variable '{variableName}' set to '{newValue}'.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Variable name and value cannot be empty.");
+                    }
                     break;
+
+
                 case ConfigMenu.DisplayConfigVariable:
                     Console.Write("Enter the name of the configuration variable to display: ");
                     string configVarName = Console.ReadLine()!;
-                    //string currentValue = s_dalConfig!.GetConfigValue(configVarName);
-                    Console.WriteLine($"Current value of {configVarName}: {currentValue}");
+
+                    if (!string.IsNullOrWhiteSpace(configVarName))
+                    {
+                        string value = s_dalConfig!.GetConfigValue(configVarName);
+                        Console.WriteLine($"Value of configuration variable '{configVarName}': {value}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Variable name cannot be empty.");
+                    }
                     break;
+
+
                 case ConfigMenu.ResetConfig:
                     s_dalConfig!.Reset();
                     Console.WriteLine("All configuration variables have been reset.");
@@ -623,8 +632,23 @@ internal class Program
 
     static void Main(string[] args)
     {
-        
-        
+
+        try
+        {
+            Console.WriteLine("Welcome to the Dal Management System!");
+            Program program = new Program();
+            program.mainMenu();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+        }
+        finally
+        {
+            Console.WriteLine("Thank you for using the Dal Management System. Goodbye!");
+        }
+
+
 
     }
 

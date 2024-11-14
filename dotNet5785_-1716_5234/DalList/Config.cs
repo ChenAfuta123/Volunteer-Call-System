@@ -25,6 +25,20 @@ internal static int NextAssignmentId { get => next_assignment_id++; }
     //{
     //    return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
     //}
+    // מילון למשתני תצורה
+    private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
+
+    // עדכון משתנה תצורה
+    internal static void SetConfigValue(string variableName, string newValue)
+    {
+        configVariables[variableName] = newValue;
+    }
+
+    // השגת ערך של משתנה תצורה
+    internal static string GetConfigValue(string variableName)
+    {
+        return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
+    }
     internal static void Reset()
     {
         nextCallId = startCallId;

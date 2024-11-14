@@ -30,6 +30,17 @@ public class ConfigImplementation : IConfig
         Config.Reset();
   
     }
+    public void SetConfigValue(string variableName, string newValue)
+    {
+        Config.SetConfigValue(variableName, newValue);
+    }
+
+    // השגת ערך של משתנה תצורה
+    public string GetConfigValue(string variableName)
+    {
+        return Config.GetConfigValue(variableName);
+    }
+}
     //private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
    //static void SetConfigValue(string variableName, string newValue)
    // {
@@ -39,6 +50,6 @@ public class ConfigImplementation : IConfig
    // {
    //     return Config.GetConfigValue(variableName); 
    // }
-}
+
 
 
