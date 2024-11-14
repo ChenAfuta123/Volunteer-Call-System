@@ -8,54 +8,88 @@ using static DalTest.Program;
 
 namespace DalTest;
 
+/// <summary>
+/// Entry point of the application. Contains the main program logic and menu navigation.
+/// </summary>
 internal class Program
 {
-    private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
-    private static ICall? s_dalCall = new CallImplementation(); //stage 1
-    private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
-    private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
+    /// <summary>
+    /// Interface for managing assignments in the DAL layer.
+    /// </summary>
+    private static IAssignment? s_dalAssignment = new AssignmentImplementation();
+
+    /// <summary>
+    /// Interface for managing calls in the DAL layer.
+    /// </summary>
+    private static ICall? s_dalCall = new CallImplementation();
+
+    /// <summary>
+    /// Interface for managing volunteers in the DAL layer.
+    /// </summary>
+    private static IVolunteer? s_dalVolunteer = new VolunteerImplementation();
+
+    /// <summary>
+    /// Interface for managing configuration settings in the DAL layer.
+    /// </summary>
+    private static IConfig? s_dalConfig = new ConfigImplementation();
+
+    /// <summary>
+    /// Enum for the main menu options.
+    /// </summary>
     public enum MainMenu
     {
-        ExitMainMenu = 0,
-        VolunteerMenu,
-        CallMenu,
-        AssignmentMenu,
-        DataInitialization,
-        ViewAllData,
-        ConfigMenu,
-        Database_and_configuration_reset
+        ExitMainMenu = 0, // Exit the main menu.
+        VolunteerMenu,    // Navigate to volunteer menu.
+        CallMenu,         // Navigate to call menu.
+        AssignmentMenu,   // Navigate to assignment menu.
+        DataInitialization, // Initialize data in the system.
+        ViewAllData,      // View all data in the system.
+        ConfigMenu,       // Navigate to configuration menu.
+        Database_and_configuration_reset // Reset database and configuration.
     }
+
+    /// <summary>
+    /// Enum for the entity-specific menu options.
+    /// </summary>
     public enum EntityMenu
     {
-
-        Exit,
-        Add,
-        View,
-        ViewAll,
-        Update,
-        Delete,
-        DeleteAll
-
-
+        Exit,      // Exit the entity menu.
+        Add,       // Add a new entity.
+        View,      // View a specific entity.
+        ViewAll,   // View all entities.
+        Update,    // Update an existing entity.
+        Delete,    // Delete an entity.
+        DeleteAll  // Delete all entities.
     }
+
+    /// <summary>
+    /// Enum representing the types of entities managed in the system.
+    /// </summary>
     public enum EntityType
     {
-        Volunteer,
-        Call,
-        Assignment
-    }
-    public enum ConfigMenu
-    {
-        Exit = 0,
-        AdvanceClockByMinute,
-        AdvanceClockByHour,
-        AdvanceClockByDay,
-        DisplayClock,
-        SetConfigVariable,
-        DisplayConfigVariable,
-        ResetConfig
+        Volunteer, // Volunteer entity type.
+        Call,      // Call entity type.
+        Assignment // Assignment entity type.
     }
 
+    /// <summary>
+    /// Enum for the configuration menu options.
+    /// </summary>
+    public enum ConfigMenu
+    {
+        Exit = 0,           // Exit the configuration menu.
+        AdvanceClockByMinute, // Advance the system clock by one minute.
+        AdvanceClockByHour,   // Advance the system clock by one hour.
+        AdvanceClockByDay,    // Advance the system clock by one day.
+        DisplayClock,         // Display the current system clock.
+        SetConfigVariable,    // Set a configuration variable.
+        DisplayConfigVariable, // Display a configuration variable.
+        ResetConfig           // Reset configuration settings to default.
+    }
+
+    /// <summary>
+    /// Handles the creation of a new volunteer.
+    /// </summary>
     void CreateVolunteer()
     {
         Console.WriteLine("Enter volunteer's Id:");
@@ -77,20 +111,21 @@ internal class Program
         string Address = Console.ReadLine() ?? string.Empty;
 
         Console.WriteLine("Enter volunteer's Latitude:");
-        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0 ;
+        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
 
         Console.WriteLine("Enter volunteer's MaxDistance:");
         double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
 
-        Volunteer newVolunteer = new(Id, name, phoneNumber, email, Password,Address,Latitude, MaxDistance);
+        Volunteer newVolunteer = new(Id, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
         s_dalVolunteer!.Create(newVolunteer);
         Console.WriteLine("Volunteer added successfully.");
     }
 
+    /// <summary>
+    /// Handles the creation of a new call.
+    /// </summary>
     void CreateCall()
     {
-       
-
         Console.WriteLine("Enter call address:");
         string address = Console.ReadLine() ?? string.Empty;
 
@@ -102,16 +137,16 @@ internal class Program
 
         Console.WriteLine("Enter call Longitude:");
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
-       
-
-        Console.WriteLine("Enter call ending time:");
 
         int newCallId = s_dalConfig!.NextCallId;
-        Call newCall = new(newCallId, address, Latitude, Longitude,s_dalConfig.Clock, description, s_dalConfig.Clock.AddHours(24));
+        Call newCall = new(newCallId, address, Latitude, Longitude, s_dalConfig.Clock, description, s_dalConfig.Clock.AddHours(24));
         s_dalCall!.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
 
+    /// <summary>
+    /// Handles the creation of a new assignment.
+    /// </summary>
     void CreateAssignment()
     {
         int newAssignmentId = s_dalConfig!.NextAssignmentId;
@@ -121,15 +156,17 @@ internal class Program
         Console.WriteLine("Enter call ID:");
         int.TryParse(Console.ReadLine(), out int callId);
 
-
-
-        Assignment newAssignment = new(newAssignmentId,callId, volunteerId,s_dalConfig.Clock,null,null);
+        Assignment newAssignment = new(newAssignmentId, callId, volunteerId, s_dalConfig.Clock, null, null);
         s_dalAssignment!.Create(newAssignment);
         Console.WriteLine("Assignment added successfully.");
     }
+
+    /// <summary>
+    /// Displays the details of a specific volunteer by ID.
+    /// </summary>
+    /// <param name="id">The ID of the volunteer to view.</param>
     void ViewVolunteer(int id)
     {
-       
         var volunteer = s_dalVolunteer!.Read(id);
         if (volunteer != null)
             Console.WriteLine(volunteer);
@@ -137,9 +174,12 @@ internal class Program
             Console.WriteLine("Volunteer not found.");
     }
 
+    /// <summary>
+    /// Displays the details of a specific call by ID.
+    /// </summary>
+    /// <param name="id">The ID of the call to view.</param>
     void ViewCall(int id)
     {
-       
         var call = s_dalCall!.Read(id);
         if (call != null)
             Console.WriteLine(call);
@@ -147,9 +187,12 @@ internal class Program
             Console.WriteLine("Call not found.");
     }
 
+    /// <summary>
+    /// Displays the details of a specific assignment by ID.
+    /// </summary>
+    /// <param name="id">The ID of the assignment to view.</param>
     void ViewAssignment(int id)
     {
-
         var assignment = s_dalAssignment!.Read(id);
         if (assignment != null)
             Console.WriteLine(assignment);
@@ -160,7 +203,11 @@ internal class Program
 
 
 
-
+    /// <summary>
+    /// Displays and manages the entity-specific menu for performing CRUD operations and other actions
+    /// such as viewing all entries, updating, or deleting entries of a specified entity type.
+    /// </summary>
+    /// <param name="entityType">The type of the entity (Volunteer, Call, Assignment) for which the menu operates.</param>
 
     public void entityMenu(EntityType entityType)
     {
@@ -472,46 +519,66 @@ internal class Program
 
         Console.WriteLine($"Exited {entityType} menu.");
     }
+    /// <summary>
+    /// Displays and manages the configuration menu, allowing the user to perform actions
+    /// such as advancing the system clock, managing configuration variables, and resetting configurations.
+    /// </summary>
     public void configMenu()
     {
+        // A flag to control the menu loop.
         bool continueMenu = true;
 
+        // Main loop for the Configuration Menu.
         while (continueMenu)
         {
+            // Display the configuration menu options.
             Console.WriteLine("Select an option in the Configuration Menu:");
             Console.WriteLine("0 - Exit Configuration Menu");
             Console.WriteLine("1 - Advance system clock by one minute");
             Console.WriteLine("2 - Advance system clock by one hour");
-            Console.WriteLine("3 - Advance system clock by one hour");
+            Console.WriteLine("3 - Advance system clock by one day");
             Console.WriteLine("4 - Display current system clock value");
             Console.WriteLine("5 - Set a new value for a configuration variable");
             Console.WriteLine("6 - Display current value of a configuration variable");
             Console.WriteLine("7 - Reset all configuration values");
 
+            // Read and parse the user's choice.
             int.TryParse(Console.ReadLine(), out int choice);
             ConfigMenu selectedOption = (ConfigMenu)choice;
 
+            // Execute the selected option.
             switch (selectedOption)
             {
                 case ConfigMenu.Exit:
+                    // Exit the configuration menu.
                     continueMenu = false;
                     break;
+
                 case ConfigMenu.AdvanceClockByMinute:
+                    // Advance the system clock by one minute.
                     s_dalConfig!.Clock = s_dalConfig.Clock.AddMinutes(1);
                     Console.WriteLine("System clock advanced by one minute.");
                     break;
+
                 case ConfigMenu.AdvanceClockByHour:
+                    // Advance the system clock by one hour.
                     s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(1);
                     Console.WriteLine("System clock advanced by one hour.");
                     break;
+
                 case ConfigMenu.AdvanceClockByDay:
+                    // Advance the system clock by one day.
                     s_dalConfig!.Clock = s_dalConfig.Clock.AddDays(1);
-                    Console.WriteLine("System clock advanced by one Day.");
+                    Console.WriteLine("System clock advanced by one day.");
                     break;
+
                 case ConfigMenu.DisplayClock:
-                    Console.WriteLine(value:$"Current system clock value: {s_dalConfig!.Clock}");
+                    // Display the current value of the system clock.
+                    Console.WriteLine($"Current system clock value: {s_dalConfig!.Clock}");
                     break;
+
                 case ConfigMenu.SetConfigVariable:
+                    // Set a new value for a specified configuration variable.
                     Console.Write("Enter the name of the configuration variable to set: ");
                     string? variableName = Console.ReadLine();
                     Console.Write("Enter the new value for the configuration variable: ");
@@ -528,8 +595,8 @@ internal class Program
                     }
                     break;
 
-
                 case ConfigMenu.DisplayConfigVariable:
+                    // Display the value of a specified configuration variable.
                     Console.Write("Enter the name of the configuration variable to display: ");
                     string configVarName = Console.ReadLine()!;
 
@@ -544,116 +611,159 @@ internal class Program
                     }
                     break;
 
-
                 case ConfigMenu.ResetConfig:
+                    // Reset all configuration variables to their default values.
                     s_dalConfig!.Reset();
                     Console.WriteLine("All configuration variables have been reset.");
                     break;
+
                 default:
+                    // Handle invalid menu options.
                     Console.WriteLine("Invalid option. Please select a valid option.");
                     break;
             }
         }
 
+        // Indicate that the configuration menu has been exited.
         Console.WriteLine("Exited Configuration Menu.");
     }
 
+
+    /// <summary>
+    /// Displays and manages the main menu, where the user can perform various system actions
+    /// such as navigating to sub-menus, viewing data, or resetting configurations.
+    /// </summary>
     public void mainMenu()
     {
+        // A flag to control the menu loop.
         bool continueMenu = true;
 
+        // Main loop for the Main Menu.
         while (continueMenu)
         {
+            // Display the main menu options.
             Console.WriteLine("Select a main menu option (0-Exit, 1-Volunteer, 2-Call, 3-Assignment," +
-                " 4-Data Init, 5-View All, 6-Config, 7-Reset):");
+                              " 4-Data Init, 5-View All, 6-Config, 7-Reset):");
+
+            // Read and parse the user's choice.
             int.TryParse(Console.ReadLine(), out int choice);
             MainMenu selectedMenu = (MainMenu)choice;
 
+            // Execute the selected option.
             switch (selectedMenu)
             {
                 case MainMenu.ExitMainMenu:
+                    // Exit the main menu.
                     continueMenu = false;
                     break;
+
                 case MainMenu.VolunteerMenu:
+                    // Navigate to the Volunteer Menu.
                     entityMenu(EntityType.Volunteer);
                     break;
+
                 case MainMenu.CallMenu:
+                    // Navigate to the Call Menu.
                     entityMenu(EntityType.Call);
                     break;
+
                 case MainMenu.AssignmentMenu:
+                    // Navigate to the Assignment Menu.
                     entityMenu(EntityType.Assignment);
                     break;
+
                 case MainMenu.DataInitialization:
+                    // Initialize the data.
                     Console.WriteLine("Initializing data.");
                     Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
                     break;
+
                 case MainMenu.ViewAllData:
+                    // View all data of Volunteers, Calls, and Assignments.
                     List<Volunteer> volunteers = s_dalVolunteer!.ReadAll();
                     foreach (var volunteer in volunteers)
                     {
-                        Console.WriteLine($"{volunteer} ");
+                        Console.WriteLine($"{volunteer}");
                     }
+
                     List<Call> calls = s_dalCall!.ReadAll();
                     foreach (var call in calls)
                     {
-                        Console.WriteLine($"{call} ");
+                        Console.WriteLine($"{call}");
                     }
+
                     List<Assignment> assignments = s_dalAssignment!.ReadAll();
                     foreach (var assignment in assignments)
                     {
-                        Console.WriteLine($"{assignment} ");
+                        Console.WriteLine($"{assignment}");
                     }
-                    
 
-    Console.WriteLine("Viewing all data.");
+                    Console.WriteLine("Viewing all data.");
                     break;
+
                 case MainMenu.ConfigMenu:
+                    // Navigate to the Configuration Menu.
                     configMenu();
                     break;
+
                 case MainMenu.Database_and_configuration_reset:
+                    // Reset the database and configuration.
                     Console.WriteLine("Resetting database and configuration.");
 
-                    s_dalAssignment!.DeleteAll(); //stage 1
-                    s_dalCall!.DeleteAll();
-                    s_dalVolunteer!.DeleteAll();
-                    //s_dalConfig!.ResetConfig();
-
-
+                    // Delete all records in the database tables.
+                    s_dalAssignment!.DeleteAll(); // Delete all assignments
+                    s_dalCall!.DeleteAll(); // Delete all calls
+                    s_dalVolunteer!.DeleteAll(); // Delete all volunteers
+                                                 // Optionally reset the configuration values.
+                                                 // s_dalConfig!.ResetConfig();
                     break;
+
                 default:
+                    // Handle invalid menu options.
                     Console.WriteLine("Invalid menu option.");
                     break;
             }
         }
 
+        // Indicate that the program has exited.
         Console.WriteLine("Program has exited.");
     }
 
 
+
+    /// <summary>
+    /// The entry point for the Dal Management System application.
+    /// Initializes the system and handles any unexpected errors that may occur during execution.
+    /// </summary>
     static void Main(string[] args)
     {
-
         try
         {
+            // Display a welcome message to the user.
             Console.WriteLine("Welcome to the Dal Management System!");
+
+            // Create an instance of the Program class to access the main menu.
             Program program = new Program();
+
+            // Call the main menu method to start the program.
             program.mainMenu();
         }
         catch (Exception ex)
         {
+            // If an unexpected error occurs, display an error message.
             Console.WriteLine($"An unexpected error occurred: {ex.Message}");
         }
         finally
         {
+            // This block is executed regardless of whether an exception occurred or not.
+            // Display a farewell message to the user.
             Console.WriteLine("Thank you for using the Dal Management System. Goodbye!");
         }
-
-
-
     }
 
 
 
+
 }
-    
+
 
