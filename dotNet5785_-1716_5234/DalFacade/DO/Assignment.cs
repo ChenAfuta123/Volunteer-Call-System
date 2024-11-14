@@ -1,31 +1,44 @@
-﻿//Module  Assignment.cs
-//using static DalFacade.Enums;
+﻿namespace DO;
 
-namespace DO;
 /// <summary>
-/// Enum that represents the possible end states of an assignment.
+/// Represents an assignment of a volunteer to a call, containing details of the assignment and its status.
 /// </summary>
-/// <summary>
-/// Enum that represents the possible end states of an assignment.
-/// </summary>
-/// <param name="Id">Unique identifier for the assignment</param>
-/// <param name="CallId">ID of the call associated with this assignment.</param></param>
-/// <param name="VolunteerId">ID of the volunteer assigned to the call.</param>
-public record Assignment 
+public record Assignment
 (
-
+    /// <summary>
+    /// Unique identifier for the assignment.
+    /// </summary>
     int Id,
-    int CallId,
-    int VolunteerId,
-    DateTime EntryTime,
-    EndTimeType? EndTimeType = null,
-     DateTime? EndTime = null
 
+    /// <summary>
+    /// ID of the call associated with this assignment.
+    /// </summary>
+    int CallId,
+
+    /// <summary>
+    /// ID of the volunteer assigned to the call.
+    /// </summary>
+    int VolunteerId,
+
+    /// <summary>
+    /// The time the volunteer was assigned to the call.
+    /// </summary>
+    DateTime EntryTime,
+
+    /// <summary>
+    /// The type representing the end status of the assignment, if completed.
+    /// </summary>
+    EndTimeType? EndTimeType = null,
+
+    /// <summary>
+    /// The time the assignment ended, if completed.
+    /// </summary>
+    DateTime? EndTime = null
 
 )
 {
-  
-
-    public Assignment() : this(0, 0, 0, DateTime.Now,null,null) { }
+    /// <summary>
+    /// Default constructor for Assignment, initializing with default values.
+    /// </summary>
+    public Assignment() : this(0, 0, 0, DateTime.Now, null, null) { }
 }
-        
