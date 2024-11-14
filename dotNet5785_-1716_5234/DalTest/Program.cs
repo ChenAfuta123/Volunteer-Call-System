@@ -374,7 +374,7 @@ internal class Program
                                 double newlatitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : existingCall.Latitude;
 
                                 // Get the longitude
-                                Console.WriteLine($"Enter new Longitude (current: {existingCall.Longitude?.ToString() ?? "N/A"}):");
+                                Console.WriteLine($"Enter new Longitude (current: {existingCall.Longitude.ToString() ?? "N/A"}):");
                                 double newLongitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : existingCall.Longitude;
 
                                 Console.WriteLine($"Enter new OpeningTime (current: {existingCall.OpeningTime.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
@@ -624,11 +624,7 @@ internal class Program
     static void Main(string[] args)
     {
         
-    //    catch (Exception ex)
-    //    {
-    //        // טיפול בחריגה: להדפיס את ההודעה אם יש בעיה
-    //        Console.WriteLine($"{ex.Message}");
-    //    }
+    
 
     }
 
