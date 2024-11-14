@@ -36,7 +36,7 @@ public record Call
     /// <summary>
     /// Parameterless constructor for Call, initializing properties with default values.
     /// </summary>
-    public Call() : this(0, "",0, 0, DateTime.Now,null)
+    public Call() : this(0, "",0, 0, DateTime.Now,null,null)
     {
         
     }

@@ -367,25 +367,34 @@ internal class Program
 
                                 // Get the latitude
                                 Console.WriteLine($"Enter new Latitude (current: {existingCall.Latitude?.ToString() ?? "N/A"}):");
-                                double? newlatitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : existingCall.Latitude;
+                                double newlatitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : existingCall.Latitude;
 
                                 // Get the longitude
                                 Console.WriteLine($"Enter new Longitude (current: {existingCall.Longitude?.ToString() ?? "N/A"}):");
-                                double? newLongitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : existingCall.Longitude;
+                                double newLongitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : existingCall.Longitude;
+
+                                Console.WriteLine($"Enter new OpeningTime (current: {existingCall.OpeningTime.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
+                                string OpeningTimeInput = Console.ReadLine()!;
+                                DateTime newOpeningTime = !string.IsNullOrEmpty(OpeningTimeInput) && DateTime.TryParse(OpeningTimeInput, out DateTime openTime) ? openTime : existingCall.OpeningTime;
+
 
                                 // Get the ending time of the call
                                 Console.WriteLine($"Enter new EndTime (current: {existingCall.maxEndingTime?.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
                                 string? endTimeInput = Console.ReadLine();
-                                //DateTime? newEndTime = !string.IsNullOrEmpty(endTimeInput) && DateTime.TryParse(endTimeInput, out DateTime endTime) ? endTime : existingCall.EndTime;
+                                DateTime? newMaxEndTime = !string.IsNullOrEmpty(endTimeInput) && DateTime.TryParse(endTimeInput, out DateTime endTime) ? endTime : existingCall.maxEndingTime;
 
                                 // Create a new Call object with the updated data
                                 Call updatedCall = new Call(
                                     callId,
                                     newaddress,
-                                    newDescription,
                                     newlatitude,
                                     newLongitude,
-                                    newOpeningTime
+                                    newOpeningTime,
+                                     newDescription,
+                                    newMaxEndTime
+                                   
+                                   
+                                    
                                 );
 
                                 // Call the update function to update the call
