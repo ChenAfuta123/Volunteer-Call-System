@@ -101,11 +101,12 @@ internal class Program
 
         Console.WriteLine("Enter call Longitude:");
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
+        Console.WriteLine("Enter call opening time:");
 
-        
+        Console.WriteLine("Enter call ending time:");
+
         int newCallId = s_dalConfig!.NextCallId;
-
-        Call newCall = new(newCallId, address, description, Latitude, Longitude);
+        Call newCall = new(newCallId, address, Latitude, Longitude,s_dalConfig.Clock ,description);
         s_dalCall!.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
@@ -516,7 +517,7 @@ internal class Program
                     Console.WriteLine("System clock advanced by one Day.");
                     break;
                 case ConfigMenu.DisplayClock:
-                    Console.WriteLine($"Current system clock value: {s_dalConfig.Clock}");
+                    Console.WriteLine(value:$"Current system clock value: {s_dalConfig.Clock}");
                     break;
                 case ConfigMenu.SetConfigVariable:
                     Console.Write("Enter the name of the configuration variable to set: ");

@@ -1,5 +1,7 @@
 ﻿//Module  Assignment.cs
-namespace DO; 
+using static DalFacade.Enums;
+
+namespace DO;
 /// <summary>
 /// Enum that represents the possible end states of an assignment.
 /// </summary>
@@ -16,11 +18,13 @@ public record Assignment
     int CallId,
     int VolunteerId,
     DateTime EntryTime,
+    EndTimeType? EndTimeType=null,
     DateTime? EndTime = null
     
 )
 {
-   
-    public Assignment() : this(0, 0, 0, DateTime.Now,null) { }
+  
+
+    public Assignment() : this(0, 0, 0, DateTime.Now,null,null) { }
 }
         
