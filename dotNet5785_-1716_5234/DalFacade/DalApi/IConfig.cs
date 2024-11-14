@@ -9,9 +9,9 @@ public interface IConfig
     int NextAssignmentId { get; }
 
     void Reset();
-    private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
-     void SetConfigValue(string variableName, string newValue);
+    //private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
+    // void SetConfigValue(string variableName, string newValue);
 
-    string GetConfigValue(string variableName);
+    //string GetConfigValue(string variableName);
 
 }
