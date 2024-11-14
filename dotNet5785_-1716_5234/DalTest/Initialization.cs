@@ -126,7 +126,7 @@ public static class Initialization
 
             // יצירת זמן כניסת טיפול (יהיה גדול מהזמן הפתיחה של הקריאה וקטן מהזמן המקסימלי)
             var call = calls.First(c => c.Id == callId);  // שליפת הקריאה לפי מזהה
-            DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)(call.EndTime - call.OpeningTime).));
+            DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)(call.maxEndingTime - call.OpeningTime).));
 
             // יצירת זמן סיום טיפול (יכול להיות גם אחרי הזמן המקסימלי של הקריאה)
             DateTime? endTime = null;
@@ -136,7 +136,7 @@ public static class Initialization
             if (s_rand.NextDouble() < 0.5)  // חצי מההקצאות יסתיימו בזמן סביר
             {
                 // זמן סיום בסמוך לסיום הקריאה
-                endTime = entryTime.AddMinutes(s_rand.Next((int)(call.EndTime - entryTime).TotalMinutes));
+                endTime = entryTime.AddMinutes(s_rand.Next((int)(call.maxEndingTime - entryTime).TotalMinutes));
                 endTimeType = EndTimeType.Treated; // סיום טיפולי
             }
             else
@@ -144,7 +144,7 @@ public static class Initialization
                 // הקצאות שלא הושלמו בזמן
                 if (s_rand.NextDouble() < 0.33)
                 {
-                    endTime = call.EndTime.AddMinutes(s_rand.Next(1, 120));  // סיום לאחר זמן הסיום
+                    endTime = (call.maxEndingTime ?? DateTime.Now).AddMinutes(s_rand.Next(1, 120));  // סיום לאחר זמן הסיום
                     endTimeType = EndTimeType.Expired;  // קריאה פג
                 }
                 else if (s_rand.NextDouble() < 0.66)
@@ -282,20 +282,14 @@ public static class Initialization
             // קבלת זמן פתיחה באמצעות שעון המערכת
             //DateTime openingTime = s_dalConfig!.Clock;
             DateTime start = new DateTime(s_dalConfig!.Clock.Year - 2, 1, 1);
-            int range = (s_dalConfig.Clock - start).Days; //stage 1
+            int range = (s_dalConfig.Clock - start).Days; 
             DateTime openingTime= start.AddDays(s_rand.Next(range));
 
             //DateTime? closingTime = null;
             //    int hoursRange = s_rand.Next(1, 48); // טווח של 1 עד 48 שעות לאחר זמן הפתיחה
             //    closingTime = openingTime.AddHours(hoursRange);
-                // יצירת אובייקט `Call` חדש
-                Call newCall = new(id, address, description, latitude, longitude)
-            {
-                
-
-                
-            }; 
-
+            // יצירת אובייקט `Call` חדש
+            Call newCall = new(id, address, latitude, longitude, openingTime, description);
             // הוספת הקריאה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalCall!.Create(newCall);
         }
