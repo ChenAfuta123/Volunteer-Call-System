@@ -31,14 +31,14 @@ public class ConfigImplementation : IConfig
   
     }
     //private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
-   static void SetConfigValue(string variableName, string newValue)
-    {
-        Config.SetConfigValue(variableName, newValue);
-    }
-    static string GetConfigValue(string variableName)
-    {
-        return Config.GetConfigValue(variableName); 
-    }
+   //static void SetConfigValue(string variableName, string newValue)
+   // {
+   //     Config.SetConfigValue(variableName, newValue);
+   // }
+   // static string GetConfigValue(string variableName)
+   // {
+   //     return Config.GetConfigValue(variableName); 
+   // }
 }
 
 

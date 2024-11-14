@@ -93,38 +93,73 @@ public static class Initialization
     private static void create_assignment()
     {
         // יצירת 5 משימות לדוגמה
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 50; i++)
         {
-            int id;
-            id = s_dalConfig!.NextAssignmentId;
+            int id = s_dalConfig!.NextAssignmentId;
 
-
-            // יצירת מזהה ייחודי עבור המשימה
-            do
-            {
-                id = s_rand.Next(1000, 9999); // מזהה רנדומלי
-            }
-            while (s_dalAssignment!.Read(id) != null);
-
-            // בחירת קריאה ומתנדב רנדומליים מתוך הקריאות והמתנדבים הקיימים
+            // הגרלת מזהה קריאה קיים מתוך כל הקריאות
             var calls = s_dalCall!.ReadAll();
-            var volunteers = s_dalVolunteer!.ReadAll();
-
-            if (calls.Count == 0 || volunteers.Count == 0)
-                throw new InvalidOperationException("There are no calls or volunteers available to create a task\n");
+            if (calls.Count == 0)
+                throw new InvalidOperationException("There are no calls available to create assignments.");
 
             int callId = calls[s_rand.Next(calls.Count)].Id;
+
+            // הגרלת מזהה מתנדב קיים מתוך כל המתנדבים
+            var volunteers = s_dalVolunteer!.ReadAll();
+            if (volunteers.Count == 0)
+                throw new InvalidOperationException("There are no volunteers available to create assignments.");
+
             int volunteerId = volunteers[s_rand.Next(volunteers.Count)].Id;
 
+            // יצירת זמן כניסת טיפול (יהיה גדול מהזמן הפתיחה של הקריאה וקטן מהזמן המקסימלי)
+            var call = calls.First(c => c.Id == callId);  // שליפת הקריאה לפי מזהה
+            DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)(call.EndTime - call.OpeningTime).));
+
+            // יצירת זמן סיום טיפול (יכול להיות גם אחרי הזמן המקסימלי של הקריאה)
+            DateTime? endTime = null;
+            EndTimeType? endTimeType = null;
+
+            // חצי מההקצאות יסתיימו בזמן סביר (תוך זמן סיום הקריאה), והשאר יסתיימו לאחר זמן הסיום
+            if (s_rand.NextDouble() < 0.5)  // חצי מההקצאות יסתיימו בזמן סביר
+            {
+                // זמן סיום בסמוך לסיום הקריאה
+                endTime = entryTime.AddMinutes(s_rand.Next((int)(call.EndTime - entryTime).TotalMinutes));
+                endTimeType = EndTimeType.Treated; // סיום טיפולי
+            }
+            else
+            {
+                // הקצאות שלא הושלמו בזמן
+                if (s_rand.NextDouble() < 0.33)
+                {
+                    endTime = call.EndTime.AddMinutes(s_rand.Next(1, 120));  // סיום לאחר זמן הסיום
+                    endTimeType = EndTimeType.Expired;  // קריאה פג
+                }
+                else if (s_rand.NextDouble() < 0.66)
+                {
+                    endTime = entryTime.AddMinutes(s_rand.Next(1, 60));  // סיום מוקדם יחסית
+                    endTimeType = EndTimeType.SelfCancel;  // ביטול עצמי
+                }
+                else
+                {
+                    endTime = entryTime.AddMinutes(s_rand.Next(1, 60));  // סיום מוקדם יחסית
+                    endTimeType = EndTimeType.ManagerCancel;  // ביטול מנהל
+                }
+            }
+
             // יצירת אובייקט `Assignment` חדש
-            Assignment newAssignment = new(id, callId, volunteerId);
+            Assignment newAssignment = new(id, callId, volunteerId)
+            {
+                //EntryTime = entryTime,
+                //EndTime = endTime,
+            };
 
             // הוספת המשימה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalAssignment!.Create(newAssignment);
         }
-}
+    }
 
-private static void create_call()
+
+    private static void create_call()
     {
         // מערכים לדוגמאות עבור כתובות ותיאורים 
         string[] addresses = {
