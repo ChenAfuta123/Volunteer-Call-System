@@ -30,13 +30,19 @@ public interface IConfig
     /// Resets the configuration settings to their initial default states.
     /// </summary>
     void Reset();
-    //private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
-    // void SetConfigValue(string variableName, string newValue);
 
-    //string GetConfigValue(string variableName);
+    /// <summary>
+    /// Sets a new value for a configuration setting based on the variable name.
+    /// </summary>
+    /// <param name="variableName">The name of the configuration variable to update.</param>
+    /// <param name="newValue">The new value to set for the specified configuration variable.</param>
     void SetConfigValue(string variableName, string newValue);
 
-    // פונקציה להשיג ערך של משתנה תצורה
+    /// <summary>
+    /// Retrieves the current value of a configuration setting based on the variable name.
+    /// </summary>
+    /// <param name="variableName">The name of the configuration variable to retrieve.</param>
+    /// <returns>The current value of the specified configuration variable.</returns>
     string GetConfigValue(string variableName);
 }
 

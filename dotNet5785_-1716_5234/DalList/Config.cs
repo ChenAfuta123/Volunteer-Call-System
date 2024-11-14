@@ -44,25 +44,16 @@ static internal class Config
     /// Time range within which a call is considered at risk, set to 12 hours by default.
     /// </summary>
     internal static TimeSpan RiskRange = TimeSpan.FromHours(12);
-    //private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
-    //internal static void SetConfigValue(string variableName, string newValue)
-    //{
-    //    configVariables[variableName] = newValue;
-    //}
-    //internal static string GetConfigValue(string variableName)
-    //{
-    //    return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
-    //}
-    // מילון למשתני תצורה
+    
     private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
 
-    // עדכון משתנה תצורה
+  
     internal static void SetConfigValue(string variableName, string newValue)
     {
         configVariables[variableName] = newValue;
     }
 
-    // השגת ערך של משתנה תצורה
+    
     internal static string GetConfigValue(string variableName)
     {
         return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
