@@ -4,7 +4,8 @@ using DalApi;
 namespace Dal;
 public class ConfigImplementation : IConfig
 {
-  
+    
+
     public DateTime Clock
     {
         get => Config.Clock;
@@ -30,11 +31,11 @@ public class ConfigImplementation : IConfig
   
     }
     //private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
-    internal static void SetConfigValue(string variableName, string newValue)
+   static void SetConfigValue(string variableName, string newValue)
     {
         Config.SetConfigValue(variableName, newValue);
     }
-    internal static string GetConfigValue(string variableName)
+    static string GetConfigValue(string variableName)
     {
         return Config.GetConfigValue(variableName); 
     }
