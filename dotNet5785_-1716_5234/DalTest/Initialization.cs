@@ -160,7 +160,7 @@ public static class Initialization
             }
 
             // יצירת אובייקט `Assignment` חדש
-            Assignment newAssignment = new(id, callId, volunteerId, entryTime, endTime) { };
+            Assignment newAssignment = new(id, callId, volunteerId, entryTime,endTime) { };
 
             // הוספת המשימה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalAssignment!.Create(newAssignment);

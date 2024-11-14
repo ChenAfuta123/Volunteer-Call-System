@@ -114,7 +114,6 @@ internal class Program
     void CreateAssignment()
     {
         int newAssignmentId = s_dalConfig!.NextAssignmentId;
-
         Console.WriteLine("Enter volunteer ID:");
         int.TryParse(Console.ReadLine(), out int volunteerId);
 
@@ -127,7 +126,6 @@ internal class Program
         s_dalAssignment!.Create(newAssignment);
         Console.WriteLine("Assignment added successfully.");
     }
-
     void ViewVolunteer(int id)
     {
        
