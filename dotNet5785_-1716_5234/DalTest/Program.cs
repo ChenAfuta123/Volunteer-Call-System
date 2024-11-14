@@ -514,13 +514,13 @@ internal class Program
                     string? variableName = Console.ReadLine();
                     Console.Write("Enter the new value for the configuration variable: ");
                     string newValue = Console.ReadLine()!;
-                    s_dalConfig!.SetConfigValue(variableName, newValue);
+                    //s_dalConfig!.SetConfigValue(variableName, newValue);
                     Console.WriteLine($"{variableName} has been updated to the new value.");
                     break;
                 case ConfigMenu.DisplayConfigVariable:
                     Console.Write("Enter the name of the configuration variable to display: ");
                     string configVarName = Console.ReadLine()!;
-                    string currentValue = s_dalConfig!.GetConfigValue(configVarName);
+                    //string currentValue = s_dalConfig!.GetConfigValue(configVarName);
                     Console.WriteLine($"Current value of {configVarName}: {currentValue}");
                     break;
                 case ConfigMenu.ResetConfig:

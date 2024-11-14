@@ -9,8 +9,9 @@ namespace DO;
 /// <param name="Id">Unique identifier for the assignment</param>
 /// <param name="CallId">ID of the call associated with this assignment.</param></param>
 /// <param name="VolunteerId">ID of the volunteer assigned to the call.</param>
-public record Assignment
+public record Assignment 
 (
+
     int Id,
     int CallId,
     int VolunteerId,

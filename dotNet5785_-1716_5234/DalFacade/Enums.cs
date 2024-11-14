@@ -1,7 +1,9 @@
-﻿namespace DalFacade
+﻿
+
+namespace DalFacade
 {
     public class Enums
     {
-        public enum EndTimeType { Treated, SelfCancel, ManagerCancel, Expired };
+        enum EndTimeType { Treated, SelfCancel, ManagerCancel, Expired }
     }
 }
