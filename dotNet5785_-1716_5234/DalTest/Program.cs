@@ -102,12 +102,12 @@ internal class Program
 
         Console.WriteLine("Enter call Longitude:");
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
-        Console.WriteLine("Enter call opening time:");
+       
 
         Console.WriteLine("Enter call ending time:");
 
         int newCallId = s_dalConfig!.NextCallId;
-        Call newCall = new(newCallId, address, Latitude, Longitude,s_dalConfig.Clock ,description);
+        Call newCall = new(newCallId, address, Latitude, Longitude,s_dalConfig.Clock, description, s_dalConfig.Clock.AddHours(24));
         s_dalCall!.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
