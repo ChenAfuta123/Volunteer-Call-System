@@ -374,7 +374,7 @@ internal class Program
                                 double? newLongitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : existingCall.Longitude;
 
                                 // Get the ending time of the call
-                                Console.WriteLine($"Enter new EndTime (current: {existingCall.EndTime?.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
+                                Console.WriteLine($"Enter new EndTime (current: {existingCall.maxEndingTime?.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
                                 string? endTimeInput = Console.ReadLine();
                                 //DateTime? newEndTime = !string.IsNullOrEmpty(endTimeInput) && DateTime.TryParse(endTimeInput, out DateTime endTime) ? endTime : existingCall.EndTime;
 
@@ -384,7 +384,8 @@ internal class Program
                                     newaddress,
                                     newDescription,
                                     newlatitude,
-                                    newLongitude
+                                    newLongitude,
+                                    newOpeningTime
                                 );
 
                                 // Call the update function to update the call

@@ -1,9 +1,8 @@
 ﻿//Module  Assignment.cs
-namespace DO;
+namespace DO; 
 /// <summary>
 /// Enum that represents the possible end states of an assignment.
 /// </summary>
-public enum EndTimeType { Treated, SelfCancel, ManagerCancel, Expired };
 /// <summary>
 /// Enum that represents the possible end states of an assignment.
 /// </summary>
@@ -14,22 +13,13 @@ public record Assignment
 (
     int Id,
     int CallId,
-    int VolunteerId
+    int VolunteerId,
+    DateTime EntryTime,
+    DateTime? EndTime = null
     
-
 )
 {
-    /// <summary>
-    /// The time the assignment was created.
-    /// </summary>
-    public readonly DateTime EntryTime = DateTime.Now;
-    /// <summary>
-    /// he time the assignment was ended, or null if the assignment is still active.
-    /// </summary>
-    public readonly DateTime? EndTime = null;
-    /// <summary>
-    /// Initializes a new instance of the Assignment record with default values.
-    /// </summary>
-    public Assignment() : this(0, 0, 0) { }
+   
+    public Assignment() : this(0, 0, 0, DateTime.Now,null) { }
 }
         
