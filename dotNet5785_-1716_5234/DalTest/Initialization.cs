@@ -11,7 +11,20 @@ public static class Initialization
     private static IConfig? s_dalConfig;
 
     private static readonly Random s_rand = new();
+    static DateTime GetRandomDate(DateTime startDate, DateTime endDate)
+    {
+        /// Create a new instance of the Random class to generate random numbers
+        Random random = new Random();
 
+        /// Calculate the total number of days between the start and end dates
+        int range = (endDate - startDate).Days;
+
+        /// Generate a random number of days within the range
+        int randomDays = random.Next(range);
+
+        /// Return the start date with the random number of days added to it
+        return startDate.AddDays(randomDays);
+    }
     /// <summary>
     /// Creates a list of volunteers with random attributes and adds them to the data source.
     /// </summary>
@@ -124,7 +137,7 @@ private static void create_call()
 };
 
         string[] descriptions = {
-            "Food delivery – providing essential food and drinks to evacuees in shelters.",
+    "Food delivery – providing essential food and drinks to evacuees in shelters.",
     "Temporary housing – assisting an evacuee family in finding temporary accommodation.",
     "Trauma support – escorting evacuees needing mental health assistance.",
     "Children’s activities – organizing activities for children in shelters.",
@@ -133,8 +146,53 @@ private static void create_call()
     "Mental health support – connecting evacuees to counseling services.",
     "Heating supplies – providing blankets and heaters for cold weather.",
     "Evacuee transport – arranging safe transport to temporary shelters.",
-    "Legal aid – offering guidance on government aid and legal support."
+    "Legal aid – offering guidance on government aid and legal support.",
+
+    "Food distribution – delivering meals to evacuees in need.",
+    "Temporary shelter arrangement – locating safe temporary housing for families.",
+    "Mental health support – providing on-site counseling for evacuees.",
+    "Activities for children – creating art and play activities for children.",
+    "Moving assistance – helping families relocate their personal belongings.",
+    "Essential medication delivery – supplying evacuees with needed medications.",
+    "Therapy referrals – connecting evacuees with mental health professionals.",
+    "Warm clothing – distributing warm clothing and blankets to evacuees.",
+    "Transport to shelters – organizing rides for evacuees.",
+    "Legal consultation – helping evacuees understand their legal rights.",
+
+    "Nutrition support – ensuring evacuees receive proper meals and hydration.",
+    "Temporary home search – helping locate short-term housing solutions.",
+    "Crisis support – providing assistance to evacuees dealing with trauma.",
+    "Recreational activities – planning games and crafts for children.",
+    "Logistics assistance – organizing personal items for safe transport.",
+    "Pharmacy pickups – gathering and delivering necessary medications.",
+    "Emotional support – connecting evacuees with mental health support.",
+    "Cold-weather supplies – handing out heaters and winter essentials.",
+    "Safe transportation – coordinating transport to secure locations.",
+    "Legal help – offering support with paperwork and benefits.",
+
+    "Grocery delivery – providing groceries for evacuees.",
+    "Accommodation support – helping evacuees find places to stay.",
+    "Psychological first aid – escorting evacuees needing emotional support.",
+    "Kids' crafts – organizing crafts and fun for children in shelters.",
+    "Relocation aid – helping move belongings to temporary housing.",
+    "Medical pickups – ensuring evacuees receive their prescriptions.",
+    "Mental health hotline – offering 24/7 support access.",
+    "Winter gear – distributing coats, blankets, and heaters.",
+    "Evacuee transport coordination – arranging group transport to shelters.",
+    "Legal advisory – offering evacuees advice on aid programs.",
+
+    "Essential supplies – delivering food and hygiene products.",
+    "Refuge assistance – finding temporary refuge for families.",
+    "Trauma guidance – providing mental health resources.",
+    "Fun activities – organizing play areas for children.",
+    "Packing aid – helping evacuees pack personal items.",
+    "Prescription delivery – collecting and bringing medications.",
+    "Support groups – connecting evacuees to group counseling.",
+    "Blanket distribution – providing blankets for warmth.",
+    "Emergency transport – facilitating urgent transport needs.",
+    "Legal aid services – guiding evacuees on legal resources."
 };
+
 
 
         // יצירת 5 קריאות לדוגמה
@@ -154,7 +212,7 @@ private static void create_call()
 
             // קבלת זמן פתיחה באמצעות שעון המערכת
             //DateTime openingTime = s_dalConfig!.Clock;
-            DateTime start = new DateTime(s_dalConfig!.Clock.Year - 2, 1, 1); //stage 1
+            DateTime start = new DateTime(s_dalConfig!.Clock.Year - 2, 1, 1);
             int range = (s_dalConfig.Clock - start).Days; //stage 1
             DateTime openingTime= start.AddDays(s_rand.Next(range));
 
@@ -164,8 +222,7 @@ private static void create_call()
                 // יצירת אובייקט `Call` חדש
                 Call newCall = new(id, address, description, latitude, longitude)
             {
-                // עדכון זמן פתיחה
-                //openingTime = openingTime
+                
 
                 
             }; 
