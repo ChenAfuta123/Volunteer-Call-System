@@ -1,4 +1,6 @@
 ﻿// Module Call.cs
+using System;
+
 namespace DO;
 public enum TypeCall {}//to comple
 
@@ -17,8 +19,8 @@ public record Call
     double Latitude,
     double Longitude,
     DateTime OpeningTime,
-    DateTime? maxeEndingTime = null
-    string? Description = null
+    string? Description = null,
+    DateTime? maxEndingTime = null
 
 
 )
@@ -26,15 +28,15 @@ public record Call
     /// <summary>
     /// The opening time of the call (defaults to the current time when the object is created).
     /// </summary>
-   
+
     /// <summary>
     /// The ending time of the call (optional, defaults to null).
     /// </summary>
-  
+
     /// <summary>
     /// Parameterless constructor for Call, initializing properties with default values.
     /// </summary>
-    public Call() : this(0,"", 0,0,DateTime.Now)
+    public Call() : this(0, "",0, 0, DateTime.Now,null)
     {
         
     }
