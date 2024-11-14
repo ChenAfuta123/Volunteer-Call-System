@@ -230,17 +230,14 @@ public static class Initialization
             //DateTime? closingTime = null;
             //    int hoursRange = s_rand.Next(1, 48); // טווח של 1 עד 48 שעות לאחר זמן הפתיחה
             //    closingTime = openingTime.AddHours(hoursRange);
-                // יצירת אובייקט `Call` חדש
-                Call newCall = new(id, address, description, latitude, longitude)
-            {
-                // עדכון זמן פתיחה
-                //openingTime = openingTime
+            // יצירת אובייקט `Call` חדש
+            Call newCall = new(id, address, description, latitude, longitude);
 
-                
-            }; 
+            newCall.
 
-            // הוספת הקריאה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
-            s_dalCall!.Create(newCall);
+
+              // הוספת הקריאה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
+              s_dalCall!.Create(newCall);
         }
     }
     public static void Do(IVolunteer? dalVolunteer, ICall? dalcall, IAssignment? dalAssignment, IConfig? dalConfig) 

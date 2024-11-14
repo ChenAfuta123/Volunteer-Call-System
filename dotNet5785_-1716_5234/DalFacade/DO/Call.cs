@@ -14,27 +14,29 @@ public record Call
 (
     int Id,
     string Address,
-    string? Description = null,
-    double? Latitude = null,
-    double? Longitude = null
+    double Latitude,
+    double Longitude,
+    DateTime OpeningTime,
+    DateTime? maxeEndingTime = null
+    string? Description = null
+
 
 )
 {
     /// <summary>
     /// The opening time of the call (defaults to the current time when the object is created).
     /// </summary>
-    public readonly DateTime OpeningTime;
+   
     /// <summary>
     /// The ending time of the call (optional, defaults to null).
     /// </summary>
-    public readonly DateTime? EndTime = null;
+  
     /// <summary>
     /// Parameterless constructor for Call, initializing properties with default values.
     /// </summary>
-    public Call() : this(0, "", null, null, null)
+    public Call() : this(0,"", 0,0,DateTime.Now)
     {
         
-            //OpeningTime = DateTime.Now;
-        
     }
+
 }
