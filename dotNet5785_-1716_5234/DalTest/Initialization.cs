@@ -1,6 +1,7 @@
 ﻿namespace DalTest;
 using DalApi;
 using DO;
+
 public static class Initialization
 {
     private static IVolunteer? s_dalVolunteer;
@@ -160,7 +161,7 @@ public static class Initialization
             }
 
             // יצירת אובייקט `Assignment` חדש
-            Assignment newAssignment = new(id, callId, volunteerId, entryTime,endTime) { };
+            Assignment newAssignment = new(id, callId, volunteerId, entryTime,null,endTime) { };
 
             // הוספת המשימה החדשה לרשימה באמצעות מתודת ה-CRUD המתאימה
             s_dalAssignment!.Create(newAssignment);

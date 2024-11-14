@@ -624,19 +624,12 @@ internal class Program
     static void Main(string[] args)
     {
         
-    
+        
 
     }
 
 
 
 }
-
-
-    //try
-    //{
-    //    // קריאה למתודה Delete (החריגה תיזרק אם לא נמצא אובייקט)
-    //    /*someClassInstance.Delete(123); */ // 123 הוא ה-ID שאתה רוצה למחוק
-    //}
     
 
