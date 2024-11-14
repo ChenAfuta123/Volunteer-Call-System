@@ -118,7 +118,12 @@ internal class Program
         Console.WriteLine("Enter volunteer ID:");
         int.TryParse(Console.ReadLine(), out int volunteerId);
 
-        Assignment newAssignment = new(0, newAssignmentId, volunteerId);
+        Console.WriteLine("Enter call ID:");
+        int.TryParse(Console.ReadLine(), out int callId);
+
+
+
+        Assignment newAssignment = new(newAssignmentId,callId, volunteerId,s_dalConfig.Clock,null,null);
         s_dalAssignment!.Create(newAssignment);
         Console.WriteLine("Assignment added successfully.");
     }
@@ -367,7 +372,7 @@ internal class Program
                                 }
 
                                 // Get the latitude
-                                Console.WriteLine($"Enter new Latitude (current: {existingCall.Latitude?.ToString() ?? "N/A"}):");
+                                Console.WriteLine($"Enter new Latitude (current: {existingCall.Latitude.ToString() ?? "N/A"}):");
                                 double newlatitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : existingCall.Latitude;
 
                                 // Get the longitude
@@ -618,8 +623,8 @@ internal class Program
     }
 
 
-    //static void Main(string[] args)
-    //{
+    static void Main(string[] args)
+    {
         
     //    catch (Exception ex)
     //    {
@@ -627,7 +632,7 @@ internal class Program
     //        Console.WriteLine($"{ex.Message}");
     //    }
 
-    //}
+    }
 
 
 
