@@ -29,14 +29,14 @@ public static class Initialization
     private static void create_volunteer()
     {
         string[] names = {
-            "Dani Levy", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
+            "Manager", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
             "Tamar Avni", "Noam Baruch", "Yael Tzur", "Yonatan Gilad", "Lior Hadad", "Maya Zohar",
             "Idan Sasson", "Avigail Shani", "Eden Bar", "Nadav Shavit", "Gal Mor", "Adi Nir",
             "Tal Shaked", "Ofek Azulai"
         };
 
         string[] emails = {
-            "dani@example.com", "eli@example.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com",
+            "Manager@example.com", "eli@example.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com",
             "tamar@example.com", "noam@example.com", "yael@example.com", "yonatan@example.com", "lior@example.com", "maya@example.com",
             "idan@example.com", "avigail@example.com", "eden@example.com", "nadav@example.com", "gal@example.com", "adi@example.com",
             "tal@example.com", "ofek@example.com"

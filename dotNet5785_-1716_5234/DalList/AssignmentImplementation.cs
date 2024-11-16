@@ -7,26 +7,26 @@ namespace Dal;
 
 internal class AssignmentImplementation : IAssignment
 {
-   
-     public void Create(Assignment item)
-     {
 
-        
+    public void Create(Assignment item)
+    {
+
+
         int id = /*datasource.*/Config.NextAssignmentId;
         Assignment copy = item with { Id = id };
         DataSource.Assignments.Add(copy);
     }
-    
-    
+
+
     public void Delete(int id)
     {
-        
+
         Assignment? existId = Read(id);
         if (existId == null)
         {
             throw new Exception($"Assignment with ID={id} is not exists\n");
         }
-        DataSource.Assignments.Remove(existId); 
+        DataSource.Assignments.Remove(existId);
 
     }
 
@@ -40,10 +40,11 @@ internal class AssignmentImplementation : IAssignment
         return DataSource.Assignments.FirstOrDefault(item => item.Id == id);
     }
 
-    public List<Assignment> ReadAll()
-    {
-        return new List<Assignment>(DataSource.Assignments);
-    }
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) //stage 2
+     => filter == null
+         ? DataSource.Assignments.Select(item => item);
+            : DataSource.Assignments.Where(filter);
+        
 
     public void Update(Assignment item)
     {
