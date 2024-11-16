@@ -24,7 +24,7 @@ internal class AssignmentImplementation : IAssignment
         Assignment? existId = Read(id);
         if (existId == null)
         {
-            throw new Exception($"Assignment with ID={id} is not exists\n");
+            throw new DalDoesNotExistsException($"Assignment with ID={id} is not exists\n");
         }
         DataSource.Assignments.Remove(existId);
 
@@ -51,7 +51,7 @@ internal class AssignmentImplementation : IAssignment
         Assignment? existId= Read(item.Id);
         if (existId == null)
         {
-            throw new Exception($"Assignment with ID={item.Id} is not exists\n");
+            throw new DalDoesNotExistsException($"Assignment with ID={item.Id} is not exists\n");
         }
         DataSource.Assignments.Remove(existId);
         DataSource.Assignments.Add(item);
