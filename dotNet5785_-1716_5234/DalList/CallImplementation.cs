@@ -29,7 +29,7 @@ internal class CallImplementation : ICall
         Call? existId = Read(id);
         if (existId == null)
         {
-            throw new Exception($"Call with ID={id} does not exist\n");
+            throw new DalDoesNotExistsException($"Call with ID={id} does not exist\n");
         }
         DataSource.Calls.Remove(existId);
     }
@@ -72,7 +72,7 @@ internal class CallImplementation : ICall
         Call? existId = Read(item.Id);
         if (existId == null)
         {
-            throw new Exception($"Call with ID={item.Id} does not exist\n");
+            throw new DalDoesNotExistsException($"Call with ID={item.Id} does not exist\n");
         }
         DataSource.Calls.Remove(existId);
         DataSource.Calls.Add(item);
