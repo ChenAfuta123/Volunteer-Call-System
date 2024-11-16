@@ -38,15 +38,7 @@ internal class VolunteerImplementation : IVolunteer
 
     public Volunteer? Read(int id)
     {
-
-        foreach (var item in DataSource.Volunteers)
-        {
-            if (item.Id == id)
-            {
-                return item;
-            }
-        }
-        return null;
+       return DataSource.Volunteers.FirstOrDefault(item => item.Id == id);
     }
 
     public List<Volunteer> ReadAll()

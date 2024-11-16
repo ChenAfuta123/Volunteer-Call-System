@@ -50,14 +50,7 @@ internal class CallImplementation : ICall
     /// <returns>The Call entity if found, otherwise null.</returns>
     public Call? Read(int id)
     {
-        foreach (var item in DataSource.Calls)
-        {
-            if (item.Id == id)
-            {
-                return item;
-            }
-        }
-        return null;
+        return DataSource.Calls.FirstOrDefault(item => item.Id == id);
     }
 
     /// <summary>

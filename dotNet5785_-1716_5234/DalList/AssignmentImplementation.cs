@@ -37,14 +37,7 @@ internal class AssignmentImplementation : IAssignment
 
     public Assignment? Read(int id)
     {
-        foreach (var item in DataSource.Assignments)
-        {
-            if (item.Id == id)
-            {
-                return item;
-            }
-        }
-       return null;
+        return DataSource.Assignments.FirstOrDefault(item => item.Id == id);
     }
 
     public List<Assignment> ReadAll()
