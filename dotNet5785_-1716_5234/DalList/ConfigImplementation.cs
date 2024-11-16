@@ -6,7 +6,7 @@ namespace Dal;
 /// Implementation of the IConfig interface, providing access to and management of configuration settings 
 /// by using the internal Config class as a data source.
 /// </summary>
-public class ConfigImplementation : IConfig
+internal class ConfigImplementation : IConfig
 {
     /// <summary>
     /// Gets or sets the current system clock, which represents the current date and time.

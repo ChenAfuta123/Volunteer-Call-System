@@ -13,26 +13,7 @@ namespace DalTest;
 /// </summary>
 internal class Program
 {
-    /// <summary>
-    /// Interface for managing assignments in the DAL layer.
-    /// </summary>
-    private static IAssignment? s_dalAssignment = new AssignmentImplementation();
-
-    /// <summary>
-    /// Interface for managing calls in the DAL layer.
-    /// </summary>
-    private static ICall? s_dalCall = new CallImplementation();
-
-    /// <summary>
-    /// Interface for managing volunteers in the DAL layer.
-    /// </summary>
-    private static IVolunteer? s_dalVolunteer = new VolunteerImplementation();
-
-    /// <summary>
-    /// Interface for managing configuration settings in the DAL layer.
-    /// </summary>
-    private static IConfig? s_dalConfig = new ConfigImplementation();
-
+    static readonly IDal s_dal = new DalList();
     /// <summary>
     /// Enum for the main menu options.
     /// </summary>
@@ -117,7 +98,7 @@ internal class Program
         double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
 
         Volunteer newVolunteer = new(Id, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
-        s_dalVolunteer!.Create(newVolunteer);
+        s_dal!.Volunteer.Create(newVolunteer);
         Console.WriteLine("Volunteer added successfully.");
     }
 
@@ -138,9 +119,9 @@ internal class Program
         Console.WriteLine("Enter call Longitude:");
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
 
-        int newCallId = s_dalConfig!.NextCallId;
-        Call newCall = new(newCallId, address, Latitude, Longitude, s_dalConfig.Clock, description, s_dalConfig.Clock.AddHours(24));
-        s_dalCall!.Create(newCall);
+        int newCallId = s_dal!.Config.NextCallId;
+        Call newCall = new(newCallId, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
+        s_dal!.Call.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
 
@@ -149,15 +130,15 @@ internal class Program
     /// </summary>
     void CreateAssignment()
     {
-        int newAssignmentId = s_dalConfig!.NextAssignmentId;
+        int newAssignmentId = s_dal!.Config.NextAssignmentId;
         Console.WriteLine("Enter volunteer ID:");
         int.TryParse(Console.ReadLine(), out int volunteerId);
 
         Console.WriteLine("Enter call ID:");
         int.TryParse(Console.ReadLine(), out int callId);
 
-        Assignment newAssignment = new(newAssignmentId, callId, volunteerId, s_dalConfig.Clock, null, null);
-        s_dalAssignment!.Create(newAssignment);
+        Assignment newAssignment = new(newAssignmentId, callId, volunteerId, s_dal!.Config.Clock, null, null);
+        s_dal!.Assignment.Create(newAssignment);
         Console.WriteLine("Assignment added successfully.");
     }
 
@@ -167,7 +148,7 @@ internal class Program
     /// <param name="id">The ID of the volunteer to view.</param>
     void ViewVolunteer(int id)
     {
-        var volunteer = s_dalVolunteer!.Read(id);
+        var volunteer = s_dal!.Volunteer.Read(id);
         if (volunteer != null)
             Console.WriteLine(volunteer);
         else
@@ -180,7 +161,7 @@ internal class Program
     /// <param name="id">The ID of the call to view.</param>
     void ViewCall(int id)
     {
-        var call = s_dalCall!.Read(id);
+        var call = s_dal!.Call.Read(id);
         if (call != null)
             Console.WriteLine(call);
         else
@@ -193,7 +174,7 @@ internal class Program
     /// <param name="id">The ID of the assignment to view.</param>
     void ViewAssignment(int id)
     {
-        var assignment = s_dalAssignment!.Read(id);
+        var assignment = s_dal!.Assignment.Read(id);
         if (assignment != null)
             Console.WriteLine(assignment);
         else
@@ -272,7 +253,7 @@ internal class Program
                     {
                         case EntityType.Volunteer:
                           
-                            List<Volunteer> volunteers = s_dalVolunteer!.ReadAll();
+                            List<Volunteer> volunteers = s_dal!.Volunteer.ReadAll();
 
                             foreach (var volunteer in volunteers)
                             {
@@ -282,7 +263,7 @@ internal class Program
                             break;
                         case EntityType.Call:
 
-                            List<Call> calls = s_dalCall!.ReadAll();
+                            List<Call> calls = s_dal!.Call.ReadAll();
                             foreach (var call in calls)
                             {
                                 ViewCall(call.Id);
@@ -291,7 +272,7 @@ internal class Program
 
                         case EntityType.Assignment:
 
-                            List<Assignment> assignments = s_dalAssignment!.ReadAll();
+                            List<Assignment> assignments = s_dal!.Assignment.ReadAll();
                             foreach (var assignment in assignments)
                             {
                                 ViewAssignment(assignment.Id);
@@ -312,7 +293,7 @@ internal class Program
                                 int.TryParse(Console.ReadLine(), out int volunteerId);
 
                                 // קריאה לקריאת המתנדב לפי ה-ID
-                                Volunteer? exist = s_dalVolunteer!.Read(volunteerId);
+                                Volunteer? exist = s_dal!.Volunteer.Read(volunteerId);
 
                                 if (exist == null)
                                 {
@@ -377,7 +358,7 @@ internal class Program
                                 );
 
 
-                                s_dalVolunteer.Update(updatedVolunteer);
+                                s_dal!.Volunteer.Update(updatedVolunteer);
 
                                 Console.WriteLine("Volunteer updated successfully.");
 
@@ -392,7 +373,7 @@ internal class Program
                                 int.TryParse(Console.ReadLine(), out int callId);
 
                                 // Fetch the existing call by ID
-                                Call? existingCall = s_dalCall!.Read(callId);
+                                Call? existingCall = s_dal!.Call.Read(callId);
 
                                 if (existingCall == null)
                                 {
@@ -448,7 +429,7 @@ internal class Program
                                 );
 
                                 // Call the update function to update the call
-                                s_dalCall.Update(updatedCall);
+                                s_dal!.Call.Update(updatedCall);
                                 Console.WriteLine("Call updated successfully.");
                                 break;
 
@@ -469,19 +450,19 @@ internal class Program
                             case EntityType.Volunteer:
                                 Console.WriteLine("Enter the volunteer's ID to delete");
                                 int.TryParse(Console.ReadLine(), out int volunteerId);
-                                s_dalVolunteer!.Delete(volunteerId);
+                                s_dal!.Volunteer.Delete(volunteerId);
                                 Console.WriteLine("The volunteer deleted successfully");
                                 break;
                             case EntityType.Call:
                                 Console.WriteLine("Enter the call's ID to delete");
                                 int.TryParse(Console.ReadLine(), out int callId);
-                                s_dalCall!.Delete(callId);
+                                s_dal!.Call.Delete(callId);
                                 Console.WriteLine("The call deleted successfully");
                                 break;
                             case EntityType.Assignment:
                                 Console.WriteLine("Enter the assignment's ID to delete");
                                 int.TryParse(Console.ReadLine(), out int assignmentId);
-                                s_dalAssignment!.Delete(assignmentId);
+                                s_dal!.Assignment.Delete(assignmentId);
                                 Console.WriteLine("The assignment deleted successfully");
                                 break;
                         }
@@ -493,17 +474,17 @@ internal class Program
                     {
                         case EntityType.Volunteer:
                            
-                            s_dalVolunteer!.DeleteAll();
+                            s_dal!.Volunteer.DeleteAll();
 
                             break;
                         case EntityType.Call:
                            
-                            s_dalCall!.DeleteAll();
+                            s_dal!.Call.DeleteAll();
                 
                             break;
                         case EntityType.Assignment:
                             
-                            s_dalAssignment!.DeleteAll();
+                            s_dal!.Assignment.DeleteAll();
                            
                             break;
                     }
@@ -556,25 +537,25 @@ internal class Program
 
                 case ConfigMenu.AdvanceClockByMinute:
                     // Advance the system clock by one minute.
-                    s_dalConfig!.Clock = s_dalConfig.Clock.AddMinutes(1);
+                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddMinutes(1);
                     Console.WriteLine("System clock advanced by one minute.");
                     break;
 
                 case ConfigMenu.AdvanceClockByHour:
                     // Advance the system clock by one hour.
-                    s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(1);
+                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddHours(1);
                     Console.WriteLine("System clock advanced by one hour.");
                     break;
 
                 case ConfigMenu.AdvanceClockByDay:
                     // Advance the system clock by one day.
-                    s_dalConfig!.Clock = s_dalConfig.Clock.AddDays(1);
+                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddDays(1);
                     Console.WriteLine("System clock advanced by one day.");
                     break;
 
                 case ConfigMenu.DisplayClock:
                     // Display the current value of the system clock.
-                    Console.WriteLine($"Current system clock value: {s_dalConfig!.Clock}");
+                    Console.WriteLine($"Current system clock value: {s_dal!.Config.Clock}");
                     break;
 
                 case ConfigMenu.SetConfigVariable:
@@ -586,7 +567,7 @@ internal class Program
 
                     if (!string.IsNullOrWhiteSpace(variableName) && !string.IsNullOrWhiteSpace(newValue))
                     {
-                        s_dalConfig!.SetConfigValue(variableName, newValue);
+                        s_dal!.Config.SetConfigValue(variableName, newValue);
                         Console.WriteLine($"Configuration variable '{variableName}' set to '{newValue}'.");
                     }
                     else
@@ -602,7 +583,7 @@ internal class Program
 
                     if (!string.IsNullOrWhiteSpace(configVarName))
                     {
-                        string value = s_dalConfig!.GetConfigValue(configVarName);
+                        string value = s_dal!.Config.GetConfigValue(configVarName);
                         Console.WriteLine($"Value of configuration variable '{configVarName}': {value}");
                     }
                     else
@@ -613,7 +594,7 @@ internal class Program
 
                 case ConfigMenu.ResetConfig:
                     // Reset all configuration variables to their default values.
-                    s_dalConfig!.Reset();
+                    s_dal!.Config.Reset();
                     Console.WriteLine("All configuration variables have been reset.");
                     break;
 
@@ -675,24 +656,24 @@ internal class Program
                 case MainMenu.DataInitialization:
                     // Initialize the data.
                     Console.WriteLine("Initializing data.");
-                    Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
+                    Initialization.Do(s_dal);
                     break;
 
                 case MainMenu.ViewAllData:
                     // View all data of Volunteers, Calls, and Assignments.
-                    List<Volunteer> volunteers = s_dalVolunteer!.ReadAll();
+                    List<Volunteer> volunteers = s_dal!.Volunteer.ReadAll();
                     foreach (var volunteer in volunteers)
                     {
                         Console.WriteLine($"{volunteer}");
                     }
 
-                    List<Call> calls = s_dalCall!.ReadAll();
+                    List<Call> calls = s_dal!.Call!.ReadAll();
                     foreach (var call in calls)
                     {
                         Console.WriteLine($"{call}");
                     }
 
-                    List<Assignment> assignments = s_dalAssignment!.ReadAll();
+                    List<Assignment> assignments = s_dal!.Assignment.ReadAll();
                     foreach (var assignment in assignments)
                     {
                         Console.WriteLine($"{assignment}");
@@ -711,9 +692,9 @@ internal class Program
                     Console.WriteLine("Resetting database and configuration.");
 
                     // Delete all records in the database tables.
-                    s_dalAssignment!.DeleteAll(); // Delete all assignments
-                    s_dalCall!.DeleteAll(); // Delete all calls
-                    s_dalVolunteer!.DeleteAll(); // Delete all volunteers
+                    s_dal!.Assignment.DeleteAll(); // Delete all assignments
+                    s_dal.Call.DeleteAll(); // Delete all calls
+                    s_dal!.Volunteer.DeleteAll(); // Delete all volunteers
                                                  // Optionally reset the configuration values.
                                                  // s_dalConfig!.ResetConfig();
                     break;
