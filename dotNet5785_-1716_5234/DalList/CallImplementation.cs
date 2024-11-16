@@ -6,7 +6,7 @@ namespace Dal;
 /// <summary>
 /// Implementation of the ICall interface, responsible for CRUD operations on Call entities.
 /// </summary>
-public class CallImplementation : ICall
+internal class CallImplementation : ICall
 {
     /// <summary>
     /// Creates a new Call entity with a unique auto-generated ID and adds it to the data source.

@@ -20,7 +20,7 @@ sealed public class DalList : IDal
         Config.Reset();
 
     }
-    public ICall call { get; } = new CallImplementation();
+public ICall call { get; } = new CallImplementation();
 public IVolunteer volunteer { get; } = new VolunteerImplementation();
 public IAssignment assignment { get; } = new AssignmentImplementation();
 
