@@ -1,12 +1,9 @@
-﻿using Dal;
+﻿
 using DalApi;
 using DalList;
 using DO;
-using System;
-using System.Security.Cryptography.X509Certificates;
-using static DalTest.Program;
-
 namespace DalTest;
+
 
 /// <summary>
 /// Entry point of the application. Contains the main program logic and menu navigation.

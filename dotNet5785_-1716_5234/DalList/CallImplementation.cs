@@ -59,7 +59,7 @@ internal class CallImplementation : ICall
     /// <returns>A list of all Call entities.</returns>
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) //stage 2
      => filter == null
-         ? DataSource.Calls.Select(item => item);
+         ? DataSource.Calls.Select(item => item)
             : DataSource.Calls.Where(filter);
     /// <summary>
     /// Updates an existing Call entity in the data source.

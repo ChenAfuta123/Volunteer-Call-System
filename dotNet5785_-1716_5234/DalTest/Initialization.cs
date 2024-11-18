@@ -108,7 +108,7 @@ public static class Initialization
             int id = s_dal!.Config.NextAssignmentId;
 
             var calls = s_dal!.Call.ReadAll();
-            if (calls.Count == 0)
+            if (GetCount(calls) == 0)
                 throw new InvalidOperationException("There are no calls available to create assignments.");
 
             int callId = calls[s_rand.Next(calls.Count)].Id;

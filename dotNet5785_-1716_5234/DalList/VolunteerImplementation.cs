@@ -42,7 +42,7 @@ internal class VolunteerImplementation : IVolunteer
     }
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) //stage 2
        => filter == null
-           ? DataSource.Volunteers.Select(item => item);
+           ? DataSource.Volunteers.Select(item => item)
             : DataSource.Volunteers.Where(filter);
 
     public void Update(Volunteer item)

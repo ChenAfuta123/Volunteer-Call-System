@@ -42,7 +42,7 @@ internal class AssignmentImplementation : IAssignment
 
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) //stage 2
      => filter == null
-         ? DataSource.Assignments.Select(item => item);
+         ? DataSource.Assignments.Select(item => item)
             : DataSource.Assignments.Where(filter);
         
 
