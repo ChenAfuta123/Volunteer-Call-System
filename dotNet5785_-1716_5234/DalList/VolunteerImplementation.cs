@@ -40,9 +40,13 @@ internal class VolunteerImplementation : IVolunteer
     {
        return DataSource.Volunteers.FirstOrDefault(item => item.Id == id);
     }
+    public Volunteer? Read(Func<Volunteer, bool> filter)
+    {
+        return DataSource.Volunteers.FirstOrDefault(item => filter(item));
+    }
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) //stage 2
        => filter == null
-           ? DataSource.Volunteers.Select(item => item);
+           ? DataSource.Volunteers.Select(item => item)
             : DataSource.Volunteers.Where(filter);
 
     public void Update(Volunteer item)
