@@ -17,7 +17,7 @@ namespace DO
     /// <param name="MaxDistance">Maximum distance the volunteer is willing to travel.</param>
     /// <param name="Active">Indicates if the volunteer is currently active in the system.</param>
 public record Volunteer
-    (
+ (
         int Id,
         DistanceType distanceType,
         Role role,
@@ -29,7 +29,7 @@ public record Volunteer
         double? Latitude = null,
         double? MaxDistance = null,
         bool Active = false
-    )
+  )
 {
         /// <summary>
         /// Initializes a new instance of the Volunteer record with default values.

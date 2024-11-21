@@ -1,4 +1,4 @@
-﻿// Module Call.cs
+﻿
 using System;
 
 namespace DO;
@@ -26,14 +26,7 @@ public record Call
 
 )
 {
-    /// <summary>
-    /// The opening time of the call (defaults to the current time when the object is created).
-    /// </summary>
-
-    /// <summary>
-    /// The ending time of the call (optional, defaults to null).
-    /// </summary>
-
+   
     /// <summary>
     /// Parameterless constructor for Call, initializing properties with default values.
     /// </summary>
