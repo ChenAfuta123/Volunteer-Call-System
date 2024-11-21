@@ -153,22 +153,23 @@ internal class Program
     /// </summary>
     void CreateCall()
     {
-        Console.WriteLine("Enter call address:");
-        string address = Console.ReadLine() ?? string.Empty;
-        CallType callType = GetCallTypeFromUser();
+        //Console.WriteLine("Enter call address:");
+        //string address = Console.ReadLine() ?? string.Empty;
+        //CallType callType = GetCallTypeFromUser();
 
-        Console.WriteLine("Enter call description:");
-        string description = Console.ReadLine() ?? string.Empty;
+        //Console.WriteLine("Enter call description:");
+        //string description = Console.ReadLine() ?? string.Empty;
 
-        Console.WriteLine("Enter call Latitude:");
-        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
+        //Console.WriteLine("Enter call Latitude:");
+        //double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
 
-        Console.WriteLine("Enter call Longitude:");
-        double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
+        //Console.WriteLine("Enter call Longitude:");
+        //double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
 
-        int newCallId = s_dal!.Config.NextCallId;
+        //int newCallId = s_dal!.Config.NextCallId;
 
-        Call newCall = new(newCallId,callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
+        //Call newCall = new(newCallId,callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
+        Call newCall = Call_input(0);
         s_dal!.Call.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
@@ -348,8 +349,8 @@ internal class Program
                                     Console.WriteLine("Volunteer not found.");
                                     break; 
                                 }
-
-                            s_dal!.Volunteer.Update(Volunteer_input(volunteerId));
+                            Volunteer new_volunteer = Volunteer_input(volunteerId);
+                            s_dal!.Volunteer.Update(new_volunteer);
 
                             Console.WriteLine("Volunteer updated successfully.");
 
@@ -372,59 +373,11 @@ internal class Program
                                     break; // Exit if the call doesn't exist
                                 }
 
-                                // Ask the user to input the new data for the update
-                                Console.WriteLine("Enter new data to update:");
-
-                                // Get the call address
-                                Console.WriteLine($"Enter new Address (current: {existingCall.Address}):");
-                                string newaddress = Console.ReadLine() ?? existingCall.Address;
-
-                                // Get the call description
-                                Console.WriteLine($"Enter new Description (current: {existingCall.Description ?? "N/A"}):");
-                                string? newDescription = Console.ReadLine();
-                                if (string.IsNullOrEmpty(newDescription))
-                                {
-                                    newDescription = existingCall.Description; // Keep the current description if none provided
-                                }
-
-                                // Get the latitude
-                                Console.WriteLine($"Enter new Latitude (current: {existingCall.Latitude.ToString() ?? "N/A"}):");
-                                double newlatitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : existingCall.Latitude;
-
-                                // Get the longitude
-                                Console.WriteLine($"Enter new Longitude (current: {existingCall.Longitude.ToString() ?? "N/A"}):");
-                                double newLongitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : existingCall.Longitude;
-
-                                Console.WriteLine($"Enter new OpeningTime (current: {existingCall.OpeningTime.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
-                                string OpeningTimeInput = Console.ReadLine()!;
-                                DateTime newOpeningTime = !string.IsNullOrEmpty(OpeningTimeInput) && DateTime.TryParse(OpeningTimeInput, out DateTime openTime) ? openTime : existingCall.OpeningTime;
-
-
-                                // Get the ending time of the call
-                                Console.WriteLine($"Enter new EndTime (current: {existingCall.maxEndingTime?.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
-                                string? endTimeInput = Console.ReadLine();
-                                DateTime? newMaxEndTime = !string.IsNullOrEmpty(endTimeInput) && DateTime.TryParse(endTimeInput, out DateTime endTime) ? endTime : existingCall.maxEndingTime;
-                          
-                            string? input = Console.ReadLine();
-                            CallType callType = GetCallTypeFromUser();
-
-                            // Create a new Call object with the updated data
-                            Call updatedCall = new Call(
-                                    callId,
-                                    callType,
-                                    newaddress,
-                                    newlatitude,
-                                    newLongitude,
-                                    newOpeningTime,
-                                     newDescription,
-                                    newMaxEndTime
-                                   
-                                   
-                                    
-                                );
-
-                                // Call the update function to update the call
-                                s_dal!.Call.Update(updatedCall);
+                            // Ask the user to input the new data for the update
+                            Console.WriteLine("Enter new data to update:");
+                            Call updatedCall = Call_input(callId);
+                            // Call the update function to update the call
+                            s_dal!.Call.Update(updatedCall);
                                 Console.WriteLine("Call updated successfully.");
                                 break;
 
