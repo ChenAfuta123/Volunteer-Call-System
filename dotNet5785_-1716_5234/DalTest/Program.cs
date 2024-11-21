@@ -64,14 +64,7 @@ internal class Program
         DisplayConfigVariable, // Display a configuration variable.
         ResetConfig           // Reset configuration settings to default.
     }
-
-    /// <summary>
-    /// Handles the creation of a new volunteer.
-    /// </summary>
-    
-   
-
-
+  
     /// <summary>
     /// Displays and manages the main menu, where the user can perform various system actions
     /// such as navigating to sub-menus, viewing data, or resetting configurations.
@@ -166,8 +159,6 @@ internal class Program
         Console.WriteLine("Program has exited.");
     }
 
-
-
     /// <summary>
     /// The entry point for the Dal Management System application.
     /// Initializes the system and handles any unexpected errors that may occur during execution.
@@ -197,12 +188,6 @@ internal class Program
             Console.WriteLine("Thank you for using the Dal Management System. Goodbye!");
         }
     }
-
-
-
-
-
-
 
     /// <summary>
     /// Displays and manages the entity-specific menu for performing CRUD operations and other actions
@@ -317,8 +302,9 @@ internal class Program
         Console.WriteLine("Exited Configuration Menu.");
     }
 
-
-
+    /// <summary>
+    /// The user enters the details of the volunteer
+    /// </summary>
     static Volunteer Volunteer_input(int id)
     {
         if (id == 0)
@@ -357,6 +343,9 @@ internal class Program
         Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
         return newVolunteer;
     }
+    /// <summary>
+    /// The user enters the details of the call
+    /// </summary>
     static Call Call_input(int id)
     {
         if (id == 0)
@@ -385,24 +374,23 @@ internal class Program
         Call newCall = new(id, callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
         return newCall;
     }
-
+    /// <summary>
+    /// Prints all call types and the user selects the most appropriate one
+    /// </summary>
     static CallType GetCallTypeFromUser()
     {
-        // הדפסת כל סוגי הקריאה האפשריים למשתמש
         Console.WriteLine("Enter the assistance type:");
         foreach (CallType type in Enum.GetValues(typeof(CallType)))
         {
             Console.WriteLine($"{(int)type} - {type}");
         }
-
-
         string? input = Console.ReadLine();
-
-        // המרת הקלט ל-Enum אם אפשר, אחרת מחזירים את ברירת המחדל
         return Enum.TryParse(input, out CallType result) ? result : CallType.EssentialSupplies;
     }
 
-
+    /// <summary>
+    /// Handles the creation of a new volunteer.
+    /// </summary
     void CreateVolunteer()
     {
         Volunteer newVolunteer = Volunteer_input(0);
@@ -465,7 +453,6 @@ internal class Program
         }
     }
 
-
     /// <summary>
     /// Displays the details of a specific call by ID.
     /// </summary>
@@ -491,7 +478,6 @@ internal class Program
         }
     }
 
-
     /// <summary>
     /// Displays the details of a specific assignment by ID.
     /// </summary>
@@ -512,11 +498,9 @@ internal class Program
         else
             Console.WriteLine("Assignment not found.");
     }
-
-
-
-
-
+    /// <summary>
+    /// Adds some kind of entity
+    /// </summary>
     private void AddEntity(EntityType entityType)
     {
         try
@@ -539,7 +523,9 @@ internal class Program
             Console.WriteLine($"{ex.Message}");
         }
     }
-
+    /// <summary>
+    /// print some kind of entity
+    /// </summary>
     private void ViewEntity(EntityType entityType)
     {
         Console.WriteLine($"Enter {entityType} ID:");
@@ -558,7 +544,9 @@ internal class Program
                 break;
         }
     }
-
+    /// <summary>
+    /// Prints the entire entity
+    /// </summary>
     private void ViewAllEntities(EntityType entityType)
     {
         switch (entityType)
@@ -587,6 +575,9 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Updates an entity that the user selects
+    /// </summary>
     private void UpdateEntity(EntityType entityType)
     {
         switch (entityType)
@@ -621,6 +612,9 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Deletes an entity that the user selects
+    /// </summary>
     private void DeleteEntity(EntityType entityType)
     {
         switch (entityType)
@@ -646,6 +640,9 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Deletes all entities
+    /// </summary>
     private void DeleteAllEntities(EntityType entityType)
     {
         switch (entityType)
@@ -664,6 +661,9 @@ internal class Program
         Console.WriteLine($"Deleting all {entityType} entries.");
     }
 
+    /// <summary>
+    /// Displays a menu of options for system configuration.
+    /// </summary>
     private void DisplayConfigMenuOptions()
     {
         Console.WriteLine("Select an option in the Configuration Menu:");
@@ -677,9 +677,9 @@ internal class Program
         Console.WriteLine("7 - Reset all configuration values");
     }
 
-  
-  
-
+    /// <summary>
+    ///Allows the user to set a new value for a configuration variable.
+    /// </summary>
     private void SetConfigurationVariable()
     {
         Console.Write("Enter the name of the configuration variable to set: ");
@@ -698,6 +698,9 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// Displays the current value of a configuration variable by user-supplied name.
+    /// </summary>
     private void DisplayConfigurationVariable()
     {
         Console.Write("Enter the name of the configuration variable to display: ");
@@ -713,8 +716,6 @@ internal class Program
             Console.WriteLine("Invalid input. Variable name cannot be empty.");
         }
     }
-
-   
 
 }
 
