@@ -318,7 +318,9 @@ internal class Program
     }
 
 
-
+    /// <summary>
+    /// The user enters the details of the volunteer
+    /// </summary>
     static Volunteer Volunteer_input(int id)
     {
         if (id == 0)
@@ -357,6 +359,9 @@ internal class Program
         Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
         return newVolunteer;
     }
+    /// <summary>
+    /// The user enters the details of the call
+    /// </summary>
     static Call Call_input(int id)
     {
         if (id == 0)
@@ -385,24 +390,23 @@ internal class Program
         Call newCall = new(id, callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
         return newCall;
     }
-
+    /// <summary>
+    /// Prints all call types and the user selects the most appropriate one
+    /// </summary>
     static CallType GetCallTypeFromUser()
     {
-        // הדפסת כל סוגי הקריאה האפשריים למשתמש
         Console.WriteLine("Enter the assistance type:");
         foreach (CallType type in Enum.GetValues(typeof(CallType)))
         {
             Console.WriteLine($"{(int)type} - {type}");
         }
-
-
         string? input = Console.ReadLine();
-
-        // המרת הקלט ל-Enum אם אפשר, אחרת מחזירים את ברירת המחדל
         return Enum.TryParse(input, out CallType result) ? result : CallType.EssentialSupplies;
     }
 
-
+    /// <summary>
+    /// Handles the creation of a new volunteer.
+    /// </summary
     void CreateVolunteer()
     {
         Volunteer newVolunteer = Volunteer_input(0);
@@ -465,7 +469,6 @@ internal class Program
         }
     }
 
-
     /// <summary>
     /// Displays the details of a specific call by ID.
     /// </summary>
@@ -491,7 +494,6 @@ internal class Program
         }
     }
 
-
     /// <summary>
     /// Displays the details of a specific assignment by ID.
     /// </summary>
@@ -512,10 +514,6 @@ internal class Program
         else
             Console.WriteLine("Assignment not found.");
     }
-
-
-
-
 
     private void AddEntity(EntityType entityType)
     {
@@ -677,9 +675,6 @@ internal class Program
         Console.WriteLine("7 - Reset all configuration values");
     }
 
-  
-  
-
     private void SetConfigurationVariable()
     {
         Console.Write("Enter the name of the configuration variable to set: ");
@@ -713,8 +708,6 @@ internal class Program
             Console.WriteLine("Invalid input. Variable name cannot be empty.");
         }
     }
-
-   
 
 }
 
