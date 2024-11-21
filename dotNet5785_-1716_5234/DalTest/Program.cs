@@ -330,62 +330,7 @@ internal class Program
 
                                
                                 Console.WriteLine("Enter new data to update:");
-                            Volunteer updateVolunteer = Volunteer_input(volunteerId);
-
-                            //Console.WriteLine($"Enter new Name (current: {exist.Name}):");
-                            //string newName = Console.ReadLine() ?? exist.Name; 
-
-
-                            //Console.WriteLine($"Enter new PhoneNumber (current: {exist.PhoneNumber}):");
-                            //string newPhoneNumber = Console.ReadLine() ?? exist.PhoneNumber;
-
-
-                            //Console.WriteLine($"Enter new Email (current: {exist.Email}):");
-                            //string newEmail = Console.ReadLine() ?? exist.Email;
-
-
-                            //Console.WriteLine($"Enter new Password (current: {exist.Password ?? "N/A"}):");
-                            //string? newPassword = Console.ReadLine();
-                            //if (string.IsNullOrEmpty(newPassword))
-                            //{
-                            //    newPassword = exist.Password;
-                            //}
-
-
-                            //Console.WriteLine($"Enter new Address (current: {exist.Address ?? "N/A"}):");
-                            //string? newAddress = Console.ReadLine();
-                            //if (string.IsNullOrEmpty(newAddress))
-                            //{
-                            //    newAddress = exist.Address; 
-                            //}
-
-
-                            //Console.WriteLine($"Enter new Latitude (current: {exist.Latitude?.ToString() ?? "N/A"}):");
-                            //double? newLatitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : exist.Latitude;
-
-
-                            //Console.WriteLine($"Enter new MaxDistance (current: {exist.MaxDistance?.ToString() ?? "N/A"}):");
-                            //double? newMaxDistance = double.TryParse(Console.ReadLine(), out double maxDist) ? maxDist : exist.MaxDistance;
-
-                            //Console.WriteLine($"Enter new Active status (current: {(exist.Active ? "Yes" : "No")}) - Enter true or false:");
-                            //bool newActive = bool.TryParse(Console.ReadLine(), out bool activeStatus) ? activeStatus : exist.Active;
-
-                            //Volunteer updatedVolunteer = new Volunteer(
-                            //    volunteerId, 
-                            //    exist.distanceType,
-                            //    exist.role,
-                            //    newName,
-                            //    newPhoneNumber,
-                            //    newEmail,
-                            //    newPassword,
-                            //    newAddress,
-                            //    newLatitude,
-                            //    newMaxDistance,
-                            //    newActive
-                            //);
-                                
-                            updateVolunteer=Volunteer_input(volunteerId);
-                                s_dal!.Volunteer.Update(updatedVolunteer);
+                                s_dal!.Volunteer.Update(Volunteer_input(volunteerId));
 
                                 Console.WriteLine("Volunteer updated successfully.");
 
