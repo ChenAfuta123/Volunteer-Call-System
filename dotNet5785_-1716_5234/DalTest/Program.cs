@@ -49,6 +49,12 @@ internal class Program
         return newVolunteer;
     }
     static Call Call_input(int id) {
+        if (id == 0)
+        {
+            Console.WriteLine("Enter volunteer's Id:");
+            int.TryParse(Console.ReadLine(), out int Id);
+            id = Id;
+        }
         Console.WriteLine("Enter call address:");
         string address = Console.ReadLine() ?? string.Empty;
         CallType callType = GetCallTypeFromUser();
@@ -69,7 +75,8 @@ internal class Program
         Call newCall = new(id, callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
         return newCall;
     }
-        static CallType GetCallTypeFromUser()
+   
+    static CallType GetCallTypeFromUser()
     {
         // הדפסת כל סוגי הקריאה האפשריים למשתמש
         Console.WriteLine("Enter the assistance type:");
@@ -348,8 +355,8 @@ internal class Program
                                     Console.WriteLine("Volunteer not found.");
                                     break; 
                                 }
-
-                            s_dal!.Volunteer.Update(Volunteer_input(volunteerId));
+                            Volunteer UpdateVolunteer = Volunteer_input(volunteerId);
+                            s_dal!.Volunteer.Update(UpdateVolunteer);
 
                             Console.WriteLine("Volunteer updated successfully.");
 
