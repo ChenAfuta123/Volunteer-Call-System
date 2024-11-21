@@ -10,88 +10,8 @@ namespace DalTest;
 /// </summary>
 internal class Program
 {
-    static Volunteer Volunteer_input(int id)
-    {
-        if (id == 0) 
-        {
-            Console.WriteLine("Enter volunteer's Id:");
-            int.TryParse(Console.ReadLine(), out int Id);
-            id = Id;
-        }
-        Console.WriteLine("Enter volunteer's name:");
-        string name = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter the role (0 - volunteer, 1 - manager):");
-        Role role = (Role)int.Parse(Console.ReadLine()!);
-
-        Console.WriteLine("Enter volunteer's phone number:");
-        string phoneNumber = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's email:");
-        string email = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's Password:");
-        string Password = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's Address:");
-        string Address = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter the distance type (0 - AirDistance, 1 - WalkingDistance, 2 - DrivingDistance):");
-        DistanceType distanceType = (DistanceType)int.Parse(Console.ReadLine()!);
-
-        Console.WriteLine("Enter volunteer's Latitude:");
-        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
-
-        Console.WriteLine("Enter volunteer's MaxDistance:");
-        double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
-
-        Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
-        return newVolunteer;
-    }
-    static Call Call_input(int id) {
-        if (id == 0)
-        {
-            Console.WriteLine("Enter volunteer's Id:");
-            int.TryParse(Console.ReadLine(), out int Id);
-            id = Id;
-        }
-        Console.WriteLine("Enter call address:");
-        string address = Console.ReadLine() ?? string.Empty;
-        CallType callType = GetCallTypeFromUser();
-
-        Console.WriteLine("Enter call description:");
-        string description = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter call Latitude:");
-        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
-
-        Console.WriteLine("Enter call Longitude:");
-        double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
-        if (id == 0)
-        {
-            int newCallId = s_dal!.Config.NextCallId;
-            id = newCallId;
-        }
-        Call newCall = new(id, callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
-        return newCall;
-    }
-   
-    static CallType GetCallTypeFromUser()
-    {
-        // הדפסת כל סוגי הקריאה האפשריים למשתמש
-        Console.WriteLine("Enter the assistance type:");
-        foreach (CallType type in Enum.GetValues(typeof(CallType)))
-        {
-            Console.WriteLine($"{(int)type} - {type}");
-        }
-
-      
-        string? input = Console.ReadLine();
-
-        // המרת הקלט ל-Enum אם אפשר, אחרת מחזירים את ברירת המחדל
-        return Enum.TryParse(input, out CallType result) ? result : CallType.EssentialSupplies;
-    }
     static readonly IDal s_dal = new DalList();
+
     /// <summary>
     /// Enum for the main menu options.
     /// </summary>
@@ -149,420 +69,8 @@ internal class Program
     /// <summary>
     /// Handles the creation of a new volunteer.
     /// </summary>
-    void CreateVolunteer() {
-        Volunteer newVolunteer = Volunteer_input(0);
-        s_dal!.Volunteer.Create(newVolunteer);
-        Console.WriteLine("Volunteer added successfully.");
-    }
-
-    /// <summary>
-    /// Handles the creation of a new call.
-    /// </summary>
-    void CreateCall()
-    {
-        //Console.WriteLine("Enter call address:");
-        //string address = Console.ReadLine() ?? string.Empty;
-        //CallType callType = GetCallTypeFromUser();
-
-        //Console.WriteLine("Enter call description:");
-        //string description = Console.ReadLine() ?? string.Empty;
-
-        //Console.WriteLine("Enter call Latitude:");
-        //double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
-
-        //Console.WriteLine("Enter call Longitude:");
-        //double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
-
-        //int newCallId = s_dal!.Config.NextCallId;
-
-        //Call newCall = new(newCallId,callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
-        Call newCall = Call_input(0);
-        s_dal!.Call.Create(newCall);
-        Console.WriteLine("Call added successfully.");
-    }
-
-    /// <summary>
-    /// Handles the creation of a new assignment.
-    /// </summary>
-    void CreateAssignment()
-    {
-        int newAssignmentId = s_dal!.Config.NextAssignmentId;
-        Console.WriteLine("Enter volunteer ID:");
-        int.TryParse(Console.ReadLine(), out int volunteerId);
-
-        Console.WriteLine("Enter call ID:");
-        int.TryParse(Console.ReadLine(), out int callId);
-
-        Assignment newAssignment = new(newAssignmentId, callId, volunteerId, s_dal!.Config.Clock, null, null);
-        s_dal!.Assignment.Create(newAssignment);
-        Console.WriteLine("Assignment added successfully.");
-    }
-
-    /// <summary>
-    /// Displays the details of a specific volunteer by ID.
-    /// </summary>
-    /// <param name="id">The ID of the volunteer to view.</param>
-    void ViewVolunteer(int id)
-    {
-        var volunteer = s_dal!.Volunteer.Read(id);
-        if (volunteer != null)
-            Console.WriteLine(volunteer);
-        else
-            Console.WriteLine("Volunteer not found.");
-    }
-
-    /// <summary>
-    /// Displays the details of a specific call by ID.
-    /// </summary>
-    /// <param name="id">The ID of the call to view.</param>
-    void ViewCall(int id)
-    {
-        var call = s_dal!.Call.Read(id);
-        if (call != null)
-            Console.WriteLine(call);
-        else
-            Console.WriteLine("Call not found.");
-    }
-
-    /// <summary>
-    /// Displays the details of a specific assignment by ID.
-    /// </summary>
-    /// <param name="id">The ID of the assignment to view.</param>
-    void ViewAssignment(int id)
-    {
-        var assignment = s_dal!.Assignment.Read(id);
-        if (assignment != null)
-            Console.WriteLine(assignment);
-        else
-            Console.WriteLine("Assignment not found.");
-    }
-
-
-
-
-    /// <summary>
-    /// Displays and manages the entity-specific menu for performing CRUD operations and other actions
-    /// such as viewing all entries, updating, or deleting entries of a specified entity type.
-    /// </summary>
-    /// <param name="entityType">The type of the entity (Volunteer, Call, Assignment) for which the menu operates.</param>
-
-    public void entityMenu(EntityType entityType)
-    {
-
-
-        bool continueMenu = true;
-
-        while (continueMenu)
-        {
-            Console.WriteLine("Select an option (0-Exit, 1-Add, 2-View, 3-ViewAll, 4-Update" +
-                ", 5-Delete, 6-DeleteAll):");
-            int.TryParse(Console.ReadLine(), out int choice);
-            EntityMenu selectedMenu = (EntityMenu)choice;
-             
-            switch (selectedMenu)
-            {
-                case EntityMenu.Exit:
-                    continueMenu = false;
-                    break;
-                case EntityMenu.Add:
-                    try
-                    {
-                        switch (entityType)
-                        {
-                            case EntityType.Volunteer:
-                                CreateVolunteer();
-                                break;
-                            case EntityType.Call:
-                                CreateCall();
-                                break;
-                            case EntityType.Assignment:
-                                CreateAssignment();
-                                break;
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine($"{ex.Message}");
-                    }
-                    break;
-                case EntityMenu.View:
-                    Console.WriteLine($"Enter {entityType} ID:");
-                    int.TryParse(Console.ReadLine(), out int id);
-
-                    switch (entityType)
-                    {
-                        case EntityType.Volunteer:
-                            ViewVolunteer(id);
-                            break;
-                        case EntityType.Call:
-                            ViewCall(id);
-                            break;
-                        case EntityType.Assignment:
-                            ViewAssignment(id);
-                            break;
-                    }
-                    break;
-
-                case EntityMenu.ViewAll:
-
-                    switch (entityType)
-                    {
-                        case EntityType.Volunteer:
-                          
-                            List<Volunteer> volunteers = s_dal!.Volunteer!.ReadAll().ToList();
-
-                            foreach (var volunteer in volunteers)
-                            {
-                                ViewVolunteer(volunteer.Id);
-
-                            }
-                            break;
-                        case EntityType.Call:
-
-                            List<Call> calls = s_dal!.Call!.ReadAll().ToList();
-                            foreach (var call in calls)
-                            {
-                                ViewCall(call.Id);
-                            }
-                            break;
-
-                        case EntityType.Assignment:
-
-                            List<Assignment> assignments = s_dal!.Assignment!.ReadAll().ToList();
-                            foreach (var assignment in assignments)
-                            {
-                                ViewAssignment(assignment.Id);
-                            }
-                            break;
-                    }
-                    break;
-
-                case EntityMenu.Update:
-
-                    switch (entityType)
-                        {
-                            case EntityType.Volunteer:
-
-
-                              
-                                Console.WriteLine("Enter volunteer ID:");
-                                int.TryParse(Console.ReadLine(), out int volunteerId);
-
-                              
-                                Volunteer? exist = s_dal!.Volunteer.Read(volunteerId);
-
-                                if (exist == null)
-                                {
-                                    Console.WriteLine("Volunteer not found.");
-                                    break; 
-                                }
-                            Volunteer new_volunteer = Volunteer_input(volunteerId);
-                            s_dal!.Volunteer.Update(new_volunteer);
-
-                            Console.WriteLine("Volunteer updated successfully.");
-
-                                break;
-
-
-
-                            case EntityType.Call:
-
-                                
-                                Console.WriteLine("Enter call ID:");
-                                int.TryParse(Console.ReadLine(), out int callId);
-
-                                // Fetch the existing call by ID
-                                Call? existingCall = s_dal!.Call.Read(callId);
-
-                                if (existingCall == null)
-                                {
-                                    Console.WriteLine("Call not found.");
-                                    break; // Exit if the call doesn't exist
-                                }
-
-                            // Ask the user to input the new data for the update
-                            Console.WriteLine("Enter new data to update:");
-                            Call updatedCall = Call_input(callId);
-                            // Call the update function to update the call
-                            s_dal!.Call.Update(updatedCall);
-                                Console.WriteLine("Call updated successfully.");
-                                break;
-
-
-                            case EntityType.Assignment:
-
-                                Console.WriteLine("Unable to update an Assignment.");
-
-                                break;
-                        }
- 
-                  
-                    break;
-                case EntityMenu.Delete:
-                   
-                        switch (entityType)
-                        {
-                            case EntityType.Volunteer:
-                                Console.WriteLine("Enter the volunteer's ID to delete");
-                                int.TryParse(Console.ReadLine(), out int volunteerId);
-                                s_dal!.Volunteer.Delete(volunteerId);
-                                Console.WriteLine("The volunteer deleted successfully");
-                                break;
-                            case EntityType.Call:
-                                Console.WriteLine("Enter the call's ID to delete");
-                                int.TryParse(Console.ReadLine(), out int callId);
-                                s_dal!.Call.Delete(callId);
-                                Console.WriteLine("The call deleted successfully");
-                                break;
-                            case EntityType.Assignment:
-                                Console.WriteLine("Enter the assignment's ID to delete");
-                                int.TryParse(Console.ReadLine(), out int assignmentId);
-                                s_dal!.Assignment.Delete(assignmentId);
-                                Console.WriteLine("The assignment deleted successfully");
-                                break;
-                        }
-                    
-                    break;
-                case EntityMenu.DeleteAll:
-
-                    switch (entityType)
-                    {
-                        case EntityType.Volunteer:
-                           
-                            s_dal!.Volunteer.DeleteAll();
-
-                            break;
-                        case EntityType.Call:
-                           
-                            s_dal!.Call.DeleteAll();
-                
-                            break;
-                        case EntityType.Assignment:
-                            
-                            s_dal!.Assignment.DeleteAll();
-                           
-                            break;
-                    }
-
-
-                    Console.WriteLine($"Deleting all {entityType} entries.");
-                    break;
-                default:
-                    Console.WriteLine("Invalid menu option.");
-                    break;
-            }
-        }
-
-        Console.WriteLine($"Exited {entityType} menu.");
-    }
-    /// <summary>
-    /// Displays and manages the configuration menu, allowing the user to perform actions
-    /// such as advancing the system clock, managing configuration variables, and resetting configurations.
-    /// </summary>
-    public void configMenu()
-    {
-        // A flag to control the menu loop.
-        bool continueMenu = true;
-
-        // Main loop for the Configuration Menu.
-        while (continueMenu)
-        {
-            // Display the configuration menu options.
-            Console.WriteLine("Select an option in the Configuration Menu:");
-            Console.WriteLine("0 - Exit Configuration Menu");
-            Console.WriteLine("1 - Advance system clock by one minute");
-            Console.WriteLine("2 - Advance system clock by one hour");
-            Console.WriteLine("3 - Advance system clock by one day");
-            Console.WriteLine("4 - Display current system clock value");
-            Console.WriteLine("5 - Set a new value for a configuration variable");
-            Console.WriteLine("6 - Display current value of a configuration variable");
-            Console.WriteLine("7 - Reset all configuration values");
-
-            // Read and parse the user's choice.
-            int.TryParse(Console.ReadLine(), out int choice);
-            ConfigMenu selectedOption = (ConfigMenu)choice;
-
-            // Execute the selected option.
-            switch (selectedOption)
-            {
-                case ConfigMenu.Exit:
-                    // Exit the configuration menu.
-                    continueMenu = false;
-                    break;
-
-                case ConfigMenu.AdvanceClockByMinute:
-                    // Advance the system clock by one minute.
-                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddMinutes(1);
-                    Console.WriteLine("System clock advanced by one minute.");
-                    break;
-
-                case ConfigMenu.AdvanceClockByHour:
-                    // Advance the system clock by one hour.
-                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddHours(1);
-                    Console.WriteLine("System clock advanced by one hour.");
-                    break;
-
-                case ConfigMenu.AdvanceClockByDay:
-                    // Advance the system clock by one day.
-                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddDays(1);
-                    Console.WriteLine("System clock advanced by one day.");
-                    break;
-
-                case ConfigMenu.DisplayClock:
-                    // Display the current value of the system clock.
-                    Console.WriteLine($"Current system clock value: {s_dal!.Config.Clock}");
-                    break;
-
-                case ConfigMenu.SetConfigVariable:
-                    // Set a new value for a specified configuration variable.
-                    Console.Write("Enter the name of the configuration variable to set: ");
-                    string? variableName = Console.ReadLine();
-                    Console.Write("Enter the new value for the configuration variable: ");
-                    string newValue = Console.ReadLine()!;
-
-                    if (!string.IsNullOrWhiteSpace(variableName) && !string.IsNullOrWhiteSpace(newValue))
-                    {
-                        s_dal!.Config.SetConfigValue(variableName, newValue);
-                        Console.WriteLine($"Configuration variable '{variableName}' set to '{newValue}'.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Variable name and value cannot be empty.");
-                    }
-                    break;
-
-                case ConfigMenu.DisplayConfigVariable:
-                    // Display the value of a specified configuration variable.
-                    Console.Write("Enter the name of the configuration variable to display: ");
-                    string configVarName = Console.ReadLine()!;
-
-                    if (!string.IsNullOrWhiteSpace(configVarName))
-                    {
-                        string value = s_dal!.Config.GetConfigValue(configVarName);
-                        Console.WriteLine($"Value of configuration variable '{configVarName}': {value}");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Variable name cannot be empty.");
-                    }
-                    break;
-
-                case ConfigMenu.ResetConfig:
-                    // Reset all configuration variables to their default values.
-                    s_dal!.Config.Reset();
-                    Console.WriteLine("All configuration variables have been reset.");
-                    break;
-
-                default:
-                    // Handle invalid menu options.
-                    Console.WriteLine("Invalid option. Please select a valid option.");
-                    break;
-            }
-        }
-
-        // Indicate that the configuration menu has been exited.
-        Console.WriteLine("Exited Configuration Menu.");
-    }
+    
+   
 
 
     /// <summary>
@@ -692,6 +200,533 @@ internal class Program
     }
 
 
+
+
+
+
+
+
+
+    static Volunteer Volunteer_input(int id)
+    {
+        if (id == 0)
+        {
+            Console.WriteLine("Enter volunteer's Id:");
+            int.TryParse(Console.ReadLine(), out int Id);
+            id = Id;
+        }
+        Console.WriteLine("Enter volunteer's name:");
+        string name = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter the role (0 - volunteer, 1 - manager):");
+        Role role = (Role)int.Parse(Console.ReadLine()!);
+
+        Console.WriteLine("Enter volunteer's phone number:");
+        string phoneNumber = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's email:");
+        string email = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Password:");
+        string Password = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Address:");
+        string Address = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter the distance type (0 - AirDistance, 1 - WalkingDistance, 2 - DrivingDistance):");
+        DistanceType distanceType = (DistanceType)int.Parse(Console.ReadLine()!);
+
+        Console.WriteLine("Enter volunteer's Latitude:");
+        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
+
+        Console.WriteLine("Enter volunteer's MaxDistance:");
+        double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
+
+        Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
+        return newVolunteer;
+    }
+    static Call Call_input(int id)
+    {
+        if (id == 0)
+        {
+            Console.WriteLine("Enter volunteer's Id:");
+            int.TryParse(Console.ReadLine(), out int Id);
+            id = Id;
+        }
+        Console.WriteLine("Enter call address:");
+        string address = Console.ReadLine() ?? string.Empty;
+        CallType callType = GetCallTypeFromUser();
+
+        Console.WriteLine("Enter call description:");
+        string description = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter call Latitude:");
+        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
+
+        Console.WriteLine("Enter call Longitude:");
+        double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
+        if (id == 0)
+        {
+            int newCallId = s_dal!.Config.NextCallId;
+            id = newCallId;
+        }
+        Call newCall = new(id, callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
+        return newCall;
+    }
+
+    static CallType GetCallTypeFromUser()
+    {
+        // הדפסת כל סוגי הקריאה האפשריים למשתמש
+        Console.WriteLine("Enter the assistance type:");
+        foreach (CallType type in Enum.GetValues(typeof(CallType)))
+        {
+            Console.WriteLine($"{(int)type} - {type}");
+        }
+
+
+        string? input = Console.ReadLine();
+
+        // המרת הקלט ל-Enum אם אפשר, אחרת מחזירים את ברירת המחדל
+        return Enum.TryParse(input, out CallType result) ? result : CallType.EssentialSupplies;
+    }
+
+
+    void CreateVolunteer()
+    {
+        Volunteer newVolunteer = Volunteer_input(0);
+        s_dal!.Volunteer.Create(newVolunteer);
+        Console.WriteLine("Volunteer added successfully.");
+    }
+
+    /// <summary>
+    /// Handles the creation of a new call.
+    /// </summary>
+    void CreateCall()
+    {
+
+        Call newCall = Call_input(0);
+        s_dal!.Call.Create(newCall);
+        Console.WriteLine("Call added successfully.");
+    }
+
+    /// <summary>
+    /// Handles the creation of a new assignment.
+    /// </summary>
+    void CreateAssignment()
+    {
+        int newAssignmentId = s_dal!.Config.NextAssignmentId;
+        Console.WriteLine("Enter volunteer ID:");
+        int.TryParse(Console.ReadLine(), out int volunteerId);
+
+        Console.WriteLine("Enter call ID:");
+        int.TryParse(Console.ReadLine(), out int callId);
+
+        Assignment newAssignment = new(newAssignmentId, callId, volunteerId, s_dal!.Config.Clock, null, null);
+        s_dal!.Assignment.Create(newAssignment);
+        Console.WriteLine("Assignment added successfully.");
+    }
+
+    /// <summary>
+    /// Displays the details of a specific volunteer by ID.
+    /// </summary>
+    /// <param name="id">The ID of the volunteer to view.</param>
+    void ViewVolunteer(int id)
+    {
+        var volunteer = s_dal!.Volunteer.Read(id);
+        if (volunteer != null)
+        {
+            Console.WriteLine($"ID: {volunteer.Id}");
+            Console.WriteLine($"Name: {volunteer.Name}");
+            Console.WriteLine($"Role: {volunteer.role}");
+            Console.WriteLine($"Distance Type: {volunteer.distanceType}");
+            Console.WriteLine($"Phone Number: {volunteer.PhoneNumber}");
+            Console.WriteLine($"Email: {volunteer.Email}");
+            Console.WriteLine($"Password: {volunteer.Password ?? "N/A"}");
+            Console.WriteLine($"Address: {volunteer.Address ?? "N/A"}");
+            Console.WriteLine($"Latitude: {volunteer.Latitude?.ToString("F6") ?? "N/A"}");
+            Console.WriteLine($"Max Distance: {volunteer.MaxDistance?.ToString("F2") ?? "N/A"} km");
+            Console.WriteLine($"Active: {(volunteer.Active ? "Yes" : "No")}");
+        }
+        else
+        {
+            Console.WriteLine("Volunteer not found.");
+        }
+    }
+
+
+    /// <summary>
+    /// Displays the details of a specific call by ID.
+    /// </summary>
+    /// <param name="id">The ID of the call to view.</param>
+    void ViewCall(int id)
+    {
+        var call = s_dal!.Call.Read(id);
+        if (call != null)
+        {
+
+            Console.WriteLine($"ID: {call.Id}");
+            Console.WriteLine($"Call Type: {call.callType}");
+            Console.WriteLine($"Address: {call.Address}");
+            Console.WriteLine($"Latitude: {call.Latitude:F6}");
+            Console.WriteLine($"Longitude: {call.Longitude:F6}");
+            Console.WriteLine($"Opening Time: {call.OpeningTime:yyyy-MM-dd HH:mm:ss}");
+            Console.WriteLine($"Description: {call.Description ?? "N/A"}");
+            Console.WriteLine($"Max Ending Time: {call.maxEndingTime?.ToString("yyyy-MM-dd HH:mm:ss") ?? "N/A"}");
+        }
+        else
+        {
+            Console.WriteLine("Call not found.");
+        }
+    }
+
+
+    /// <summary>
+    /// Displays the details of a specific assignment by ID.
+    /// </summary>
+    /// <param name="id">The ID of the assignment to view.</param>
+    void ViewAssignment(int id)
+    {
+        var assignment = s_dal!.Assignment.Read(id);
+        if (assignment != null)
+        {
+            Console.WriteLine($"ID: {assignment.Id}");
+            Console.WriteLine($"Call ID: {assignment.CallId}");
+            Console.WriteLine($"Volunteer ID: {assignment.VolunteerId}");
+            Console.WriteLine($"Entry Time: {assignment.EntryTime}");
+            Console.WriteLine($"End Time Type: {assignment.EndTimeType?.ToString() ?? "N/A"}");
+            Console.WriteLine($"End Time: {assignment.EndTime?.ToString() ?? "N/A"}");
+        }
+
+        else
+            Console.WriteLine("Assignment not found.");
+    }
+
+    private void AddEntity(EntityType entityType)
+    {
+        try
+        {
+            switch (entityType)
+            {
+                case EntityType.Volunteer:
+                    CreateVolunteer();
+                    break;
+                case EntityType.Call:
+                    CreateCall();
+                    break;
+                case EntityType.Assignment:
+                    CreateAssignment();
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"{ex.Message}");
+        }
+    }
+
+    private void ViewEntity(EntityType entityType)
+    {
+        Console.WriteLine($"Enter {entityType} ID:");
+        int.TryParse(Console.ReadLine(), out int id);
+
+        switch (entityType)
+        {
+            case EntityType.Volunteer:
+                ViewVolunteer(id);
+                break;
+            case EntityType.Call:
+                ViewCall(id);
+                break;
+            case EntityType.Assignment:
+                ViewAssignment(id);
+                break;
+        }
+    }
+
+    private void ViewAllEntities(EntityType entityType)
+    {
+        switch (entityType)
+        {
+            case EntityType.Volunteer:
+                List<Volunteer> volunteers = s_dal!.Volunteer!.ReadAll().ToList();
+                foreach (var volunteer in volunteers)
+                {
+                    ViewVolunteer(volunteer.Id);
+                }
+                break;
+            case EntityType.Call:
+                List<Call> calls = s_dal!.Call!.ReadAll().ToList();
+                foreach (var call in calls)
+                {
+                    ViewCall(call.Id);
+                }
+                break;
+            case EntityType.Assignment:
+                List<Assignment> assignments = s_dal!.Assignment!.ReadAll().ToList();
+                foreach (var assignment in assignments)
+                {
+                    ViewAssignment(assignment.Id);
+                }
+                break;
+        }
+    }
+
+    private void UpdateEntity(EntityType entityType)
+    {
+        switch (entityType)
+        {
+            case EntityType.Volunteer:
+                Console.WriteLine("Enter volunteer ID:");
+                if (!int.TryParse(Console.ReadLine(), out int volunteerId) || s_dal!.Volunteer.Read(volunteerId) is not { } exist)
+                {
+                    Console.WriteLine("Volunteer not found.");
+                    break;
+                }
+                Volunteer newVolunteer = Volunteer_input(volunteerId);
+                s_dal!.Volunteer.Update(newVolunteer);
+                Console.WriteLine("Volunteer updated successfully.");
+                break;
+
+            case EntityType.Call:
+                Console.WriteLine("Enter call ID:");
+                if (!int.TryParse(Console.ReadLine(), out int callId) || s_dal!.Call.Read(callId) is not { } existingCall)
+                {
+                    Console.WriteLine("Call not found.");
+                    break;
+                }
+                Call updatedCall = Call_input(callId);
+                s_dal!.Call.Update(updatedCall);
+                Console.WriteLine("Call updated successfully.");
+                break;
+
+            case EntityType.Assignment:
+                Console.WriteLine("Unable to update an Assignment.");
+                break;
+        }
+    }
+
+    private void DeleteEntity(EntityType entityType)
+    {
+        switch (entityType)
+        {
+            case EntityType.Volunteer:
+                Console.WriteLine("Enter the volunteer's ID to delete");
+                int.TryParse(Console.ReadLine(), out int volunteerId);
+                s_dal!.Volunteer.Delete(volunteerId);
+                Console.WriteLine("The volunteer deleted successfully");
+                break;
+            case EntityType.Call:
+                Console.WriteLine("Enter the call's ID to delete");
+                int.TryParse(Console.ReadLine(), out int callId);
+                s_dal!.Call.Delete(callId);
+                Console.WriteLine("The call deleted successfully");
+                break;
+            case EntityType.Assignment:
+                Console.WriteLine("Enter the assignment's ID to delete");
+                int.TryParse(Console.ReadLine(), out int assignmentId);
+                s_dal!.Assignment.Delete(assignmentId);
+                Console.WriteLine("The assignment deleted successfully");
+                break;
+        }
+    }
+
+    private void DeleteAllEntities(EntityType entityType)
+    {
+        switch (entityType)
+        {
+            case EntityType.Volunteer:
+                s_dal!.Volunteer.DeleteAll();
+                break;
+            case EntityType.Call:
+                s_dal!.Call.DeleteAll();
+                break;
+            case EntityType.Assignment:
+                s_dal!.Assignment.DeleteAll();
+                break;
+        }
+
+        Console.WriteLine($"Deleting all {entityType} entries.");
+    }
+
+    private void DisplayConfigMenuOptions()
+    {
+        Console.WriteLine("Select an option in the Configuration Menu:");
+        Console.WriteLine("0 - Exit Configuration Menu");
+        Console.WriteLine("1 - Advance system clock by one minute");
+        Console.WriteLine("2 - Advance system clock by one hour");
+        Console.WriteLine("3 - Advance system clock by one day");
+        Console.WriteLine("4 - Display current system clock value");
+        Console.WriteLine("5 - Set a new value for a configuration variable");
+        Console.WriteLine("6 - Display current value of a configuration variable");
+        Console.WriteLine("7 - Reset all configuration values");
+    }
+
+    private void AdvanceClockByMinutes(int minutes)
+    {
+        s_dal!.Config.Clock = s_dal!.Config.Clock.AddMinutes(minutes);
+        Console.WriteLine($"System clock advanced by {minutes} minute(s).");
+    }
+
+    private void AdvanceClockByHours(int hours)
+    {
+        s_dal!.Config.Clock = s_dal!.Config.Clock.AddHours(hours);
+        Console.WriteLine($"System clock advanced by {hours} hour(s).");
+    }
+
+    private void AdvanceClockByDays(int days)
+    {
+        s_dal!.Config.Clock = s_dal!.Config.Clock.AddDays(days);
+        Console.WriteLine($"System clock advanced by {days} day(s).");
+    }
+
+    private void DisplayCurrentClock()
+    {
+        Console.WriteLine($"Current system clock value: {s_dal!.Config.Clock}");
+    }
+
+    private void SetConfigurationVariable()
+    {
+        Console.Write("Enter the name of the configuration variable to set: ");
+        string? variableName = Console.ReadLine();
+        Console.Write("Enter the new value for the configuration variable: ");
+        string newValue = Console.ReadLine()!;
+
+        if (!string.IsNullOrWhiteSpace(variableName) && !string.IsNullOrWhiteSpace(newValue))
+        {
+            s_dal!.Config.SetConfigValue(variableName, newValue);
+            Console.WriteLine($"Configuration variable '{variableName}' set to '{newValue}'.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Variable name and value cannot be empty.");
+        }
+    }
+
+    private void DisplayConfigurationVariable()
+    {
+        Console.Write("Enter the name of the configuration variable to display: ");
+        string configVarName = Console.ReadLine()!;
+
+        if (!string.IsNullOrWhiteSpace(configVarName))
+        {
+            string value = s_dal!.Config.GetConfigValue(configVarName);
+            Console.WriteLine($"Value of configuration variable '{configVarName}': {value}");
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Variable name cannot be empty.");
+        }
+    }
+
+    private void ResetConfiguration()
+    {
+        s_dal!.Config.Reset();
+        Console.WriteLine("All configuration variables have been reset.");
+    }
+    /// <summary>
+    /// Displays and manages the entity-specific menu for performing CRUD operations and other actions
+    /// such as viewing all entries, updating, or deleting entries of a specified entity type.
+    /// </summary>
+    /// <param name="entityType">The type of the entity (Volunteer, Call, Assignment) for which the menu operates.</param>
+
+    public void entityMenu(EntityType entityType)
+    {
+        bool continueMenu = true;
+
+        while (continueMenu)
+        {
+            Console.WriteLine("Select an option (0-Exit, 1-Add, 2-View, 3-ViewAll, 4-Update" +
+                              ", 5-Delete, 6-DeleteAll):");
+            int.TryParse(Console.ReadLine(), out int choice);
+            EntityMenu selectedMenu = (EntityMenu)choice;
+
+            switch (selectedMenu)
+            {
+                case EntityMenu.Exit:
+                    continueMenu = false;
+                    break;
+                case EntityMenu.Add:
+                    AddEntity(entityType);
+                    break;
+                case EntityMenu.View:
+                    ViewEntity(entityType);
+                    break;
+                case EntityMenu.ViewAll:
+                    ViewAllEntities(entityType);
+                    break;
+                case EntityMenu.Update:
+                    UpdateEntity(entityType);
+                    break;
+                case EntityMenu.Delete:
+                    DeleteEntity(entityType);
+                    break;
+                case EntityMenu.DeleteAll:
+                    DeleteAllEntities(entityType);
+                    break;
+                default:
+                    Console.WriteLine("Invalid menu option.");
+                    break;
+            }
+        }
+
+        Console.WriteLine($"Exited {entityType} menu.");
+    }
+    /// <summary>
+    /// Displays and manages the configuration menu, allowing the user to perform actions
+    /// such as advancing the system clock, managing configuration variables, and resetting configurations.
+    /// </summary>
+    public void configMenu()
+    {
+        bool continueMenu = true;
+
+        while (continueMenu)
+        {
+            DisplayConfigMenuOptions();
+            int.TryParse(Console.ReadLine(), out int choice);
+            ConfigMenu selectedOption = (ConfigMenu)choice;
+
+            switch (selectedOption)
+            {
+                case ConfigMenu.Exit:
+                    continueMenu = false;
+                    break;
+
+                case ConfigMenu.AdvanceClockByMinute:
+                    AdvanceClockByMinutes(1);
+                    break;
+
+                case ConfigMenu.AdvanceClockByHour:
+                    AdvanceClockByHours(1);
+                    break;
+
+                case ConfigMenu.AdvanceClockByDay:
+                    AdvanceClockByDays(1);
+                    break;
+
+                case ConfigMenu.DisplayClock:
+                    DisplayCurrentClock();
+                    break;
+
+                case ConfigMenu.SetConfigVariable:
+                    SetConfigurationVariable();
+                    break;
+
+                case ConfigMenu.DisplayConfigVariable:
+                    DisplayConfigurationVariable();
+                    break;
+
+                case ConfigMenu.ResetConfig:
+                    ResetConfiguration();
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid option. Please select a valid option.");
+                    break;
+            }
+        }
+
+        Console.WriteLine("Exited Configuration Menu.");
+    }
 
 
 }
