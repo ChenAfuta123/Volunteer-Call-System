@@ -302,6 +302,13 @@ internal class Program
         Console.WriteLine("Exited Configuration Menu.");
     }
 
+
+
+    //Program functions=========================================================================
+
+
+
+
     /// <summary>
     /// The user enters the details of the volunteer
     /// </summary>
@@ -556,6 +563,7 @@ internal class Program
                 foreach (var volunteer in volunteers)
                 {
                     ViewVolunteer(volunteer.Id);
+                    Console.WriteLine();
                 }
                 break;
             case EntityType.Call:
@@ -563,6 +571,7 @@ internal class Program
                 foreach (var call in calls)
                 {
                     ViewCall(call.Id);
+                    Console.WriteLine();
                 }
                 break;
             case EntityType.Assignment:
@@ -570,6 +579,7 @@ internal class Program
                 foreach (var assignment in assignments)
                 {
                     ViewAssignment(assignment.Id);
+                    Console.WriteLine();
                 }
                 break;
         }
