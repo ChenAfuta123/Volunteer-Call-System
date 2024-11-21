@@ -298,7 +298,7 @@ public static class Initialization
         s_dal.ResetDB();
 
         Console.WriteLine("Reset Configuration values and List values...");
-        create_volunteer(); 
+        create_volunteer();
         create_call();
         create_assignment();
     }
