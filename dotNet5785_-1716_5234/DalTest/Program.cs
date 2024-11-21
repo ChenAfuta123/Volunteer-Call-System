@@ -1,7 +1,6 @@
 ﻿using Dal;
 using DalApi;
 using DO;
-using Microsoft.VisualBasic;
 namespace DalTest;
 
 
@@ -153,22 +152,6 @@ internal class Program
     /// </summary>
     void CreateCall()
     {
-        //Console.WriteLine("Enter call address:");
-        //string address = Console.ReadLine() ?? string.Empty;
-        //CallType callType = GetCallTypeFromUser();
-
-        //Console.WriteLine("Enter call description:");
-        //string description = Console.ReadLine() ?? string.Empty;
-
-        //Console.WriteLine("Enter call Latitude:");
-        //double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
-
-        //Console.WriteLine("Enter call Longitude:");
-        //double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
-
-        //int newCallId = s_dal!.Config.NextCallId;
-
-        //Call newCall = new(newCallId,callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
         Call newCall = Call_input(0);
         s_dal!.Call.Create(newCall);
         Console.WriteLine("Call added successfully.");

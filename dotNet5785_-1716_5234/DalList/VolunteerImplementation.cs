@@ -6,20 +6,23 @@ using System.Collections.Generic;
 
 internal class VolunteerImplementation : IVolunteer
 {
-   
-        public void Create(Volunteer item)
+    /// <summary>
+    /// Creates a new volunteer and adds it to the data source.
+    /// </summary>
+    public void Create(Volunteer item)
+    {
+        Volunteer? existId = Read(item.Id);
+        if (existId != null)
         {
-         Volunteer? existId = Read(item.Id);
-            if (existId != null)
-            {
-                throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists\n");
-            }
-
-
-            DataSource.Volunteers.Add(item);
-            //return item.Id;
+            throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists\n");
         }
 
+        DataSource.Volunteers.Add(item);
+    }
+
+    /// <summary>
+    /// Deletes a volunteer by ID from the data source.
+    /// </summary>
     public void Delete(int id)
     {
         Volunteer? existId = Read(id);
@@ -30,28 +33,44 @@ internal class VolunteerImplementation : IVolunteer
         DataSource.Volunteers.Remove(existId);
     }
 
+    /// <summary>
+    /// Deletes all volunteers from the data source.
+    /// </summary>
     public void DeleteAll()
     {
         if (DataSource.Volunteers.Any())
         {
             DataSource.Volunteers.Clear();
         }
-       
     }
 
+    /// <summary>
+    /// Reads a volunteer by ID from the data source.
+    /// </summary>
     public Volunteer? Read(int id)
     {
-       return DataSource.Volunteers.FirstOrDefault(item => item.Id == id);
+        return DataSource.Volunteers.FirstOrDefault(item => item.Id == id);
     }
+
+    /// <summary>
+    /// Reads a volunteer that matches a specified filter from the data source.
+    /// </summary>
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
         return DataSource.Volunteers.FirstOrDefault(item => filter(item));
     }
-    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) //stage 2
-       => filter == null
-           ? DataSource.Volunteers.Select(item => item)
+
+    /// <summary>
+    /// Reads all volunteers from the data source, with an optional filter.
+    /// </summary>
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
+        => filter == null
+            ? DataSource.Volunteers.Select(item => item)
             : DataSource.Volunteers.Where(filter);
 
+    /// <summary>
+    /// Updates an existing volunteer in the data source.
+    /// </summary>
     public void Update(Volunteer item)
     {
         Volunteer? existId = Read(item.Id);
