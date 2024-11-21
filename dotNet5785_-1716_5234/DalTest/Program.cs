@@ -204,6 +204,119 @@ internal class Program
 
 
 
+    /// <summary>
+    /// Displays and manages the entity-specific menu for performing CRUD operations and other actions
+    /// such as viewing all entries, updating, or deleting entries of a specified entity type.
+    /// </summary>
+    /// <param name="entityType">The type of the entity (Volunteer, Call, Assignment) for which the menu operates.</param>
+
+    public void entityMenu(EntityType entityType)
+    {
+        bool continueMenu = true;
+
+        while (continueMenu)
+        {
+            Console.WriteLine("Select an option (0-Exit, 1-Add, 2-View, 3-ViewAll, 4-Update" +
+                              ", 5-Delete, 6-DeleteAll):");
+            int.TryParse(Console.ReadLine(), out int choice);
+            EntityMenu selectedMenu = (EntityMenu)choice;
+
+            switch (selectedMenu)
+            {
+                case EntityMenu.Exit:
+                    continueMenu = false;
+                    break;
+                case EntityMenu.Add:
+                    AddEntity(entityType);
+                    break;
+                case EntityMenu.View:
+                    ViewEntity(entityType);
+                    break;
+                case EntityMenu.ViewAll:
+                    ViewAllEntities(entityType);
+                    break;
+                case EntityMenu.Update:
+                    UpdateEntity(entityType);
+                    break;
+                case EntityMenu.Delete:
+                    DeleteEntity(entityType);
+                    break;
+                case EntityMenu.DeleteAll:
+                    DeleteAllEntities(entityType);
+                    break;
+                default:
+                    Console.WriteLine("Invalid menu option.");
+                    break;
+            }
+        }
+
+        Console.WriteLine($"Exited {entityType} menu.");
+    }
+    /// <summary>
+    /// Displays and manages the configuration menu, allowing the user to perform actions
+    /// such as advancing the system clock, managing configuration variables, and resetting configurations.
+    /// </summary>
+    public void configMenu()
+    {
+        bool continueMenu = true;
+
+        while (continueMenu)
+        {
+            DisplayConfigMenuOptions();
+            int.TryParse(Console.ReadLine(), out int choice);
+            ConfigMenu selectedOption = (ConfigMenu)choice;
+
+            switch (selectedOption)
+            {
+                case ConfigMenu.Exit:
+                    continueMenu = false;
+                    break;
+
+                case ConfigMenu.AdvanceClockByMinute:
+                    // Advance the system clock by one minute.
+                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddMinutes(1);
+                    Console.WriteLine("System clock advanced by one minute.");
+                    break;
+
+                case ConfigMenu.AdvanceClockByHour:
+                    // Advance the system clock by one hour.
+                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddHours(1);
+                    Console.WriteLine("System clock advanced by one hour.");
+                    break;
+
+                case ConfigMenu.AdvanceClockByDay:
+                    // Advance the system clock by one day.
+                    s_dal!.Config.Clock = s_dal!.Config.Clock.AddDays(1);
+                    Console.WriteLine("System clock advanced by one day.");
+                    break;
+
+
+                case ConfigMenu.DisplayClock:
+                    Console.WriteLine($"Current system clock value: {s_dal!.Config.Clock}");
+                    break;
+
+                case ConfigMenu.SetConfigVariable:
+                    SetConfigurationVariable();
+                    break;
+
+                case ConfigMenu.DisplayConfigVariable:
+                    DisplayConfigurationVariable();
+                    break;
+
+                case ConfigMenu.ResetConfig:
+                    s_dal!.Config.Reset();
+                    Console.WriteLine("All configuration variables have been reset.");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid option. Please select a valid option.");
+                    break;
+            }
+        }
+
+        Console.WriteLine("Exited Configuration Menu.");
+    }
+
 
 
     static Volunteer Volunteer_input(int id)
@@ -400,6 +513,10 @@ internal class Program
             Console.WriteLine("Assignment not found.");
     }
 
+
+
+
+
     private void AddEntity(EntityType entityType)
     {
         try
@@ -560,28 +677,8 @@ internal class Program
         Console.WriteLine("7 - Reset all configuration values");
     }
 
-    private void AdvanceClockByMinutes(int minutes)
-    {
-        s_dal!.Config.Clock = s_dal!.Config.Clock.AddMinutes(minutes);
-        Console.WriteLine($"System clock advanced by {minutes} minute(s).");
-    }
-
-    private void AdvanceClockByHours(int hours)
-    {
-        s_dal!.Config.Clock = s_dal!.Config.Clock.AddHours(hours);
-        Console.WriteLine($"System clock advanced by {hours} hour(s).");
-    }
-
-    private void AdvanceClockByDays(int days)
-    {
-        s_dal!.Config.Clock = s_dal!.Config.Clock.AddDays(days);
-        Console.WriteLine($"System clock advanced by {days} day(s).");
-    }
-
-    private void DisplayCurrentClock()
-    {
-        Console.WriteLine($"Current system clock value: {s_dal!.Config.Clock}");
-    }
+  
+  
 
     private void SetConfigurationVariable()
     {
@@ -617,116 +714,7 @@ internal class Program
         }
     }
 
-    private void ResetConfiguration()
-    {
-        s_dal!.Config.Reset();
-        Console.WriteLine("All configuration variables have been reset.");
-    }
-    /// <summary>
-    /// Displays and manages the entity-specific menu for performing CRUD operations and other actions
-    /// such as viewing all entries, updating, or deleting entries of a specified entity type.
-    /// </summary>
-    /// <param name="entityType">The type of the entity (Volunteer, Call, Assignment) for which the menu operates.</param>
-
-    public void entityMenu(EntityType entityType)
-    {
-        bool continueMenu = true;
-
-        while (continueMenu)
-        {
-            Console.WriteLine("Select an option (0-Exit, 1-Add, 2-View, 3-ViewAll, 4-Update" +
-                              ", 5-Delete, 6-DeleteAll):");
-            int.TryParse(Console.ReadLine(), out int choice);
-            EntityMenu selectedMenu = (EntityMenu)choice;
-
-            switch (selectedMenu)
-            {
-                case EntityMenu.Exit:
-                    continueMenu = false;
-                    break;
-                case EntityMenu.Add:
-                    AddEntity(entityType);
-                    break;
-                case EntityMenu.View:
-                    ViewEntity(entityType);
-                    break;
-                case EntityMenu.ViewAll:
-                    ViewAllEntities(entityType);
-                    break;
-                case EntityMenu.Update:
-                    UpdateEntity(entityType);
-                    break;
-                case EntityMenu.Delete:
-                    DeleteEntity(entityType);
-                    break;
-                case EntityMenu.DeleteAll:
-                    DeleteAllEntities(entityType);
-                    break;
-                default:
-                    Console.WriteLine("Invalid menu option.");
-                    break;
-            }
-        }
-
-        Console.WriteLine($"Exited {entityType} menu.");
-    }
-    /// <summary>
-    /// Displays and manages the configuration menu, allowing the user to perform actions
-    /// such as advancing the system clock, managing configuration variables, and resetting configurations.
-    /// </summary>
-    public void configMenu()
-    {
-        bool continueMenu = true;
-
-        while (continueMenu)
-        {
-            DisplayConfigMenuOptions();
-            int.TryParse(Console.ReadLine(), out int choice);
-            ConfigMenu selectedOption = (ConfigMenu)choice;
-
-            switch (selectedOption)
-            {
-                case ConfigMenu.Exit:
-                    continueMenu = false;
-                    break;
-
-                case ConfigMenu.AdvanceClockByMinute:
-                    AdvanceClockByMinutes(1);
-                    break;
-
-                case ConfigMenu.AdvanceClockByHour:
-                    AdvanceClockByHours(1);
-                    break;
-
-                case ConfigMenu.AdvanceClockByDay:
-                    AdvanceClockByDays(1);
-                    break;
-
-                case ConfigMenu.DisplayClock:
-                    DisplayCurrentClock();
-                    break;
-
-                case ConfigMenu.SetConfigVariable:
-                    SetConfigurationVariable();
-                    break;
-
-                case ConfigMenu.DisplayConfigVariable:
-                    DisplayConfigurationVariable();
-                    break;
-
-                case ConfigMenu.ResetConfig:
-                    ResetConfiguration();
-                    break;
-
-                default:
-                    Console.WriteLine("Invalid option. Please select a valid option.");
-                    break;
-            }
-        }
-
-        Console.WriteLine("Exited Configuration Menu.");
-    }
-
+   
 
 }
 
