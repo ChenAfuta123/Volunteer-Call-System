@@ -2,8 +2,11 @@
 using DalApi;
 using DalList;
 using DO;
+using System;
+using System.Security.Cryptography.X509Certificates;
+using static DalTest.Program;
+using System.Linq;
 namespace DalTest;
-
 
 /// <summary>
 /// Entry point of the application. Contains the main program logic and menu navigation.
@@ -250,7 +253,7 @@ internal class Program
                     {
                         case EntityType.Volunteer:
                           
-                            List<Volunteer> volunteers = s_dal!.Volunteer.ReadAll();
+                            List<Volunteer> volunteers = s_dal!.Volunteer!.ReadAll().ToList();
 
                             foreach (var volunteer in volunteers)
                             {
@@ -260,7 +263,7 @@ internal class Program
                             break;
                         case EntityType.Call:
 
-                            List<Call> calls = s_dal!.Call.ReadAll();
+                            List<Call> calls = s_dal!.Call!.ReadAll().ToList();
                             foreach (var call in calls)
                             {
                                 ViewCall(call.Id);
@@ -269,7 +272,7 @@ internal class Program
 
                         case EntityType.Assignment:
 
-                            List<Assignment> assignments = s_dal!.Assignment.ReadAll();
+                            List<Assignment> assignments = s_dal!.Assignment!.ReadAll().ToList();
                             foreach (var assignment in assignments)
                             {
                                 ViewAssignment(assignment.Id);
@@ -285,65 +288,63 @@ internal class Program
                             case EntityType.Volunteer:
 
 
-                                // בקשה למשתמש להזין את ה-ID של המתנדב
+                              
                                 Console.WriteLine("Enter volunteer ID:");
                                 int.TryParse(Console.ReadLine(), out int volunteerId);
 
-                                // קריאה לקריאת המתנדב לפי ה-ID
+                              
                                 Volunteer? exist = s_dal!.Volunteer.Read(volunteerId);
 
                                 if (exist == null)
                                 {
                                     Console.WriteLine("Volunteer not found.");
-                                    break; // אם המתנדב לא קיים, יוצאים מהשיטה
+                                    break; 
                                 }
 
-                                // בקשה מהמשתמש להכניס את הנתונים החדשים לעדכון
+                               
                                 Console.WriteLine("Enter new data to update:");
 
-                                // קבלת שם המתנדב
+                              
                                 Console.WriteLine($"Enter new Name (current: {exist.Name}):");
-                                string newName = Console.ReadLine() ?? exist.Name; // אם המשתמש לא הכניס שם חדש, נשאיר את השם הקיים
+                                string newName = Console.ReadLine() ?? exist.Name; 
 
-                                // קבלת מספר הטלפון של המתנדב
+                               
                                 Console.WriteLine($"Enter new PhoneNumber (current: {exist.PhoneNumber}):");
                                 string newPhoneNumber = Console.ReadLine() ?? exist.PhoneNumber;
 
-                                // קבלת כתובת האימייל של המתנדב
+                                
                                 Console.WriteLine($"Enter new Email (current: {exist.Email}):");
                                 string newEmail = Console.ReadLine() ?? exist.Email;
 
-                                // קבלת הסיסמה של המתנדב (אפשרי להשאיר את הסיסמה הקיימת)
+                                
                                 Console.WriteLine($"Enter new Password (current: {exist.Password ?? "N/A"}):");
                                 string? newPassword = Console.ReadLine();
                                 if (string.IsNullOrEmpty(newPassword))
                                 {
-                                    newPassword = exist.Password; // אם המשתמש לא הכניס סיסמה חדשה, נשאיר את הקיימת
+                                    newPassword = exist.Password;
                                 }
 
-                                // קבלת הכתובת של המתנדב
+                             
                                 Console.WriteLine($"Enter new Address (current: {exist.Address ?? "N/A"}):");
                                 string? newAddress = Console.ReadLine();
                                 if (string.IsNullOrEmpty(newAddress))
                                 {
-                                    newAddress = exist.Address; // אם המשתמש לא הכניס כתובת חדשה, נשאיר את הקיימת
+                                    newAddress = exist.Address; 
                                 }
 
-                                // קבלת המיקום של המתנדב (Latitude)
+                              
                                 Console.WriteLine($"Enter new Latitude (current: {exist.Latitude?.ToString() ?? "N/A"}):");
                                 double? newLatitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : exist.Latitude;
 
-                                // קבלת המרחק המקסימלי של המתנדב (MaxDistance)
+                                
                                 Console.WriteLine($"Enter new MaxDistance (current: {exist.MaxDistance?.ToString() ?? "N/A"}):");
                                 double? newMaxDistance = double.TryParse(Console.ReadLine(), out double maxDist) ? maxDist : exist.MaxDistance;
 
-                                // קבלת מצב המתנדב (Active)
                                 Console.WriteLine($"Enter new Active status (current: {(exist.Active ? "Yes" : "No")}) - Enter true or false:");
                                 bool newActive = bool.TryParse(Console.ReadLine(), out bool activeStatus) ? activeStatus : exist.Active;
 
-                                // יצירת אובייקט מתנדב חדש עם הנתונים שהוזנו
                                 Volunteer updatedVolunteer = new Volunteer(
-                                    volunteerId, // לא משתנה
+                                    volunteerId, 
                                     newName,
                                     newPhoneNumber,
                                     newEmail,
@@ -365,7 +366,7 @@ internal class Program
 
                             case EntityType.Call:
 
-                                // Prompt user to enter the ID of the call
+                                
                                 Console.WriteLine("Enter call ID:");
                                 int.TryParse(Console.ReadLine(), out int callId);
 
@@ -658,19 +659,19 @@ internal class Program
 
                 case MainMenu.ViewAllData:
                     // View all data of Volunteers, Calls, and Assignments.
-                    List<Volunteer> volunteers = s_dal!.Volunteer.ReadAll();
+                    List<Volunteer> volunteers = s_dal!.Volunteer!.ReadAll().ToList();
                     foreach (var volunteer in volunteers)
                     {
                         Console.WriteLine($"{volunteer}");
                     }
 
-                    List<Call> calls = s_dal!.Call!.ReadAll();
+                    List<Call> calls = s_dal!.Call!.ReadAll().ToList();
                     foreach (var call in calls)
                     {
                         Console.WriteLine($"{call}");
                     }
 
-                    List<Assignment> assignments = s_dal!.Assignment.ReadAll();
+                    List<Assignment> assignments = s_dal!.Assignment.ReadAll().ToList();
                     foreach (var assignment in assignments)
                     {
                         Console.WriteLine($"{assignment}");

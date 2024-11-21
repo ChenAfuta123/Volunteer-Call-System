@@ -108,16 +108,16 @@ public static class Initialization
             int id = s_dal!.Config.NextAssignmentId;
 
             var calls = s_dal!.Call.ReadAll();
-            if (GetCount(calls) == 0)
+            if (calls.Count() == 0)
                 throw new InvalidOperationException("There are no calls available to create assignments.");
 
-            int callId = calls[s_rand.Next(calls.Count)].Id;
+            int callId = calls.ElementAt(s_rand.Next(calls.Count())).Id;
 
             var volunteers = s_dal!.Volunteer.ReadAll();
-            if (volunteers.Count == 0)
+            if (volunteers.Count() == 0)
                 throw new InvalidOperationException("There are no volunteers available to create assignments.");
 
-            int volunteerId = volunteers[s_rand.Next(volunteers.Count)].Id;
+            int volunteerId = volunteers.ElementAt(s_rand.Next(volunteers.Count())).Id;
 
             var call = calls.First(c => c.Id == callId);
             DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)((call.maxEndingTime - call.OpeningTime)?.TotalMinutes ?? 0)));

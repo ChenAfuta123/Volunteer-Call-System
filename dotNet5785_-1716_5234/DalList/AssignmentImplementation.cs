@@ -39,6 +39,11 @@ internal class AssignmentImplementation : IAssignment
     {
         return DataSource.Assignments.FirstOrDefault(item => item.Id == id);
     }
+    public Assignment? Read(Func<Assignment, bool> filter)
+    {
+        return DataSource.Assignments.FirstOrDefault(item => filter(item));
+    }
+
 
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) //stage 2
      => filter == null

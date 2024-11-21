@@ -52,11 +52,15 @@ internal class CallImplementation : ICall
     {
         return DataSource.Calls.FirstOrDefault(item => item.Id == id);
     }
-
+    public Call? Read(Func<Call, bool> filter)
+    {
+        return DataSource.Calls.FirstOrDefault(item => filter(item));
+    }
     /// <summary>
     /// Reads all Call entities from the data source.
     /// </summary>
     /// <returns>A list of all Call entities.</returns>
+    /// 
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) //stage 2
      => filter == null
          ? DataSource.Calls.Select(item => item)
