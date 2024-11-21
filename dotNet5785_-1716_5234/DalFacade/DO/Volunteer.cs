@@ -2,25 +2,7 @@
 // Module: Volunteer.cs
 namespace DO
 {
-    /// <summary>
-    /// Enum representing the role of the volunteer within the system.
-    /// </summary>
-    public enum Role
-    {
-        volunteer, 
-        manager    
-    }
-
-    /// <summary>
-    /// Enum representing the type of distance measurement used.
-    /// </summary>
-    public enum DistanceType
-    {
-        AirDistance,      
-        WalkingDistance,  
-        DrivingDistance   
-    }
-
+   
     /// <summary>
     /// Represents a volunteer with specific details such as contact information,
     /// location, and role within the system.
@@ -37,6 +19,8 @@ namespace DO
 public record Volunteer
     (
         int Id,
+        DistanceType distanceType,
+        Role role,
         string Name,
         string PhoneNumber,
         string Email,
@@ -50,7 +34,7 @@ public record Volunteer
         /// <summary>
         /// Initializes a new instance of the Volunteer record with default values.
         /// </summary>
-        public Volunteer() : this(0, " ", " ", " ", null, null, null, null) { } // Empty constructor for stage 3
+        public Volunteer() : this(0, DistanceType.AirDistance,Role.volunteer, " ", " ", " ", null, null, null, null) { } // Empty constructor for stage 3
     }
 }
 

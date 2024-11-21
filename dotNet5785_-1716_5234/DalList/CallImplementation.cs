@@ -39,7 +39,11 @@ internal class CallImplementation : ICall
     /// </summary>
     public void DeleteAll()
     {
-        DataSource.Calls.Clear();
+        if (DataSource.Calls.Any())
+        {
+            DataSource.Calls.Clear();
+        }
+      
     }
 
     /// <summary>

@@ -32,7 +32,11 @@ internal class AssignmentImplementation : IAssignment
 
     public void DeleteAll()
     {
-        DataSource.Assignments.Clear();
+        if (DataSource.Assignments.Any())
+        {
+            DataSource.Assignments.Clear();
+        }
+      
     }
 
     public Assignment? Read(int id)

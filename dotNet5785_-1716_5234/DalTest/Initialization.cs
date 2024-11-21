@@ -1,7 +1,6 @@
 ﻿namespace DalTest;
 using DalApi;
 using DO;
-
 public static class Initialization
 {
    
@@ -88,11 +87,12 @@ public static class Initialization
             double longitude = longitudes[index];
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(1, 50);
-
+            Role role = (i == 0) ? Role.volunteer : Role.manager;
+            DistanceType distanceType=(DistanceType)new Random().Next(Enum.GetValues(typeof(DistanceType)).Length);
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
-            Volunteer newVolunteer = new(id, name, phoneNumber, email, null, address, latitude, maxDistance, true);
+            Volunteer newVolunteer = new(id, distanceType, role,name, phoneNumber, email, null, address, latitude, maxDistance, true);
 
             s_dal!.Volunteer.Create(newVolunteer);
         }
@@ -122,36 +122,36 @@ public static class Initialization
             var call = calls.First(c => c.Id == callId);
             DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)((call.maxEndingTime - call.OpeningTime)?.TotalMinutes ?? 0)));
             DateTime? endTime = null;
-            EndTimeType endTimeType = EndTimeType.Treated;
+            EndTimeType endtimeType = EndTimeType.Treated;
 
             if (s_rand.NextDouble() < 0.5)
             {
                 endTime = entryTime.AddMinutes(s_rand.Next((int)((call.maxEndingTime - entryTime)?.TotalMinutes ?? 0)));
-                endTimeType = EndTimeType.Treated;
+                endtimeType = EndTimeType.Treated;
             }
             else
             {
                 if (s_rand.NextDouble() < 0.33)
                 {
                     endTime = (call.maxEndingTime ?? DateTime.Now).AddMinutes(s_rand.Next(1, 120));
-                    endTimeType = EndTimeType.Expired;
+                    endtimeType = EndTimeType.Expired;
                 }
                 else if (s_rand.NextDouble() < 0.66)
                 {
                     endTime = entryTime.AddMinutes(s_rand.Next(1, 60));
-                    endTimeType = EndTimeType.SelfCancel;
+                    endtimeType = EndTimeType.SelfCancel;
                 }
                 else
                 {
                     endTime = entryTime.AddMinutes(s_rand.Next(1, 60));
-                    endTimeType = EndTimeType.ManagerCancel;
+                    endtimeType = EndTimeType.ManagerCancel;
                 }
             }
 
             /// <summary>
             /// Creates a new Assignment object linking a volunteer to a call.
             /// </summary>
-            Assignment newAssignment = new(id, callId, volunteerId, entryTime, null, endTime) { };
+            Assignment newAssignment = new(id, callId, volunteerId, entryTime, endtimeType, endTime) { };
 
             s_dal!.Assignment.Create(newAssignment);
         }
@@ -192,67 +192,80 @@ public static class Initialization
     34.900, 34.873, 34.792, 34.736, 35.276, 35.046, 34.814, 34.935, 34.851, 34.836
 };
 
-        string[] descriptions = {
-    "Food delivery – providing essential food and drinks to evacuees in shelters.",
-    "Temporary housing – assisting an evacuee family in finding temporary accommodation.",
-    "Trauma support – escorting evacuees needing mental health assistance.",
-    "Children’s activities – organizing activities for children in shelters.",
-    "Transport help – assisting with moving personal belongings to safe housing.",
-    "Medication delivery – collecting and delivering essential medications.",
-    "Mental health support – connecting evacuees to counseling services.",
-    "Heating supplies – providing blankets and heaters for cold weather.",
-    "Evacuee transport – arranging safe transport to temporary shelters.",
-    "Legal aid – offering guidance on government aid and legal support.",
+        string[] descriptions = 
+         {
+            // אספקת מזון וציוד חיוני
+            "Providing hot meals to evacuees in shelters, ensuring nutritional needs are met.",
+            "Delivering snacks, such as pastries and cakes, to brighten the evacuees' day.",
+            "Distributing bottled water to evacuees to ensure hydration in shelters.",
+            "Providing ready-to-eat dry food packs for evacuees in temporary shelters.",
+            "Distributing blankets, sweaters, and socks to evacuees for warmth.",
+            "Delivering tables and chairs to temporary housing to improve comfort.",
+            "Transporting food supplies to remote shelter locations for easier access.",
+            "Distributing thermoses with hot tea or coffee to evacuees for warmth.",
+            "Bringing groceries and hygiene products to shelters for immediate use.",
+            "Providing nutrition packages that cater to specific dietary needs (e.g., gluten-free).",
 
-    "Food distribution – delivering meals to evacuees in need.",
-    "Temporary shelter arrangement – locating safe temporary housing for families.",
-    "Mental health support – providing on-site counseling for evacuees.",
-    "Activities for children – creating art and play activities for children.",
-    "Moving assistance – helping families relocate their personal belongings.",
-    "Essential medication delivery – supplying evacuees with needed medications.",
-    "Therapy referrals – connecting evacuees with mental health professionals.",
-    "Warm clothing – distributing warm clothing and blankets to evacuees.",
-    "Transport to shelters – organizing rides for evacuees.",
-    "Legal consultation – helping evacuees understand their legal rights.",
+            // סיוע בדיור זמני והעברות
+            "Helping evacuees find safe and comfortable temporary accommodation.",
+            "Assisting with the relocation of evacuees' personal belongings to new housing.",
+            "Coordinating transport for evacuees from temporary shelters to more secure locations.",
+            "Arranging temporary shelters for families, ensuring privacy and security.",
+            "Providing support in finding accessible housing for evacuees with disabilities.",
+            "Helping evacuees set up basic living spaces in temporary shelters.",
+            "Organizing transportation for evacuees to move to safer regions within the country.",
+            "Setting up community kitchens in temporary housing to foster a sense of normalcy.",
+            "Helping evacuees navigate local housing systems and rental assistance.",
+            "Providing relocation assistance for evacuees needing to move to a permanent home.",
 
-    "Nutrition support – ensuring evacuees receive proper meals and hydration.",
-    "Temporary home search – helping locate short-term housing solutions.",
-    "Crisis support – providing assistance to evacuees dealing with trauma.",
-    "Recreational activities – planning games and crafts for children.",
-    "Logistics assistance – organizing personal items for safe transport.",
-    "Pharmacy pickups – gathering and delivering necessary medications.",
-    "Emotional support – connecting evacuees with mental health support.",
-    "Cold-weather supplies – handing out heaters and winter essentials.",
-    "Safe transportation – coordinating transport to secure locations.",
-    "Legal help – offering support with paperwork and benefits.",
+            // תמיכה נפשית וחברתית
+            "Providing trauma counseling services to evacuees affected by the war.",
+            "Organizing recreational activities such as games and crafts for children in shelters.",
+            "Offering group therapy sessions to evacuees dealing with emotional stress.",
+            "Connecting evacuees with support groups for shared experiences and healing.",
+            "Facilitating discussions and workshops about mental health coping strategies.",
+            "Providing social workers and counselors on-site in shelters to assist evacuees.",
+            "Setting up quiet spaces for evacuees to rest and de-stress after traumatic experiences.",
+            "Bringing in volunteer groups to engage evacuees in creative arts and self-expression.",
+            "Coordinating with local religious leaders to offer spiritual support to evacuees.",
+            "Arranging buddy systems in shelters to ensure evacuees have someone to rely on.",
 
-    "Grocery delivery – providing groceries for evacuees.",
-    "Accommodation support – helping evacuees find places to stay.",
-    "Psychological first aid – escorting evacuees needing emotional support.",
-    "Kids' crafts – organizing crafts and fun for children in shelters.",
-    "Relocation aid – helping move belongings to temporary housing.",
-    "Medical pickups – ensuring evacuees receive their prescriptions.",
-    "Mental health hotline – offering 24/7 support access.",
-    "Winter gear – distributing coats, blankets, and heaters.",
-    "Evacuee transport coordination – arranging group transport to shelters.",
-    "Legal advisory – offering evacuees advice on aid programs.",
+            // עזרה רפואית ומשלוחי תרופות
+            "Coordinating medical teams to provide basic health services in evacuation centers.",
+            "Delivering essential medications to evacuees who have lost access to pharmacies.",
+            "Arranging transportation for evacuees needing urgent medical care.",
+            "Providing emergency first aid and triage for injured evacuees in shelters.",
+            "Facilitating doctor consultations for evacuees with chronic health conditions.",
+            "Ensuring the timely delivery of prescription medications to evacuees in need.",
+            "Setting up mobile health clinics in temporary shelters for on-site medical assistance.",
+            "Providing basic medical supplies such as bandages and pain relief to evacuees.",
+            "Coordinating with local pharmacies to ensure medical needs are met for evacuees.",
+            "Offering mental health consultations in shelters for those affected by the trauma.",
 
-    "Essential supplies – delivering food and hygiene products.",
-    "Refuge assistance – finding temporary refuge for families.",
-    "Trauma guidance – providing mental health resources.",
-    "Fun activities – organizing play areas for children.",
-    "Packing aid – helping evacuees pack personal items.",
-    "Prescription delivery – collecting and bringing medications.",
-    "Support groups – connecting evacuees to group counseling.",
-    "Blanket distribution – providing blankets for warmth.",
-    "Emergency transport – facilitating urgent transport needs.",
-    "Legal aid services – guiding evacuees on legal resources."
-};
+            // ייעוץ משפטי והכוונה מנהלית
+            "Providing legal guidance on obtaining government assistance and financial support.",
+            "Assisting evacuees in filling out forms for emergency relief and aid programs.",
+            "Helping evacuees understand their rights regarding property and compensation claims.",
+            "Providing assistance with the submission of claims for damages to property.",
+            "Advising evacuees on how to navigate legal processes to apply for housing benefits.",
+            "Coordinating with legal aid organizations to offer free consultations to evacuees.",
+            "Helping evacuees access social security benefits and other state-sponsored programs.",
+            "Offering advice on how to obtain identity documents and replacement papers after losing them.",
+            "Providing legal counseling to evacuees who need to resolve employment or housing issues.",
+            "Helping evacuees understand the process for applying for long-term housing support.",
+
+            
+         };
+
 
         for (int i = 0; i < 50; i++)
         {
             int id=s_dal!.Config.NextCallId;
-            string description = descriptions[s_rand.Next(descriptions.Length)];
+            int randomNumber = new Random().Next(1, 51);
+            string description = descriptions[randomNumber];
+            randomNumber /= 10;
+            CallType callType = (CallType)Enum.GetValues(typeof(CallType)).GetValue(randomNumber)!;
+
             int index = s_rand.Next(addresses.Length);
             string address = addresses[index];
             double latitude = latitudes[index];
@@ -260,7 +273,8 @@ public static class Initialization
             DateTime start = new DateTime(s_dal!.Config.Clock.Year - 2, 1, 1);
             int range = (s_dal!.Config.Clock - start).Days; 
             DateTime openingTime= start.AddDays(s_rand.Next(range));
-            Call newCall = new(id, address, latitude, longitude, openingTime, description);
+        
+            Call newCall = new(id,callType, address, latitude, longitude, openingTime, description);
             s_dal!.Call.Create(newCall);
         }
     }

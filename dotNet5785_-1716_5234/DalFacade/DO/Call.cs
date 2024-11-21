@@ -2,7 +2,7 @@
 using System;
 
 namespace DO;
-public enum TypeCall {}//to comple
+
 
 /// <summary>
 /// Represents a call with various properties like ID, address, description, coordinates, timestamps, and more.
@@ -15,6 +15,7 @@ public enum TypeCall {}//to comple
 public record Call
 (
     int Id,
+    CallType callType,
     string Address,
     double Latitude,
     double Longitude,
@@ -36,7 +37,7 @@ public record Call
     /// <summary>
     /// Parameterless constructor for Call, initializing properties with default values.
     /// </summary>
-    public Call() : this(0, "",0, 0, DateTime.Now,null,null)
+    public Call() : this(0, CallType.EssentialSupplies, "",0, 0, DateTime.Now,null,null)
     {
         
     }

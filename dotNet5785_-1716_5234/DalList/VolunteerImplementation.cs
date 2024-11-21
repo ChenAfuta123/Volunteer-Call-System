@@ -1,6 +1,5 @@
-﻿namespace DalList;
+﻿namespace Dal;
 
-using Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
@@ -33,7 +32,11 @@ internal class VolunteerImplementation : IVolunteer
 
     public void DeleteAll()
     {
-        DataSource.Volunteers.Clear();
+        if (DataSource.Volunteers.Any())
+        {
+            DataSource.Volunteers.Clear();
+        }
+       
     }
 
     public Volunteer? Read(int id)

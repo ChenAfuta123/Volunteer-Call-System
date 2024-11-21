@@ -1,18 +1,68 @@
-﻿
+﻿using Dal;
 using DalApi;
-using DalList;
 using DO;
-using System;
-using System.Security.Cryptography.X509Certificates;
-using static DalTest.Program;
-using System.Linq;
+using Microsoft.VisualBasic;
 namespace DalTest;
+
 
 /// <summary>
 /// Entry point of the application. Contains the main program logic and menu navigation.
 /// </summary>
 internal class Program
 {
+    static Volunteer Volunteer_input(int id)
+    {
+        if (id == 0) 
+        {
+            Console.WriteLine("Enter volunteer's Id:");
+            int.TryParse(Console.ReadLine(), out int Id);
+            id = Id;
+        }
+        Console.WriteLine("Enter volunteer's name:");
+        string name = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter the role (0 - volunteer, 1 - manager):");
+        Role role = (Role)int.Parse(Console.ReadLine()!);
+
+        Console.WriteLine("Enter volunteer's phone number:");
+        string phoneNumber = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's email:");
+        string email = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Password:");
+        string Password = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter volunteer's Address:");
+        string Address = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter the distance type (0 - AirDistance, 1 - WalkingDistance, 2 - DrivingDistance):");
+        DistanceType distanceType = (DistanceType)int.Parse(Console.ReadLine()!);
+
+        Console.WriteLine("Enter volunteer's Latitude:");
+        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
+
+        Console.WriteLine("Enter volunteer's MaxDistance:");
+        double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
+
+        Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
+        return newVolunteer;
+    }
+        static CallType GetCallTypeFromUser()
+    {
+        // הדפסת כל סוגי הקריאה האפשריים למשתמש
+        Console.WriteLine("Enter the assistance type:");
+        foreach (CallType type in Enum.GetValues(typeof(CallType)))
+        {
+            Console.WriteLine($"{(int)type} - {type}");
+        }
+
+      
+        string? input = Console.ReadLine();
+
+        // המרת הקלט ל-Enum אם אפשר, אחרת מחזירים את ברירת המחדל
+        return Enum.TryParse(input, out CallType result) ? result : CallType.EssentialSupplies;
+    }
     static readonly IDal s_dal = new DalList();
     /// <summary>
     /// Enum for the main menu options.
@@ -71,33 +121,8 @@ internal class Program
     /// <summary>
     /// Handles the creation of a new volunteer.
     /// </summary>
-    void CreateVolunteer()
-    {
-        Console.WriteLine("Enter volunteer's Id:");
-        int.TryParse(Console.ReadLine(), out int Id);
-
-        Console.WriteLine("Enter volunteer's name:");
-        string name = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's phone number:");
-        string phoneNumber = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's email:");
-        string email = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's Password:");
-        string Password = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's Address:");
-        string Address = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter volunteer's Latitude:");
-        double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
-
-        Console.WriteLine("Enter volunteer's MaxDistance:");
-        double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
-
-        Volunteer newVolunteer = new(Id, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
+    void CreateVolunteer() {
+        Volunteer newVolunteer = Volunteer_input(0);
         s_dal!.Volunteer.Create(newVolunteer);
         Console.WriteLine("Volunteer added successfully.");
     }
@@ -109,6 +134,7 @@ internal class Program
     {
         Console.WriteLine("Enter call address:");
         string address = Console.ReadLine() ?? string.Empty;
+        CallType callType = GetCallTypeFromUser();
 
         Console.WriteLine("Enter call description:");
         string description = Console.ReadLine() ?? string.Empty;
@@ -120,7 +146,8 @@ internal class Program
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
 
         int newCallId = s_dal!.Config.NextCallId;
-        Call newCall = new(newCallId, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
+
+        Call newCall = new(newCallId,callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
         s_dal!.Call.Create(newCall);
         Console.WriteLine("Call added successfully.");
     }
@@ -303,59 +330,61 @@ internal class Program
 
                                
                                 Console.WriteLine("Enter new data to update:");
+                            Volunteer updateVolunteer = Volunteer_input(volunteerId);
 
-                              
-                                Console.WriteLine($"Enter new Name (current: {exist.Name}):");
-                                string newName = Console.ReadLine() ?? exist.Name; 
+                            //Console.WriteLine($"Enter new Name (current: {exist.Name}):");
+                            //string newName = Console.ReadLine() ?? exist.Name; 
 
-                               
-                                Console.WriteLine($"Enter new PhoneNumber (current: {exist.PhoneNumber}):");
-                                string newPhoneNumber = Console.ReadLine() ?? exist.PhoneNumber;
 
+                            //Console.WriteLine($"Enter new PhoneNumber (current: {exist.PhoneNumber}):");
+                            //string newPhoneNumber = Console.ReadLine() ?? exist.PhoneNumber;
+
+
+                            //Console.WriteLine($"Enter new Email (current: {exist.Email}):");
+                            //string newEmail = Console.ReadLine() ?? exist.Email;
+
+
+                            //Console.WriteLine($"Enter new Password (current: {exist.Password ?? "N/A"}):");
+                            //string? newPassword = Console.ReadLine();
+                            //if (string.IsNullOrEmpty(newPassword))
+                            //{
+                            //    newPassword = exist.Password;
+                            //}
+
+
+                            //Console.WriteLine($"Enter new Address (current: {exist.Address ?? "N/A"}):");
+                            //string? newAddress = Console.ReadLine();
+                            //if (string.IsNullOrEmpty(newAddress))
+                            //{
+                            //    newAddress = exist.Address; 
+                            //}
+
+
+                            //Console.WriteLine($"Enter new Latitude (current: {exist.Latitude?.ToString() ?? "N/A"}):");
+                            //double? newLatitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : exist.Latitude;
+
+
+                            //Console.WriteLine($"Enter new MaxDistance (current: {exist.MaxDistance?.ToString() ?? "N/A"}):");
+                            //double? newMaxDistance = double.TryParse(Console.ReadLine(), out double maxDist) ? maxDist : exist.MaxDistance;
+
+                            //Console.WriteLine($"Enter new Active status (current: {(exist.Active ? "Yes" : "No")}) - Enter true or false:");
+                            //bool newActive = bool.TryParse(Console.ReadLine(), out bool activeStatus) ? activeStatus : exist.Active;
+
+                            //Volunteer updatedVolunteer = new Volunteer(
+                            //    volunteerId, 
+                            //    exist.distanceType,
+                            //    exist.role,
+                            //    newName,
+                            //    newPhoneNumber,
+                            //    newEmail,
+                            //    newPassword,
+                            //    newAddress,
+                            //    newLatitude,
+                            //    newMaxDistance,
+                            //    newActive
+                            //);
                                 
-                                Console.WriteLine($"Enter new Email (current: {exist.Email}):");
-                                string newEmail = Console.ReadLine() ?? exist.Email;
-
-                                
-                                Console.WriteLine($"Enter new Password (current: {exist.Password ?? "N/A"}):");
-                                string? newPassword = Console.ReadLine();
-                                if (string.IsNullOrEmpty(newPassword))
-                                {
-                                    newPassword = exist.Password;
-                                }
-
-                             
-                                Console.WriteLine($"Enter new Address (current: {exist.Address ?? "N/A"}):");
-                                string? newAddress = Console.ReadLine();
-                                if (string.IsNullOrEmpty(newAddress))
-                                {
-                                    newAddress = exist.Address; 
-                                }
-
-                              
-                                Console.WriteLine($"Enter new Latitude (current: {exist.Latitude?.ToString() ?? "N/A"}):");
-                                double? newLatitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : exist.Latitude;
-
-                                
-                                Console.WriteLine($"Enter new MaxDistance (current: {exist.MaxDistance?.ToString() ?? "N/A"}):");
-                                double? newMaxDistance = double.TryParse(Console.ReadLine(), out double maxDist) ? maxDist : exist.MaxDistance;
-
-                                Console.WriteLine($"Enter new Active status (current: {(exist.Active ? "Yes" : "No")}) - Enter true or false:");
-                                bool newActive = bool.TryParse(Console.ReadLine(), out bool activeStatus) ? activeStatus : exist.Active;
-
-                                Volunteer updatedVolunteer = new Volunteer(
-                                    volunteerId, 
-                                    newName,
-                                    newPhoneNumber,
-                                    newEmail,
-                                    newPassword,
-                                    newAddress,
-                                    newLatitude,
-                                    newMaxDistance,
-                                    newActive
-                                );
-
-
+                            updateVolunteer=Volunteer_input(volunteerId);
                                 s_dal!.Volunteer.Update(updatedVolunteer);
 
                                 Console.WriteLine("Volunteer updated successfully.");
@@ -411,10 +440,14 @@ internal class Program
                                 Console.WriteLine($"Enter new EndTime (current: {existingCall.maxEndingTime?.ToString("g") ?? "N/A"}) - Format: yyyy-MM-dd HH:mm:");
                                 string? endTimeInput = Console.ReadLine();
                                 DateTime? newMaxEndTime = !string.IsNullOrEmpty(endTimeInput) && DateTime.TryParse(endTimeInput, out DateTime endTime) ? endTime : existingCall.maxEndingTime;
+                          
+                            string? input = Console.ReadLine();
+                            CallType callType = GetCallTypeFromUser();
 
-                                // Create a new Call object with the updated data
-                                Call updatedCall = new Call(
+                            // Create a new Call object with the updated data
+                            Call updatedCall = new Call(
                                     callId,
+                                    callType,
                                     newaddress,
                                     newlatitude,
                                     newLongitude,
@@ -688,13 +721,7 @@ internal class Program
                 case MainMenu.Database_and_configuration_reset:
                     // Reset the database and configuration.
                     Console.WriteLine("Resetting database and configuration.");
-
-                    // Delete all records in the database tables.
-                    s_dal!.Assignment.DeleteAll(); // Delete all assignments
-                    s_dal.Call.DeleteAll(); // Delete all calls
-                    s_dal!.Volunteer.DeleteAll(); // Delete all volunteers
-                                                 // Optionally reset the configuration values.
-                                                 // s_dalConfig!.ResetConfig();
+                    s_dal.ResetDB();
                     break;
 
                 default:
