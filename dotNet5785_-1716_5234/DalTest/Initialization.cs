@@ -279,83 +279,69 @@ public static class Initialization
 
     private static void create_assignment()
     {
-        for (int i = 0; i < 50; i++)
+        // Assuming s_dal.Call.Read() returns a list of calls, and s_dal.Volunteer.Read() returns a list of volunteers
+        var calls = s_dal!.Call.ReadAll(); // Get all calls
+        var volunteers = s_dal!.Volunteer.ReadAll(); // Get all volunteers
+
+        for (int i = 0; i < 50; i++) // Generating 50 assignments
         {
-            try
+            // Generate a unique assignment ID
+            int assignmentId;
+            do
             {
-                int id = s_dal!.Config.NextAssignmentId;
+                assignmentId = s_rand.Next(200000000, 400000000); // Random assignment ID
+            } while (s_dal!.Assignment.Read(assignmentId) != null); // Ensure it's unique
 
-                // Fetch calls
-                var calls = s_dal!.Call.ReadAll().ToList();
-                if (!calls.Any())
-                {
-                    Console.WriteLine("No calls available to create assignments.");
-                    continue;
-                }
+            // Select a random call from the existing calls
+            var randomCall = calls.ElementAt(s_rand.Next(calls.Count()));
 
-                // Fetch volunteers
-                var volunteers = s_dal!.Volunteer.ReadAll().ToList();
-                if (!volunteers.Any())
-                {
-                    Console.WriteLine("No volunteers available to create assignments.");
-                    continue;
-                }
+            var randomVolunteer = volunteers.ElementAt(s_rand.Next(volunteers.Count()));
 
-                // Randomly select a call
-                int callIndex = s_rand.Next(calls.Count);
-                var call = calls[callIndex];
+            // Generate entry time: It should be between call opening and max ending time
+            DateTime entryTime = randomCall.OpeningTime.AddMinutes(s_rand.Next(1, (int)((randomCall.maxEndingTime ?? DateTime.Now) - randomCall.OpeningTime).TotalMinutes));
 
-                // Randomly select a volunteer
-                int volunteerIndex = s_rand.Next(volunteers.Count);
-                var volunteer = volunteers[volunteerIndex];
+            // Randomly determine the end time for the assignment
+            DateTime? endTime = null;
+            EndTimeType? endTimeType = null;
 
-                // Validate call data
-                if (call.maxEndingTime == null || call.maxEndingTime <= call.OpeningTime)
-                {
-                    Console.WriteLine($"Invalid call timing: ID={call.Id}, OpeningTime={call.OpeningTime}, maxEndingTime={call.maxEndingTime}");
-                    continue;
-                }
-
-                // Generate entry time and end time
-                DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)((call.maxEndingTime - call.OpeningTime)?.TotalMinutes ?? 0)));
-                DateTime? endTime = null;
-                EndTimeType endtimeType;
-
-                if (s_rand.NextDouble() < 0.5)
-                {
-                    endTime = entryTime.AddMinutes(s_rand.Next((int)((call.maxEndingTime - entryTime)?.TotalMinutes ?? 0)));
-                    endtimeType = EndTimeType.Treated;
-                }
-                else
-                {
-                    double randomChance = s_rand.NextDouble();
-                    if (randomChance < 0.33)
-                    {
-                        endTime = (call.maxEndingTime ?? DateTime.Now).AddMinutes(s_rand.Next(1, 120));
-                        endtimeType = EndTimeType.Expired;
-                    }
-                    else if (randomChance < 0.66)
-                    {
-                        endTime = entryTime.AddMinutes(s_rand.Next(1, 60));
-                        endtimeType = EndTimeType.SelfCancel;
-                    }
-                    else
-                    {
-                        endTime = entryTime.AddMinutes(s_rand.Next(1, 60));
-                        endtimeType = EndTimeType.ManagerCancel;
-                    }
-                }
-
-                // Create and store the assignment
-                var newAssignment = new Assignment(id, call.Id, volunteer.Id, entryTime, endtimeType, endTime);
-                s_dal!.Assignment.Create(newAssignment);
-            }
-            catch (Exception ex)
+            // Decide on treatment type and whether the call was treated or expired
+            double treatmentChance = s_rand.NextDouble();
+            if (treatmentChance < 0.7) // 70% chance to be treated
             {
-                Console.WriteLine($"Error during assignment creation: {ex.Message}");
+                endTime = entryTime.AddMinutes(s_rand.Next(15, 120)); // Random time for treatment (between 15 and 120 minutes)
+                endTimeType = EndTimeType.Treated;
             }
+            else if (treatmentChance < 0.85) // 15% chance to be canceled by the volunteer
+            {
+                endTimeType = EndTimeType.SelfCancel;
+                endTime = entryTime.AddMinutes(s_rand.Next(1, 60)); // Self-cancel time (any time after entry)
+            }
+            else if (treatmentChance < 0.95) // 10% chance to be canceled by the manager
+            {
+                endTimeType = EndTimeType.ManagerCancel;
+                endTime = entryTime.AddMinutes(s_rand.Next(1, 60)); // Manager cancel time
+            }
+            else // 5% chance for the call to expire
+            {
+                endTimeType = EndTimeType.Expired;
+                endTime = randomCall.maxEndingTime; // Call expiration time
+            }
+
+            // Create a new Assignment object
+            Assignment newAssignment = new(
+                assignmentId,
+                randomCall.Id,
+                randomVolunteer.Id,
+                entryTime,
+                endTimeType,
+                endTime
+            );
+
+            // Create the assignment in the database
+            s_dal!.Assignment.Create(newAssignment);
         }
     }
+
 
     /// <summary>
     /// Initializes the DAL objects, resets configuration values, and populates lists of volunteers, calls, and assignments.

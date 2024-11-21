@@ -116,25 +116,11 @@ internal class Program
 
                 case MainMenu.ViewAllData:
                     // View all data of Volunteers, Calls, and Assignments.
-                    List<Volunteer> volunteers = s_dal!.Volunteer!.ReadAll().ToList();
-                    foreach (var volunteer in volunteers)
-                    {
-                        Console.WriteLine($"{volunteer}");
-                    }
+                    ViewAllEntities(EntityType.Volunteer);
+                    ViewAllEntities(EntityType.Call);
+                    ViewAllEntities(EntityType.Assignment);
+                   
 
-                    List<Call> calls = s_dal!.Call!.ReadAll().ToList();
-                    foreach (var call in calls)
-                    {
-                        Console.WriteLine($"{call}");
-                    }
-
-                    List<Assignment> assignments = s_dal!.Assignment.ReadAll().ToList();
-                    foreach (var assignment in assignments)
-                    {
-                        Console.WriteLine($"{assignment}");
-                    }
-
-                    Console.WriteLine("Viewing all data.");
                     break;
 
                 case MainMenu.ConfigMenu:
@@ -556,6 +542,7 @@ internal class Program
     /// </summary>
     private void ViewAllEntities(EntityType entityType)
     {
+        Console.WriteLine($"\n{entityType}s details display\n=========================================\n");
         switch (entityType)
         {
             case EntityType.Volunteer:
