@@ -12,6 +12,7 @@ internal static class Config
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCallId");
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", value);
     }
+
     internal static int NextAssignmentId
     {
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentId");
@@ -24,9 +25,8 @@ internal static class Config
         set => XMLTools.SetConfigDateVal(s_data_config_xml, "Clock", value);
     }
     internal static TimeSpan RiskRange
-    {
-        get => XMLTools.GetConfigDateVal(s_data_config_xml, "RiskRange");
-        set => XMLTools.SetConfigDateVal(s_data_config_xml, "RiskRange", value);
+    {  
+
     }
     internal static void Reset()
     {
