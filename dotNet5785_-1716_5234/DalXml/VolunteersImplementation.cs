@@ -1,12 +1,43 @@
-﻿using System;
+﻿namespace Dal;
+using DalApi;
+using DO;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Dal
+internal class VolunteerImplementation : IVolunteer
 {
-    internal class Class2
+    public void Create(Volunteer item)
     {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Volunteer? Read(Func<Volunteer, bool> filter)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Volunteer? Read(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Update(Volunteer item)
+    {
+        throw new NotImplementedException();
     }
 }
