@@ -25,13 +25,14 @@ internal static class Config
     }
     internal static TimeSpan RiskRange
     {
-        get => XMLTools.GetConfigDateVal(s_data_config_xml, "RiskRange");
-        set => XMLTools.SetConfigDateVal(s_data_config_xml, "RiskRange", value);
+        get;
+        set;
     }
+   
     internal static void Reset()
     {
         NextCallId = 1000;
-        NextAssignmentId = 0;
+        NextAssignmentId = 1000;
         Clock = DateTime.Now;
         RiskRange = TimeSpan.FromHours(12);
     }
