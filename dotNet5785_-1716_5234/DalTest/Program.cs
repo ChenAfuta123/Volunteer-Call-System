@@ -330,10 +330,17 @@ internal class Program
         Console.WriteLine("Enter volunteer's Latitude:");
         double Latitude = double.TryParse(Console.ReadLine(), out double lat) ? lat : 0.0;
 
+        Console.WriteLine("Enter volunteer's Longtitude:");
+        double Longitude = double.TryParse(Console.ReadLine(), out double Long) ? Long : 0.0;
+
         Console.WriteLine("Enter volunteer's MaxDistance:");
         double MaxDistance = double.TryParse(Console.ReadLine(), out double dis) ? dis : 0.0;
 
-        Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, MaxDistance);
+        Console.WriteLine("Is the volunteer active? (yes/no): ");
+        string input = Console.ReadLine()!.Trim().ToLower();
+        bool isActive = input == "yes";
+
+        Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, Password, Address, Latitude, Longitude, MaxDistance, isActive);
         return newVolunteer;
     }
     /// <summary>
@@ -437,6 +444,7 @@ internal class Program
             Console.WriteLine($"Password: {volunteer.Password ?? "N/A"}");
             Console.WriteLine($"Address: {volunteer.Address ?? "N/A"}");
             Console.WriteLine($"Latitude: {volunteer.Latitude?.ToString("F6") ?? "N/A"}");
+            Console.WriteLine($"Latitude: {volunteer.Longitude?.ToString("F6") ?? "N/A"}");
             Console.WriteLine($"Max Distance: {volunteer.MaxDistance?.ToString("F2") ?? "N/A"} km");
             Console.WriteLine($"Active: {(volunteer.Active ? "Yes" : "No")}");
         }

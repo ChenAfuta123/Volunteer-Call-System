@@ -25,19 +25,10 @@ internal static class Config
     }
     internal static TimeSpan RiskRange
     {
-        get;
-        set;
+        get => XMLTools.GetConfigTimeSpanVal(s_data_config_xml, "RiskRange");
+        set => XMLTools.SetConfigTimeSpanVal(s_data_config_xml, "RiskRange", value);
     }
-    internal static void SetConfigValue(string variableName, string newValue)
-    {
-        configVariables[variableName] = newValue;
-    }
-
-
-    internal static string GetConfigValue(string variableName)
-    {
-        return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
-    }
+    
 
     internal static void Reset()
     {

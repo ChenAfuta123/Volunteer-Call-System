@@ -92,7 +92,8 @@ public static class Initialization
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
-            Volunteer newVolunteer = new(id, distanceType, role,name, phoneNumber, email, null, address, latitude, maxDistance, true);
+            
+            Volunteer newVolunteer = new(id, distanceType, role,name, phoneNumber, email, null, address, latitude, longitude, maxDistance, true);
 
             s_dal!.Volunteer.Create(newVolunteer);
         }
