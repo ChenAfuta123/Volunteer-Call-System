@@ -9,7 +9,8 @@ namespace DalTest;
 /// </summary>
 internal class Program
 {
-    static readonly IDal s_dal = new DalList();
+    //static readonly IDal s_dal = new DalList();
+    static readonly IDal s_dal = new DalXml(); //stage 3
 
     /// <summary>
     /// Enum for the main menu options.
