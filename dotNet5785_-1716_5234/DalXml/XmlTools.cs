@@ -81,6 +81,16 @@ static class XMLTools
     #endregion
 
     #region XmlConfig
+   public static void SetConfigValue(string variableName, string newValue)
+    {
+        if(variableName== "Clock") { SetConfigDateVal(, variableName, newValue); }
+    }
+
+
+   public static string GetConfigValue(string variableName)
+    {
+        return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
+    }
     public static int GetAndIncreaseConfigIntVal(string xmlFileName, string elemName)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
@@ -126,5 +136,6 @@ static class XMLTools
     public static int? ToIntNullable(this XElement element, string name) =>
         int.TryParse((string?)element.Element(name), out var result) ? (int?)result : null;
     #endregion
+
 
 }
