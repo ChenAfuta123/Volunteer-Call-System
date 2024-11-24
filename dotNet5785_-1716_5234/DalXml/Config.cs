@@ -39,6 +39,7 @@ internal static class Config
     {
         return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
     }
+
     internal static void Reset()
     {
         NextCallId = 1000;

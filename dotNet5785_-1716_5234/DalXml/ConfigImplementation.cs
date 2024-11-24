@@ -1,13 +1,13 @@
-﻿using DalApi;
+﻿
+using DalApi;
 
 namespace Dal;
 
-/// <summary>
-/// Implementation of the IConfig interface, providing access to and management of configuration settings 
-/// by using the internal Config class as a data source.
-/// </summary>
-internal class ConfigImplementation : IConfig
+internal class ConfigImplementation: IConfig
 {
+
+
+
     /// <summary>
     /// Gets or sets the current system clock, which represents the current date and time.
     /// </summary>
@@ -49,15 +49,18 @@ internal class ConfigImplementation : IConfig
     {
         Config.Reset();
     }
-    public void SetConfigValue(string variableName, string newValue)
+    public void SetConfigValue(string variableName, int newValue)
     {
-        Config.SetConfigValue(variableName, newValue);
+        XMLTools.SetConfigValue(variableName, newValue);
     }
 
-    public string GetConfigValue(string variableName)
+    public string GetConfigValue(int variableName)
     {
-        return Config.GetConfigValue(variableName);
+        return XMLTools.GetConfigValue(variableName);
     }
+
+
+
+
+
 }
-
-
