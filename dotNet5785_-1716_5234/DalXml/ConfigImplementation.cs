@@ -42,6 +42,7 @@ internal class ConfigImplementation: IConfig
         get => Config.NextAssignmentId;
     }
 
+
     /// <summary>
     /// Resets the configuration settings to their initial default values.
     /// </summary>
@@ -49,18 +50,13 @@ internal class ConfigImplementation: IConfig
     {
         Config.Reset();
     }
-    public void SetConfigValue(string variableName, int newValue)
+    public string GetConfigValue(string variableName)
     {
-        XMLTools.SetConfigValue(variableName, newValue);
+        throw new NotImplementedException();
     }
 
-    public string GetConfigValue(int variableName)
+    public void SetConfigValue(string variableName, string newValue)
     {
-        return XMLTools.GetConfigValue(variableName);
+        throw new NotImplementedException();
     }
-
-
-
-
-
 }

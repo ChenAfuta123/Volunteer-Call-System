@@ -26,14 +26,16 @@ public record Volunteer
         string? Password = null,
         string? Address = null,
         double? Latitude = null,
+        double? Longitude = null,
         double? MaxDistance = null,
         bool Active = false
   )
-{
+   {
         /// <summary>
         /// Initializes a new instance of the Volunteer record with default values.
         /// </summary>
-        public Volunteer() : this(0, DistanceType.AirDistance,Role.volunteer, " ", " ", " ", null, null, null, null) { } // Empty constructor for stage 3
+        public Volunteer() : this(0, DistanceType.AirDistance,Role.volunteer, " ", " ", " ", null, null, null, null,null, false) { } // Empty constructor for stage 3
+       
     }
 }
 

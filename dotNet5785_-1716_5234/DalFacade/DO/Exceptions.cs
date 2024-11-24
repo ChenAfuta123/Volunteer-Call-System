@@ -23,6 +23,7 @@ public class DalAlreadyExistsException : Exception
     /// </summary>
     public DalAlreadyExistsException(string? message) : base(message) { }
 }
+
 [Serializable]
 
 public class DalXMLFileLoadCreateException : Exception
