@@ -28,7 +28,17 @@ internal static class Config
         get;
         set;
     }
-   
+    internal static void SetConfigValue(string variableName, string newValue)
+    {
+        configVariables[variableName] = newValue;
+    }
+
+
+    internal static string GetConfigValue(string variableName)
+    {
+        return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
+    }
+
     internal static void Reset()
     {
         NextCallId = 1000;

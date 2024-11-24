@@ -4,7 +4,6 @@ using DO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-
 static class XMLTools
 {
     const string s_xmlDir = @"..\xml\";
@@ -81,6 +80,25 @@ static class XMLTools
     #endregion
 
     #region XmlConfig
+
+    internal const string s_data_config_xml = "data-config.xml";
+
+    public static void SetConfigValue(string variableName, int newValue)
+    {
+       if (variableName == "Clock")
+        {
+            SetConfigDateVal(s_data_config_xml, "Clock", newValue);
+
+        }
+        
+    }
+
+
+    public static string GetConfigValue(string variableName)
+    {
+        return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
+    }
+
     public static int GetAndIncreaseConfigIntVal(string xmlFileName, string elemName)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
