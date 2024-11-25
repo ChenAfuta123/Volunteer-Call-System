@@ -10,7 +10,7 @@ internal static class Config
     internal static int NextCallId
     {
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCallId");
-        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", value);
+        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", 0);
     }
 
     internal static int NextAssignmentId

@@ -8,7 +8,7 @@ public static class Initialization
 
     private static readonly Random s_rand = new();
 
-    /// <summary>
+    /// <summary>                                           
     /// Generates a random date within a given range.
     /// </summary>
     /// <param name="startDate">The start date of the range.</param>
@@ -222,61 +222,7 @@ public static class Initialization
     /// <summary>
     /// Creates a list of assignments linking volunteers to calls.
     /// </summary>
-    //private static void create_assignment()
-    //{
-    //    for (int i = 0; i < 50; i++)
-    //    {
-    //        int id = s_dal!.Config.NextAssignmentId;
 
-    //        var calls = s_dal!.Call.ReadAll();
-    //        if (calls.Count() == 0)
-    //            throw new InvalidOperationException("There are no calls available to create assignments.");
-
-    //        int callId = calls.ElementAt(s_rand.Next(calls.Count())).Id;
-
-    //        var volunteers = s_dal!.Volunteer.ReadAll();
-    //        if (volunteers.Count() == 0)
-    //            throw new InvalidOperationException("There are no volunteers available to create assignments.");
-
-    //        int volunteerId = volunteers.ElementAt(s_rand.Next(volunteers.Count())).Id;
-
-    //        var call = calls.First(c => c.Id == callId);
-    //        DateTime entryTime = call.OpeningTime.AddMinutes(s_rand.Next(1, (int)((call.maxEndingTime - call.OpeningTime)?.TotalMinutes ?? 0)));
-    //        DateTime? endTime = null;
-    //        EndTimeType endtimeType = EndTimeType.Treated;
-
-    //        if (s_rand.NextDouble() < 0.5)
-    //        {
-    //            endTime = entryTime.AddMinutes(s_rand.Next((int)((call.maxEndingTime - entryTime)?.TotalMinutes ?? 0)));
-    //            endtimeType = EndTimeType.Treated;
-    //        }
-    //        else
-    //        {
-    //            if (s_rand.NextDouble() < 0.33)
-    //            {
-    //                endTime = (call.maxEndingTime ?? DateTime.Now).AddMinutes(s_rand.Next(1, 120));
-    //                endtimeType = EndTimeType.Expired;
-    //            }
-    //            else if (s_rand.NextDouble() < 0.66)
-    //            {
-    //                endTime = entryTime.AddMinutes(s_rand.Next(1, 60));
-    //                endtimeType = EndTimeType.SelfCancel;
-    //            }
-    //            else
-    //            {
-    //                endTime = entryTime.AddMinutes(s_rand.Next(1, 60));
-    //                endtimeType = EndTimeType.ManagerCancel;
-    //            }
-    //        }
-
-    //        /// <summary>
-    //        /// Creates a new Assignment object linking a volunteer to a call.
-    //        /// </summary>
-    //        Assignment newAssignment = new(id, callId, volunteerId, entryTime, endtimeType, endTime) { };
-
-    //        s_dal!.Assignment.Create(newAssignment);
-    //    }
-    //}
 
     private static void create_assignment()
     {
