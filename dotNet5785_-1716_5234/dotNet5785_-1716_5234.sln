@@ -20,10 +20,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalXml", "DalXml\DalXml.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{F0726BB7-52ED-46B9-96C6-61F989DD72CF}"
 	ProjectSection(SolutionItems) = preProject
-		xml\assignments.xml.txt = xml\assignments.xml.txt
-		xml\calls.xml.txt = xml\calls.xml.txt
-		xml\volunteers.xml.txt = xml\volunteers.xml.txt
 		xml\data-config.xml = xml\data-config.xml
+		xml\assignments.xml = xml\assignments.xml
+		xml\calls.xml = xml\calls.xml
+		xml\volunteers.xml = xml\volunteers.xml
 	EndProjectSection
 EndProject
 Global

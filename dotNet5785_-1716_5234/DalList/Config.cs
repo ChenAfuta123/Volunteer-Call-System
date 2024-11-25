@@ -3,7 +3,7 @@
 /// <summary>
 /// Configuration class for managing IDs and default settings for various entities in the system.
 /// </summary>
-static internal class Config
+static internal class Config 
 {
     /// <summary>
     /// Initial ID for Call entities, set to 0.
