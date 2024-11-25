@@ -1,2 +1,503 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Call>
+    <Id>0</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Ramat Efal, HaRakevet St 8</Address>
+    <Latitude>32.18</Latitude>
+    <Longitude>34.935</Longitude>
+    <OpeningTime>2023-06-17T00:00:00</OpeningTime>
+    <Description>Setting up quiet spaces for evacuees to rest and de-stress after traumatic experiences.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Petah Tikva, Em Hamoshavot Rd 45</Address>
+    <Latitude>32.084</Latitude>
+    <Longitude>34.871</Longitude>
+    <OpeningTime>2023-04-17T00:00:00</OpeningTime>
+    <Description>Helping evacuees set up basic living spaces in temporary shelters.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>2</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Mazkeret Batya, HaDekel St 3</Address>
+    <Latitude>31.845</Latitude>
+    <Longitude>34.836</Longitude>
+    <OpeningTime>2022-07-11T00:00:00</OpeningTime>
+    <Description>Helping evacuees find safe and comfortable temporary accommodation.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>3</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Shlomi, HaZayit St 16</Address>
+    <Latitude>32.802</Latitude>
+    <Longitude>35.571</Longitude>
+    <OpeningTime>2023-11-15T00:00:00</OpeningTime>
+    <Description>Helping evacuees understand the process for applying for long-term housing support.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>4</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Omer, HaShikma St 9</Address>
+    <Latitude>32.946</Latitude>
+    <Longitude>35.302</Longitude>
+    <OpeningTime>2022-05-26T00:00:00</OpeningTime>
+    <Description>Providing emergency first aid and triage for injured evacuees in shelters.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>5</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Tiberias, HaBanim St 15</Address>
+    <Latitude>32.792</Latitude>
+    <Longitude>35.54</Longitude>
+    <OpeningTime>2023-07-22T00:00:00</OpeningTime>
+    <Description>Providing trauma counseling services to evacuees affected by the war.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>6</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Rishon Lezion, Rothschild St 35</Address>
+    <Latitude>31.972</Latitude>
+    <Longitude>34.804</Longitude>
+    <OpeningTime>2023-06-02T00:00:00</OpeningTime>
+    <Description>Providing relocation assistance for evacuees needing to move to a permanent home.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>7</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Beersheba, Rager Blvd 15</Address>
+    <Latitude>31.2518</Latitude>
+    <Longitude>34.7915</Longitude>
+    <OpeningTime>2022-12-11T00:00:00</OpeningTime>
+    <Description>Facilitating doctor consultations for evacuees with chronic health conditions.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>8</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Jerusalem, Jaffa St 10</Address>
+    <Latitude>31.7683</Latitude>
+    <Longitude>35.2137</Longitude>
+    <OpeningTime>2022-11-23T00:00:00</OpeningTime>
+    <Description>Helping evacuees access social security benefits and other state-sponsored programs.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>9</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Ashdod, HaNamal St 30</Address>
+    <Latitude>31.804</Latitude>
+    <Longitude>34.645</Longitude>
+    <OpeningTime>2024-07-24T00:00:00</OpeningTime>
+    <Description>Arranging buddy systems in shelters to ensure evacuees have someone to rely on.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>10</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Holon, Sokolov St 22</Address>
+    <Latitude>32.011</Latitude>
+    <Longitude>34.772</Longitude>
+    <OpeningTime>2024-01-04T00:00:00</OpeningTime>
+    <Description>Helping evacuees set up basic living spaces in temporary shelters.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>11</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Ramla, Herzl St 27</Address>
+    <Latitude>31.246</Latitude>
+    <Longitude>34.792</Longitude>
+    <OpeningTime>2022-01-25T00:00:00</OpeningTime>
+    <Description>Helping evacuees navigate local housing systems and rental assistance.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>12</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Eilat, HaTmarim Blvd 20</Address>
+    <Latitude>29.5577</Latitude>
+    <Longitude>34.9501</Longitude>
+    <OpeningTime>2024-02-25T00:00:00</OpeningTime>
+    <Description>Helping evacuees find safe and comfortable temporary accommodation.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>13</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Eilot, HaNegev St 2</Address>
+    <Latitude>31.27</Latitude>
+    <Longitude>34.736</Longitude>
+    <OpeningTime>2022-11-28T00:00:00</OpeningTime>
+    <Description>Offering mental health consultations in shelters for those affected by the trauma.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>14</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Eilot, HaNegev St 2</Address>
+    <Latitude>31.27</Latitude>
+    <Longitude>34.736</Longitude>
+    <OpeningTime>2023-08-22T00:00:00</OpeningTime>
+    <Description>Distributing blankets, sweaters, and socks to evacuees for warmth.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>15</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Beersheba, Rager Blvd 15</Address>
+    <Latitude>31.2518</Latitude>
+    <Longitude>34.7915</Longitude>
+    <OpeningTime>2022-11-03T00:00:00</OpeningTime>
+    <Description>Offering mental health consultations in shelters for those affected by the trauma.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>16</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Omer, HaShikma St 9</Address>
+    <Latitude>32.946</Latitude>
+    <Longitude>35.302</Longitude>
+    <OpeningTime>2024-05-12T00:00:00</OpeningTime>
+    <Description>Providing legal guidance on obtaining government assistance and financial support.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>17</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Rehovot, Herzl St 65</Address>
+    <Latitude>31.894</Latitude>
+    <Longitude>34.812</Longitude>
+    <OpeningTime>2023-09-17T00:00:00</OpeningTime>
+    <Description>Coordinating with local pharmacies to ensure medical needs are met for evacuees.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>18</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Ramat Efal, HaRakevet St 8</Address>
+    <Latitude>32.18</Latitude>
+    <Longitude>34.935</Longitude>
+    <OpeningTime>2022-11-18T00:00:00</OpeningTime>
+    <Description>Helping evacuees understand their rights regarding property and compensation claims.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>19</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Yokneam, HaTzabar St 2</Address>
+    <Latitude>32.656</Latitude>
+    <Longitude>35.104</Longitude>
+    <OpeningTime>2024-11-04T00:00:00</OpeningTime>
+    <Description>Bringing in volunteer groups to engage evacuees in creative arts and self-expression.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>20</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Ramat Efal, HaRakevet St 8</Address>
+    <Latitude>32.18</Latitude>
+    <Longitude>34.935</Longitude>
+    <OpeningTime>2023-09-02T00:00:00</OpeningTime>
+    <Description>Organizing transportation for evacuees to move to safer regions within the country.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>21</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Mazkeret Batya, HaDekel St 3</Address>
+    <Latitude>31.845</Latitude>
+    <Longitude>34.836</Longitude>
+    <OpeningTime>2023-11-17T00:00:00</OpeningTime>
+    <Description>Helping evacuees understand their rights regarding property and compensation claims.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>22</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Tiberias, HaBanim St 15</Address>
+    <Latitude>32.792</Latitude>
+    <Longitude>35.54</Longitude>
+    <OpeningTime>2024-03-31T00:00:00</OpeningTime>
+    <Description>Providing nutrition packages that cater to specific dietary needs (e.g., gluten-free).</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>23</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Migdal HaEmek, HaDekel St 7</Address>
+    <Latitude>33.207</Latitude>
+    <Longitude>35.573</Longitude>
+    <OpeningTime>2022-02-22T00:00:00</OpeningTime>
+    <Description>Arranging buddy systems in shelters to ensure evacuees have someone to rely on.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>24</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Shlomi, HaZayit St 16</Address>
+    <Latitude>32.802</Latitude>
+    <Longitude>35.571</Longitude>
+    <OpeningTime>2024-10-08T00:00:00</OpeningTime>
+    <Description>Helping evacuees navigate local housing systems and rental assistance.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>25</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Ashkelon, Ben Gurion Blvd 60</Address>
+    <Latitude>31.668</Latitude>
+    <Longitude>34.599</Longitude>
+    <OpeningTime>2023-01-26T00:00:00</OpeningTime>
+    <Description>Providing trauma counseling services to evacuees affected by the war.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>26</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Bat Yam, Ben Gurion Blvd 15</Address>
+    <Latitude>32.017</Latitude>
+    <Longitude>34.748</Longitude>
+    <OpeningTime>2022-03-29T00:00:00</OpeningTime>
+    <Description>Providing support in finding accessible housing for evacuees with disabilities.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>27</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Tiberias, HaBanim St 15</Address>
+    <Latitude>32.792</Latitude>
+    <Longitude>35.54</Longitude>
+    <OpeningTime>2022-12-18T00:00:00</OpeningTime>
+    <Description>Delivering snacks, such as pastries and cakes, to brighten the evacuees' day.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>28</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Bat Yam, Ben Gurion Blvd 15</Address>
+    <Latitude>32.017</Latitude>
+    <Longitude>34.748</Longitude>
+    <OpeningTime>2023-02-19T00:00:00</OpeningTime>
+    <Description>Helping evacuees access social security benefits and other state-sponsored programs.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>29</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Beersheba, Rager Blvd 15</Address>
+    <Latitude>31.2518</Latitude>
+    <Longitude>34.7915</Longitude>
+    <OpeningTime>2022-10-10T00:00:00</OpeningTime>
+    <Description>Bringing in volunteer groups to engage evacuees in creative arts and self-expression.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>30</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Migdal HaEmek, HaDekel St 7</Address>
+    <Latitude>33.207</Latitude>
+    <Longitude>35.573</Longitude>
+    <OpeningTime>2022-03-10T00:00:00</OpeningTime>
+    <Description>Coordinating with local religious leaders to offer spiritual support to evacuees.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>31</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Eilat, HaTmarim Blvd 20</Address>
+    <Latitude>29.5577</Latitude>
+    <Longitude>34.9501</Longitude>
+    <OpeningTime>2022-12-08T00:00:00</OpeningTime>
+    <Description>Coordinating transport for evacuees from temporary shelters to more secure locations.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>32</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Tel Aviv, Dizengoff St 50</Address>
+    <Latitude>32.0805</Latitude>
+    <Longitude>34.7818</Longitude>
+    <OpeningTime>2023-03-04T00:00:00</OpeningTime>
+    <Description>Ensuring the timely delivery of prescription medications to evacuees in need.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>33</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Ramat Gan, Abba Hillel Silver Rd 100</Address>
+    <Latitude>32.082</Latitude>
+    <Longitude>34.823</Longitude>
+    <OpeningTime>2023-06-06T00:00:00</OpeningTime>
+    <Description>Providing assistance with the submission of claims for damages to property.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>34</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Holon, Sokolov St 22</Address>
+    <Latitude>32.011</Latitude>
+    <Longitude>34.772</Longitude>
+    <OpeningTime>2024-03-17T00:00:00</OpeningTime>
+    <Description>Setting up mobile health clinics in temporary shelters for on-site medical assistance.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>35</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Netanya, Herzl St 12</Address>
+    <Latitude>32.321</Latitude>
+    <Longitude>34.853</Longitude>
+    <OpeningTime>2022-03-03T00:00:00</OpeningTime>
+    <Description>Setting up community kitchens in temporary housing to foster a sense of normalcy.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>36</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Netanya, Herzl St 12</Address>
+    <Latitude>32.321</Latitude>
+    <Longitude>34.853</Longitude>
+    <OpeningTime>2024-10-02T00:00:00</OpeningTime>
+    <Description>Providing ready-to-eat dry food packs for evacuees in temporary shelters.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>37</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Ashdod, HaNamal St 30</Address>
+    <Latitude>31.804</Latitude>
+    <Longitude>34.645</Longitude>
+    <OpeningTime>2022-12-12T00:00:00</OpeningTime>
+    <Description>Offering group therapy sessions to evacuees dealing with emotional stress.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>38</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Kfar Saba, Weizmann St 28</Address>
+    <Latitude>32.175</Latitude>
+    <Longitude>34.906</Longitude>
+    <OpeningTime>2022-04-30T00:00:00</OpeningTime>
+    <Description>Setting up quiet spaces for evacuees to rest and de-stress after traumatic experiences.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>39</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Eilat, HaTmarim Blvd 20</Address>
+    <Latitude>29.5577</Latitude>
+    <Longitude>34.9501</Longitude>
+    <OpeningTime>2022-04-27T00:00:00</OpeningTime>
+    <Description>Offering mental health consultations in shelters for those affected by the trauma.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>40</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Holon, Sokolov St 22</Address>
+    <Latitude>32.011</Latitude>
+    <Longitude>34.772</Longitude>
+    <OpeningTime>2022-09-18T00:00:00</OpeningTime>
+    <Description>Providing legal counseling to evacuees who need to resolve employment or housing issues.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>41</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Shoham, HaAtzmaut St 6</Address>
+    <Latitude>32.035</Latitude>
+    <Longitude>34.915</Longitude>
+    <OpeningTime>2022-10-02T00:00:00</OpeningTime>
+    <Description>Providing support in finding accessible housing for evacuees with disabilities.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>42</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Sderot, HaDekel St 3</Address>
+    <Latitude>31.527</Latitude>
+    <Longitude>34.596</Longitude>
+    <OpeningTime>2023-05-20T00:00:00</OpeningTime>
+    <Description>Coordinating medical teams to provide basic health services in evacuation centers.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>43</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Beit Shemesh, Nahar Hayarden St 8</Address>
+    <Latitude>31.739</Latitude>
+    <Longitude>34.989</Longitude>
+    <OpeningTime>2022-08-24T00:00:00</OpeningTime>
+    <Description>Helping evacuees navigate local housing systems and rental assistance.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>44</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Rosh HaAyin, HaHagana St 1</Address>
+    <Latitude>32.123</Latitude>
+    <Longitude>34.88</Longitude>
+    <OpeningTime>2024-06-02T00:00:00</OpeningTime>
+    <Description>Setting up quiet spaces for evacuees to rest and de-stress after traumatic experiences.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>45</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Ramla, Herzl St 27</Address>
+    <Latitude>31.246</Latitude>
+    <Longitude>34.792</Longitude>
+    <OpeningTime>2022-07-18T00:00:00</OpeningTime>
+    <Description>Providing assistance with the submission of claims for damages to property.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>46</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Ramat HaSharon, Sokolov St 40</Address>
+    <Latitude>32.145</Latitude>
+    <Longitude>34.839</Longitude>
+    <OpeningTime>2023-03-18T00:00:00</OpeningTime>
+    <Description>Providing emergency first aid and triage for injured evacuees in shelters.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>47</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Beersheba, Rager Blvd 15</Address>
+    <Latitude>31.2518</Latitude>
+    <Longitude>34.7915</Longitude>
+    <OpeningTime>2022-03-23T00:00:00</OpeningTime>
+    <Description>Distributing bottled water to evacuees to ensure hydration in shelters.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>48</Id>
+    <callType>HousingAndRelocation</callType>
+    <Address>Ramat Gan, Abba Hillel Silver Rd 100</Address>
+    <Latitude>32.082</Latitude>
+    <Longitude>34.823</Longitude>
+    <OpeningTime>2022-07-18T00:00:00</OpeningTime>
+    <Description>Arranging temporary shelters for families, ensuring privacy and security.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>49</Id>
+    <callType>EmotionalAndSocialSupport</callType>
+    <Address>Kiryat Bialik, HaTzafon St 3</Address>
+    <Latitude>32.813</Latitude>
+    <Longitude>35.113</Longitude>
+    <OpeningTime>2024-04-10T00:00:00</OpeningTime>
+    <Description>Coordinating with local religious leaders to offer spiritual support to evacuees.</Description>
+    <maxEndingTime xsi:nil="true" />
+  </Call>
+</ArrayOfCall>
