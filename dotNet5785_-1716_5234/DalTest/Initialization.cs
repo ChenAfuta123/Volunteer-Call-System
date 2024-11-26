@@ -27,6 +27,13 @@ public static class Initialization
     /// </summary>
     private static void create_volunteer()
     {
+        int[] ids =  {
+            200123456, 201234567, 202345678, 203456789, 204567890,
+            205678901, 206789012, 207890123, 208901234, 209012345,
+            210123456, 211234567, 212345678, 213456789, 214567890,
+            215678901, 216789012, 217890123, 218901234, 219012345
+        }; 
+
         string[] names = {
             "Manager", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
             "Tamar Avni", "Noam Baruch", "Yael Tzur", "Yonatan Gilad", "Lior Hadad", "Maya Zohar",
@@ -68,27 +75,25 @@ public static class Initialization
       
         for (int i = 0; i < 20; i++)
         {
-            int id;
-             id = i; 
-       
-            
-            string name = names[s_rand.Next(names.Length)];
-            string email = emails[s_rand.Next(emails.Length)];
-            int index = s_rand.Next(addresses.Length);
-            string address = addresses[index];
-            double latitude = latitudes[index];
-            double longitude = longitudes[index];
+            int id = ids[i];
+            string name = names[i];
+            string email = emails[i];
+            string address = addresses[i];
+            double latitude = latitudes[i];
+            double longitude = longitudes[i];
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(1, 50);
             Role role = (i == 0) ? Role.volunteer : Role.manager;
-            DistanceType distanceType=(DistanceType)new Random().Next(Enum.GetValues(typeof(DistanceType)).Length);
+            DistanceType distanceType = (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
+
             Volunteer newVolunteer = new(id, distanceType, role,name, phoneNumber, email, null, address, latitude, longitude, maxDistance, true);
 
             s_dal!.Volunteer.Create(newVolunteer);
         }
+        Console.WriteLine("volunteer");
     }
 
     /// <summary>
@@ -193,23 +198,21 @@ public static class Initialization
 
         for (int i = 0; i < 50; i++)
         {
-           
-            int randomNumber = new Random().Next(0, 50);
-            string description = descriptions[randomNumber];
-            randomNumber /= 10;
-            CallType callType = (CallType)Enum.GetValues(typeof(CallType)).GetValue(randomNumber)!;
-
-            int index = s_rand.Next(addresses.Length);
+            int id = s_dal!.Config.NextCallId;
+            string description = descriptions[i];
+            int j = i / 10;
+            CallType callType = (CallType)j;
             string address = addresses[i];
             double latitude = latitudes[i];
             double longitude = longitudes[i];
             DateTime start = new DateTime(s_dal!.Config.Clock.Year - 2, 1, 1);
             int range = (s_dal!.Config.Clock - start).Days;
             DateTime openingTime = start.AddDays(s_rand.Next(range));
-
-            Call newCall = new(0, callType, address, latitude, longitude, openingTime, description);
+            DateTime? maxEndingTime = openingTime.AddHours(12);
+            Call newCall = new(id, callType, address, latitude, longitude, openingTime, description, maxEndingTime);
             s_dal!.Call.Create(newCall);
         }
+        Console.WriteLine("call");
     }
     /// <summary>
     /// Creates a list of assignments linking volunteers to calls.
@@ -223,39 +226,40 @@ public static class Initialization
         var calls = s_dal!.Call.ReadAll(); // Get all calls
         var volunteers = s_dal!.Volunteer.ReadAll(); // Get all volunteers
 
+        int callsCount = calls.Count();
+        int volunteersCount = volunteers.Count();
+
         for (int i = 0; i < 50; i++) // Generating 50 assignments
         {
-            
-            
-           
-            // Select a random call from the existing calls
-            var randomCall = calls.ElementAt(s_rand.Next(calls.Count()));
+            // Select a call based on i
+            var randomCall = calls.ElementAt(i % callsCount);
 
-            var randomVolunteer = volunteers.ElementAt(s_rand.Next(volunteers.Count()));
+            // Select a volunteer based on i
+            var randomVolunteer = volunteers.ElementAt(i % volunteersCount);
 
             // Generate entry time: It should be between call opening and max ending time
-            DateTime entryTime = randomCall.OpeningTime.AddMinutes(s_rand.Next(1, (int)((randomCall.maxEndingTime ?? DateTime.Now) - randomCall.OpeningTime).TotalMinutes));
+            DateTime entryTime = randomCall.OpeningTime.AddMinutes(i % Math.Max(1, (int)((randomCall.maxEndingTime ?? DateTime.Now) - randomCall.OpeningTime).TotalMinutes));
 
             // Randomly determine the end time for the assignment
             DateTime? endTime = null;
             EndTimeType? endTimeType = null;
 
             // Decide on treatment type and whether the call was treated or expired
-            double treatmentChance = s_rand.NextDouble();
+            double treatmentChance = (i % 100) / 100.0; // Normalized chance based on i
             if (treatmentChance < 0.7) // 70% chance to be treated
             {
-                endTime = entryTime.AddMinutes(s_rand.Next(15, 120)); // Random time for treatment (between 15 and 120 minutes)
+                endTime = entryTime.AddMinutes(15 + (i % 106)); // Time for treatment (15 to 120 minutes)
                 endTimeType = EndTimeType.Treated;
             }
             else if (treatmentChance < 0.85) // 15% chance to be canceled by the volunteer
             {
                 endTimeType = EndTimeType.SelfCancel;
-                endTime = entryTime.AddMinutes(s_rand.Next(1, 60)); // Self-cancel time (any time after entry)
+                endTime = entryTime.AddMinutes(1 + (i % 60)); // Self-cancel time (1 to 60 minutes after entry)
             }
             else if (treatmentChance < 0.95) // 10% chance to be canceled by the manager
             {
                 endTimeType = EndTimeType.ManagerCancel;
-                endTime = entryTime.AddMinutes(s_rand.Next(1, 60)); // Manager cancel time
+                endTime = entryTime.AddMinutes(1 + (i % 60)); // Manager cancel time
             }
             else // 5% chance for the call to expire
             {
@@ -276,7 +280,9 @@ public static class Initialization
             // Create the assignment in the database
             s_dal!.Assignment.Create(newAssignment);
         }
+        Console.WriteLine("assignment created");
     }
+
 
 
     /// <summary>

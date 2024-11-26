@@ -349,12 +349,6 @@ internal class Program
     /// </summary>
     static Call Call_input(int id)
     {
-        if (id == 0)
-        {
-            Console.WriteLine("Enter volunteer's Id:");
-            int.TryParse(Console.ReadLine(), out int Id);
-            id = Id;
-        }
         Console.WriteLine("Enter call address:");
         string address = Console.ReadLine() ?? string.Empty;
         CallType callType = GetCallTypeFromUser();
@@ -367,11 +361,6 @@ internal class Program
 
         Console.WriteLine("Enter call Longitude:");
         double Longitude = double.TryParse(Console.ReadLine(), out double lon) ? lon : 0.0;
-        if (id == 0)
-        {
-            int newCallId = s_dal!.Config.NextCallId;
-            id = newCallId;
-        }
         Call newCall = new(id, callType, address, Latitude, Longitude, s_dal!.Config.Clock, description, s_dal!.Config.Clock.AddHours(24));
         return newCall;
     }

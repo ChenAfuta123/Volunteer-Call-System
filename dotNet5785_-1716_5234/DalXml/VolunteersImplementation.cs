@@ -36,7 +36,7 @@ internal class VolunteerImplementation : IVolunteer
         if (volunteer != null) throw new DO.DalDoesNotExistsException($"Volunteer with ID={item.Id} does not exist");
 
 
-        volunteersRootElem.Add(createVolunteerElement(item));
+        volunteersRootElem.Add( createVolunteerElement(item));
         XMLTools.SaveListToXMLElement(volunteersRootElem, Config.s_volunteers_xml);
 
 
@@ -122,7 +122,7 @@ internal class VolunteerImplementation : IVolunteer
         ?? throw new DO.DalDoesNotExistsException($"volunteers with ID={item.Id} does Not exist"))
                 .Remove();
 
-        volunteersRootElem.Add(new XElement("Volunteer", createVolunteerElement(item)));
+        volunteersRootElem.Add( createVolunteerElement(item));
 
         XMLTools.SaveListToXMLElement(volunteersRootElem, Config.s_volunteers_xml);
     }

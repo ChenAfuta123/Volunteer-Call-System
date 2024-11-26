@@ -10,8 +10,6 @@ public class AssignmentImplementation : IAssignment
     public void Create(Assignment item)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
-        //if (Assignments.Any(it => it.Id == item.Id))
-        //    throw new DalAlreadyExistsException($"Assignment with ID={item.Id} already exist");
         int id = Config.NextAssignmentId;
         Assignment copy = item with { Id = id };
         Assignments.Add(copy);
