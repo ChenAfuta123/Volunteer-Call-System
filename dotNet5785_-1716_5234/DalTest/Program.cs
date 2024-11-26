@@ -415,14 +415,14 @@ internal class Program
     /// </summary>
     void CreateAssignment()
     {
-        int newAssignmentId = s_dal!.Config.NextAssignmentId;
+        
         Console.WriteLine("Enter volunteer ID:");
         int.TryParse(Console.ReadLine(), out int volunteerId);
 
         Console.WriteLine("Enter call ID:");
         int.TryParse(Console.ReadLine(), out int callId);
 
-        Assignment newAssignment = new(newAssignmentId, callId, volunteerId, s_dal!.Config.Clock, null, null);
+        Assignment newAssignment = new(0, callId, volunteerId, s_dal!.Config.Clock, null, null);
         s_dal!.Assignment.Create(newAssignment);
         Console.WriteLine("Assignment added successfully.");
     }

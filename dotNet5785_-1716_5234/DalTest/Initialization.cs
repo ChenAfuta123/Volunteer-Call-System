@@ -69,16 +69,9 @@ public static class Initialization
         for (int i = 0; i < 20; i++)
         {
             int id;
-
-            /// <summary>
-            /// Generates a unique ID for each volunteer.
-            /// </summary>
-            do
-            {
-                id = s_rand.Next(200000000, 400000000);
-            }
-            while (s_dal!.Volunteer.Read(id) != null);
-
+             id = i; 
+       
+            
             string name = names[s_rand.Next(names.Length)];
             string email = emails[s_rand.Next(emails.Length)];
             int index = s_rand.Next(addresses.Length);
@@ -92,7 +85,6 @@ public static class Initialization
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
-            
             Volunteer newVolunteer = new(id, distanceType, role,name, phoneNumber, email, null, address, latitude, longitude, maxDistance, true);
 
             s_dal!.Volunteer.Create(newVolunteer);
@@ -201,27 +193,28 @@ public static class Initialization
 
         for (int i = 0; i < 50; i++)
         {
-            int id = s_dal!.Config.NextCallId;
-            int randomNumber = new Random().Next(1, 51);
+           
+            int randomNumber = new Random().Next(0, 50);
             string description = descriptions[randomNumber];
             randomNumber /= 10;
             CallType callType = (CallType)Enum.GetValues(typeof(CallType)).GetValue(randomNumber)!;
 
             int index = s_rand.Next(addresses.Length);
-            string address = addresses[index];
-            double latitude = latitudes[index];
-            double longitude = longitudes[index];
+            string address = addresses[i];
+            double latitude = latitudes[i];
+            double longitude = longitudes[i];
             DateTime start = new DateTime(s_dal!.Config.Clock.Year - 2, 1, 1);
             int range = (s_dal!.Config.Clock - start).Days;
             DateTime openingTime = start.AddDays(s_rand.Next(range));
 
-            Call newCall = new(id, callType, address, latitude, longitude, openingTime, description);
+            Call newCall = new(0, callType, address, latitude, longitude, openingTime, description);
             s_dal!.Call.Create(newCall);
         }
     }
     /// <summary>
     /// Creates a list of assignments linking volunteers to calls.
     /// </summary>
+
 
 
     private static void create_assignment()
@@ -232,13 +225,9 @@ public static class Initialization
 
         for (int i = 0; i < 50; i++) // Generating 50 assignments
         {
-            // Generate a unique assignment ID
-            int assignmentId;
-            do
-            {
-                assignmentId = s_rand.Next(200000000, 400000000); // Random assignment ID
-            } while (s_dal!.Assignment.Read(assignmentId) != null); // Ensure it's unique
-
+            
+            
+           
             // Select a random call from the existing calls
             var randomCall = calls.ElementAt(s_rand.Next(calls.Count()));
 
@@ -276,7 +265,7 @@ public static class Initialization
 
             // Create a new Assignment object
             Assignment newAssignment = new(
-                assignmentId,
+                0,
                 randomCall.Id,
                 randomVolunteer.Id,
                 entryTime,

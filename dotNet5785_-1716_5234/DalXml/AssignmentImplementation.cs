@@ -12,7 +12,9 @@ public class AssignmentImplementation : IAssignment
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
         //if (Assignments.Any(it => it.Id == item.Id))
         //    throw new DalAlreadyExistsException($"Assignment with ID={item.Id} already exist");
-        Assignments.Add(item);
+        int id = Config.NextAssignmentId;
+        Assignment copy = item with { Id = id };
+        Assignments.Add(copy);
         XMLTools.SaveListToXMLSerializer(Assignments, Config.s_assignments_xml);
     }
 
@@ -21,7 +23,7 @@ public class AssignmentImplementation : IAssignment
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
         if (Assignments.RemoveAll(it => it.Id == id) == 0)
             throw new DalDoesNotExistsException($"Assignment with ID={id} does Not exist");
-        XMLTools.SaveListToXMLSerializer(Assignments, Config.s_calls_xml);
+        XMLTools.SaveListToXMLSerializer(Assignments, Config.s_assignments_xml);
     }
 
     public void DeleteAll()
