@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <NextCallId>0</NextCallId>
-  <NextAssignmentId>0</NextAssignmentId>
-  <Clock>27/11/2024 17:34:49</Clock>
+  <NextCallId>50</NextCallId>
+  <NextAssignmentId>50</NextAssignmentId>
+  <Clock>11/27/2024 7:00:10 PM</Clock>
   <RiskRange>12:00:00</RiskRange>
 </config>

@@ -289,9 +289,9 @@ public static class Initialization
     /// <param name="dalAssignment">Instance for assignment data access layer.</param>
     /// <param name="dalConfig">Instance for configuration data access layer.</param>
     /// <exception cref="NullReferenceException">Thrown if any of the DAL objects are null.</exception>
-    public static void Do(IDal dal)
+    public static void Do()
     {
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        s_dal = DalApi.Factory.Get ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
 
 
         Console.WriteLine("Resetting configuration values and clearing lists...");

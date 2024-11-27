@@ -10,8 +10,7 @@ namespace DalTest;
 internal class Program
 {
     //static readonly IDal s_dal = new DalList();
-    static readonly IDal s_dal = new DalXml(); 
-
+    static readonly IDal s_dal = Factory.Get;
     /// <summary>
     /// Enum for the main menu options.
     /// </summary>
@@ -112,7 +111,7 @@ internal class Program
                 case MainMenu.DataInitialization:
                     // Initialize the data.
                     Console.WriteLine("Initializing data.");
-                    Initialization.Do(s_dal);
+                    Initialization.Do();
                     break;
 
                 case MainMenu.ViewAllData:
