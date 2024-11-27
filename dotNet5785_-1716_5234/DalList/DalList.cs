@@ -5,8 +5,10 @@ using DalApi;
 /// Implementation of the IDal interface using in-memory data storage.
 /// Provides access to various data-related functionalities.
 /// </summary>
-sealed public class DalList : IDal
+sealed internal class DalList : IDal
 {
+    public static IDal Instance { get; } = new DalList();
+    private DalList() { }
     /// <summary>
     /// Provides access to Call-related operations.
     /// </summary>
