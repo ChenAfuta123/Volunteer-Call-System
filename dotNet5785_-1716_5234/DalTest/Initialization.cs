@@ -93,7 +93,6 @@ public static class Initialization
 
             s_dal!.Volunteer.Create(newVolunteer);
         }
-        Console.WriteLine("volunteer");
     }
 
     /// <summary>
@@ -198,7 +197,6 @@ public static class Initialization
 
         for (int i = 0; i < 50; i++)
         {
-            int id = s_dal!.Config.NextCallId;
             string description = descriptions[i];
             int j = i / 10;
             CallType callType = (CallType)j;
@@ -209,10 +207,9 @@ public static class Initialization
             int range = (s_dal!.Config.Clock - start).Days;
             DateTime openingTime = start.AddDays(s_rand.Next(range));
             DateTime? maxEndingTime = openingTime.AddHours(12);
-            Call newCall = new(id, callType, address, latitude, longitude, openingTime, description, maxEndingTime);
+            Call newCall = new(0, callType, address, latitude, longitude, openingTime, description, maxEndingTime);
             s_dal!.Call.Create(newCall);
         }
-        Console.WriteLine("call");
     }
     /// <summary>
     /// Creates a list of assignments linking volunteers to calls.
@@ -279,7 +276,6 @@ public static class Initialization
             // Create the assignment in the database
             s_dal!.Assignment.Create(newAssignment);
         }
-        Console.WriteLine("assignment created");
     }
 
 
