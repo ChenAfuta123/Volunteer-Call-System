@@ -8,15 +8,6 @@ public enum Role
     manager
 }
 
-/// <summary>
-/// Enum representing the type of distance measurement used.
-/// </summary>
-public enum DistanceType
-{
-    AirDistance,
-    WalkingDistance,
-    DrivingDistance
-}
 public enum CallType
 {
     /// <summary>Providing food, drinks, clothing, and essential supplies to evacuees.</summary>
@@ -43,3 +34,4 @@ public enum CallStatus
     OpenAtRisk,     // קריאה פתוחה שמתקרבת לזמן סיום, במרחק זמן סיכון
     InProgressAtRisk // קריאה בטיפול שמתקרבת לזמן סיום, במרחק זמן סיכון
 }
+
