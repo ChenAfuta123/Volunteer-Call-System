@@ -1,2 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Call>
+    <Id>1</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Tel Aviv, Dizengoff St 50</Address>
+    <Latitude>32.0805</Latitude>
+    <Longitude>34.7818</Longitude>
+    <OpeningTime>2023-01-12T00:00:00</OpeningTime>
+    <Description>Providing hot meals to evacuees in shelters, ensuring nutritional needs are met.</Description>
+    <maxEndingTime>2023-01-12T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>3</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Jerusalem, Jaffa St 10</Address>
+    <Latitude>31.7683</Latitude>
+    <Longitude>35.2137</Longitude>
+    <OpeningTime>2024-04-20T00:00:00</OpeningTime>
+    <Description>Delivering snacks, such as pastries and cakes, to brighten the evacuees' day.</Description>
+    <maxEndingTime>2024-04-20T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>5</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Haifa, HaNassi Blvd 80</Address>
+    <Latitude>32.794</Latitude>
+    <Longitude>34.9896</Longitude>
+    <OpeningTime>2022-02-21T00:00:00</OpeningTime>
+    <Description>Distributing bottled water to evacuees to ensure hydration in shelters.</Description>
+    <maxEndingTime>2022-02-21T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>7</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Beersheba, Rager Blvd 15</Address>
+    <Latitude>31.2518</Latitude>
+    <Longitude>34.7915</Longitude>
+    <OpeningTime>2023-08-31T00:00:00</OpeningTime>
+    <Description>Providing ready-to-eat dry food packs for evacuees in temporary shelters.</Description>
+    <maxEndingTime>2023-08-31T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>9</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Eilat, HaTmarim Blvd 20</Address>
+    <Latitude>29.5577</Latitude>
+    <Longitude>34.9501</Longitude>
+    <OpeningTime>2024-07-25T00:00:00</OpeningTime>
+    <Description>Distributing blankets, sweaters, and socks to evacuees for warmth.</Description>
+    <maxEndingTime>2024-07-25T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>11</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Petah Tikva, Em Hamoshavot Rd 45</Address>
+    <Latitude>32.084</Latitude>
+    <Longitude>34.871</Longitude>
+    <OpeningTime>2022-12-27T00:00:00</OpeningTime>
+    <Description>Delivering tables and chairs to temporary housing to improve comfort.</Description>
+    <maxEndingTime>2022-12-27T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>13</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Netanya, Herzl St 12</Address>
+    <Latitude>32.321</Latitude>
+    <Longitude>34.853</Longitude>
+    <OpeningTime>2024-04-12T00:00:00</OpeningTime>
+    <Description>Transporting food supplies to remote shelter locations for easier access.</Description>
+    <maxEndingTime>2024-04-12T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>15</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Ashdod, HaNamal St 30</Address>
+    <Latitude>31.804</Latitude>
+    <Longitude>34.645</Longitude>
+    <OpeningTime>2022-11-01T00:00:00</OpeningTime>
+    <Description>Distributing thermoses with hot tea or coffee to evacuees for warmth.</Description>
+    <maxEndingTime>2022-11-01T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>17</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Rehovot, Herzl St 65</Address>
+    <Latitude>31.894</Latitude>
+    <Longitude>34.812</Longitude>
+    <OpeningTime>2022-01-26T00:00:00</OpeningTime>
+    <Description>Bringing groceries and hygiene products to shelters for immediate use.</Description>
+    <maxEndingTime>2022-01-26T12:00:00</maxEndingTime>
+  </Call>
+</ArrayOfCall>
