@@ -17,6 +17,6 @@ public class Volunteer
     public int TotalHandledCalls { get;  }
     public int TotalCanceledCalls { get; }
     public int TotalExpiredCalls { get; }
-    public BO.CallInProgress? VolunteerHandledCall { get; set; }
+    internal BO.CallInProgress? VolunteerHandledCall { get; set; }
     public override string ToString() => this.ToStringProperty();
 }
