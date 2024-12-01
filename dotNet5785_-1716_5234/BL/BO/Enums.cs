@@ -34,4 +34,11 @@ public enum CallStatus
     OpenAtRisk,     // קריאה פתוחה שמתקרבת לזמן סיום, במרחק זמן סיכון
     InProgressAtRisk // קריאה בטיפול שמתקרבת לזמן סיום, במרחק זמן סיכון
 }
-
+public enum TimeUnit
+{
+    MINUTE,
+    HOUR,
+    DAY,
+    MONTH,
+    YEAR
+}

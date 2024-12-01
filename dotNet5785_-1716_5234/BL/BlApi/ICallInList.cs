@@ -1,7 +1,6 @@
 ﻿
-
 namespace BlApi;
 
-internal interface ICallInList
+public interface ICallInList
 {
 }
