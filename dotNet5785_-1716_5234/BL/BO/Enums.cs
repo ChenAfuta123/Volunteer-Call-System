@@ -23,16 +23,18 @@ public enum CallType
     MedicalAndPharmaceuticalAid,
 
     /// <summary>Providing legal advice and guidance on accessing government aid and support.</summary>
-    LegalAndAdministrativeSupport
+    LegalAndAdministrativeSupport,
+    /// <summary>call does not exist in volunteer's treatment.</summary>
+    None
 }
 public enum CallStatus
 {
-    Open,           // לא בטיפול כרגע, גם אם הייתה בטיפול בעבר ונעצרה
-    InProgress,     // בטיפול כרגע על ידי מתנדב
-    Closed,         // סגורה - המתנדב סיים לטפל בה
-    Expired,        // פג תוקף - לא הסתיימה בזמן או לא נבחרה לטיפול
-    OpenAtRisk,     // קריאה פתוחה שמתקרבת לזמן סיום, במרחק זמן סיכון
-    InProgressAtRisk // קריאה בטיפול שמתקרבת לזמן סיום, במרחק זמן סיכון
+    Open,           
+    InProgress,     
+    Closed,        
+    Expired,      
+    OpenAtRisk,    
+    InProgressAtRisk 
 }
 public enum TimeUnit
 {
