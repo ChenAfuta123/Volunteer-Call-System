@@ -1,9 +1,11 @@
 ﻿
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace BlApi;
 
 public interface ICall
 {
-    public void RequestForCallQuantities();
+    public Array<int> RequestForCallQuantities();
     public IEnumerable<BO.CallInList> RequestForCallList(Enum? filter,object? obg, Enum? Sorting);
     public List<BO.CallAssignInList> RequestForCallDetails(int callId);
     public void UpdateCallDetails(BO.Volunteer volunteer);
