@@ -10,8 +10,6 @@ public class Call
     public double? Latitude { get; set; }
     public  double? Longitude { get; set; }
     public DateTime OpeningTime { get; init; }
-
-
     public DateTime? maxEndingTime { get; set; }
     public CallStatus callStatus { get; set; }
 

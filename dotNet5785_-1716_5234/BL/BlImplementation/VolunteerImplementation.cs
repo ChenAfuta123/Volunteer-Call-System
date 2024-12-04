@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using DO;
 
 namespace BlImplementation;
 
@@ -7,35 +8,47 @@ internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public void addVolunteer(Volunteer volunteer)
+    public void add(Volunteer volunteer)
     {
 
         throw new NotImplementedException();
     }
 
-    public void DeleteVolunteer(int id)
+    public void Delete(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Volunteer GetVolunteerDetails(int id)
+    public BO.Volunteer Read(int id)
+    {
+        try
+        {
+
+            DO.Volunteer volunteer = _dal.Volunteer.Read(id)!;
+            if (volunteer == null)
+                throw new ArgumentException("Volunteer not found.");
+           
+    }
+
+
+    public IEnumerable<VolunteerInList> ReadAll(bool? active, Enum? sortByField)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<VolunteerInList> GetVolunteerList(bool? active, Enum? sortByField)
+    public Role LoginUser(string name, string password)
     {
-        throw new NotImplementedException();
+        var volunteers = _dal.Volunteer.ReadAll();
+        var user = volunteers.FirstOrDefault(v => v.Name == name);
+        if (user == null)
+            throw new ArgumentException("User not found.");
+        if (user.Password != password)
+            throw new ArgumentException("Incorrect password.");
+        return user.role;
     }
 
-    public Role LoginUser(string username, string password)
-    {
-        var doVolunteer = _dal.Volunteer.Readall;
-        if (password != doVolunteer->password)
-        throw new NotImplementedException();
-    }
 
-    public Volunteer UpdateVolunteerDetaiint (int id)
+    public Volunteer Update (int id)
     {
         throw new NotImplementedException();
     }
