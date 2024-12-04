@@ -35,7 +35,7 @@ internal class VolunteerImplementation : IVolunteer
         throw new NotImplementedException();
     }
 
-    public Volunteer UpdateVolunteerDetaiint id)
+    public Volunteer UpdateVolunteerDetaiint (int id)
     {
         throw new NotImplementedException();
     }
