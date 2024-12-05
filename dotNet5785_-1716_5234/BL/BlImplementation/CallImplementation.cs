@@ -1,4 +1,5 @@
-﻿namespace BlImplementation;
+﻿
+namespace BlImplementation;
 using BlApi;
 using BO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -60,9 +61,9 @@ internal class CallImplementation : ICall
                     counts[group.Key] = group.Count(); // עדכון המערך לפי הסטטוס
                     return counts;
                 });
-
+            
         return statusCounts;
-
+           
         throw new NotImplementedException();
     }
     public void Update(BO.Volunteer volunteer)
@@ -70,3 +71,8 @@ internal class CallImplementation : ICall
         throw new NotImplementedException();
     }
 }
+
+
+    
+
+  
