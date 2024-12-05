@@ -1,44 +1,96 @@
 ﻿using BlApi;
 using BO;
+using DalApi;
+using DO;
 using Helpers;
+using System.ComponentModel.DataAnnotations;
 namespace BlImplementation;
 
 internal class VolunteerImplementation :IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public void addVolunteer(BO.Volunteer volunteer)
+    public void Add(BO.Volunteer boVolunteer)
     {
-        // שלב 1: בדיקת תקינות המתנדב
-        if (!ValidateVolunteer(volunteer))
+        VolunteerManager.ValidateVolunteer(boVolunteer);
+        DO.Volunteer doVolunteer = new DO.Volunteer
         {
-            throw new Exception("Invalid volunteer data.");
-        }
-
-        // שלב 2: המרת האובייקט מ-BO.Volunteer ל-DO.Volunteer
-        DO.Volunteer volunteerToAdd = new DO.Volunteer
-        {
-            Id = volunteer.Id,
-            Name = volunteer.Name,
-            Email = volunteer.Email,
-            PhoneNumber = volunteer.PhoneNumber,
-            Address = volunteer.Address,
-            Latitude = volunteer.Latitude,
-            Longitude = volunteer.Longitude
+            Id = boVolunteer.Id,
+            distanceType =(DO.DistanceType)boVolunteer.distanceType,
+            role = (DO.Role)boVolunteer.role,
+            Name = boVolunteer.Name,
+            PhoneNumber = boVolunteer.PhoneNumber,
+            Email = boVolunteer.Email,
+            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password); 
+            Address = boVolunteer.Address,
+            Latitude = boVolunteer.Latitude,
+            Longitude = boVolunteer.Longitude,
+            MaxDistance = boVolunteer.MaxDistance,
+            Active = boVolunteer.Active 
         };
-
         try
         {
-            // שלב 3: הוספת המתנדב לשכבת הנתונים
-            _dal.Volunteer.Create(volunteerToAdd);
+        
+            _dal.Volunteer.Create(doVolunteer);
+
         }
+        catch (DO.DalAlreadyExistsException ex)
+        {
+            
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+
+        }
+
         catch (Exception ex)
         {
-            // שלב 4: טיפול בחריגות - במקרה של תעודת זהות כפולה או שגיאות אחרות בשכבת הנתונים
-            throw new Exception("Error adding volunteer: " + ex.Message);
+            throw new Exception($"Unexpected error while adding a volunteer: {ex.Message}");
         }
+        
+
+        
     }
 
+    public BO.Role LoginUser(string username, string password)
+    {
+        throw (new NotImplementedException());
+    }
+    public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, Enum? sortByField)
+    {
+        throw(new NotImplementedException());
+    }
+    public BO.Volunteer Read(int id)
+    {
+        throw (new NotImplementedException());
+    }
+    public void Update(int id, BO.Volunteer boVolunteer)
+    {
+        VolunteerManager.ValidateVolunteer(boVolunteer);
+        try
+        {
+
+            //_dal.Volunteer.Update(doVolunteer);
+
+        }
+        catch (DO.DalAlreadyExistsException ex)
+        {
+
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception($"Unexpected error while adding a volunteer: {ex.Message}");
+        }
+
+        public void Delete(int id)
+    {
+        throw (new NotImplementedException());
+
+    }
+
+       
+   
 
 
 }

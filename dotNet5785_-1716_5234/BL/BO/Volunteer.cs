@@ -14,6 +14,7 @@ public class Volunteer
     public double? MaxDistance { get; set; }
     public bool Active { get; set; }
     public DistanceType distanceType { get; set; }
+    public Role role { get; set; }
     public int TotalHandledCalls { get;  }
     public int TotalCanceledCalls { get; }
     public int TotalExpiredCalls { get; }

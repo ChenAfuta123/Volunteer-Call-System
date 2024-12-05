@@ -44,3 +44,10 @@ public enum TimeUnit
     MONTH,
     YEAR
 }
+public enum DistanceType
+{
+    AirDistance,
+    WalkingDistance,
+    DrivingDistance
+}
+

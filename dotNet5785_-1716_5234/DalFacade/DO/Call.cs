@@ -23,7 +23,6 @@ public record Call
     string? Description = null,
     DateTime? maxEndingTime = null
 
-
 )
 {
    
