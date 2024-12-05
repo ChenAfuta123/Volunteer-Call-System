@@ -4,15 +4,17 @@ using DO;
 
 namespace BlImplementation;
 
-internal class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation :IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
     public void add(Volunteer volunteer)
     {
-
-        throw new NotImplementedException();
-    }
+        // שלב 1: בדיקת תקינות המתנדב
+        if (!ValidateVolunteer(volunteer))
+        {
+            throw new Exception("Invalid volunteer data.");
+        }
 
     public void Delete(int id)
     {
