@@ -3,12 +3,12 @@ namespace BO;
 
 internal class VolunteerInList
 {
-    public int Id { get; }
-    public string Name { get; }
-    public bool Active { get; }
-    public int TotalHandledCalls { get; }
-    public int TotalCanceledCalls { get; }
-    public int TotalExpiredCalls { get; }
-    public int? HandledCallId { get; }
+    public int Id { get; init; }
+    public string Name { get; init; }
+    public bool Active { get; init; }
+    public int TotalHandledCalls { get; init; }
+    public int TotalCanceledCalls { get; init; }
+    public int TotalExpiredCalls { get; init; }
+    public int? HandledCallId { get; init; }
    
 }

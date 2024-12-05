@@ -1,140 +1,92 @@
 ﻿
+using BO;
 using DalApi;
+using DO;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 namespace Helpers
 {
     internal static class VolunteerManager
     {
         private static IDal s_dal = Factory.Get;
-
-
-        public static bool ValidateVolunteer(BO.Volunteer volunteer, int id)
+        public static CallStatus Status(int callId)
         {
+
+            return CallStatus.Open;
+        }
+        public static int TotalEndTimeType(int Vid,EndTimeType endTimeType)
+        {
+
+            return s_dal.Assignment.ReadAll()
+    .Count(assignment => assignment.EndTimeType == endTimeType&& assignment.VolunteerId == Vid);
+
+        }
+        public static BO.Volunteer DOtoBO(DO.Volunteer volunteer)
+        {
+            BO.CallInProgress ?volunteerHandledCall=null;
+
             try
             {
-                // בדיקת אימייל
-                if (!IsValidEmail(volunteer.Email))
-                    throw new Exception("Invalid email address.");
+        
+                var Assignment = s_dal.Assignment.ReadAll().FirstOrDefault(assignment => assignment.VolunteerId == volunteer.Id);
+                if (Assignment == null) throw new Exception("Assignment not found.");
 
-using BO;
-using DalApi;
-using DO;
+                var call = s_dal.Call.ReadAll().FirstOrDefault(call => call.Id == Assignment.CallId);
+                if (call == null) throw new Exception("Call not found.");
 
-            // חישוב ספרת ביקורת
-            int sum = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                int digit = int.Parse(id[i].ToString());
-                sum += (i % 2 == 0) ? digit : digit * 2;
+                 volunteerHandledCall = new BO.CallInProgress
+                {
+                    Id = Assignment.Id,
+                    CallId = call.Id,
+                    callType = (BO.CallType)call.callType, // סוג הקריאה
+                    Address = call.Address,
+                    OpeningTime = call.OpeningTime,
+                    Description = call.Description,
+                    maxEndingTime = call.maxEndingTime,
+                    EntryTime = Assignment.EntryTime,
+                    CallDistanceFromVolunteer = CalculateDistance(volunteer.Address, call.Address, volunteer.distanceType),
+                    callStatus = Status(call.Id) // סטטוס הקריאה צריך לממש את סטטוס
+                };
             }
-            int checkDigit = (10 - (sum % 10)) % 10;
-            return checkDigit == int.Parse(id[8].ToString());
+            catch (Exception)
+            {
+                throw new Exception("Assignment not found.");
+            }
+
+            return new BO.Volunteer
+            {
+                Id = volunteer.Id,
+                Name = volunteer.Name,
+                PhoneNumber = volunteer.PhoneNumber,
+                Email = volunteer.Email,
+                Password = volunteer.Password,
+                Address = volunteer.Address,
+                Latitude = volunteer.Latitude,
+                Longitude = volunteer.Longitude,
+                MaxDistance = volunteer.MaxDistance,
+                Active = volunteer.Active,
+                distanceType = volunteer.distanceType,
+                role = (BO.Role)volunteer.role,
+                TotalHandledCalls = TotalEndTimeType(volunteer.Id,EndTimeType.Treated),
+                TotalCanceledCalls = TotalEndTimeType(volunteer.Id,EndTimeType.ManagerCancel) + TotalEndTimeType(volunteer.Id,EndTimeType.SelfCancel),
+                TotalExpiredCalls = TotalEndTimeType(volunteer.Id, EndTimeType.Expired),
+                VolunteerHandledCall = volunteerHandledCall
+            };
         }
-
-        // פונקציה לבדוק אם קו אורך ורוחב תקינים/
-        private static bool IsValidCoordinates(double? latitude, double? longitude)
+        public static BO.VolunteerInList VolunteerToVolunteerList(BO.Volunteer volunteer)
         {
-            latitude = latitude ?? throw new ArgumentNullException(nameof(latitude), "Latitude cannot be null.");
-            longitude = longitude ?? throw new ArgumentNullException(nameof(longitude), "Longitude cannot be null.");
-            return latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
+            return new BO.VolunteerInList
+            {
+                Id= volunteer.Id,
+                Name =volunteer.Name,
+                Active=volunteer.Active,
+                TotalHandledCalls=volunteer.TotalHandledCalls,
+                TotalCanceledCalls=volunteer.TotalCanceledCalls,
+                TotalExpiredCalls=volunteer.TotalExpiredCalls,
+                HandledCallId=volunteer.VolunteerHandledCall?.Id
+            };
         }
-
-        // פונקציה לבדוק אם שדה מספרי הוא אכן מספרי
-        private static bool IsValidNumber(string input)
-        {
-            return double.TryParse(input, out _);
-        }
-
-        // פונקציה לבדוק אם אורך שדה תקין
-        private static bool IsValidLength(string? input, int? minLength, int? maxLength)
-        {
-            input = input ?? throw new ArgumentNullException(nameof(input), "Input cannot be null.");
-            minLength = minLength ?? throw new ArgumentNullException(nameof(minLength), "Minimum length cannot be null.");
-            maxLength = maxLength ?? throw new ArgumentNullException(nameof(maxLength), "Maximum length cannot be null.");
-
-            return input.Length >= minLength && input.Length <= maxLength;
-        }
-        private static bool IsValidPassword(string? password)
-        {
-            if (string.IsNullOrWhiteSpace(password))
-                return false;
-
-            // אורך מינימלי של 6 תווים
-            if (password.Length < 6)
-                return false;
-
-            // לפחות ספרה אחת
-            if (!password.Any(char.IsDigit))
-                return false;
-
-            // לפחות אות אחת רישית
-            if (!password.Any(char.IsUpper))
-                return false;
-
-            // לפחות אות אחת קטנה
-            if (!password.Any(char.IsLower))
-                return false;
-
-            // לפחות תו מיוחד
-            if (!password.Any(c => !char.IsLetterOrDigit(c)))
-                return false;
-
-    private static IDal s_dal = Factory.Get;
-    public static CallStatus Status(int callId)
-    {
-
-        return CallStatus.Open;
     }
-    public static BO.Volunteer DOtoBO(DO.Volunteer volunteer)
-    {
-        var Assignment = s_dal.Assignment.ReadAll().FirstOrDefault(assignment => assignment.VolunteerId == volunteer.Id);
-        var call = s_dal.Call.ReadAll().FirstOrDefault(call => call.Id == Assignment.CallId);
-        var volunteerHandledCall = Assignment != null && call != null
-          ? new BO.CallInProgress
-          {
-              Id = Assignment.Id,
-              CallId = call.Id,
-              callType = call.callType, // סוג הקריאה
-              Address = call.Address,
-              OpeningTime = call.OpeningTime,
-              Description = call.Description,
-              maxEndingTime = call.MaxEndingTime,
-              EntryTime = Assignment.EntryTime,
-              CallDistanceFromVolunteer = Helpers.CalculateDistance(volunteer.Latitude, volunteer.Longitude, call.Latitude, call.Longitude),
-              callStatus = Status(call.Id) // סטטוס הקריאה
-          };
-          : null;
-        return new BO.Volunteer
-        {
-            Id = volunteer.Id,
-            Name = volunteer.Name,
-            PhoneNumber = volunteer.PhoneNumber,
-            Email = volunteer.Email,
-            Password = volunteer.Password,
-            Address = volunteer.Address,
-            Latitude = volunteer.Latitude,
-            Longitude = volunteer.Longitude,
-            MaxDistance = volunteer.MaxDistance,
-            Active = volunteer.Active,
-            distanceType = volunteer.distanceType,
-            role = volunteer.role,
-            TotalHandledCalls = ,
-            TotalCanceledCalls = 2,
-            TotalExpiredCalls = 1,
-            VolunteerHandledCall = volunteerHandledCall
-        };
 
-    }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Error retrieving volunteer details.", ex); }
 }
-    public static int g(Assignment )
-{
-    int num = s_dal.Assignment.ReadAll()
-    .Count(assignment => assignment.EndTimeType == Treated);
-}
-

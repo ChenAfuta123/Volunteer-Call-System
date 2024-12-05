@@ -66,3 +66,9 @@ public enum EndTimeType
     /// </summary>
     Expired
 }
+public enum Filter
+{
+    Name,
+    HandledCallId,
+    TotalHandledCalls
+}
