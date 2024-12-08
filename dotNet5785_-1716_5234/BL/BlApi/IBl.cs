@@ -3,7 +3,7 @@ namespace BlApi;
 
 public interface IBl
 {
-    IVolunteer Volunteer { get; }
-    ICall Call { get; }
-    IAdmin Admin { get; }
+    IVolunteer Volunteer { get; init; }
+    ICall Call { get; init; }
+    IAdmin Admin { get; init; }
 }

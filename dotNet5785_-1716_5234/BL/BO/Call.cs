@@ -15,7 +15,7 @@ public class Call
     public DateTime? MaxEndingTime { get; set; }
     public CallStatus callStatus { get; set; }
 
-    List<BO.CallAssignInList>? CallAssignList { get; set;}
+    public List<BO.CallAssignInList>? CallAssignList { get; set;}
 
 
 public override string ToString() => this.ToStringProperty();

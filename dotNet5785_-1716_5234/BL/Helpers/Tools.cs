@@ -9,7 +9,12 @@ namespace Helpers;
 
 internal static class Tools
 {
-   public static bool IsValidID(int Id)
+    public static CallStatus Status(int callId)
+    {
+
+        return CallStatus.Open;
+    }
+    public static bool IsValidID(int Id)
     {
         string id = Id.ToString();
 
@@ -133,7 +138,7 @@ internal static class Tools
             return true;
         }
 
-        public static double CalculateDistance(string address1, string address2, DistanceType distanceType)
+        public static double CalculateDistance(string address1, string address2, DO.DistanceType distanceType)
         {
             if (string.IsNullOrWhiteSpace(address1) || string.IsNullOrWhiteSpace(address2))
             {
@@ -142,13 +147,13 @@ internal static class Tools
 
             switch (distanceType)
             {
-                case DistanceType.AirDistance:
+                case DO.DistanceType.AirDistance:
                     return CalculateAirDistance(address1, address2);
 
-                case DistanceType.WalkingDistance:
+                case DO.DistanceType.WalkingDistance:
                     return CalculateWalkingDistance(address1, address2);
 
-                case DistanceType.DrivingDistance:
+                case DO.DistanceType.DrivingDistance:
                     return CalculateDrivingDistance(address1, address2);
 
                 default:

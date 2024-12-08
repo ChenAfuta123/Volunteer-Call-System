@@ -20,4 +20,8 @@ public class BlNullPropertyException : Exception
 {
     public BlNullPropertyException(string? message) : base(message) { }
 }
+public class BlValidationException : Exception
+{
+    public BlValidationException(string? message) : base(message) { }
+}
 
