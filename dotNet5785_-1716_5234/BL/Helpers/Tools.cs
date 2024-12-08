@@ -1,4 +1,5 @@
 ﻿
+using BO;
 using System;
 using System.Collections;
 using System.Linq;
@@ -150,7 +151,11 @@ internal static class Tools
 
             return EarthRadiusKm * c;
         }
+        public static CallStatus Status(int callId)
+        {
 
+            return CallStatus.Open;
+        }
 
 
         private class LocationIqDirectionsResponse
@@ -168,6 +173,7 @@ internal static class Tools
             public string Lat { get; set; }
             public string Lon { get; set; }
         }
+       
     }
 
 }
