@@ -74,12 +74,25 @@ internal class CallImplementation : ICall
         throw new NotImplementedException();
     }
 
-    public List<BO.CallAssignInList> Read(int callId)
+    public void RequestForCallDelete(int callId)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<BO.CallInList> ReadAll(Enum? filter, object? obg, Enum? Sorting)
+    public List<BO.CallAssignInList> Read(int id)
+    {
+        try
+        {
+            DO.Call call = _dal.Call.Read(id)!;
+            if (call == null)
+                throw new ArgumentException("Call not found.");
+            return CallManager.DOtoBO(call);
+        }
+        catch (Exception)
+        { throw new ArgumentException("Call not found."); }
+    }
+
+    public IEnumerable<BO.CallInList> RequestForCallList(Enum? filter, object? obg, Enum? Sorting)
     {
         throw new NotImplementedException();
     }
@@ -102,6 +115,9 @@ internal class CallImplementation : ICall
            
         throw new NotImplementedException();
     }
+    public void Update(BO.Volunteer volunteer)
+    {
+        throw new NotImplementedException();
     public void Update(BO.Call boCall)
     {
        
