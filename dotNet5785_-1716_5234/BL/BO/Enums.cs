@@ -72,3 +72,15 @@ public enum Filter
     HandledCallId,
     TotalHandledCalls
 }
+public enum CallInListField
+{
+    Id,               // מזהה קריאה
+    CallId,           // מזהה הקריאה (המכיל את מזהה הקריאה המקורי)
+    CallType,         // סוג הקריאה
+    OpeningTime,      // זמן פתיחת הקריאה
+    RemainingCallTime,// הזמן שנותר לקריאה
+    LastVolunteerName,// שם המתנדב האחרון
+    TotalHandlingTime,// זמן הטיפול הכולל
+    CallStatus,       // סטטוס הקריאה
+    TotalAllocations  // מספר ההקצאות הכולל
+}
