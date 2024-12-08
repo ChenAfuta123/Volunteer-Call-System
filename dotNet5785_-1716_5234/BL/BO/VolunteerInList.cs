@@ -10,5 +10,6 @@ internal class VolunteerInList
     public int TotalCanceledCalls { get; }
     public int TotalExpiredCalls { get; }
     public int? HandledCallId { get; }
+    public CallType callType { get; }
    
 }

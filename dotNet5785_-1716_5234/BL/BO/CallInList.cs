@@ -3,7 +3,7 @@ namespace BO;
 
 internal class CallInList
 {
-    public int Id { get;}
+    public int? Id { get;}
     public int CallId { get; }
     public CallType callType { get; }
     public DateTime OpeningTime { get; }

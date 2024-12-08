@@ -83,14 +83,14 @@ internal class VolunteerImplementation :IVolunteer
             throw new Exception($"Unexpected error while adding a volunteer: {ex.Message}");
         }
 
-        public void Delete(int id)
+    }
+
+
+    public void Delete(int id)
     {
         throw (new NotImplementedException());
 
     }
-
-       
-   
 
 
 }

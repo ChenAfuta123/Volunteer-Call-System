@@ -1,5 +1,7 @@
 ﻿
+using BO;
 using DalApi;
+using DO;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,7 +17,7 @@ using System.Net;
 
 namespace Helpers
 {
-    
+
     internal static class VolunteerManager
     {
         private static IDal s_dal = Factory.Get;
@@ -27,7 +29,7 @@ namespace Helpers
             {
 
 
-                if (!IsValidID(volunteer.Id))
+                if (!Tools.IsValidID(volunteer.Id))
                     throw new Exception("Invalid Id.");
 
                 if (!IsValidName(volunteer.Name))
@@ -52,7 +54,7 @@ namespace Helpers
                 if (volunteer.MaxDistance.HasValue && volunteer.MaxDistance.Value <= 0)
                     throw new Exception("Max distance must be a positive value.");
 
-               if(!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
+                if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
                     throw new Exception("Invalid Address.");
 
                 if (volunteer.TotalHandledCalls < 0 || volunteer.TotalCanceledCalls < 0 || volunteer.TotalExpiredCalls < 0)
@@ -67,24 +69,7 @@ namespace Helpers
             }
         }
 
-        private static bool IsValidID(int Id)
-        {
-            string id = Id.ToString();
-
-            if (id.Length != 9 || !id.All(char.IsDigit))
-                return false;
-
-
-            int sum = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                int digit = int.Parse(id[i].ToString());
-                sum += (i % 2 == 0) ? digit : digit * 2;
-            }
-            int checkDigit = (10 - (sum % 10)) % 10;
-            return checkDigit == int.Parse(id[8].ToString());
-        }
-
+       
         private static bool IsValidName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -103,13 +88,11 @@ namespace Helpers
 
         }
 
-
         private static bool IsValidEmail(string email)
         {
             var emailRegex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
             return emailRegex.IsMatch(email);
         }
-
 
         private static bool IsValidPassword(string? password)
         {
@@ -128,6 +111,8 @@ namespace Helpers
         }
 
 
-
     }
+            
+        
+
 }

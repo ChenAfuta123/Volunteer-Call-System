@@ -9,6 +9,22 @@ namespace Helpers;
 
 internal static class Tools
 {
+   public static bool IsValidID(int Id)
+    {
+        string id = Id.ToString();
+
+        if (id.Length != 9 || !id.All(char.IsDigit))
+            return false;
+
+        int sum = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            int digit = int.Parse(id[i].ToString());
+            sum += (i % 2 == 0) ? digit : digit * 2;
+        }
+        int checkDigit = (10 - (sum % 10)) % 10;
+        return checkDigit == int.Parse(id[8].ToString());
+    }
     public static void NullVal<T>(T? value) where T : struct
     {
         if (!value.HasValue)

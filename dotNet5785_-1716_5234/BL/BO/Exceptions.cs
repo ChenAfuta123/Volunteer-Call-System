@@ -2,10 +2,10 @@
 
 namespace BO;
 [Serializable]
-public class BlDoesNotExistException : Exception
+public class BlDoesNotExistsException : Exception
 {
-    public BlDoesNotExistException(string? message) : base(message) { }
-    public BlDoesNotExistException(string message, Exception innerException)
+    public BlDoesNotExistsException(string? message) : base(message) { }
+    public BlDoesNotExistsException(string message, Exception innerException)
                 : base(message, innerException) { }
 }
 [Serializable]
