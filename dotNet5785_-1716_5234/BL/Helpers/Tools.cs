@@ -9,11 +9,7 @@ namespace Helpers;
 
 internal static class Tools
 {
-    public static CallStatus Status(int callId)
-    {
-
-        return CallStatus.Open;
-    }
+   
     public static bool IsValidID(int Id)
     {
         string id = Id.ToString();
@@ -138,7 +134,7 @@ internal static class Tools
             return true;
         }
 
-        public static double CalculateDistance(string address1, string address2, DO.DistanceType distanceType)
+        public static double CalculateDistance(string? address1, string? address2, DO.DistanceType distanceType)
         {
             if (string.IsNullOrWhiteSpace(address1) || string.IsNullOrWhiteSpace(address2))
             {
@@ -217,8 +213,12 @@ internal static class Tools
                 return routeData.Routes[0].Distance / 1000.0;
             }
         }
-        private static (double Latitude, double Longitude) GetAddressCoordinates(string address)
+        public static (double? Latitude, double? Longitude) GetAddressCoordinates(string? address)
         {
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                return (null, null);
+            }
             const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
@@ -236,7 +236,7 @@ internal static class Tools
 
                 string responseContent = response.Content.ReadAsStringAsync().Result;
 
-                // נשתמש במערכת JSON כדי לפרש את התשובה
+              
                 var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
 
                 if (locationData == null || locationData.Length == 0)

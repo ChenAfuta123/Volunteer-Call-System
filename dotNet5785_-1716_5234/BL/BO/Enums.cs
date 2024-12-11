@@ -67,15 +67,35 @@ public enum EndTimeType
 }
   public enum CallInListField
 {
-    Id,               // מזהה קריאה
-    CallId,           // מזהה הקריאה (המכיל את מזהה הקריאה המקורי)
-    CallType,         // סוג הקריאה
-    OpeningTime,      // זמן פתיחת הקריאה
-    RemainingCallTime,// הזמן שנותר לקריאה
-    LastVolunteerName,// שם המתנדב האחרון
-    TotalHandlingTime,// זמן הטיפול הכולל
-    CallStatus,       // סטטוס הקריאה
-    TotalAllocations  // מספר ההקצאות הכולל
+    Id,              
+    CallId,          
+    CallType,       
+    OpeningTime,     
+    RemainingCallTime,
+    LastVolunteerName,
+    TotalHandlingTime,
+    CallStatus,       
+    TotalAllocations  
 }
+public enum OpenCallInListField
+{
+  Id ,
+ callType ,
+ description,
+ Address ,
+ OpeningTime ,
+ maxEndingTime ,
+ CallDistanceFromVolunteer
 
+}
+public enum ClosedCallInListField
+{
+    Id,
+    CallType,
+    Address,
+    OpeningTime,
+    EntryTime,
+    EndTime,
+    EndTimeType
+}
 
