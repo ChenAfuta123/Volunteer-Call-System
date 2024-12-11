@@ -36,6 +36,6 @@ public class BlUnauthorizedException : Exception
 [Serializable]
 public class BlObjectNotFoundException : Exception
 {
-
+   
     public BlObjectNotFoundException(string? message) : base(message) { }
 }
