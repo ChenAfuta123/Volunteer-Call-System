@@ -1,9 +1,8 @@
 ﻿using BlApi;
-using BO;
-using DalApi;
 using DO;
 using Helpers;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace BlImplementation;
 
 internal class VolunteerImplementation :IVolunteer
@@ -21,7 +20,7 @@ internal class VolunteerImplementation :IVolunteer
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
-            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password);
+            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
             Address = boVolunteer.Address,
             Latitude = boVolunteer.Latitude,
             Longitude = boVolunteer.Longitude,
@@ -34,10 +33,11 @@ internal class VolunteerImplementation :IVolunteer
             _dal.Volunteer.Create(doVolunteer);
 
         }
+     
         catch (DO.DalAlreadyExistsException ex)
         {
-
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+            
+            throw new BO.BlAlreadyExistsException("Error occurred while attempting to add the volunteer.", ex);
 
         }
 
@@ -50,29 +50,27 @@ internal class VolunteerImplementation :IVolunteer
 
     }
 
+
     public void Delete(int id)
     {
         try
         {
             // קריאת פרטי המתנדב משכבת הנתונים
             var volunteer = _dal.Volunteer.Read(id);
-            if (volunteer == null)
-            {
-                throw new ArgumentException("Volunteer with the given ID does not exist.");
-            }
+           
 
             // בדיקת תנאי המחיקה: לא טיפל אף פעם ולא מטפל כעת
-            if (VolunteerManager.TotalEndTimeType(id,EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null)
+            if (VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null)
             {
-                throw new InvalidOperationException("The volunteer cannot be deleted as they are handling or have handled calls.");
+                throw new BO.BlValidationException("The volunteer cannot be deleted as they are handling or have handled calls.");
             }
 
             // מחיקת המתנדב
             _dal.Volunteer.Delete(id);
         }
-        catch (DataAccessException ex) // חריגה משכבת הנתונים
+        catch (DO.DalDoesNotExistsException ex) // חריגה משכבת הנתונים
         {
-            throw new ApplicationException("Error occurred while attempting to delete the volunteer.", ex);
+            throw new BO.BlDoesNotExistsException("Error occurred while attempting to delete the volunteer.", ex);
         }
     }
 
@@ -92,7 +90,7 @@ internal class VolunteerImplementation :IVolunteer
     }
 
 
-    public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, Filter? sortByField)
+    public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {
         var volunteers = _dal.Volunteer.ReadAll();
 
@@ -107,17 +105,17 @@ internal class VolunteerImplementation :IVolunteer
         var volunteerList = BOvolunteers.Select(v => VolunteerManager.VolunteerToVolunteerList(v));
 
         // מיון לפי הפרמטרים
-        volunteerList = sortByField switch
+        volunteerList = sort switch
         {
-            Filter.Name => volunteerList.OrderBy(v => v.Name),
-            Filter.HandledCallId => volunteerList.OrderBy(v => v.HandledCallId),
-            Filter.TotalHandledCalls => volunteerList.OrderBy(v => v.TotalHandledCalls),
+            BO.VolunteerInListFields.Name => volunteerList.OrderBy(v => v.Name),
+            BO.VolunteerInListFields.HandledCallId => volunteerList.OrderBy(v => v.HandledCallId),
+            BO.VolunteerInListFields.TotalHandledCalls => volunteerList.OrderBy(v => v.TotalHandledCalls),
             _ => volunteerList.OrderBy(v => v.Id) // מיון ברירת מחדל לפי ת.ז
         };
 
         return volunteerList;
     }
-    public Role LoginUser(string name, string password)
+    public DO.Role LoginUser(string name, string password)
     {
         var volunteers = _dal.Volunteer.ReadAll();
         var user = volunteers.FirstOrDefault(v => v.Name == name);
@@ -129,8 +127,45 @@ internal class VolunteerImplementation :IVolunteer
     }
 
 
-    public void Update (int id, BO.Volunteer volunteer) 
+    public void Update (int id, BO.Volunteer boVolunteer) 
     {
-        throw new NotImplementedException();
+        VolunteerManager.ValidateVolunteer(boVolunteer);
+        DO.Volunteer? V = _dal.Volunteer.Read(id);
+
+        DO.Volunteer doVolunteer = new DO.Volunteer
+        {
+            //Id = boVolunteer.Id,
+            distanceType = (DO.DistanceType)boVolunteer.distanceType,
+            role = (DO.Role)boVolunteer.role,
+            Name = boVolunteer.Name,
+            PhoneNumber = boVolunteer.PhoneNumber,
+            Email = boVolunteer.Email,
+            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
+            Address = boVolunteer.Address,
+            Latitude = boVolunteer.Latitude,
+            Longitude = boVolunteer.Longitude,
+            MaxDistance = boVolunteer.MaxDistance,
+            Active = boVolunteer.Active
+        };
+        try
+        {
+
+            _dal.Volunteer.Update(doVolunteer);
+
+        }
+        catch (DO.DalDoesNotExistsException ex)
+        {
+
+            throw new BO.BlDoesNotExistsException("Error occurred while attempting to update the volunteer.", ex);
+
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception($"Unexpected error while updateing a volunteer: {ex.Message}");
+        }
     }
+
+
+
 }

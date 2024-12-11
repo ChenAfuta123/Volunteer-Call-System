@@ -44,35 +44,28 @@ public enum TimeUnit
     MONTH,
     YEAR
 }
-public enum EndTimeType
+public enum DistanceType
 {
-    /// <summary>
-    /// Indicates that the event or process was successfully treated.
-    /// </summary>
-    Treated,
-
-    /// <summary>
-    /// Indicates that the event or process was canceled by the user or subject itself.
-    /// </summary>
-    SelfCancel,
-
-    /// <summary>
-    /// Indicates that the event or process was canceled by a manager or administrator.
-    /// </summary>
-    ManagerCancel,
-
-    /// <summary>
-    /// Indicates that the event or process ended because it expired.
-    /// </summary>
-    Expired
+    AirDistance,
+    WalkingDistance,
+    DrivingDistance
 }
-public enum Filter
+
+public enum VolunteerInListFields
 {
     Name,
     HandledCallId,
     TotalHandledCalls
 }
-public enum CallInListField
+public enum EndTimeType
+{
+  
+    Treated,
+    SelfCancel,
+    ManagerCancel,
+    Expired
+}
+  public enum CallInListField
 {
     Id,               // מזהה קריאה
     CallId,           // מזהה הקריאה (המכיל את מזהה הקריאה המקורי)
@@ -82,5 +75,7 @@ public enum CallInListField
     LastVolunteerName,// שם המתנדב האחרון
     TotalHandlingTime,// זמן הטיפול הכולל
     CallStatus,       // סטטוס הקריאה
-    TotalAllocations  // מספר ההקצאות הכולל
+    TotalAllocations  // מספר ההקצאות הכולל
 }
+
+

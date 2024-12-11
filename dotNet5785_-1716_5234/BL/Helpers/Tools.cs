@@ -9,6 +9,32 @@ namespace Helpers;
 
 internal static class Tools
 {
+    public static CallStatus Status(int callId)
+    {
+
+        return CallStatus.Open;
+    }
+    public static bool IsValidID(int Id)
+    {
+        string id = Id.ToString();
+
+        if (id.Length != 9 || !id.All(char.IsDigit))
+            return false;
+
+        int sum = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            int digit = int.Parse(id[i].ToString());
+            sum += (i % 2 == 0) ? digit : digit * 2;
+        }
+        int checkDigit = (10 - (sum % 10)) % 10;
+        return checkDigit == int.Parse(id[8].ToString());
+    }
+    public static void NullVal<T>(T? value) where T : struct
+    {
+        if (!value.HasValue)
+            throw new BlNullPropertyException($"{nameof(value)} is null.");
+    }
     public static string ToStringProperty<T>(this T obj)
     {
         if (obj == null)
@@ -47,24 +73,87 @@ internal static class Tools
 
         return sb.ToString();
     }
+
     public static class DistanceCalculator
     {
-        public static double CalculateDistance(string address1, string address2, DistanceType distanceType)
+        public static bool IsValidAddress(string? address, double? longitude, double? latitude)
+        {
+            NullVal(longitude);
+            NullVal(latitude);
+           
+
+            if (string.IsNullOrWhiteSpace(address))
+                return false;
+
+            if (longitude.HasValue && (longitude < -180 || longitude > 180))
+                return false;
+
+            if (latitude.HasValue && (latitude < -90 || latitude > 90))
+                return false;
+
+            // אם הכתובת אינה ריקה, נבדוק אותה דרך LocationIQ
+            if (!string.IsNullOrWhiteSpace(address))
+            {
+                const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+                const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
+
+                // בניית URL
+                string url = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
+
+                using HttpClient httpClient = new HttpClient();
+
+                // שליחת בקשה
+                HttpResponseMessage response = httpClient.GetAsync(url).Result;
+
+                // טיפול בשגיאה אם ה-API נכשל
+                if (!response.IsSuccessStatusCode)
+                    return false;
+
+                // קריאת התשובה
+                string jsonResponse = response.Content.ReadAsStringAsync().Result;
+                var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
+
+                // אם אין תוצאות, הכתובת לא תקפה
+                if (results == null || results.Length == 0)
+                    return false;
+
+                // בדיקת התאמה לקווי אורך ורוחב
+                if (latitude.HasValue && longitude.HasValue)
+                {
+                    foreach (var result in results)
+                    {
+                        double resultLat = double.Parse(result.Lat);
+                        double resultLon = double.Parse(result.Lon);
+
+                        if (Math.Abs(resultLat - latitude.Value) < 0.01 && Math.Abs(resultLon - longitude.Value) < 0.01)
+                            return true;
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            return true;
+        }
+
+        public static double CalculateDistance(string address1, string address2, DO.DistanceType distanceType)
         {
             if (string.IsNullOrWhiteSpace(address1) || string.IsNullOrWhiteSpace(address2))
             {
-                throw new ArgumentException("Addresses cannot be null or empty.");
+                throw new BlNullPropertyException("Addresses cannot be null or empty.");
             }
 
             switch (distanceType)
             {
-                case DistanceType.AirDistance:
+                case DO.DistanceType.AirDistance:
                     return CalculateAirDistance(address1, address2);
 
-                case DistanceType.WalkingDistance:
+                case DO.DistanceType.WalkingDistance:
                     return CalculateWalkingDistance(address1, address2);
 
-                case DistanceType.DrivingDistance:
+                case DO.DistanceType.DrivingDistance:
                     return CalculateDrivingDistance(address1, address2);
 
                 default:
@@ -97,6 +186,7 @@ internal static class Tools
         /// <summary>
         /// calculate driving and waliking distance
         /// </summary>=
+        
         private static double CalculateTravelDistance(string address1, string address2, string mode)
         {
             const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
@@ -127,6 +217,43 @@ internal static class Tools
                 return routeData.Routes[0].Distance / 1000.0;
             }
         }
+        private static (double Latitude, double Longitude) GetAddressCoordinates(string address)
+        {
+            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
+
+            // בנה את כתובת ה-URL של הבקשה
+            string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
+
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Error fetching coordinates for address: {response.ReasonPhrase}");
+                }
+
+                string responseContent = response.Content.ReadAsStringAsync().Result;
+
+                // נשתמש במערכת JSON כדי לפרש את התשובה
+                var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
+
+                if (locationData == null || locationData.Length == 0)
+                {
+                    throw new Exception($"No coordinates found for address: {address}");
+                }
+
+                double latitude = double.Parse(locationData[0].Lat);
+                double longitude = double.Parse(locationData[0].Lon);
+
+                return (latitude, longitude);
+            }
+        }
+       private static double DegreesToRadians(double degrees)
+{
+    return degrees * (Math.PI / 180.0);
+}
 
         /// <summary>
         /// calculate the distances between coordinates
@@ -151,11 +278,7 @@ internal static class Tools
 
             return EarthRadiusKm * c;
         }
-        public static CallStatus Status(int callId)
-        {
 
-            return CallStatus.Open;
-        }
 
 
         private class LocationIqDirectionsResponse
@@ -173,7 +296,6 @@ internal static class Tools
             public string Lat { get; set; }
             public string Lon { get; set; }
         }
-       
     }
 
 }

@@ -4,12 +4,14 @@ using BlApi;
 using BO;
 using DO;
 using Helpers;
+using System;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class CallImplementation : ICall
 {
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+  
     public void CanceltreatmentUpdate(int id, int AssignmentId)
     {
         throw new NotImplementedException();
@@ -30,18 +32,50 @@ internal class CallImplementation : ICall
         throw new NotImplementedException();
     }
 
-public void Add(BO.Call call)
-{
-       
-}
+   // int Id,
+   //CallType callType,
+   // string Address,
+   // double Latitude,
+   // double Longitude,
+   // DateTime OpeningTime,
+   // string? Description = null,
+   // DateTime? maxEndingTime = null
 
+    public void Add(BO.Call boCall)
+    {
+        CallManager.ValidateCall(boCall);
+        DO.Call doCall = new DO.Call
+        {
+            Id = boCall.Id,
+            callType = (DO.CallType)boCall.callType,
+            Address = boCall.Address ?? " ",
+            Latitude = boCall.Latitude ?? 0.0,
+            Longitude = boCall.Longitude ?? 0.0,
+            OpeningTime = boCall.OpeningTime,
+            Description = boCall.Description,
+            maxEndingTime = boCall.MaxEndingTime
 
-public void Delete(int callId)
+        };
+        try
+        {
+            _dal.Call.Create(doCall);
+        }
+        catch (DO.DalAlreadyExistsException ex)
+        {
+            throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Unexpected error while adding a call: {ex.Message}");
+        }
+    }
+
+    public void Delete(int callId)
     {
         throw new NotImplementedException();
     }
 
-    public BO.Call Read(int id)
+    public List<BO.CallAssignInList> Read(int id)
     {
         try
         {
@@ -53,9 +87,7 @@ public void Delete(int callId)
             return CallManager.DOtoBO(call);
         }
         catch (Exception)
-        {
-            throw new ArgumentException("Call not found.");
-        }
+        { throw new ArgumentException("Call not found."); }
     }
 
 
@@ -98,6 +130,34 @@ public void Delete(int callId)
     public void Update(BO.Volunteer volunteer)
     {
         throw new NotImplementedException();
+    public void Update(BO.Call boCall)
+    {
+       
+        DO.Call doCall = new DO.Call
+        {
+            Id = boCall.Id,
+            callType = (DO.CallType)boCall.callType,
+            Address = boCall.Address ?? " ",
+            Latitude = boCall.Latitude ?? 0.0,
+            Longitude = boCall.Longitude ?? 0.0,
+            OpeningTime = boCall.OpeningTime,
+            Description = boCall.Description,
+            maxEndingTime = boCall.MaxEndingTime,
+
+        };
+        try
+        {
+            _dal.Call.Update(doCall);
+        }
+        catch (DO.DalDoesNotExistsException ex)
+        {
+            throw new BO.BlDoesNotExistsException($"Call with ID={boCall.Id} does not exists", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Unexpected error while updating a call: {ex.Message}");
+        }
+
     }
 }
 

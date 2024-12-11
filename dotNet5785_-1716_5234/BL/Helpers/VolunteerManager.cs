@@ -6,8 +6,19 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using BO;
+using System.Net;
+//using Newtonsoft.Json.Linq;
+
+
 namespace Helpers
 {
+
     internal static class VolunteerManager
     {
         private static IDal s_dal = Factory.Get;
@@ -19,6 +30,7 @@ namespace Helpers
 
         }
         public static BO.Volunteer DOtoBO(DO.Volunteer volunteer)
+        public static bool ValidateVolunteer(BO.Volunteer volunteer)
         {
             BO.CallInProgress ?volunteerHandledCall=null;
 
@@ -28,8 +40,11 @@ namespace Helpers
                 var Assignment = s_dal.Assignment.ReadAll().FirstOrDefault(assignment => assignment.VolunteerId == volunteer.Id);
                 if (Assignment == null) throw new Exception("Assignment not found.");
 
+
                 var call = s_dal.Call.ReadAll().FirstOrDefault(call => call.Id == Assignment.CallId);
                 if (call == null) throw new Exception("Call not found.");
+                if (!Tools.IsValidID(volunteer.Id))
+                    throw new Exception("Invalid Id.");
 
                  volunteerHandledCall = new BO.CallInProgress
                 {
@@ -49,6 +64,11 @@ namespace Helpers
             {
                 throw new Exception("Assignment not found.");
             }
+                if (!IsValidName(volunteer.Name))
+                    throw new Exception("Invalid Name.");
+
+                if (!IsValidPhoneNumber(volunteer.PhoneNumber))
+                    throw new Exception("Invalid Phone number.");
 
             return new BO.Volunteer
             {
@@ -87,17 +107,6 @@ namespace Helpers
         {
             try
             {
-
-
-                if (!IsValidID(volunteer.Id))
-                    throw new Exception("Invalid Id.");
-
-                if (!IsValidName(volunteer.Name))
-                    throw new Exception("Invalid Name.");
-
-                if (!IsValidPhoneNumber(volunteer.PhoneNumber))
-                    throw new Exception("Invalid Phone number.");
-
                 if (!IsValidEmail(volunteer.Email))
                     throw new Exception("Invalid Email.");
 
@@ -129,22 +138,7 @@ namespace Helpers
             }
         }
 
-        private static bool IsValidID(int Id)
-        {
-            string id = Id.ToString();
-
-            if (id.Length != 9 || !id.All(char.IsDigit))
-                return false;
-
-            int sum = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                int digit = int.Parse(id[i].ToString());
-                sum += (i % 2 == 0) ? digit : digit * 2;
-            }
-            int checkDigit = (10 - (sum % 10)) % 10;
-            return checkDigit == int.Parse(id[8].ToString());
-        }
+       
         private static bool IsValidName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -162,6 +156,10 @@ namespace Helpers
 
 
         }
+        private static bool IsValidPhoneNumber(string phoneNumber)
+        {
+
+            return phoneNumber.Length == 10 && (phoneNumber.All(c => char.IsDigit(c)));
 
 
         private static bool IsValidEmail(string email)
@@ -188,6 +186,7 @@ namespace Helpers
 
 
     }
-}
+            
+        
 
 }

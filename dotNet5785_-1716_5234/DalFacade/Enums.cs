@@ -1,4 +1,4 @@
-﻿namespace DalFacade { }
+﻿namespace DO;
 /// <summary>
 /// Enum representing general categories of assistance for evacuees.
 /// </summary>
