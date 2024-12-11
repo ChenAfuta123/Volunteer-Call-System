@@ -17,9 +17,40 @@ internal class CallImplementation : ICall
         throw new NotImplementedException();
     }
 
-    public void ChooseCallForTreatment(int volunteerId, int AssignmentId)
+    public void ChooseCallForTreatment(int volunteerId, int callId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            // שלב 1: חישוב הסטטוס של הקריאה
+            var callStatus = CallManager.Status(callId);
+
+            // שלב 2: טיפול בסטטוסים שונים באמצעות switch
+            switch (callStatus)
+            {
+                case CallStatus.Open:
+                case CallStatus.OpenAtRisk:
+                    CallManager.HandleOpenCall(callId, volunteerId, callStatus);
+                    break;
+
+                case CallStatus.InProgress:
+                case CallStatus.InProgressAtRisk:
+                    throw new ApplicationException("The call is already in progress and cannot be reassigned.");
+
+                case CallStatus.Closed:
+                    throw new ApplicationException("The call has already been closed and cannot be assigned.");
+
+                case CallStatus.Expired:
+                    throw new ApplicationException("The call's validity period has expired and cannot be assigned.");
+
+                default:
+                    throw new ApplicationException("Unknown call status. Cannot assign the call.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // טיפול בחריגות
+            throw new ApplicationException("Failed to assign the call to the volunteer.", ex);
+        }
     }
 
     public void EndOftreatmentUpdate(int volunteerId, int AssignmentId)
@@ -74,8 +105,7 @@ internal class CallImplementation : ICall
     {
         throw new NotImplementedException();
     }
-
-    public List<BO.CallAssignInList> Read(int id)
+    public BO.Call Read(int id)
     {
         try
         {
@@ -84,55 +114,61 @@ internal class CallImplementation : ICall
                 throw new ArgumentException("Call not found.");
 
             // מחזיר את רשימת ה-CallAssignList מתוך BO.Call
+            
             return CallManager.DOtoBO(call);
         }
         catch (Exception)
         { throw new ArgumentException("Call not found."); }
     }
-
-
     public IEnumerable<BO.CallInList> ReadAll(CallInListField? filter, object? obg, CallInListField? sorting)
     {
-        // 1. קבלת כל הקריאות מה-Data Access Layer
-        var calls = _dal.Call.ReadAll();
-        // 3. המרת כל קריאה ל-BO.Call
-        var Bo_calls = calls.Select(call => CallManager.DOtoBO(call)).ToList();
-        // 4. החזרת רשימת CallInList מתוך כל BO.Call
-        var callInLists = Bo_calls.SelectMany(call => call.CallAssignList).ToList();
-        // 2. סינון הקריאות לפי filter ו-obg
-        var filteredCalls = CallManager.FilterCalls(callInLists, filter, obg);
-        // 5. מיון הקריאות אם הועבר filter למיון
-        var sortedCalls = CallManager.SortCalls(filteredCalls, sorting);
+        try
+        {
+            // שליפת כל הקריאות מה- DAL
+            var calls = _dal.Call.ReadAll();  // כאן ייתכן שצריך לשנות את המתודה הזו לפי הצורך.
 
-        return sortedCalls;
+            // אם לא נמצאו קריאות ב-DAL
+            if (calls == null || !calls.Any())
+            {
+                throw new ApplicationException("No calls found in the database.");
+            }
+            var boCall = calls.Select(CallManager.DOtoBO);
+            var boCalls = boCall.Select(CallManager.DOtoBOList);
+            // סינון הקריאות לפי פרמטרים
+            var filteredCalls = CallManager.FilterCalls(calls, filter, obg);
+            // מיון הקריאות לפי פרמטרים
+            var sortedCalls = CallManager.SortCalls(boCalls, sorting);
+             
+   
+
+            return boCalls;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
+        }
     }
 
-
-
-    public int[] CallQuantities()//צריך  לממש את סטטוס
+    public int[] CallQuantities()
     {
         var calls = _dal.Call.ReadAll();
-        // קיבוץ וספירה ישירות למערך
         var statusCounts = calls
-            .GroupBy(call => (int)call.Status(call.Id))  // המרה לערך המספרי של ה-enum
+            .GroupBy(call => (int)CallManager.Status(call.Id))  
             .Aggregate(
-                new int[Enum.GetValues(typeof(CallStatus)).Length], // יצירת מערך בגודל 6
+                new int[Enum.GetValues(typeof(CallStatus)).Length], 
                 (counts, group) =>
                 {
-                    counts[group.Key] = group.Count(); // עדכון המערך לפי הסטטוס
+                    counts[group.Key] = group.Count(); 
                     return counts;
                 });
             
         return statusCounts;
-           
-        throw new NotImplementedException();
     }
-    public void Update(BO.Volunteer volunteer)
-    {
-        throw new NotImplementedException();
+
     public void Update(BO.Call boCall)
     {
-       
+        CallManager.ValidateCall(boCall);
+
         DO.Call doCall = new DO.Call
         {
             Id = boCall.Id,
@@ -151,7 +187,7 @@ internal class CallImplementation : ICall
         }
         catch (DO.DalDoesNotExistsException ex)
         {
-            throw new BO.BlDoesNotExistsException($"Call with ID={boCall.Id} does not exists", ex);
+            throw new BO.BlDoesNotExistsException($"Error while updating a call:", ex);
         }
         catch (Exception ex)
         {
@@ -159,9 +195,48 @@ internal class CallImplementation : ICall
         }
 
     }
+
+
+    public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer( int volunteerId,  BO.CallType? callTypeFilter = null, ClosedCallInListField? sortingField = null)
+    {
+        try
+        {
+            // שליפת כל הקריאות מה-DAL
+            var calls = _dal.Call.ReadAll();
+            if (calls == null)
+            {
+                throw new ApplicationException("Failed to retrieve calls: the data source returned null.");
+            }
+            // המרה של קריאות לוגיות משכבת DO ל-BO
+            var boCalls =calls.Select(call => CallManager.DOtoBO(call));
+            
+            // שלב 2: סינון הקריאות עבור מתנדב עם ת.ז ספציפי
+            var closedCalls = CallManager.FilterClosedCallsByVolunteer(boCalls, volunteerId);
+
+            // שלב 3: סינון לפי סוג הקריאה אם נדרש
+            if (callTypeFilter.HasValue)
+            {
+                closedCalls = CallManager.FilterCallsByType(closedCalls, callTypeFilter.Value);
+            }
+
+            // שלב 4: מיון הקריאות לפי השדה המבוקש
+            closedCalls = CallManager.SortCalls(closedCalls, sortingField);
+
+            // החזרת הרשימה המסוננת והמסודרת
+            return closedCalls;
+        }
+        catch (Exception ex)
+        {
+            // טיפול בחריגות
+            throw new ApplicationException("An error occurred while fetching closed calls by volunteer.", ex);
+        }
+    }
+
+
 }
 
 
-    
 
-  
+
+
+

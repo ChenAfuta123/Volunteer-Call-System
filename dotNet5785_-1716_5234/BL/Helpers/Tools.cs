@@ -9,11 +9,6 @@ namespace Helpers;
 
 internal static class Tools
 {
-    public static CallStatus Status(int callId)
-    {
-
-        return CallStatus.Open;
-    }
     public static bool IsValidID(int Id)
     {
         string id = Id.ToString();
@@ -138,7 +133,7 @@ internal static class Tools
             return true;
         }
 
-        public static double CalculateDistance(string address1, string address2, DO.DistanceType distanceType)
+        public static double CalculateDistance(string? address1, string? address2, DO.DistanceType distanceType)
         {
             if (string.IsNullOrWhiteSpace(address1) || string.IsNullOrWhiteSpace(address2))
             {

@@ -1,10 +1,10 @@
 ﻿
 namespace BO;
 
-internal class VolunteerInList
+public class VolunteerInList
 {
     public int Id { get; init; }
-    public string Name { get; init; }
+    public required string Name { get; init; }
     public bool Active { get; init; }
     public int TotalHandledCalls { get; init; }
     public int TotalCanceledCalls { get; init; }

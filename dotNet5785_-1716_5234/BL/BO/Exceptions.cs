@@ -1,6 +1,4 @@
-﻿
-
-namespace BO;
+﻿namespace BO;
 [Serializable]
 public class BlDoesNotExistsException : Exception
 {
@@ -20,8 +18,24 @@ public class BlNullPropertyException : Exception
 {
     public BlNullPropertyException(string? message) : base(message) { }
 }
+[Serializable]
 public class BlValidationException : Exception
 {
     public BlValidationException(string? message) : base(message) { }
 }
+[Serializable]
+public class BlCannotBeDeletedException : Exception
+{
+    public BlCannotBeDeletedException(string? message) : base(message) { }
+}
+[Serializable]
+public class BlUnauthorizedException : Exception
+{
+    public BlUnauthorizedException(string? message) : base(message) { }
+}
+[Serializable]
+public class BlObjectNotFoundException : Exception
+{
 
+    public BlObjectNotFoundException(string? message) : base(message) { }
+}

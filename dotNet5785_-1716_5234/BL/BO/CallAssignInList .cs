@@ -2,9 +2,6 @@
 namespace BO;
 public class CallAssignInList
 {
-
-   
- 
     public int? VolunteerId { get; init; }
     public string? Name { get; init; }
     public DateTime EntryTime { get; init; }

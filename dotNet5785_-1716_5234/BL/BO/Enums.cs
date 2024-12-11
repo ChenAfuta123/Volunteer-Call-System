@@ -55,7 +55,9 @@ public enum VolunteerInListFields
 {
     Name,
     HandledCallId,
-    TotalHandledCalls
+    TotalHandledCalls,
+    TotalExpiredCalls,
+    TotalCanceledCalls
 }
 public enum EndTimeType
 {
@@ -77,5 +79,16 @@ public enum EndTimeType
     CallStatus,       // סטטוס הקריאה
     TotalAllocations  // מספר ההקצאות הכולל
 }
+public enum ClosedCallInListField
+{
+    Id,
+    CallType,
+    Address,
+    OpeningTime,
+    EntryTime,
+    EndTime,
+    EndTimeType
+}
+
 
 

@@ -5,11 +5,9 @@ public class ClosedCallInList
    
     public int Id { get; init; }
     public CallType callType { get; init; }
-
     public  string Address { get; init; }
     public DateTime OpeningTime { get; init; }
     public DateTime EntryTime { get; init; }
-
     public DateTime? EndTime { get; init; }
     public EndTimeType? EndTimeType { get; init; }
 
