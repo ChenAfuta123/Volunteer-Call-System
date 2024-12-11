@@ -1,5 +1,4 @@
-﻿
-using BO;
+﻿using BO;
 using System;
 using System.Collections;
 using System.Linq;
@@ -9,10 +8,7 @@ namespace Helpers;
 
 internal static class Tools
 {
-    {
 
-        return CallStatus.Open;
-    }
     public static bool IsValidID(int Id)
     {
         string id = Id.ToString();
@@ -79,7 +75,7 @@ internal static class Tools
         {
             NullVal(longitude);
             NullVal(latitude);
-           
+
 
             if (string.IsNullOrWhiteSpace(address))
                 return false;
@@ -185,7 +181,7 @@ internal static class Tools
         /// <summary>
         /// calculate driving and waliking distance
         /// </summary>=
-        
+
         private static double CalculateTravelDistance(string address1, string address2, string mode)
         {
             const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
@@ -239,7 +235,7 @@ internal static class Tools
 
                 string responseContent = response.Content.ReadAsStringAsync().Result;
 
-              
+
                 var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
 
                 if (locationData == null || locationData.Length == 0)
@@ -253,10 +249,10 @@ internal static class Tools
                 return (latitude, longitude);
             }
         }
-       private static double DegreesToRadians(double degrees)
-{
-    return degrees * (Math.PI / 180.0);
-}
+        private static double DegreesToRadians(double degrees)
+        {
+            return degrees * (Math.PI / 180.0);
+        }
 
         /// <summary>
         /// calculate the distances between coordinates

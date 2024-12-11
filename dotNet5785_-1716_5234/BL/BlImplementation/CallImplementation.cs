@@ -1,8 +1,6 @@
-﻿
-namespace BlImplementation;
+﻿namespace BlImplementation;
 using BlApi;
 using BO;
-using DO;
 using Helpers;
 using Microsoft.VisualBasic;
 using System;
@@ -53,7 +51,7 @@ internal class CallImplementation : ICall
     {
         DO.Call? call = _dal.Call.Read(callId);
         CallStatus callStatus = CallManager.Status(callId);
-        
+
         try
         {
             if (callStatus == BO.CallStatus.Open && !_dal.Assignment.ReadAll(a => a.CallId == callId).Any())
@@ -74,14 +72,14 @@ internal class CallImplementation : ICall
 
     public BO.Call Read(int callId)
     {
-        
-        
-            DO.Call? call = _dal.Call.Read(callId);
-            if (call == null) throw new BO.BlObjectNotFoundException("Call not found");
-            
-           
-            return CallManager.DOtoBO(call);
-      
+
+
+        DO.Call? call = _dal.Call.Read(callId);
+        if (call == null) throw new BO.BlObjectNotFoundException("Call not found");
+
+
+        return CallManager.DOtoBO(call);
+
 
     }
 
@@ -90,10 +88,10 @@ internal class CallImplementation : ICall
         try
         {
 
-          
-            var calls = _dal.Call.ReadAll();  
+
+            var calls = _dal.Call.ReadAll();
             IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
-       
+
             if (calls == null || !calls.Any())
             {
                 throw new BO.BlNullPropertyException("No calls found in the database.");
@@ -104,9 +102,10 @@ internal class CallImplementation : ICall
             }
             if (sorting == null)
             {
-                 CallsInList = CallsInList.OrderBy(c => c.Id);
+                CallsInList = CallsInList.OrderBy(c => c.Id);
             }
-            else if (sorting != null) {
+            else if (sorting != null)
+            {
                 CallsInList = sorting switch
                 {
                     CallInListField.CallId => CallsInList.OrderBy(c => c.CallId),
@@ -123,20 +122,20 @@ internal class CallImplementation : ICall
             }
             return CallsInList;
 
-          
+
         }
         catch (Exception ex)
         {
             throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
         }
     }
-   
+
     public void Update(BO.Call boCall)
     {
-       CallManager.ValidateCall(boCall);
+        CallManager.ValidateCall(boCall);
         var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
-       double longtitude = coordinates.Latitude ?? 0.0;
-       double latitude = coordinates.Latitude ?? 0.0;
+        double longtitude = coordinates.Latitude ?? 0.0;
+        double latitude = coordinates.Latitude ?? 0.0;
         boCall.Latitude = latitude;
         boCall.Longitude = longtitude;
 
@@ -275,7 +274,7 @@ internal class CallImplementation : ICall
 
             DO.Assignment? assignment = _dal.Assignment.Read(assignmentId);
             if (assignment == null) throw new BO.BlObjectNotFoundException("Assignment not found");
-            
+
             if (assignment!.VolunteerId != requesterId)
             {
                 throw new BO.BlUnauthorizedException("Only the assigned volunteer can complete this treatment.");
@@ -363,25 +362,6 @@ internal class CallImplementation : ICall
             boCalls = boCalls.Where(c => c.callType == calltype);
         }
 
-    }
-
-
-    public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer( int volunteerId,  BO.CallType? callTypeFilter = null, ClosedCallInListField? sortingField = null)
-    {
-        try
-        {
-            // שליפת כל הקריאות מה-DAL
-            var calls = _dal.Call.ReadAll();
-            if (calls == null)
-            {
-                throw new ApplicationException("Failed to retrieve calls: the data source returned null.");
-            }
-            // המרה של קריאות לוגיות משכבת DO ל-BO
-            var boCalls =calls.Select(call => CallManager.DOtoBO(call));
-            
-            // שלב 2: סינון הקריאות עבור מתנדב עם ת.ז ספציפי
-            var closedCalls = CallManager.FilterClosedCallsByVolunteer(boCalls, volunteerId);
-
         boCalls = Sorting switch
         {
             OpenCallInListField.Id => boCalls.OrderBy(c => c.Id),
@@ -400,8 +380,3 @@ internal class CallImplementation : ICall
     }
 
 }
-
-
-
-
-

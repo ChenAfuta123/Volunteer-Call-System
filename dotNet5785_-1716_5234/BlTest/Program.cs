@@ -287,6 +287,7 @@ namespace BL
                 }
             }
         }
+
         private static void GetCallQuantities()
         {
             int[] statusCounts = s_bl.Call.CallQuantities();

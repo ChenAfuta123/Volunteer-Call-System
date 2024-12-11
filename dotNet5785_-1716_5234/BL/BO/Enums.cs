@@ -100,15 +100,5 @@ public enum ClosedCallInListField
     EndTime,
     EndTimeType
 }
-public enum ClosedCallInListField
-{
-    Id,
-    CallType,
-    Address,
-    OpeningTime,
-    EntryTime,
-    EndTime,
-    EndTimeType
-}
 
 

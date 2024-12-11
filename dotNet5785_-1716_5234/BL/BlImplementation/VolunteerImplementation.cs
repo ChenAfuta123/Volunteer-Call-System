@@ -1,8 +1,10 @@
 ﻿using BlApi;
 using Helpers;
+using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace BlImplementation;
 
-internal class VolunteerImplementation :IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
@@ -31,10 +33,10 @@ internal class VolunteerImplementation :IVolunteer
             _dal.Volunteer.Create(doVolunteer);
 
         }
-     
+
         catch (DO.DalAlreadyExistsException ex)
         {
-            
+
             throw new BO.BlAlreadyExistsException("Error occurred while attempting to add the volunteer.", ex);
 
         }
@@ -51,18 +53,18 @@ internal class VolunteerImplementation :IVolunteer
     {
         try
         {
-           
-           var volunteer = _dal.Volunteer.Read(id);
-           
+
+            var volunteer = _dal.Volunteer.Read(id);
+
 
             if (VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null)
             {
                 throw new BO.BlValidationException("The volunteer cannot be deleted as they are handling or have handled calls.");
             }
-            
+
             _dal.Volunteer.Delete(id);
         }
-        catch (DO.DalDoesNotExistsException ex) 
+        catch (DO.DalDoesNotExistsException ex)
         {
             throw new BO.BlDoesNotExistsException("Error occurred while attempting to delete the volunteer.", ex);
         }
@@ -71,6 +73,7 @@ internal class VolunteerImplementation :IVolunteer
     {
         try
         {
+
             DO.Volunteer volunteer = _dal.Volunteer.Read(id)!;
             if (volunteer == null)
                 throw new BO.BlObjectNotFoundException("Volunteer not found.");
@@ -94,20 +97,18 @@ internal class VolunteerImplementation :IVolunteer
         {
             volunteers = volunteers.Where(v => v.Active == active.Value);
         }
+
+
         var BOvolunteers = volunteers.Select(VolunteerManager.DOtoBO);
         var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);
 
-        
-        var BOvolunteers = volunteers.Select(VolunteerManager.DOtoBO);
-        var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);
 
-     
         volunteerList = sort switch
         {
             BO.VolunteerInListFields.Name => volunteerList.OrderBy(v => v.Name),
             BO.VolunteerInListFields.HandledCallId => volunteerList.OrderBy(v => v.HandledCallId),
             BO.VolunteerInListFields.TotalHandledCalls => volunteerList.OrderBy(v => v.TotalHandledCalls),
-            _ => volunteerList.OrderBy(v => v.Id) 
+            _ => volunteerList.OrderBy(v => v.Id)
         };
 
         return volunteerList;
@@ -115,24 +116,24 @@ internal class VolunteerImplementation :IVolunteer
     public DO.Role LoginUser(string name, string password)
     {
         DO.Volunteer? user = _dal.Volunteer.Read(v => v.Name == name);
-     
+
         if (user == null)
             throw new BO.BlObjectNotFoundException("User not found.");
         if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
-           
+
             throw new BO.BlValidationException("Incorrect password.");
         return user.role;
     }
     public void Update(int id, BO.Volunteer boVolunteer)
     {
-        
+
         DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(id);
         if (existingVolunteer == null) throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
 
-        DO.Role newRole= existingVolunteer.role;
+        DO.Role newRole = existingVolunteer.role;
         if (existingVolunteer.role == DO.Role.manager)
         {
-            newRole = (DO.Role)boVolunteer.role; 
+            newRole = (DO.Role)boVolunteer.role;
         }
         else if (existingVolunteer.Id != boVolunteer.Id)
         {
@@ -142,10 +143,10 @@ internal class VolunteerImplementation :IVolunteer
         {
             throw new BO.BlUnauthorizedException("Volunteer cannot update role");
         }
-      
+
         DO.Volunteer updatedVolunteer = new DO.Volunteer
         {
-            Id = existingVolunteer.Id, 
+            Id = existingVolunteer.Id,
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
@@ -156,10 +157,10 @@ internal class VolunteerImplementation :IVolunteer
             MaxDistance = boVolunteer.MaxDistance,
             Active = boVolunteer.Active,
             distanceType = (DO.DistanceType)boVolunteer.distanceType,
-            role =newRole 
+            role = newRole
         };
 
-      
+
         try
         {
             _dal.Volunteer.Update(updatedVolunteer);
@@ -173,5 +174,7 @@ internal class VolunteerImplementation :IVolunteer
             throw new Exception($"Unexpected error while updating the volunteer: {ex.Message}");
         }
     }
+
+
 
 }

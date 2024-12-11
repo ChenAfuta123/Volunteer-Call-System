@@ -11,7 +11,7 @@ public class Call
     public  double Longitude { get; set; }
     public DateTime OpeningTime { get; init; }
     public DateTime? MaxEndingTime { get; set; }
-    public CallStatus CallStatus { get; set; }
+    public CallStatus callStatus { get; set; }
 
     public List<BO.CallAssignInList>? CallAssignList { get; set;}
 

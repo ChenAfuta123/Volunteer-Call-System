@@ -34,7 +34,7 @@ internal static class CallManager
                 calls.Where(c => c.RemainingCallTime.Equals((TimeSpan)filterValue)),
 
             BO.CallInListField.LastVolunteerName when filterValue is string =>
-                calls.Where(c => c.LastVolunteerName!= null && c.LastVolunteerName.Equals(filterValue)),
+                calls.Where(c => c.LastVolunteerName != null && c.LastVolunteerName.Equals(filterValue)),
 
             BO.CallInListField.TotalHandlingTime when filterValue is TimeSpan =>
                 calls.Where(c => c.TotalHandlingTime.Equals((TimeSpan)filterValue)),
@@ -47,12 +47,12 @@ internal static class CallManager
     }
     public static void HandleOpenCall(int callId, int volunteerId, CallStatus callStatus)
     {
-        
-        var call = s_dal.Call.Read(callId);
-        if (call == null)throw new BO.BlObjectNotFoundException($"Call does not exist.");
-     
 
-    
+        var call = s_dal.Call.Read(callId);
+        if (call == null) throw new BO.BlObjectNotFoundException($"Call does not exist.");
+
+
+
         if (call.maxEndingTime.HasValue && call.maxEndingTime.Value < DateTime.Now)
         {
             throw new BO.BlValidationException("The call's validity period has expired.");
@@ -66,13 +66,13 @@ internal static class CallManager
             throw new BO.BlValidationException("The call is already assigned to another volunteer.");
         }
 
-       
+
         var newAssignment = new DO.Assignment
         {
-            Id = 0, 
+            Id = 0,
             CallId = callId,
             VolunteerId = volunteerId,
-            EntryTime = ClockManager.Now, 
+            EntryTime = ClockManager.Now,
             EndTimeType = null,
             EndTime = null
         };
@@ -81,26 +81,26 @@ internal static class CallManager
         {
             s_dal.Assignment.Create(newAssignment);
         }
-         catch (DO.DalAlreadyExistsException ex)
+        catch (DO.DalAlreadyExistsException ex)
         {
             throw new BO.BlAlreadyExistsException($"Error while creating a Assignment:", ex);
         }
 
-       
+
     }
 
     public static BO.CallInList DOToBOCallInList(DO.Call doCall)
     {
         try
         {
-            
+
             var assignments = s_dal.Assignment.ReadAll(a => a.CallId == doCall.Id).ToList();
-            
+
             var lastAssignment = assignments
-                .OrderByDescending(a => a.EntryTime) 
+                .OrderByDescending(a => a.EntryTime)
                 .FirstOrDefault();
 
-            
+
             var lastVolunteer = lastAssignment != null
                 ? s_dal.Volunteer.Read(lastAssignment.VolunteerId)
                 : null;
@@ -118,15 +118,15 @@ internal static class CallManager
 
             return new BO.CallInList
             {
-                Id = lastAssignment?.Id, 
-                CallId = doCall.Id, 
-                callType = (BO.CallType)doCall.callType, 
+                Id = lastAssignment?.Id,
+                CallId = doCall.Id,
+                callType = (BO.CallType)doCall.callType,
                 OpeningTime = doCall.OpeningTime,
-                RemainingCallTime = remainingCallTime, 
-                LastVolunteerName = lastVolunteer?.Name, 
-                TotalHandlingTime = totalHandlingTime, 
-                callStatus = Status(doCall.Id), 
-                TotalAllocations = totalAllocations 
+                RemainingCallTime = remainingCallTime,
+                LastVolunteerName = lastVolunteer?.Name,
+                TotalHandlingTime = totalHandlingTime,
+                callStatus = Status(doCall.Id),
+                TotalAllocations = totalAllocations
             };
         }
         catch (DO.DalDoesNotExistsException ex)
@@ -137,16 +137,16 @@ internal static class CallManager
 
     public static BO.Call DOtoBO(DO.Call call)
     {
-        
+
         var assignments = s_dal.Assignment.ReadAll(assignment =>
         assignment.CallId == call.Id).ToList();
 
-   
+
         List<BO.CallAssignInList>? callAssignInList = assignments.Select(assignment =>
         {
             var volunteer = s_dal.Volunteer.Read(assignment.VolunteerId);
             if (volunteer == null) throw new BO.BlObjectNotFoundException("The volunteer  was not found.");
-           
+
             return new BO.CallAssignInList
             {
                 VolunteerId = assignment.VolunteerId,
@@ -170,14 +170,14 @@ internal static class CallManager
             callStatus = Status(call.Id),
             CallAssignList = callAssignInList
         };
-        
+
     }
     public static BO.OpenCallInList DOToBOOpenCallInList(DO.Call doCall)
     {
         try
         {
-          var assignment = s_dal.Assignment.Read(a => a.CallId == doCall.Id);
-           if (assignment == null) throw new BO.BlObjectNotFoundException("Assignment not found.\"");
+            var assignment = s_dal.Assignment.Read(a => a.CallId == doCall.Id);
+            if (assignment == null) throw new BO.BlObjectNotFoundException("Assignment not found.\"");
             var volunteer = s_dal.Volunteer.Read(assignment.VolunteerId);
             if (volunteer == null) throw new BO.BlObjectNotFoundException("volunteer not foundl.\"");
 
@@ -205,11 +205,11 @@ internal static class CallManager
         {
             var assignments = s_dal.Assignment.ReadAll(a => a.CallId == doCall.Id).ToList();
 
-         
+
             var assignment = assignments.LastOrDefault();
 
-           
-           if(assignment == null) throw new BO.BlObjectNotFoundException("Assignment not found.\"");
+
+            if (assignment == null) throw new BO.BlObjectNotFoundException("Assignment not found.\"");
 
 
             return new BO.ClosedCallInList
@@ -241,7 +241,7 @@ internal static class CallManager
             if (!Enum.IsDefined(typeof(CallStatus), call.callStatus))
                 throw new Exception("Invalid call status.");
 
-            
+
             if (string.IsNullOrEmpty(call.Description))
                 throw new Exception("Invalid call description.");
 
@@ -261,7 +261,7 @@ internal static class CallManager
         {
             throw new ValidationException("Error validating call details: " + ex.Message);
         }
-       
+
     }
     internal static BO.CallStatus Status(int callId)
     {
@@ -274,31 +274,31 @@ internal static class CallManager
 
             var now = ClockManager.Now;
 
-            
+
             if (s_dal.Assignment.Read(a => a.CallId == call.Id && a.EndTime == null) != null)
             {
                 return BO.CallStatus.InProgress;
             }
 
-            
+
             if (call.maxEndingTime.HasValue && now > call.maxEndingTime.Value)
             {
                 return BO.CallStatus.Expired;
             }
 
-          
+
             if (s_dal.Assignment.Read(a => a.CallId == call.Id && a.EndTime != null) != null)
             {
                 return BO.CallStatus.Closed;
             }
 
-           
+
             if (call.maxEndingTime.HasValue && now > call.OpeningTime.AddHours(1))
             {
                 return BO.CallStatus.OpenAtRisk;
             }
 
-         
+
             return BO.CallStatus.Open;
 
         }
@@ -309,4 +309,4 @@ internal static class CallManager
 
     }
 
- }
+}
