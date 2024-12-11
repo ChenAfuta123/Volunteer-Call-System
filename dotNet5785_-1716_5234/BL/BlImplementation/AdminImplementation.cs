@@ -29,29 +29,29 @@ internal class AdminImplementation : IAdmin
         ClockManager.UpdateClock(newTime);
     }
 
-    DateTime IAdmin.getClockTime()
+    public  DateTime getClockTime()
     {
         return DateTime.Now;
     }
 
-    TimeSpan IAdmin.getRiskTimeRange()
+    public TimeSpan getRiskTimeRange()
     {
         var riskRange = _dal.Config.RiskRange;
         return riskRange;
     }
 
-    void IAdmin.resetDatabase()
+    public void resetDatabase()
     {
         _dal.ResetDB();
     }
 
-    void IAdmin.setDatabase()
+    public void setDatabase()
     {
         _dal.ResetDB();
         Initialization.Do();
     }
 
-    void IAdmin.setRiskTimeRange(TimeSpan riskTimeRange)
+    public void setRiskTimeRange(TimeSpan riskTimeRange)
     {
         _dal.Config.RiskRange= riskTimeRange;
     }

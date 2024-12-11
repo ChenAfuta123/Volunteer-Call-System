@@ -34,7 +34,7 @@ namespace BL
                         break;
 
                     case "3":
-                        ManageAssignment();
+                        ManageAdmin();
                         break;
 
                     case "4":
@@ -57,7 +57,7 @@ namespace BL
             Console.WriteLine("0 - Exit");
             Console.WriteLine("1 - Volunteer Operations");
             Console.WriteLine("2 - Call Operations");
-            Console.WriteLine("3 - Assignment Operations");
+            Console.WriteLine("3 - Admin Operations");
             Console.WriteLine("4 - Admin Operations");
         }
         private static void ManageVolunteer()
@@ -114,7 +114,7 @@ namespace BL
 
         private static void AddVolunteer()
         {
-            var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer, 0,0,0);
+            var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer, 0, 0, 0);
             s_bl.Volunteer.Add(volunteer);
             Console.WriteLine("Volunteer added successfully");
         }
@@ -146,8 +146,8 @@ namespace BL
             VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
             var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
             if (volunteerList == null)
-            throw new BO.BlObjectNotFoundException("volunteer in list is not found"); 
-           PrintvolunteerInList(volunteerList);
+                throw new BO.BlObjectNotFoundException("volunteer in list is not found");
+            PrintvolunteerInList(volunteerList);
         }
 
         private static void ReadSpecificVolunteer()
@@ -202,6 +202,11 @@ namespace BL
             }
             s_bl.Volunteer.Delete(id);
         }
+
+
+
+
+
 
         /// <summary>
         /// Manage Call-related operations.
@@ -282,8 +287,6 @@ namespace BL
                 }
             }
         }
-
-        // Placeholder for each method implementation
         private static void GetCallQuantities()
         {
             int[] statusCounts = s_bl.Call.CallQuantities();
@@ -302,6 +305,31 @@ namespace BL
 
         private static void ReadAllCalls()
         {
+            // הצגת אפשרויות לסינון
+            Console.WriteLine("Select a field to filter by:");
+            foreach (var value in Enum.GetValues(typeof(CallInListField)))
+            {
+                Console.WriteLine($"{(int)value + 1}. {value}");
+            }
+            CallInListField? filterField = int.TryParse(Console.ReadLine(), out int input1)
+     ? (CallInListField?)(input1 - 1)
+     : null;
+
+            // קבלת ערך לסינון
+            Console.Write("Enter a value to filter by (or leave empty to skip): ");
+            var filterValue = Console.ReadLine();
+
+            // הצגת אפשרויות למיון
+            Console.WriteLine("Select a field to sort by:");
+            foreach (var value in Enum.GetValues(typeof(CallInListField)))
+            {
+                Console.WriteLine($"{(int)value + 1}. {value}");
+            }
+            CallInListField? sortField = int.TryParse(Console.ReadLine(), out int input2)
+             ? (CallInListField?)(input2 - 1)
+             : null;
+            var callinlist=s_bl.Call.ReadAll(filterField, filterValue, sortField);  
+            PrintCallInList(callinlist);
         }
 
         private static void ReadSpecificCall()
@@ -353,17 +381,52 @@ namespace BL
 
         private static void OpenCallsByVolunteer()
         {
-            // Logic for calling ICall.OpenCallsByVolunteer
+            Console.Write("Enter volunteer ID: ");
+            int id = int.Parse(Console.ReadLine()!);
+
+            Console.WriteLine("Select a field to sort closed calls by:");
+            var sortFields = Enum.GetValues(typeof(OpenCallInListField));
+            for (int i = 0; i < sortFields.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {sortFields.GetValue(i)}");
+            }
+
+            Console.Write("Your choice: ");
+            int sortFieldIndex = int.Parse(Console.ReadLine()!) - 1;
+            OpenCallInListField? sortField = (OpenCallInListField)sortFields.GetValue(sortFieldIndex)!;
+
+            Console.WriteLine("Select a call type:");
+            var callTypes = Enum.GetValues(typeof(BO.CallType));
+            for (int i = 0; i < callTypes.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {callTypes.GetValue(i)}");
+            }
+
+            Console.Write("Your choice: ");
+            int callTypeIndex = int.Parse(Console.ReadLine()!) - 1;
+            BO.CallType? callTypeFilter = (BO.CallType)callTypes.GetValue(callTypeIndex)!;
+            var openCallList = s_bl.Call.OpenCallsByVolunteer(id, callTypeFilter, sortField);
+            printOpenCallInList(openCallList);
         }
 
         private static void EndOfTreatmentUpdate()
         {
-            // Logic for calling ICall.EndOftreatmentUpdate
+            int Vid, Cid;
+            Console.Write("Enter Volunteer ID: ");
+            Vid = int.Parse(Console.ReadLine()!);
+            Console.Write("Enter call ID: ");
+            Cid = int.Parse(Console.ReadLine()!);
+            s_bl.Call.EndOftreatmentUpdate(Vid, Cid);
         }
 
         private static void CancelTreatmentUpdate()
         {
-            // Logic for calling ICall.CanceltreatmentUpdate
+            int Vid, Cid;
+            Console.Write("Enter Volunteer ID: ");
+            Vid = int.Parse(Console.ReadLine()!);
+            Console.Write("Enter call ID: ");
+            Cid = int.Parse(Console.ReadLine()!);
+            s_bl.Call.CanceltreatmentUpdate(Vid, Cid);
         }
 
         private static void ChooseCallForTreatment()
@@ -402,9 +465,115 @@ namespace BL
             Console.Write("Your choice: ");
             int callTypeIndex = int.Parse(Console.ReadLine()!) - 1;
             BO.CallType? callTypeFilter = (BO.CallType)callTypes.GetValue(callTypeIndex)!;
-            var closedCallInList = s_bl.Call.GetClosedCallsByVolunteer(id, callTypeFilter, sortField);
+            var closedCallInList = s_bl.Call.ClosedCallsByVolunteer(id, callTypeFilter, sortField);
             printClosedCallInList(closedCallInList);
         }
+
+
+
+
+        private static void ManageAdmin()
+        {
+            bool exit = false;
+
+            while (!exit)
+            {
+                Console.WriteLine("\nAdmin Menu:");
+                Console.WriteLine("0 - Exit");
+                Console.WriteLine("1 - Get Clock Time");
+                Console.WriteLine("2 - Advance Clock");
+                Console.WriteLine("3 - Get Risk Time Range");
+                Console.WriteLine("4 - Set Risk Time Range");
+                Console.WriteLine("5 - Reset Database");
+                Console.WriteLine("6 - Set Database");
+
+                string input = Console.ReadLine()!;
+                switch (input)
+                {
+                    case "0":
+                        exit = true;
+                        break;
+
+                    case "1":
+                        // קריאה למתודה getClockTime
+                        GetClockTime();
+                        break;
+
+                    case "2":
+                        // קריאה למתודה AdvanceClock
+                        AdvanceClock();
+                        break;
+
+                    case "3":
+                        // קריאה למתודה getRiskTimeRange
+                        GetRiskTimeRange();
+                        break;
+
+                    case "4":
+                        // קריאה למתודה setRiskTimeRange
+                        SetRiskTimeRange();
+                        break;
+
+                    case "5":
+                        // קריאה למתודה resetDatabase
+                        ResetDatabase();
+                        break;
+
+                    case "6":
+                        // קריאה למתודה setDatabase
+                        SetDatabase();
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
+                }
+            }
+        }
+
+        private static void GetClockTime()
+        {
+            // מתודה שתקרא getClockTime ותבצע את כל ההדפסות והבדיקות
+            Console.WriteLine(s_bl.Admin.getClockTime());
+        }
+
+        private static void AdvanceClock()
+        {
+            Console.WriteLine("Select a Time Unit:");
+            foreach (var value in Enum.GetValues(typeof(TimeUnit)))
+            {
+                Console.WriteLine($"{(int)value + 1}. {value}");
+            }
+
+            int unitChoice = int.Parse(Console.ReadLine()!) - 1;
+
+            TimeUnit timeUnit = (TimeUnit)unitChoice;
+           s_bl.Admin.AdvanceClock(timeUnit);
+        }
+
+        private static void GetRiskTimeRange()
+        {
+            Console.Write("Risk time range is: ");
+            Console.Write(s_bl.Admin.getRiskTimeRange());
+        }
+
+        private static void SetRiskTimeRange()
+        {
+            Console.Write("Enter Risk Time Range (hh:mm:ss): ");
+            var riskTimeRange = TimeSpan.Parse(Console.ReadLine()!);
+            s_bl.Admin.setRiskTimeRange(riskTimeRange);
+        }
+
+        private static void ResetDatabase()
+        {
+            s_bl.Admin.resetDatabase();
+        }
+
+        private static void SetDatabase()
+        {
+           s_bl.Admin.setDatabase();
+        }
+
 
 
 
@@ -440,6 +609,11 @@ namespace BL
             Console.WriteLine($"Total Canceled Calls: {volunteer.TotalCanceledCalls}");
             Console.WriteLine($"Total Expired Calls: {volunteer.TotalExpiredCalls}");
             Console.WriteLine($"Volunteer Handled Call: {volunteer.VolunteerHandledCall}");
+            if (volunteer.VolunteerHandledCall != null)
+            {
+                Console.WriteLine("Details of the volunteer's handled call:");
+                PrintCallInProgress(volunteer.VolunteerHandledCall);
+            }
         }
         private static BO.Volunteer VolunteerDetailsFromUser(bool flag, int ID, BO.Role R, int t1, int t2, int t3)
         {
@@ -453,8 +627,15 @@ namespace BL
                 Console.Write("Enter ID: ");
                 id = int.Parse(Console.ReadLine()!);
 
-                Console.Write("Enter Role: ");
-                role = Enum.Parse<BO.Role>(Console.ReadLine()!);
+                Console.WriteLine("Choose Role: 1. Volunteer 2. Manager");
+
+                // קבלת קלט מהמשתמש והמרה לערך ב- Enum
+                role = Console.ReadLine() switch
+                {
+                    "1" => BO.Role.volunteer,
+                    "2" => BO.Role.manager,
+                    _ => BO.Role.volunteer // ברירת מחדל במקרה של קלט לא תקין
+                };
             }
             Console.Write("Enter Name: ");
             string name = Console.ReadLine()!;
@@ -499,12 +680,11 @@ namespace BL
                 totalCanceledCalls = t2;
                 totalExpiredCalls = t3;
             }
-        
 
             return new BO.Volunteer
             {
                 Id = id ,
-                role =role,
+                role = role,
                 Name = name,
                 PhoneNumber = phoneNumber,
                 Email = email,
@@ -537,7 +717,7 @@ namespace BL
                     Console.WriteLine($"- Total Canceled Calls: {volunteer.TotalCanceledCalls}");
                     Console.WriteLine($"- Total Expired Calls: {volunteer.TotalExpiredCalls}");
                     Console.WriteLine($"- Handled Call Id: {(volunteer.HandledCallId.HasValue ? volunteer.HandledCallId.Value.ToString() : "None")}");
-                    Console.WriteLine(); // שורה ריקה להפרדה בין מתנדבים
+                    Console.WriteLine();
                 }
             }
         }
@@ -549,11 +729,9 @@ namespace BL
             Console.WriteLine($"Call Type: {call.callType}");
             Console.WriteLine($"Description: {call.Description ?? "N/A"}");
             Console.WriteLine($"Address: {call.Address ?? "N/A"}");
-            Console.WriteLine($"Latitude: {call.Latitude?.ToString() ?? "N/A"}");
-            Console.WriteLine($"Longitude: {call.Longitude?.ToString() ?? "N/A"}");
             Console.WriteLine($"Opening Time: {call.OpeningTime}");
             Console.WriteLine($"Max Ending Time: {call.MaxEndingTime?.ToString() ?? "N/A"}");
-            Console.WriteLine($"Call Status: {call.CallStatus}");
+            Console.WriteLine($"Call Status: {call.callStatus}");
             Console.WriteLine("Call Assign List:");
             if (call.CallAssignList != null && call.CallAssignList.Count > 0)
             {
@@ -565,6 +743,27 @@ namespace BL
             else
             {
                 Console.WriteLine("  No assignments.");
+            }
+        }
+        private static void printOpenCallInList(IEnumerable<OpenCallInList> openCallInList)
+        {
+            if (openCallInList == null)
+            {
+                ///אולי חריגה
+            }
+            else
+            {
+                foreach (var call in openCallInList)
+                {
+                    Console.WriteLine($"- ID: {call.Id}");
+                    Console.WriteLine($"- Call Type: {call.callType}");
+                    Console.WriteLine($"- Address: {call.Address}");
+                    Console.WriteLine($"- Opening Time: {call.OpeningTime}");
+                    Console.WriteLine($"- Description: {call.description}");
+                    Console.WriteLine($"- Max Ending Time: {call.maxEndingTime.HasValue}");
+                    Console.WriteLine($"- Call Distance From Volunteer: {call.CallDistanceFromVolunteer}");
+                    Console.WriteLine(new string('-', 40)); // קו מפריד בין אובייקטים
+                }
             }
         }
         private static void printClosedCallInList(IEnumerable<ClosedCallInList> closedCallInList)
@@ -582,7 +781,7 @@ namespace BL
                     Console.WriteLine($"- Address: {call.Address}");
                     Console.WriteLine($"- Opening Time: {call.OpeningTime}");
                     Console.WriteLine($"- Entry Time: {call.EntryTime}");
-                    Console.WriteLine($"- End Time: {(call.EndTime.HasValue ? call.EndTime.ToString() : "Not Ended")}");
+                    Console.WriteLine($"- End Time: {call.EndTime.HasValue}");
                     Console.WriteLine($"- End Time Type: {(call.EndTimeType.HasValue ? call.EndTimeType.ToString() : "N/A")}");
                     Console.WriteLine(new string('-', 40)); // קו מפריד בין אובייקטים
                 }
@@ -590,31 +789,68 @@ namespace BL
         }
         public static BO.Call UserInput(int id)
         {
-            var call = new BO.Call { Id = id};
-
             Console.Write("Enter Call Type: ");
-            call.callType = (BO.CallType)Enum.Parse(typeof(BO.CallType), Console.ReadLine()!);
+            var callType = (BO.CallType)Enum.Parse(typeof(BO.CallType), Console.ReadLine()!);
 
             Console.Write("Enter Description: ");
-            call.Description = Console.ReadLine();
+            var description = Console.ReadLine();
 
             Console.Write("Enter Address: ");
-            call.Address = Console.ReadLine();
+            var address = Console.ReadLine()!;
 
             Console.Write("Enter Max Ending Time (yyyy-MM-dd HH:mm:ss): ");
-            call.MaxEndingTime = DateTime.Parse(Console.ReadLine()!);
+            var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
 
             Console.Write("Enter Call Status: ");
-            call.CallStatus = (CallStatus)Enum.Parse(typeof(CallStatus), Console.ReadLine()!);
+            var callStatus = (CallStatus)Enum.Parse(typeof(CallStatus), Console.ReadLine()!);
 
             Console.Write("Enter Call Assign List (comma-separated): ");
             var assignListInput = Console.ReadLine();
-            call.CallAssignList = assignListInput!.Split(',')
-                .Select(assign => new BO.CallAssignInList { /* Fill properties if needed */ })
-                .ToList();
 
+            var call = new BO.Call
+            {
+                Id = id,
+                callType = callType,
+                Description = description,
+                Address = address,
+                MaxEndingTime = maxEndingTime,
+                callStatus = callStatus,
+                CallAssignList = assignListInput!.Split(',')
+                    .Select(assign => new BO.CallAssignInList { /* Fill properties if needed */ })
+                    .ToList()
+            };
             return call;
         }
+        public static void PrintCallInList(IEnumerable<CallInList> calls)
+        {
+            foreach (var call in calls)
+            {
+                Console.WriteLine($"Id: {call.Id}");
+                Console.WriteLine($"CallId: {call.CallId}");
+                Console.WriteLine($"CallType: {call.callType}");
+                Console.WriteLine($"OpeningTime: {call.OpeningTime}");
+                Console.WriteLine($"RemainingCallTime: {call.RemainingCallTime}");
+                Console.WriteLine($"LastVolunteerName: {call.LastVolunteerName}");
+                Console.WriteLine($"TotalHandlingTime: {call.TotalHandlingTime}");
+                Console.WriteLine($"CallStatus: {call.callStatus}");
+                Console.WriteLine($"TotalAllocations: {call.TotalAllocations}");
+            }
+        }
+        public static void PrintCallInProgress(CallInProgress callInProgress)
+        {
+            Console.WriteLine($"Id: {callInProgress.Id}");
+            Console.WriteLine($"CallId: {callInProgress.CallId}");
+            Console.WriteLine($"Call Type: {callInProgress.callType}");
+            Console.WriteLine($"Address: {callInProgress.Address}");
+            Console.WriteLine($"Opening Time: {callInProgress.OpeningTime}");
+            Console.WriteLine($"Description: {callInProgress.Description ?? "N/A"}");
+            Console.WriteLine($"Max Ending Time: {callInProgress.maxEndingTime?.ToString("yyyy-MM-dd HH:mm:ss") ?? "N/A"}");
+            Console.WriteLine($"Entry Time: {callInProgress.EntryTime}");
+            Console.WriteLine($"Call Distance From Volunteer: {callInProgress.CallDistanceFromVolunteer}");
+            Console.WriteLine($"Call Status: {callInProgress.callStatus}");
+        }
+
+
 
     }
 }
