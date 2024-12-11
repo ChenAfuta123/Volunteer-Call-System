@@ -1,4 +1,4 @@
-﻿using BlApi;
+﻿
 using BO;
 using DalApi;
 using DO;
@@ -308,5 +308,45 @@ internal static class CallManager
         }
 
     }
+    internal static void CloseExpiredCalls(DateTime oldClock, DateTime newClock)
+    {
+        var allCalls = s_dal.Call.ReadAll(); 
+        foreach (DO.Call call in allCalls)
+        {
+           
+            if (call.maxEndingTime != null && call.maxEndingTime.Value < newClock)
+            {
+                BO.Call currentCall =DOtoBO(call);
 
+               
+                if (currentCall.callStatus != CallStatus.Closed)
+                {
+                    var assignments = s_dal.Assignment.ReadAll(a => a.CallId == call.Id).ToList();
+
+                    if (assignments.Count() > 0) 
+                    {
+                       
+                        var assignment = assignments.LastOrDefault(a => !a.EndTime.HasValue);
+                        if (assignment != null)
+                        {
+                            var updatedAssignment = assignment with
+                            {
+                                EndTime = newClock,
+                                EndTimeType = DO.EndTimeType.Expired
+                            };
+
+                            s_dal.Assignment.Update(updatedAssignment);
+                        }
+                    }
+
+                  
+                    currentCall.callStatus = CallStatus.Closed;
+                    s_dal.Call.Update(call);
+                }
+            }
+        }
+    }
 }
+
+
+
