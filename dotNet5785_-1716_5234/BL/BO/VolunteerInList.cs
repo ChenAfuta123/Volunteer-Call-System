@@ -1,7 +1,7 @@
 ﻿
 namespace BO;
 
-internal class VolunteerInList
+public class VolunteerInList
 {
     public int Id { get; init; }
     public required string Name { get; init; }

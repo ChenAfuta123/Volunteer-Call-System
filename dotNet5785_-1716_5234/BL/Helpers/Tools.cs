@@ -87,33 +87,26 @@ internal static class Tools
             if (latitude.HasValue && (latitude < -90 || latitude > 90))
                 return false;
 
-            // אם הכתובת אינה ריקה, נבדוק אותה דרך LocationIQ
             if (!string.IsNullOrWhiteSpace(address))
             {
                 const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
                 const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
-                // בניית URL
                 string url = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
 
                 using HttpClient httpClient = new HttpClient();
 
-                // שליחת בקשה
                 HttpResponseMessage response = httpClient.GetAsync(url).Result;
 
-                // טיפול בשגיאה אם ה-API נכשל
                 if (!response.IsSuccessStatusCode)
                     return false;
 
-                // קריאת התשובה
                 string jsonResponse = response.Content.ReadAsStringAsync().Result;
                 var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
 
-                // אם אין תוצאות, הכתובת לא תקפה
                 if (results == null || results.Length == 0)
                     return false;
 
-                // בדיקת התאמה לקווי אורך ורוחב
                 if (latitude.HasValue && longitude.HasValue)
                 {
                     foreach (var result in results)
@@ -162,10 +155,14 @@ internal static class Tools
         /// </summary>
         private static double CalculateAirDistance(string address1, string address2)
         {
-            var (latitude1, longitude1) = GetAddressCoordinates(address1);
-            var (latitude2, longitude2) = GetAddressCoordinates(address2);
+            (double? latitude1, double? longitude1) = GetAddressCoordinates(address1);
+            (double ? latitude2, double ? longitude2) = GetAddressCoordinates(address2);
+            double lat1 = latitude1 ?? throw new BO.BlNullPropertyException("Latitude1 is null.");
+            double lon1 = longitude1 ?? throw new BO.BlNullPropertyException("Longitude1 is null.");
+            double lat2 = latitude2 ?? throw new BO.BlNullPropertyException("Latitude2 is null.");
+            double lon2 = longitude2 ?? throw new BO.BlNullPropertyException("Longitude2 is null.");
 
-            return CalculateDistanceBetweenCoordinates(latitude1, longitude1, latitude2, longitude2);
+            return CalculateDistanceBetweenCoordinates(lat1, lon1, lat2, lon2);
         }
 
 
@@ -222,7 +219,6 @@ internal static class Tools
             const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
-            // בנה את כתובת ה-URL של הבקשה
             string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
 
             using (var client = new HttpClient())
@@ -283,7 +279,7 @@ internal static class Tools
 
         private class LocationIqDirectionsResponse
         {
-            public Route[] Routes { get; set; }
+            public required Route[] Routes { get; set; }
         }
 
         private class Route
@@ -293,8 +289,8 @@ internal static class Tools
 
         private class LocationIqResponse
         {
-            public string Lat { get; set; }
-            public string Lon { get; set; }
+            public required string Lat { get; set; }
+            public required string Lon { get; set; }
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿
 namespace BO;
 
-internal class CallInList
+public class CallInList
 {
     public int? Id { get; init; }
     public int CallId { get; init; }
