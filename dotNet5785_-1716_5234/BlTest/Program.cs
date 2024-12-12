@@ -175,6 +175,10 @@ namespace BL
                 var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
                 PrintvolunteerInList(volunteerList);
             }
+            catch (BO.BlNullPropertyException ex)
+            {
+                Console.WriteLine(ex);
+            }
             catch(BO.BlDoesNotExistsException ex)
             {
                 Console.WriteLine(ex);
