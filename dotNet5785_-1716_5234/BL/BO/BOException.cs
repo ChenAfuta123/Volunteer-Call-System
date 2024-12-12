@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         protected BOException(string? message) : base(message) { }
-
+     
         /// <summary>
         /// Initializes a new instance of the BOException class with a specified error message and a reference to the inner exception that is the cause of this exception.
         /// </summary>
@@ -28,6 +28,7 @@
         {
             string result = $"Exception Type: {GetType().Name}\nMessage: {Message}";
 
+           
             if (InnerException != null)
             {
                 result += $"\nInner Exception: {InnerException.GetType().Name}\nInner Message: {InnerException.Message}";
@@ -37,3 +38,4 @@
         }
     }
 }
+

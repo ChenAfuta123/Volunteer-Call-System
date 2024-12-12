@@ -11,10 +11,10 @@ internal class AdminImplementation : IAdmin
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
     public void AdvanceClock(TimeUnit timeUnit)
     {
-        // שלב 1: קבלת הזמן הנוכחי
+    
         var currentTime = ClockManager.Now;
 
-        // שלב 2: חישוב הזמן החדש לפי יחידת הזמן שנבחרה
+     
         var newTime = timeUnit switch
         {
             TimeUnit.MINUTE => currentTime.AddMinutes(1),
@@ -25,13 +25,13 @@ internal class AdminImplementation : IAdmin
             _ => throw new ArgumentOutOfRangeException(nameof(timeUnit), $"Unsupported time unit: {timeUnit}")
         };
 
-        // שלב 3: עדכון השעון עם הזמן החדש
+       
         ClockManager.UpdateClock(newTime);
     }
 
     public  DateTime getClockTime()
     {
-        return DateTime.Now;
+        return ClockManager.Now;
     }
 
     public TimeSpan getRiskTimeRange()

@@ -27,31 +27,57 @@ internal static class VolunteerManager
     }
     public static BO.Volunteer DOtoBO(DO.Volunteer ?volunteer)
     {
-        BO.CallInProgress ?volunteerHandledCall=null;
-       if (volunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
         try
         {
+            BO.CallInProgress? volunteerHandledCall = null;
+            if (volunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
 
             var Assignment = s_dal.Assignment.Read(assignment => assignment.VolunteerId == volunteer.Id);
-            if (Assignment == null) throw new BO.BlObjectNotFoundException("Assignment not found.");
 
-            var call = s_dal.Call.Read(call => call.Id == Assignment.CallId);
-            if (call == null) throw new BO.BlObjectNotFoundException("Call not found.");
-            
-
-             volunteerHandledCall = new BO.CallInProgress
+            if (Assignment != null)
             {
-                Id = Assignment.Id,
-                CallId = call.Id,
-                callType = (BO.CallType)call.callType, 
-                Address = call.Address,
-                OpeningTime = call.OpeningTime,
-                Description = call.Description,
-                maxEndingTime = call.maxEndingTime,
-                EntryTime = Assignment.EntryTime,
-                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer.Address, call.Address, volunteer.distanceType),
-                callStatus = CallManager.Status(call.Id) 
+                var call = s_dal.Call.Read(call => call.Id == Assignment.CallId);
+                if (call != null)
+                {
+                    volunteerHandledCall = new BO.CallInProgress
+                    {
+                        Id = Assignment.Id,
+                        CallId = call.Id,
+                        callType = (BO.CallType)call.callType,
+                        Address = call.Address,
+                        OpeningTime = call.OpeningTime,
+                        Description = call.Description,
+                        maxEndingTime = call.maxEndingTime,
+                        EntryTime = Assignment.EntryTime,
+                        CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer.Address, call.Address, volunteer.distanceType),
+                        callStatus = CallManager.Status(call.Id)
+                    };
+                }
+            }
+
+
+
+
+            return new BO.Volunteer
+            {
+                Id = volunteer.Id,
+                Name = volunteer.Name,
+                PhoneNumber = volunteer.PhoneNumber,
+                Email = volunteer.Email,
+                Password = volunteer.Password,
+                Address = volunteer.Address,
+                Latitude = volunteer.Latitude,
+                Longitude = volunteer.Longitude,
+                MaxDistance = volunteer.MaxDistance,
+                Active = volunteer.Active,
+                distanceType = (BO.DistanceType)volunteer.distanceType,
+                role = (BO.Role)volunteer.role,
+                TotalHandledCalls = TotalEndTimeType(volunteer.Id, EndTimeType.Treated),
+                TotalCanceledCalls = TotalEndTimeType(volunteer.Id, EndTimeType.ManagerCancel) + TotalEndTimeType(volunteer.Id, EndTimeType.SelfCancel),
+                TotalExpiredCalls = TotalEndTimeType(volunteer.Id, EndTimeType.Expired),
+                VolunteerHandledCall = volunteerHandledCall
             };
+
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -63,25 +89,6 @@ internal static class VolunteerManager
         }
 
 
-        return new BO.Volunteer
-        {
-            Id = volunteer.Id,
-            Name = volunteer.Name,
-            PhoneNumber = volunteer.PhoneNumber,
-            Email = volunteer.Email,
-            Password = volunteer.Password,
-            Address = volunteer.Address,
-            Latitude = volunteer.Latitude,
-            Longitude = volunteer.Longitude,
-            MaxDistance = volunteer.MaxDistance,
-            Active = volunteer.Active,
-            distanceType =(BO.DistanceType) volunteer.distanceType,
-            role = (BO.Role)volunteer.role,
-            TotalHandledCalls = TotalEndTimeType(volunteer.Id,EndTimeType.Treated),
-            TotalCanceledCalls = TotalEndTimeType(volunteer.Id,EndTimeType.ManagerCancel) + TotalEndTimeType(volunteer.Id,EndTimeType.SelfCancel),
-            TotalExpiredCalls = TotalEndTimeType(volunteer.Id, EndTimeType.Expired),
-            VolunteerHandledCall = volunteerHandledCall
-        };
     }
     public static BO.VolunteerInList VolunteerToVolunteerList(BO.Volunteer volunteer)
     {

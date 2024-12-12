@@ -5,6 +5,7 @@ using DO;
 using Helpers;
 using Microsoft.VisualBasic;
 using System;
+using System.Net.Http.Headers;
 namespace BL
 {
     internal class Program
@@ -112,19 +113,20 @@ namespace BL
         }
 
         private static void AddVolunteer()
+
         {
             try
             {
-                var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer);
+                var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer, 0, 0, 0);
                 s_bl.Volunteer.Add(volunteer);
                 Console.WriteLine("Volunteer added successfully");
             }
-            catch (BO.BlValidationException ex)
+            catch(BO.BlValidationException ex)
             {
                 Console.WriteLine(ex);
             }
             catch (BO.BlAlreadyExistsException ex)
-            { 
+            {
                 Console.WriteLine(ex);
             }
         }
@@ -133,11 +135,11 @@ namespace BL
         {
             try
             {
-                Console.WriteLine("Enter Volunteer name:");
-                string name = Console.ReadLine()!;
-                Console.WriteLine("Enter Volunteer password:");
+                Console.WriteLine("Enter Volunteer name:"); 
+                string? name = Console.ReadLine()!;
+                Console.WriteLine("Enter Volunteer password:"); 
                 string? password = Console.ReadLine()!;
-                DO.Role? role = s_bl.Volunteer.LoginUser(name, password);
+                DO.Role role = s_bl.Volunteer.LoginUser(name, password);
                 Console.WriteLine($"Welcome {role}");
             }
             catch (BO.BlValidationException ex)
@@ -148,6 +150,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
+        }
 
         }
 
@@ -158,26 +161,29 @@ namespace BL
                 Console.Write("Filter by active volunteers? (true/false): ");
                 bool? filterByActive = bool.Parse(Console.ReadLine()!);
 
-                Console.WriteLine("Choose a field to sort the list by:");
-                foreach (var field in Enum.GetValues(typeof(VolunteerInListFields)))
-                {
-                    Console.WriteLine($"- {field} ({(int)field})");
-                }
-
+         
+            Console.WriteLine("Choose a field to sort the list by:");
+            foreach (var field in Enum.GetValues(typeof(VolunteerInListFields)))
+            {
+                Console.WriteLine($"- {field} ({(int)field})");
+            }
+            try
+            {
+                
                 Console.Write("Enter the number corresponding to the field: ");
                 VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
                 var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
-
                 PrintvolunteerInList(volunteerList);
+            }
+            catch(BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
             }
             catch (BO.BlObjectNotFoundException ex)
             {
                 Console.WriteLine(ex);
             }
-            catch (BO.BlDoesNotExistsException ex)
-            {
-                Console.WriteLine(ex);
-            }
+
         }
 
         private static void ReadSpecificVolunteer()
@@ -187,6 +193,7 @@ namespace BL
                 int id;
                 Console.WriteLine("Enter Volunteer ID:");
                 string input = Console.ReadLine()!;
+
                 int.TryParse(input, out id);
                 var BOVolunteer = s_bl.Volunteer.Read(id);
                 PrintVolunteer(BOVolunteer);
@@ -208,15 +215,29 @@ namespace BL
                 int ID;
                 Console.WriteLine("Enter your ID:");
                 string input1 = Console.ReadLine()!;
+
                 int.TryParse(input1, out ID);
+
+
                 int id;
                 Console.WriteLine("Enter volunteer ID to update:");
                 string input2 = Console.ReadLine()!;
+
                 int.TryParse(input2, out id);
+
                 var Volunteer = s_bl.Volunteer.Read(id);
-                var volunteer = VolunteerDetailsFromUser(false, Volunteer.Id, Volunteer.role);
+                var volunteer = VolunteerDetailsFromUser(false, Volunteer.Id, Volunteer.role, Volunteer.TotalHandledCalls, Volunteer.TotalCanceledCalls, Volunteer.TotalExpiredCalls);
                 s_bl.Volunteer.Update(ID, volunteer);
                 Console.WriteLine("Volunteer is update successfully");
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            catch (BO.BlUnauthorizedException ex)
+            {
+                Console.WriteLine(ex);
             }
             catch (BO.BlDoesNotExistsException ex)
             {
@@ -226,10 +247,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
-            catch (BO.BlUnauthorizedException ex)
-            {
-                Console.WriteLine(ex);
-            }
+
         }
 
         private static void DeleteVolunteer()
@@ -239,7 +257,9 @@ namespace BL
                 int id;
                 Console.WriteLine("Enter volunteer ID deletion.");
                 string input = Console.ReadLine()!;
+
                 int.TryParse(input, out id);
+
                 s_bl.Volunteer.Delete(id);
             }
             catch (BO.BlDoesNotExistsException ex)
@@ -250,6 +270,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
+        }
 
         }
 
@@ -339,7 +360,8 @@ namespace BL
         {
                 int[] statusCounts = s_bl.Call.CallQuantities();
 
-                string[] statusNames = Enum.GetNames(typeof(CallStatus));
+          
+            string[] statusNames = Enum.GetNames(typeof(CallStatus));
 
                 Console.WriteLine("Call Quantities by Status:");
 
@@ -353,6 +375,7 @@ namespace BL
 
         private static void ReadAllCalls()
         {
+
             Console.WriteLine("Select a field to filter by:");
             foreach (var value in Enum.GetValues(typeof(CallInListField)))
             {
@@ -365,6 +388,7 @@ namespace BL
             Console.Write("Enter a value to filter by (or leave empty to skip): ");
             var filterValue = Console.ReadLine();
 
+       
             Console.WriteLine("Select a field to sort by:");
             foreach (var value in Enum.GetValues(typeof(CallInListField)))
             {
@@ -373,6 +397,7 @@ namespace BL
             CallInListField? sortField = int.TryParse(Console.ReadLine(), out int input2)
              ? (CallInListField?)(input2 - 1)
              : null;
+
             try
             {
                 var callinlist = s_bl.Call.ReadAll(filterField, filterValue, sortField);
@@ -396,7 +421,12 @@ namespace BL
                 int id;
                 Console.WriteLine("Enter call ID:");
                 string input = Console.ReadLine()!;
-                int.TryParse(input, out id);
+
+                if (!int.TryParse(input, out id))
+                {
+                    throw new BO.BlValidationException("Invalid ID entered");
+                }
+
                 var BOcall = s_bl.Call.Read(id);
                 PrintCall(BOcall);
             }
@@ -424,6 +454,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
+
         }
 
         private static void DeleteCall()
@@ -439,7 +470,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
-            catch (BO.BlCannotBeDeletedException ex)
+            catch(BO.BlCannotBeDeletedException ex)
             {
                 Console.WriteLine(ex);
             }
@@ -449,11 +480,15 @@ namespace BL
         {
             try
             {
-             
+                Console.WriteLine("Enter call details: ");
                 var call = CallInput(0);
                 s_bl.Call.Add(call);
             }
             catch (BO.BlAlreadyExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
             {
                 Console.WriteLine(ex);
             }
@@ -486,27 +521,28 @@ namespace BL
             Console.Write("Your choice: ");
             int callTypeIndex = int.Parse(Console.ReadLine()!) - 1;
             BO.CallType? callTypeFilter = (BO.CallType)callTypes.GetValue(callTypeIndex)!;
+
             try
             {
                 var openCallList = s_bl.Call.OpenCallsByVolunteer(id, callTypeFilter, sortField);
                 printOpenCallInList(openCallList);
             }
-            catch (BO.BlObjectNotFoundException ex)
+            catch(BO.BlObjectNotFoundException ex) 
             {
                 Console.WriteLine(ex);
-            }
+            }   
         }
 
         private static void EndOfTreatmentUpdate()
         {
             try
             {
-                int Vid, Cid;
+                int Vid, Aid;
                 Console.Write("Enter Volunteer ID: ");
                 Vid = int.Parse(Console.ReadLine()!);
-                Console.Write("Enter call ID: ");
-                Cid = int.Parse(Console.ReadLine()!);
-                s_bl.Call.EndOftreatmentUpdate(Vid, Cid);
+                Console.Write("Enter Assignment ID: ");
+                Aid = int.Parse(Console.ReadLine()!);
+                s_bl.Call.EndOftreatmentUpdate(Vid, Aid);
             }
             catch (BO.BlObjectNotFoundException ex)
             {
@@ -524,6 +560,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
+
         }
 
         private static void CancelTreatmentUpdate()
@@ -620,6 +657,7 @@ namespace BL
             {
                 Console.WriteLine(ex);
             }
+
         }
 
 
@@ -731,13 +769,6 @@ namespace BL
 
 
 
-
-
-
-
-
-
-
         private static void PrintVolunteer(BO.Volunteer volunteer)
         {
             Console.WriteLine($"ID: {volunteer.Id}");
@@ -766,6 +797,9 @@ namespace BL
         {
             int id = 0;
             BO.Role role = BO.Role.volunteer;
+            int totalHandledCalls = 0;
+            int totalCanceledCalls = 0;
+            int totalExpiredCalls = 0;
             if (flag)
             {
                 Console.Write("Enter ID: ");
@@ -776,6 +810,7 @@ namespace BL
 
                 Console.WriteLine("Choose Role: 1. Volunteer 2. Manager");
 
+              
                 role = Console.ReadLine() switch
                 {
                     "1" => BO.Role.volunteer,
@@ -802,11 +837,7 @@ namespace BL
             double? maxDistance = double.TryParse(Console.ReadLine(), out double maxDistResult) ? maxDistResult : null;
 
             Console.Write("Is Active (true/false): ");
-            bool active;
-            if (!bool.TryParse(Console.ReadLine(), out active))
-            {
-                throw new BO.BlValidationException("Invalid input: Must be 'true' or 'false'.");
-            }
+            bool active = bool.Parse(Console.ReadLine()!);
 
             Console.WriteLine("Enter the distance type (0 - AirDistance, 1 - WalkingDistance, 2 - DrivingDistance):");
             BO.DistanceType distanceType = Console.ReadLine() switch
@@ -814,8 +845,9 @@ namespace BL
                 "O" => BO.DistanceType.AirDistance,
                 "1" => BO.DistanceType.WalkingDistance,
                 "2" => BO.DistanceType.DrivingDistance,
-                _ => BO.DistanceType.AirDistance
+                _ => BO.DistanceType.AirDistance 
             };
+
 
             return new BO.Volunteer
             {
@@ -833,19 +865,20 @@ namespace BL
         }
         private static void PrintvolunteerInList(IEnumerable<BO.VolunteerInList> volunteerList)
         {
-
-            foreach (var volunteer in volunteerList)
-            {
-                Console.WriteLine("Volunteer Details:");
-                Console.WriteLine($"- Id: {volunteer.Id}");
-                Console.WriteLine($"- Name: {volunteer.Name}");
-                Console.WriteLine($"- Active: {volunteer.Active}");
-                Console.WriteLine($"- Total Handled Calls: {volunteer.TotalHandledCalls}");
-                Console.WriteLine($"- Total Canceled Calls: {volunteer.TotalCanceledCalls}");
-                Console.WriteLine($"- Total Expired Calls: {volunteer.TotalExpiredCalls}");
-                Console.WriteLine($"- Handled Call Id: {(volunteer.HandledCallId.HasValue ? volunteer.HandledCallId.Value.ToString() : "None")}");
-                Console.WriteLine();
-            }
+            
+                foreach (var volunteer in volunteerList)
+                {
+                    Console.WriteLine("Volunteer Details:");
+                    Console.WriteLine($"- Id: {volunteer.Id}");
+                    Console.WriteLine($"- Name: {volunteer.Name}");
+                    Console.WriteLine($"- Active: {volunteer.Active}");
+                    Console.WriteLine($"- Total Handled Calls: {volunteer.TotalHandledCalls}");
+                    Console.WriteLine($"- Total Canceled Calls: {volunteer.TotalCanceledCalls}");
+                    Console.WriteLine($"- Total Expired Calls: {volunteer.TotalExpiredCalls}");
+                    Console.WriteLine($"- Handled Call Id: {(volunteer.HandledCallId.HasValue ? volunteer.HandledCallId.Value.ToString() : "None")}");
+                    Console.WriteLine();
+                }
+            
         }
 
 
@@ -873,12 +906,7 @@ namespace BL
         }
         private static void printOpenCallInList(IEnumerable<OpenCallInList> openCallInList)
         {
-            if (openCallInList == null)
-            {
-                ///אולי חריגה
-            }
-            else
-            {
+           
                 foreach (var call in openCallInList)
                 {
                     Console.WriteLine($"- ID: {call.Id}");
@@ -888,18 +916,14 @@ namespace BL
                     Console.WriteLine($"- Description: {call.description}");
                     Console.WriteLine($"- Max Ending Time: {call.maxEndingTime.HasValue}");
                     Console.WriteLine($"- Call Distance From Volunteer: {call.CallDistanceFromVolunteer}");
-                    Console.WriteLine(new string('-', 40)); // קו מפריד בין אובייקטים
+                    Console.WriteLine(new string('-', 40)); 
                 }
-            }
+            
         }
         private static void printClosedCallInList(IEnumerable<ClosedCallInList> closedCallInList)
         {
-            if (closedCallInList == null)
-            {
-                ///אולי חריגה
-            }
-            else
-            {
+           
+            
                 foreach (var call in closedCallInList)
                 {
                     Console.WriteLine($"- ID: {call.Id}");
@@ -909,9 +933,9 @@ namespace BL
                     Console.WriteLine($"- Entry Time: {call.EntryTime}");
                     Console.WriteLine($"- End Time: {call.EndTime.HasValue}");
                     Console.WriteLine($"- End Time Type: {(call.EndTimeType.HasValue ? call.EndTimeType.ToString() : "N/A")}");
-                    Console.WriteLine(new string('-', 40)); // קו מפריד בין אובייקטים
+                    Console.WriteLine(new string('-', 40)); 
                 }
-            }
+            
         }
         public static BO.Call CallInput(int id)
         {
@@ -928,14 +952,20 @@ namespace BL
             var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
 
 
+
+
+
+
             var call = new BO.Call
             {    Id=id,
                 callType = callType,
                 Description = description,
                 Address = address,
                 MaxEndingTime = maxEndingTime,
+                OpeningTime = s_bl.Admin.getClockTime()
 
             };
+
             return call;
         }
         public static void PrintCallInList(IEnumerable<CallInList> calls)

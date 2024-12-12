@@ -232,7 +232,7 @@ internal static class CallManager
     {
         try
         {
-
+           
             if (!Enum.IsDefined(typeof(BO.CallType), call.callType))
                 throw new Exception("Invalid call type.");
 
@@ -257,7 +257,7 @@ internal static class CallManager
         }
         catch (Exception ex)
         {
-            throw new ValidationException("Error validating call details: " + ex.Message);
+            throw new BlValidationException("Error validating call details: " + ex.Message);
         }
 
     }
