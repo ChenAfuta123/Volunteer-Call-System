@@ -59,7 +59,7 @@ internal class VolunteerImplementation : IVolunteer
 
             if (VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null)
             {
-                throw new BO.BlValidationException("The volunteer cannot be deleted as they are handling or have handled calls.");
+                throw new BO.BlCannotBeDeletedException("The volunteer cannot be deleted as they are handling or have handled calls.");
             }
 
             _dal.Volunteer.Delete(id);
@@ -74,14 +74,12 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
 
-            DO.Volunteer volunteer = _dal.Volunteer.Read(id)!;
-            if (volunteer == null)
-                throw new BO.BlObjectNotFoundException("Volunteer not found.");
+            DO.Volunteer? volunteer = _dal.Volunteer.Read(id);
             return VolunteerManager.DOtoBO(volunteer);
         }
-        catch (DO.DalAlreadyExistsException ex)
+        catch (DO.DalDoesNotExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Error while reading a volunteer:", ex);
+            throw new BO.BlDoesNotExistsException($"Error while reading a volunteer:", ex);
         }
         catch (Exception ex)
         {
@@ -127,7 +125,7 @@ internal class VolunteerImplementation : IVolunteer
     public void Update(int id, BO.Volunteer boVolunteer)
     {
 
-        DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(id);
+        DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
         if (existingVolunteer == null) throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
 
         DO.Role newRole = existingVolunteer.role;
@@ -135,11 +133,11 @@ internal class VolunteerImplementation : IVolunteer
         {
             newRole = (DO.Role)boVolunteer.role;
         }
-        else if (existingVolunteer.Id != boVolunteer.Id)
+        else if (existingVolunteer.Id != id)
         {
             throw new BO.BlUnauthorizedException("Volunteer cannot update other volunteer");
         }
-        else if (existingVolunteer.role != DO.Role.manager)
+        else if (existingVolunteer.role != DO.Role.manager&& existingVolunteer.role!= (DO.Role)boVolunteer.role)
         {
             throw new BO.BlUnauthorizedException("Volunteer cannot update role");
         }

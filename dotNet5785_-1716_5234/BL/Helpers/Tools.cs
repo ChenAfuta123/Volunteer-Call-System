@@ -73,57 +73,66 @@ internal static class Tools
     {
         public static bool IsValidAddress(string? address, double? longitude, double? latitude)
         {
-            NullVal(longitude);
-            NullVal(latitude);
+            if (longitude.HasValue)
+            {
+                if (longitude < -180 || longitude > 180)
+                    return false;
+            }
 
+            if (latitude.HasValue)
+            {
+                if (latitude < -90 || latitude > 90)
+                    return false;
+            }
 
             if (string.IsNullOrWhiteSpace(address))
                 return false;
 
-            if (longitude.HasValue && (longitude < -180 || longitude > 180))
-                return false;
+            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
-            if (latitude.HasValue && (latitude < -90 || latitude > 90))
-                return false;
+            string url = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
 
-            if (!string.IsNullOrWhiteSpace(address))
+            using (HttpClient httpClient = new HttpClient())
             {
-                const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
-                const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
-
-                string url = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
-
-                using HttpClient httpClient = new HttpClient();
-
-                HttpResponseMessage response = httpClient.GetAsync(url).Result;
-
-                if (!response.IsSuccessStatusCode)
-                    return false;
-
-                string jsonResponse = response.Content.ReadAsStringAsync().Result;
-                var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
-
-                if (results == null || results.Length == 0)
-                    return false;
-
-                if (latitude.HasValue && longitude.HasValue)
+                try
                 {
-                    foreach (var result in results)
-                    {
-                        double resultLat = double.Parse(result.Lat);
-                        double resultLon = double.Parse(result.Lon);
+                    HttpResponseMessage response = httpClient.GetAsync(url).Result; // ניתן להשתמש ב-`await` במקום
+                    if (!response.IsSuccessStatusCode)
+                        return false;
 
-                        if (Math.Abs(resultLat - latitude.Value) < 0.01 && Math.Abs(resultLon - longitude.Value) < 0.01)
-                            return true;
+
+                    string jsonResponse = response.Content.ReadAsStringAsync().Result;
+    
+                    var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
+
+
+                    if (results == null || results.Length == 0)
+                        return false;
+
+                    if (latitude.HasValue && longitude.HasValue)
+                    {
+                        foreach (var result in results)
+                        {
+                            if (double.TryParse(result.Lat, out double resultLat) && double.TryParse(result.Lon, out double resultLon))
+                            {
+                                if (Math.Abs(resultLat - latitude.Value) < 0.01 && Math.Abs(resultLon - longitude.Value) < 0.01)
+                                    return true;
+                            }
+                        }
+
+                        return false;
                     }
 
-                    return false;
+                    return true;
                 }
 
-                return true;
+                catch
+                {
+                    // טיפול בשגיאה (למשל, רישום שגיאה או החזרת false)
+                    return false;
+                }
             }
-
-            return true;
         }
 
         public static double CalculateDistance(string? address1, string? address2, DO.DistanceType distanceType)

@@ -232,9 +232,7 @@ internal static class CallManager
     {
         try
         {
-            if (!Tools.IsValidID(call.Id))
-                throw new Exception("Invalid Id.");
-
+           
             if (!Enum.IsDefined(typeof(BO.CallType), call.callType))
                 throw new Exception("Invalid call type.");
 
@@ -246,8 +244,8 @@ internal static class CallManager
                 throw new Exception("Invalid call description.");
 
 
-            if (!Tools.DistanceCalculator.IsValidAddress(call.Address, call.Longitude, call.Latitude))
-                throw new Exception("Invalid Address.");
+            //if (!Tools.DistanceCalculator.IsValidAddress(call.Address, call.Longitude, call.Latitude))
+            //    throw new Exception("Invalid Address.");
 
             if (call.OpeningTime == default)
                 throw new Exception("Opening time is required.");
@@ -259,7 +257,7 @@ internal static class CallManager
         }
         catch (Exception ex)
         {
-            throw new ValidationException("Error validating call details: " + ex.Message);
+            throw new BlValidationException("Error validating call details: " + ex.Message);
         }
 
     }

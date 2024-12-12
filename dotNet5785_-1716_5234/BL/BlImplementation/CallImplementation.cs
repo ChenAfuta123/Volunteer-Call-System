@@ -15,19 +15,19 @@ internal class CallImplementation : ICall
     public void Add(BO.Call boCall)
     {
         CallManager.ValidateCall(boCall);
-        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
-        double longtitude = coordinates.Latitude ?? 0.0;
-        double latitude = coordinates.Latitude ?? 0.0;
-        boCall.Latitude = latitude;
-        boCall.Longitude = longtitude;
+        //var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
+        //double longtitude = coordinates.Latitude ?? 0.0;
+        //double latitude = coordinates.Latitude ?? 0.0;
+        //boCall.Latitude = latitude;
+        //boCall.Longitude = longtitude;
 
         DO.Call doCall = new DO.Call
         {
             Id = boCall.Id,
             callType = (DO.CallType)boCall.callType,
             Address = boCall.Address ?? " ",
-            Latitude = boCall.Latitude,
-            Longitude = boCall.Longitude,
+            Latitude = /*boCall.Latitude*/0.0,
+            Longitude = /*boCall.Longitude*/0.0,
             OpeningTime = boCall.OpeningTime,
             Description = boCall.Description,
             maxEndingTime = boCall.MaxEndingTime
@@ -169,6 +169,7 @@ internal class CallImplementation : ICall
     public int[] CallQuantities()
     {
         var calls = _dal.Call.ReadAll();
+        
 
         var statusCounts = calls
             .GroupBy(call => (int)CallManager.Status(call.Id))
@@ -187,8 +188,7 @@ internal class CallImplementation : ICall
 
     public void ChooseCallForTreatment(int volunteerId, int callId)
     {
-        try
-        {
+        
 
             var callStatus = CallManager.Status(callId);
 
@@ -202,23 +202,19 @@ internal class CallImplementation : ICall
 
                 case CallStatus.InProgress:
                 case CallStatus.InProgressAtRisk:
-                    throw new ApplicationException("The call is already in progress and cannot be reassigned.");
+                    throw new BO.BlValidationException("The call is already in progress and cannot be reassigned.");
 
                 case CallStatus.Closed:
-                    throw new ApplicationException("The call has already been closed and cannot be assigned.");
+                    throw new BO.BlValidationException("The call has already been closed and cannot be assigned.");
 
                 case CallStatus.Expired:
-                    throw new ApplicationException("The call's validity period has expired and cannot be assigned.");
+                    throw new BO.BlValidationException("The call's validity period has expired and cannot be assigned.");
 
                 default:
-                    throw new ApplicationException("Unknown call status. Cannot assign the call.");
+                    throw new BO.BlValidationException("Unknown call status. Cannot assign the call.");
             }
-        }
-        catch (Exception ex)
-        {
-
-            throw new ApplicationException("Failed to assign the call to the volunteer.", ex);
-        }
+        
+        
     }
 
     public void CanceltreatmentUpdate(int requesterId, int assignmentId)

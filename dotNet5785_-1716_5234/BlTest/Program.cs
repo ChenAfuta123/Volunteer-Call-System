@@ -5,6 +5,7 @@ using DO;
 using Helpers;
 using Microsoft.VisualBasic;
 using System;
+using System.Net.Http.Headers;
 namespace BL
 {
     internal class Program
@@ -113,20 +114,43 @@ namespace BL
         }
 
         private static void AddVolunteer()
+
         {
-            var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer, 0, 0, 0);
-            s_bl.Volunteer.Add(volunteer);
-            Console.WriteLine("Volunteer added successfully");
+            try
+            {
+                var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer, 0, 0, 0);
+                s_bl.Volunteer.Add(volunteer);
+                Console.WriteLine("Volunteer added successfully");
+            }
+            catch(BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlAlreadyExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void LoginVolunteer()
         {
-            Console.WriteLine("Enter Volunteer name:"); // בקשה למזהה
-            string name = Console.ReadLine()!;
-            Console.WriteLine("Enter Volunteer password:"); // בקשה למזהה
-            string password = Console.ReadLine()!;
-            DO.Role role = s_bl.Volunteer.LoginUser(name, password);
-            Console.WriteLine($"Welcome {role}");
+            try
+            {
+                Console.WriteLine("Enter Volunteer name:"); 
+                string? name = Console.ReadLine()!;
+                Console.WriteLine("Enter Volunteer password:"); 
+                string? password = Console.ReadLine()!;
+                DO.Role role = s_bl.Volunteer.LoginUser(name, password);
+                Console.WriteLine($"Welcome {role}");
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void ReadAllVolunteers()
@@ -134,73 +158,115 @@ namespace BL
             Console.Write("Filter by active volunteers? (true/false): ");
             bool? filterByActive = bool.Parse(Console.ReadLine()!);
 
-            // הצגת אפשרויות Enum
+         
             Console.WriteLine("Choose a field to sort the list by:");
             foreach (var field in Enum.GetValues(typeof(VolunteerInListFields)))
             {
                 Console.WriteLine($"- {field} ({(int)field})");
             }
+            try
+            {
+                
+                Console.Write("Enter the number corresponding to the field: ");
+                VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
+                var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
+                PrintvolunteerInList(volunteerList);
+            }
+            catch(BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
 
-            // בקשה להזנת Enum
-            Console.Write("Enter the number corresponding to the field: ");
-            VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
-            var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
-            if (volunteerList == null)
-                throw new BO.BlObjectNotFoundException("volunteer in list is not found");
-            PrintvolunteerInList(volunteerList);
         }
 
         private static void ReadSpecificVolunteer()
         {
-            int id; // כרזת על משתנה
-            Console.WriteLine("Enter Volunteer ID:"); // בקשה למזהה
-            string input = Console.ReadLine()!; // קבלת קלט
-
-            if (!int.TryParse(input, out id)) // ניסיון להמיר למספר שלם
+            try
             {
-                throw new BO.BlValidationException("Invalid ID entered");
-            }
+                int id;
+                Console.WriteLine("Enter Volunteer ID:");
+                string input = Console.ReadLine()!;
 
-            var BOVolunteer = s_bl.Volunteer.Read(id);
-            PrintVolunteer(BOVolunteer);
+                int.TryParse(input, out id);
+                var BOVolunteer = s_bl.Volunteer.Read(id);
+                PrintVolunteer(BOVolunteer);
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void UpdateVolunteer()
         {
-            int ID; // כרזת על משתנה
-            Console.WriteLine("Enter your ID:"); // בקשה למזהה
-            string input1 = Console.ReadLine()!; // קבלת קלט
-
-            if (!int.TryParse(input1, out ID)) // ניסיון להמיר למספר שלם
+            try
             {
-                throw new BO.BlValidationException("Invalid ID entered");
-            }
-            int id; // כרזת על משתנה
-            Console.WriteLine("Enter volunteer ID to update:"); // בקשה למזהה
-            string input2 = Console.ReadLine()!; // קבלת קלט
+                int ID;
+                Console.WriteLine("Enter your ID:");
+                string input1 = Console.ReadLine()!;
 
-            if (!int.TryParse(input2, out id)) // ניסיון להמיר למספר שלם
+                int.TryParse(input1, out ID);
+
+
+                int id;
+                Console.WriteLine("Enter volunteer ID to update:");
+                string input2 = Console.ReadLine()!;
+
+                int.TryParse(input2, out id);
+
+                var Volunteer = s_bl.Volunteer.Read(id);
+                var volunteer = VolunteerDetailsFromUser(false, Volunteer.Id, Volunteer.role, Volunteer.TotalHandledCalls, Volunteer.TotalCanceledCalls, Volunteer.TotalExpiredCalls);
+                s_bl.Volunteer.Update(ID, volunteer);
+                Console.WriteLine("Volunteer is update successfully");
+            }
+            catch (BO.BlObjectNotFoundException ex)
             {
-                throw new BO.BlValidationException("Invalid ID entered");
+                Console.WriteLine(ex);
             }
 
-            var Volunteer = s_bl.Volunteer.Read(id);
-            var volunteer = VolunteerDetailsFromUser(false, Volunteer.Id, Volunteer.role, Volunteer.TotalHandledCalls, Volunteer.TotalCanceledCalls, Volunteer.TotalExpiredCalls);
-            s_bl.Volunteer.Update(ID, volunteer);
-            Console.WriteLine("Volunteer is update successfully");
+            catch (BO.BlUnauthorizedException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
         }
 
         private static void DeleteVolunteer()
         {
-            int id;
-            Console.WriteLine("Enter volunteer ID deletion.");
-            string input = Console.ReadLine()!; // קבלת קלט
-
-            if (!int.TryParse(input, out id)) // ניסיון להמיר למספר שלם
+            try
             {
-                throw new BO.BlValidationException("Invalid ID entered");
+                int id;
+                Console.WriteLine("Enter volunteer ID deletion.");
+                string input = Console.ReadLine()!;
+
+                int.TryParse(input, out id);
+
+                s_bl.Volunteer.Delete(id);
             }
-            s_bl.Volunteer.Delete(id);
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlCannotBeDeletedException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
 
@@ -292,7 +358,7 @@ namespace BL
         {
             int[] statusCounts = s_bl.Call.CallQuantities();
 
-            // קבלת שמות הסטטוסים
+          
             string[] statusNames = Enum.GetNames(typeof(CallStatus));
 
             Console.WriteLine("Call Quantities by Status:");
@@ -306,7 +372,7 @@ namespace BL
 
         private static void ReadAllCalls()
         {
-            // הצגת אפשרויות לסינון
+
             Console.WriteLine("Select a field to filter by:");
             foreach (var value in Enum.GetValues(typeof(CallInListField)))
             {
@@ -316,11 +382,10 @@ namespace BL
      ? (CallInListField?)(input1 - 1)
      : null;
 
-            // קבלת ערך לסינון
             Console.Write("Enter a value to filter by (or leave empty to skip): ");
             var filterValue = Console.ReadLine();
 
-            // הצגת אפשרויות למיון
+       
             Console.WriteLine("Select a field to sort by:");
             foreach (var value in Enum.GetValues(typeof(CallInListField)))
             {
@@ -329,54 +394,101 @@ namespace BL
             CallInListField? sortField = int.TryParse(Console.ReadLine(), out int input2)
              ? (CallInListField?)(input2 - 1)
              : null;
-            var callinlist=s_bl.Call.ReadAll(filterField, filterValue, sortField);  
-            PrintCallInList(callinlist);
+
+            try
+            {
+                var callinlist = s_bl.Call.ReadAll(filterField, filterValue, sortField);
+                PrintCallInList(callinlist);
+            }
+            catch (BO.BlNullPropertyException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
         }
 
         private static void ReadSpecificCall()
         {
-            int id; // כרזת על משתנה
-            Console.WriteLine("Enter call ID:"); // בקשה למזהה
-            string input = Console.ReadLine()!; // קבלת קלט
-
-            if (!int.TryParse(input, out id)) // ניסיון להמיר למספר שלם
+            try
             {
-                throw new BO.BlValidationException("Invalid ID entered");
-            }
+                int id;
+                Console.WriteLine("Enter call ID:");
+                string input = Console.ReadLine()!;
 
-            var BOcall = s_bl.Call.Read(id);
-            PrintCall(BOcall);
+                if (!int.TryParse(input, out id))
+                {
+                    throw new BO.BlValidationException("Invalid ID entered");
+                }
+
+                var BOcall = s_bl.Call.Read(id);
+                PrintCall(BOcall);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void UpdateCall()
         {
-            Console.Write("Enter ID: ");
-            int id = int.Parse(Console.ReadLine()!);
-            var call = s_bl.Call.Read(id);
-            if (call == null)
+            try
             {
-                throw new BO.BlObjectNotFoundException("Call not found");
+                Console.Write("Enter ID: ");
+                int id = int.Parse(Console.ReadLine()!);
+                var call = s_bl.Call.Read(id);
+                var callToupdate = CallInput(call.Id);
+                s_bl.Call.Update(callToupdate);
             }
-            var callToupdate = UserInput(call.Id);
-            s_bl.Call.Update(callToupdate);
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
         }
 
         private static void DeleteCall()
         {
-            Console.Write("Enter ID of call to delete ");
-            int id = int.Parse(Console.ReadLine()!);
-            s_bl.Call.Delete(id);
-            Console.Write("Deleted successfully");
+            try
+            {
+                Console.Write("Enter ID of call to delete ");
+                int id = int.Parse(Console.ReadLine()!);
+                s_bl.Call.Delete(id);
+                Console.Write("Deleted successfully");
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch(BO.BlCannotBeDeletedException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void AddCall()
         {
-            Console.WriteLine("Enter call details ");
-            int id;
-            Console.Write("Enter ID: ");
-            id = int.Parse(Console.ReadLine()!);
-            var call=UserInput(id);
-            s_bl.Call.Add(call);
+            try
+            {
+                Console.WriteLine("Enter call details: ");
+                var call = CallInput(0);
+                s_bl.Call.Add(call);
+            }
+            catch (BO.BlAlreadyExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
 
         }
 
@@ -406,38 +518,100 @@ namespace BL
             Console.Write("Your choice: ");
             int callTypeIndex = int.Parse(Console.ReadLine()!) - 1;
             BO.CallType? callTypeFilter = (BO.CallType)callTypes.GetValue(callTypeIndex)!;
-            var openCallList = s_bl.Call.OpenCallsByVolunteer(id, callTypeFilter, sortField);
-            printOpenCallInList(openCallList);
+
+            try
+            {
+                var openCallList = s_bl.Call.OpenCallsByVolunteer(id, callTypeFilter, sortField);
+                printOpenCallInList(openCallList);
+            }
+            catch(BO.BlObjectNotFoundException ex) 
+            {
+                Console.WriteLine(ex);
+            }   
         }
 
         private static void EndOfTreatmentUpdate()
         {
-            int Vid, Cid;
-            Console.Write("Enter Volunteer ID: ");
-            Vid = int.Parse(Console.ReadLine()!);
-            Console.Write("Enter call ID: ");
-            Cid = int.Parse(Console.ReadLine()!);
-            s_bl.Call.EndOftreatmentUpdate(Vid, Cid);
+            try
+            {
+                int Vid, Aid;
+                Console.Write("Enter Volunteer ID: ");
+                Vid = int.Parse(Console.ReadLine()!);
+                Console.Write("Enter Assignment ID: ");
+                Aid = int.Parse(Console.ReadLine()!);
+                s_bl.Call.EndOftreatmentUpdate(Vid, Aid);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlUnauthorizedException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
         }
 
         private static void CancelTreatmentUpdate()
         {
-            int Vid, Cid;
-            Console.Write("Enter Volunteer ID: ");
-            Vid = int.Parse(Console.ReadLine()!);
-            Console.Write("Enter call ID: ");
-            Cid = int.Parse(Console.ReadLine()!);
-            s_bl.Call.CanceltreatmentUpdate(Vid, Cid);
+            try
+            {
+                int Vid, Cid;
+                Console.Write("Enter Volunteer ID: ");
+                Vid = int.Parse(Console.ReadLine()!);
+                Console.Write("Enter call ID: ");
+                Cid = int.Parse(Console.ReadLine()!);
+                s_bl.Call.CanceltreatmentUpdate(Vid, Cid);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlUnauthorizedException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void ChooseCallForTreatment()
         {
-            int Vid,Cid;
-            Console.Write("Enter Volunteer ID: ");
-            Vid = int.Parse(Console.ReadLine()!);
-            Console.Write("Enter call ID: ");
-            Cid = int.Parse(Console.ReadLine()!);
-            s_bl.Call.ChooseCallForTreatment(Vid,Cid);
+            try
+            {
+                int Vid, Cid;
+                Console.Write("Enter Volunteer ID: ");
+                Vid = int.Parse(Console.ReadLine()!);
+                Console.Write("Enter call ID: ");
+                Cid = int.Parse(Console.ReadLine()!);
+                s_bl.Call.ChooseCallForTreatment(Vid, Cid);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlAlreadyExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private static void GetClosedCallsByVolunteer()
@@ -466,8 +640,20 @@ namespace BL
             Console.Write("Your choice: ");
             int callTypeIndex = int.Parse(Console.ReadLine()!) - 1;
             BO.CallType? callTypeFilter = (BO.CallType)callTypes.GetValue(callTypeIndex)!;
-            var closedCallInList = s_bl.Call.ClosedCallsByVolunteer(id, callTypeFilter, sortField);
-            printClosedCallInList(closedCallInList);
+            try
+            {
+                var closedCallInList = s_bl.Call.ClosedCallsByVolunteer(id, callTypeFilter, sortField);
+                printClosedCallInList(closedCallInList);
+            }
+            catch (BO.BlObjectNotFoundException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                Console.WriteLine(ex);
+            }
+
         }
 
 
@@ -585,13 +771,6 @@ namespace BL
 
 
 
-
-
-
-
-
-
-
         private static void PrintVolunteer(BO.Volunteer volunteer)
         {
             Console.WriteLine($"ID: {volunteer.Id}");
@@ -619,7 +798,7 @@ namespace BL
         private static BO.Volunteer VolunteerDetailsFromUser(bool flag, int ID, BO.Role R, int t1, int t2, int t3)
         {
             int id = 0;
-            BO.Role role;
+            BO.Role role = BO.Role.volunteer;
             int totalHandledCalls = 0;
             int totalCanceledCalls = 0;
             int totalExpiredCalls = 0;
@@ -630,12 +809,12 @@ namespace BL
 
                 Console.WriteLine("Choose Role: 1. Volunteer 2. Manager");
 
-                // קבלת קלט מהמשתמש והמרה לערך ב- Enum
+              
                 role = Console.ReadLine() switch
                 {
                     "1" => BO.Role.volunteer,
                     "2" => BO.Role.manager,
-                    _ => BO.Role.volunteer // ברירת מחדל במקרה של קלט לא תקין
+                    _ => BO.Role.volunteer 
                 };
             }
             Console.Write("Enter Name: ");
@@ -659,28 +838,15 @@ namespace BL
             Console.Write("Is Active (true/false): ");
             bool active = bool.Parse(Console.ReadLine()!);
 
-            Console.Write("Enter Distance Type: ");
-            BO.DistanceType distanceType = Enum.Parse<BO.DistanceType>(Console.ReadLine()!);
-
-            if (flag)
+            Console.WriteLine("Enter the distance type (0 - AirDistance, 1 - WalkingDistance, 2 - DrivingDistance):");
+            BO.DistanceType distanceType = Console.ReadLine() switch
             {
-                Console.Write("Enter Total Handled Calls: ");
-                totalHandledCalls = int.Parse(Console.ReadLine()!);
+                "O" => BO.DistanceType.AirDistance,
+                "1" => BO.DistanceType.WalkingDistance,
+                "2" => BO.DistanceType.DrivingDistance,
+                _ => BO.DistanceType.AirDistance 
+            };
 
-                Console.Write("Enter Total Canceled Calls: ");
-                totalCanceledCalls = int.Parse(Console.ReadLine()!);
-
-                Console.Write("Enter Total Expired Calls: ");
-                totalExpiredCalls = int.Parse(Console.ReadLine()!);
-            }
-            else
-            {
-                id = ID;
-                role = R;
-                totalHandledCalls = t1;
-                totalCanceledCalls = t2;
-                totalExpiredCalls = t3;
-            }
 
             return new BO.Volunteer
             {
@@ -701,13 +867,7 @@ namespace BL
          }
         private static void PrintvolunteerInList(IEnumerable<BO.VolunteerInList> volunteerList)
         {
-            if (volunteerList == null)
-            {
-                Console.WriteLine("The volunteer list is null or empty.");
-                return;
-            }
-            else
-            {
+            
                 foreach (var volunteer in volunteerList)
                 {
                     Console.WriteLine("Volunteer Details:");
@@ -720,7 +880,7 @@ namespace BL
                     Console.WriteLine($"- Handled Call Id: {(volunteer.HandledCallId.HasValue ? volunteer.HandledCallId.Value.ToString() : "None")}");
                     Console.WriteLine();
                 }
-            }
+            
         }
 
 
@@ -748,12 +908,7 @@ namespace BL
         }
         private static void printOpenCallInList(IEnumerable<OpenCallInList> openCallInList)
         {
-            if (openCallInList == null)
-            {
-                ///אולי חריגה
-            }
-            else
-            {
+           
                 foreach (var call in openCallInList)
                 {
                     Console.WriteLine($"- ID: {call.Id}");
@@ -763,18 +918,14 @@ namespace BL
                     Console.WriteLine($"- Description: {call.description}");
                     Console.WriteLine($"- Max Ending Time: {call.maxEndingTime.HasValue}");
                     Console.WriteLine($"- Call Distance From Volunteer: {call.CallDistanceFromVolunteer}");
-                    Console.WriteLine(new string('-', 40)); // קו מפריד בין אובייקטים
+                    Console.WriteLine(new string('-', 40)); 
                 }
-            }
+            
         }
         private static void printClosedCallInList(IEnumerable<ClosedCallInList> closedCallInList)
         {
-            if (closedCallInList == null)
-            {
-              ///אולי חריגה
-            }
-            else
-            {
+           
+            
                 foreach (var call in closedCallInList)
                 {
                     Console.WriteLine($"- ID: {call.Id}");
@@ -784,11 +935,11 @@ namespace BL
                     Console.WriteLine($"- Entry Time: {call.EntryTime}");
                     Console.WriteLine($"- End Time: {call.EndTime.HasValue}");
                     Console.WriteLine($"- End Time Type: {(call.EndTimeType.HasValue ? call.EndTimeType.ToString() : "N/A")}");
-                    Console.WriteLine(new string('-', 40)); // קו מפריד בין אובייקטים
+                    Console.WriteLine(new string('-', 40)); 
                 }
-            }
+            
         }
-        public static BO.Call UserInput(int id)
+        public static BO.Call CallInput(int id)
         {
             Console.Write("Enter Call Type: ");
             var callType = (BO.CallType)Enum.Parse(typeof(BO.CallType), Console.ReadLine()!);
@@ -802,11 +953,10 @@ namespace BL
             Console.Write("Enter Max Ending Time (yyyy-MM-dd HH:mm:ss): ");
             var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
 
-            Console.Write("Enter Call Status: ");
-            var callStatus = (CallStatus)Enum.Parse(typeof(CallStatus), Console.ReadLine()!);
 
-            Console.Write("Enter Call Assign List (comma-separated): ");
-            var assignListInput = Console.ReadLine();
+
+
+
 
             var call = new BO.Call
             {
@@ -815,11 +965,10 @@ namespace BL
                 Description = description,
                 Address = address,
                 MaxEndingTime = maxEndingTime,
-                callStatus = callStatus,
-                CallAssignList = assignListInput!.Split(',')
-                    .Select(assign => new BO.CallAssignInList { /* Fill properties if needed */ })
-                    .ToList()
+                OpeningTime = s_bl.Admin.getClockTime()
+
             };
+
             return call;
         }
         public static void PrintCallInList(IEnumerable<CallInList> calls)
