@@ -5,10 +5,12 @@ using DO;
 using Helpers;
 using Microsoft.VisualBasic;
 using System;
+using System.Net;
 using System.Net.Http.Headers;
+
 namespace BL
 {
-    internal class Program
+     internal class Program
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         static void Main(string[] args)
@@ -117,7 +119,7 @@ namespace BL
         {
             try
             {
-                var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer, 0, 0, 0);
+                var volunteer = VolunteerDetailsFromUser(true, 0, BO.Role.volunteer);
                 s_bl.Volunteer.Add(volunteer);
                 Console.WriteLine("Volunteer added successfully");
             }
@@ -152,7 +154,6 @@ namespace BL
             }
         }
 
-        }
 
         private static void ReadAllVolunteers()
         {
@@ -161,34 +162,38 @@ namespace BL
                 Console.Write("Filter by active volunteers? (true/false): ");
                 bool? filterByActive = bool.Parse(Console.ReadLine()!);
 
-         
-            Console.WriteLine("Choose a field to sort the list by:");
-            foreach (var field in Enum.GetValues(typeof(VolunteerInListFields)))
-            {
-                Console.WriteLine($"- {field} ({(int)field})");
-            }
-            try
-            {
-                
-                Console.Write("Enter the number corresponding to the field: ");
-                VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
-                var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
-                PrintvolunteerInList(volunteerList);
-            }
-            catch (BO.BlNullPropertyException ex)
-            {
-                Console.WriteLine(ex);
-            }
-            catch(BO.BlDoesNotExistsException ex)
-            {
-                Console.WriteLine(ex);
-            }
-            catch (BO.BlObjectNotFoundException ex)
-            {
-                Console.WriteLine(ex);
-            }
+                Console.WriteLine("Choose a field to sort the list by:");
+                foreach (var field in Enum.GetValues(typeof(VolunteerInListFields)))
+                {
+                    Console.WriteLine($"- {field} ({(int)field})");
+                }
 
+                try
+                {
+                    Console.Write("Enter the number corresponding to the field: ");
+                    VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
+                    var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
+                    PrintvolunteerInList(volunteerList);
+                }
+                catch (BO.BlNullPropertyException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                catch (BO.BlDoesNotExistsException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                catch (BO.BlObjectNotFoundException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+            }
         }
+
 
         private static void ReadSpecificVolunteer()
         {
@@ -230,7 +235,7 @@ namespace BL
                 int.TryParse(input2, out id);
 
                 var Volunteer = s_bl.Volunteer.Read(id);
-                var volunteer = VolunteerDetailsFromUser(false, Volunteer.Id, Volunteer.role, Volunteer.TotalHandledCalls, Volunteer.TotalCanceledCalls, Volunteer.TotalExpiredCalls);
+                var volunteer = VolunteerDetailsFromUser(false, Volunteer.Id, Volunteer.role);
                 s_bl.Volunteer.Update(ID, volunteer);
                 Console.WriteLine("Volunteer is update successfully");
             }
@@ -276,7 +281,6 @@ namespace BL
             }
         }
 
-        }
 
 
 
@@ -665,8 +669,6 @@ namespace BL
         }
 
 
-
-
         private static void ManageAdmin()
         {
             bool exit = false;
@@ -954,12 +956,6 @@ namespace BL
 
             Console.Write("Enter Max Ending Time (yyyy-MM-dd HH:mm:ss): ");
             var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
-
-
-
-
-
-
             var call = new BO.Call
             {    Id=id,
                 callType = callType,
@@ -1001,4 +997,4 @@ namespace BL
             Console.WriteLine($"Call Status: {callInProgress.callStatus}");
         }
     }    
-} 
+}
