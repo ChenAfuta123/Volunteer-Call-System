@@ -955,7 +955,12 @@ namespace BL
             var address = Console.ReadLine()!;
 
             Console.Write("Enter Max Ending Time (yyyy-MM-dd HH:mm:ss): ");
-            var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
+            string input = Console.ReadLine()!.Trim();
+            if (!DateTime.TryParse(input, out DateTime parsedDate))
+            {
+                Console.WriteLine("kjhgf");
+            }
+            //var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
 
 
 
@@ -968,7 +973,7 @@ namespace BL
                 callType = callType,
                 Description = description,
                 Address = address,
-                MaxEndingTime = maxEndingTime,
+                MaxEndingTime = s_bl.Admin.getClockTime(),
                 OpeningTime = s_bl.Admin.getClockTime()
 
             };

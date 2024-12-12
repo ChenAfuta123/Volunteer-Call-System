@@ -119,8 +119,8 @@ internal static class VolunteerManager
             if (!IsValidEmail(volunteer.Email))
                 throw new Exception("Invalid Email.");
 
-            //if (!IsValidPassword(volunteer.Password))
-            //    throw new Exception("Invalid Password.");
+            if (!IsValidPassword(volunteer.Password))
+                throw new Exception("Invalid Password.");
 
             if (!Enum.IsDefined(typeof(BO.DistanceType), volunteer.distanceType))
                 throw new Exception("Invalid distance type.");
@@ -132,8 +132,8 @@ internal static class VolunteerManager
             if (volunteer.MaxDistance.HasValue && volunteer.MaxDistance.Value <= 0)
                 throw new Exception("Max distance must be a positive value.");
 
-            //if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
-            //    throw new Exception("Invalid Address.");
+            if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
+                throw new Exception("Invalid Address.");
 
             if (volunteer.TotalHandledCalls < 0 || volunteer.TotalCanceledCalls < 0 || volunteer.TotalExpiredCalls < 0)
                 throw new Exception("Total handled, canceled, and expired calls must be non-negative.");
@@ -168,7 +168,7 @@ internal static class VolunteerManager
       }
       private static bool IsValidPassword(string? password)
       {
-            if (string.IsNullOrWhiteSpace(password))
+           if (string.IsNullOrWhiteSpace(password))
                 return false;
 
 

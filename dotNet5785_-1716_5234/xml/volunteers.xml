@@ -126,4 +126,18 @@
     <MaxDistance>31</MaxDistance>
     <Active>true</Active>
   </Volunteer>
+  <Volunteer>
+    <Id>328241716</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>chen</Name>
+    <PhoneNumber>0539217152</PhoneNumber>
+    <Email>cgfds@gmail.com</Email>
+    <Password>$2a$11$UIQ9eOSE.9LSEEIM3giNMur1ysyAmmqorvJpwfznrrRBrc8C3sXXi</Password>
+    <Address>kjhgfd</Address>
+    <Latitude />
+    <Longitude />
+    <MaxDistance>45</MaxDistance>
+    <Active>true</Active>
+  </Volunteer>
 </ArrayOfVolunteer>

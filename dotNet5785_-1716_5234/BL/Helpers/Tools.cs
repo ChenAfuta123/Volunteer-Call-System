@@ -95,45 +95,36 @@ internal static class Tools
 
             using (HttpClient httpClient = new HttpClient())
             {
-                try
+                HttpResponseMessage response = httpClient.GetAsync(url).Result; // ניתן להשתמש ב-`await` במקום
+                if (!response.IsSuccessStatusCode)
+                    return false;
+
+                string jsonResponse = response.Content.ReadAsStringAsync().Result;
+
+                // פעולה זו עלולה לזרוק שגיאה אם ה-JSON לא תקין
+                var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
+
+                if (results == null || results.Length == 0)
+                    return false;
+
+                if (latitude.HasValue && longitude.HasValue)
                 {
-                    HttpResponseMessage response = httpClient.GetAsync(url).Result; // ניתן להשתמש ב-`await` במקום
-                    if (!response.IsSuccessStatusCode)
-                        return false;
-
-
-                    string jsonResponse = response.Content.ReadAsStringAsync().Result;
-    
-                    var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
-
-
-                    if (results == null || results.Length == 0)
-                        return false;
-
-                    if (latitude.HasValue && longitude.HasValue)
+                    foreach (var result in results)
                     {
-                        foreach (var result in results)
+                        if (double.TryParse(result.Lat, out double resultLat) && double.TryParse(result.Lon, out double resultLon))
                         {
-                            if (double.TryParse(result.Lat, out double resultLat) && double.TryParse(result.Lon, out double resultLon))
-                            {
-                                if (Math.Abs(resultLat - latitude.Value) < 0.01 && Math.Abs(resultLon - longitude.Value) < 0.01)
-                                    return true;
-                            }
+                            if (Math.Abs(resultLat - latitude.Value) < 0.01 && Math.Abs(resultLon - longitude.Value) < 0.01)
+                                return true;
                         }
-
-                        return false;
                     }
 
-                    return true;
-                }
-
-                catch
-                {
-                    // טיפול בשגיאה (למשל, רישום שגיאה או החזרת false)
                     return false;
                 }
+
+                return true;
             }
         }
+
 
         public static double CalculateDistance(string? address1, string? address2, DO.DistanceType distanceType)
         {
