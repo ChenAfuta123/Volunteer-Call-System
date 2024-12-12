@@ -59,7 +59,7 @@ internal class VolunteerImplementation : IVolunteer
 
             if (VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null)
             {
-                throw new BO.BlValidationException("The volunteer cannot be deleted as they are handling or have handled calls.");
+                throw new BO.BlCannotBeDeletedException("The volunteer cannot be deleted as they are handling or have handled calls.");
             }
 
             _dal.Volunteer.Delete(id);

@@ -25,10 +25,10 @@ internal static class VolunteerManager
       .Count(assignment => assignment.EndTimeType == endTimeType&& assignment.VolunteerId == Vid);
 
     }
-    public static BO.Volunteer DOtoBO(DO.Volunteer? volunteer)
+    public static BO.Volunteer DOtoBO(DO.Volunteer ?volunteer)
     {
         BO.CallInProgress ?volunteerHandledCall=null;
-        if (volunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
+       if (volunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
         try
         {
 
@@ -53,9 +53,9 @@ internal static class VolunteerManager
                 callStatus = CallManager.Status(call.Id) 
             };
         }
-        catch (DO.DalAlreadyExistsException ex)
+        catch (DO.DalDoesNotExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Error while reading a volunteer:", ex);
+            throw new BO.BlDoesNotExistsException($"Error while reading a volunteer:", ex);
         }
         catch (Exception ex)
         {
@@ -112,21 +112,21 @@ internal static class VolunteerManager
             if (!IsValidEmail(volunteer.Email))
                 throw new Exception("Invalid Email.");
 
-            if (!IsValidPassword(volunteer.Password))
-                throw new Exception("Invalid Password.");
+            //if (!IsValidPassword(volunteer.Password))
+            //    throw new Exception("Invalid Password.");
 
             if (!Enum.IsDefined(typeof(BO.DistanceType), volunteer.distanceType))
                 throw new Exception("Invalid distance type.");
 
-            if (!Enum.IsDefined(typeof(BO.Role), volunteer.distanceType))
+            if (!Enum.IsDefined(typeof(BO.Role), volunteer.role))
                 throw new Exception("Invalid role.");
 
             Tools.NullVal(volunteer.MaxDistance);
             if (volunteer.MaxDistance.HasValue && volunteer.MaxDistance.Value <= 0)
                 throw new Exception("Max distance must be a positive value.");
 
-            if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
-                throw new Exception("Invalid Address.");
+            //if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
+            //    throw new Exception("Invalid Address.");
 
             if (volunteer.TotalHandledCalls < 0 || volunteer.TotalCanceledCalls < 0 || volunteer.TotalExpiredCalls < 0)
                 throw new Exception("Total handled, canceled, and expired calls must be non-negative.");
