@@ -12,6 +12,11 @@ internal class VolunteerImplementation : IVolunteer
     {
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
         VolunteerManager.ValidateVolunteer(boVolunteer);
+        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boVolunteer.Address);
+        double longtitude = coordinates.Latitude ?? 0.0;
+        double latitude = coordinates.Latitude ?? 0.0;
+        boVolunteer.Latitude = latitude;
+        boVolunteer.Longitude = longtitude;
         DO.Volunteer doVolunteer = new DO.Volunteer
         {
             Id = boVolunteer.Id,

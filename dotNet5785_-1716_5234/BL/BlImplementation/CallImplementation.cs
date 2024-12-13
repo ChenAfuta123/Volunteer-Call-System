@@ -15,19 +15,19 @@ internal class CallImplementation : ICall
     public void Add(BO.Call boCall)
     {
         CallManager.ValidateCall(boCall);
-        //var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
-        //double longtitude = coordinates.Latitude ?? 0.0;
-        //double latitude = coordinates.Latitude ?? 0.0;
-        //boCall.Latitude = latitude;
-        //boCall.Longitude = longtitude;
+        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
+        double longtitude = coordinates.Latitude ?? 0.0;
+        double latitude = coordinates.Latitude ?? 0.0;
+        boCall.Latitude = latitude;
+        boCall.Longitude = longtitude;
 
         DO.Call doCall = new DO.Call
         {
             Id = boCall.Id,
             callType = (DO.CallType)boCall.callType,
             Address = boCall.Address ?? " ",
-            Latitude = /*boCall.Latitude*/0.0,
-            Longitude = /*boCall.Longitude*/0.0,
+            Latitude = boCall.Latitude,
+            Longitude = boCall.Longitude,
             OpeningTime = boCall.OpeningTime,
             Description = boCall.Description,
             maxEndingTime = boCall.MaxEndingTime
