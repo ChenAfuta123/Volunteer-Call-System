@@ -179,7 +179,7 @@ internal static class VolunteerManager
         if (!password.Any(c => !char.IsLetterOrDigit(c)))
             return false;
 
-            return true;
+      return true;
       }
 
  }      
