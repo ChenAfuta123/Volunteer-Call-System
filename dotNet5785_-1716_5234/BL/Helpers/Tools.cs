@@ -90,6 +90,7 @@ internal static class Tools
 
             const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
+            Console.WriteLine();
 
             string url = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
 
@@ -101,7 +102,7 @@ internal static class Tools
 
                 string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
-                // פעולה זו עלולה לזרוק שגיאה אם ה-JSON לא תקין
+               
                 var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
 
                 if (results == null || results.Length == 0)

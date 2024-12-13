@@ -49,7 +49,7 @@ internal static class VolunteerManager
                         Description = call.Description,
                         maxEndingTime = call.maxEndingTime,
                         EntryTime = Assignment.EntryTime,
-                        CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer.Address, call.Address, volunteer.distanceType),
+                        CallDistanceFromVolunteer =0.0 /*Tools.DistanceCalculator.CalculateDistance(volunteer.Address, call.Address, volunteer.distanceType)*/,
                         callStatus = CallManager.Status(call.Id)
                     };
                 }
@@ -132,8 +132,8 @@ internal static class VolunteerManager
             if (volunteer.MaxDistance.HasValue && volunteer.MaxDistance.Value <= 0)
                 throw new Exception("Max distance must be a positive value.");
 
-            if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
-                throw new Exception("Invalid Address.");
+            //if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
+            //    throw new Exception("Invalid Address.");
 
             if (volunteer.TotalHandledCalls < 0 || volunteer.TotalCanceledCalls < 0 || volunteer.TotalExpiredCalls < 0)
                 throw new Exception("Total handled, canceled, and expired calls must be non-negative.");
@@ -172,7 +172,7 @@ internal static class VolunteerManager
                 return false;
 
 
-        if (password.Length < 6 || password.Length > 30)
+        if (password.Length < 6 || password.Length > 100)
             return false;
 
 
