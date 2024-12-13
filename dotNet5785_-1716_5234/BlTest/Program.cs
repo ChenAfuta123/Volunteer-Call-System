@@ -803,9 +803,7 @@ namespace BL
         {
             int id = 0;
             BO.Role role = BO.Role.volunteer;
-            int totalHandledCalls = 0;
-            int totalCanceledCalls = 0;
-            int totalExpiredCalls = 0;
+        
             if (flag)
             {
                 Console.Write("Enter ID: ");
@@ -953,26 +951,32 @@ namespace BL
 
             Console.Write("Enter Address: ");
             var address = Console.ReadLine()!;
-
             Console.Write("Enter Max Ending Time (yyyy-MM-dd HH:mm:ss): ");
             string input = Console.ReadLine()!.Trim();
-            if (!DateTime.TryParse(input, out DateTime parsedDate))
+
+            // Initialize the variable
+            DateTime maxEndingTime = default;
+
+            // Validate and parse the input
+            if (string.IsNullOrWhiteSpace(input) || !DateTime.TryParse(input, out maxEndingTime))
             {
-                Console.WriteLine("kjhgf");
+                Console.WriteLine("Invalid date format. Please enter the date in the format 'yyyy-MM-dd HH:mm:ss'.");
             }
-            //var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
-
-
-
+            else
+            {
+                // Successfully parsed date
+                Console.WriteLine($"You entered a valid date: {maxEndingTime}");
+            }
 
 
 
             var call = new BO.Call
-            {    Id=id,
+            {
+                Id = id,
                 callType = callType,
                 Description = description,
                 Address = address,
-                MaxEndingTime = s_bl.Admin.getClockTime(),
+                MaxEndingTime = maxEndingTime,
                 OpeningTime = s_bl.Admin.getClockTime()
 
             };
