@@ -956,13 +956,16 @@ namespace BL
 
             Console.Write("Enter Max Ending Time (yyyy-MM-dd HH:mm:ss): ");
             string input = Console.ReadLine()!.Trim();
-            if (!DateTime.TryParse(input, out DateTime parsedDate))
+
+            // Initialize the variable
+            DateTime maxEndingTime = default;
+
+            // Validate and parse the input
+            if (string.IsNullOrWhiteSpace(input) || !DateTime.TryParse(input, out maxEndingTime))
             {
-                Console.WriteLine("kjhgf");
+                Console.WriteLine("Invalid date format. Please enter the date in the format 'yyyy-MM-dd HH:mm:ss'.");
             }
-            //var maxEndingTime = DateTime.Parse(Console.ReadLine()!);
-
-
+         
 
 
 
@@ -973,8 +976,8 @@ namespace BL
                 callType = callType,
                 Description = description,
                 Address = address,
-                MaxEndingTime = s_bl.Admin.getClockTime(),
-                OpeningTime = s_bl.Admin.getClockTime()
+                OpeningTime = s_bl.Admin.getClockTime(),
+                MaxEndingTime = maxEndingTime
 
             };
 
