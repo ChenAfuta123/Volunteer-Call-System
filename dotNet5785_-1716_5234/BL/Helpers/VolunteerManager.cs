@@ -25,7 +25,7 @@ internal static class VolunteerManager
       .Count(assignment => assignment.EndTimeType == endTimeType&& assignment.VolunteerId == Vid);
 
     }
-    public static BO.Volunteer DOtoBO(DO.Volunteer? volunteer)
+    public static BO.Volunteer DOtoBO(DO.Volunteer ?volunteer)
     {
         try
         {
@@ -179,7 +179,7 @@ internal static class VolunteerManager
         if (!password.Any(c => !char.IsLetterOrDigit(c)))
             return false;
 
-            return true;
+      return true;
       }
 
  }      

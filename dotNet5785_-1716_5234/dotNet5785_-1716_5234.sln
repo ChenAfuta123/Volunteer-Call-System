@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stage0", "Stage0\Stage0.csproj", "{3039811F-AA29-418E-B201-2168374C60BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC7A4545-D40C-4105-98EF-69F6C94EE38C} = {FC7A4545-D40C-4105-98EF-69F6C94EE38C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B61313F2-DEB0-480B-9758-C55D81398E96}"
 	ProjectSection(SolutionItems) = preProject
@@ -38,7 +41,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3039811F-AA29-418E-B201-2168374C60BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3039811F-AA29-418E-B201-2168374C60BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3039811F-AA29-418E-B201-2168374C60BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3039811F-AA29-418E-B201-2168374C60BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7471F8D6-7DE3-4431-8E55-66D47C0DE937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

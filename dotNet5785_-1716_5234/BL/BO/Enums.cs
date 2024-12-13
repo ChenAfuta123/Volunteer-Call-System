@@ -1,13 +1,13 @@
 ﻿namespace BO;
-/// <summary>
-/// Enum representing the role of the volunteer within the system.
-/// </summary>
+
+/// <summary>Enum representing the role of the volunteer within the system.</summary>
 public enum Role
 {
     volunteer,
     manager
 }
 
+/// <summary>Enum representing the type of calls in the system.</summary>
 public enum CallType
 {
     /// <summary>Providing food, drinks, clothing, and essential supplies to evacuees.</summary>
@@ -24,18 +24,23 @@ public enum CallType
 
     /// <summary>Providing legal advice and guidance on accessing government aid and support.</summary>
     LegalAndAdministrativeSupport,
-    /// <summary>call does not exist in volunteer's treatment.</summary>
+
+    /// <summary>Call does not exist in volunteer's treatment.</summary>
     None
 }
+
+/// <summary>Enum representing the status of a call.</summary>
 public enum CallStatus
 {
-    Open,           
-    InProgress,     
-    Closed,        
-    Expired,      
-    OpenAtRisk,    
-    InProgressAtRisk 
+    Open,
+    InProgress,
+    Closed,
+    Expired,
+    OpenAtRisk,
+    InProgressAtRisk
 }
+
+/// <summary>Enum representing units of time for clock operations.</summary>
 public enum TimeUnit
 {
     MINUTE,
@@ -44,6 +49,8 @@ public enum TimeUnit
     MONTH,
     YEAR
 }
+
+/// <summary>Enum representing distance measurement types.</summary>
 public enum DistanceType
 {
     AirDistance,
@@ -51,6 +58,7 @@ public enum DistanceType
     DrivingDistance
 }
 
+/// <summary>Fields used for sorting or filtering volunteers in a list.</summary>
 public enum VolunteerInListFields
 {
     Name,
@@ -59,37 +67,43 @@ public enum VolunteerInListFields
     TotalExpiredCalls,
     TotalCanceledCalls
 }
+
+/// <summary>Types of end times for calls.</summary>
 public enum EndTimeType
 {
-  
     Treated,
     SelfCancel,
     ManagerCancel,
     Expired
 }
-  public enum CallInListField
+
+/// <summary>Fields used for sorting or filtering calls in a list.</summary>
+public enum CallInListField
 {
-    Id,              
-    CallId,          
-    CallType,       
-    OpeningTime,     
+    Id,
+    CallId,
+    CallType,
+    OpeningTime,
     RemainingCallTime,
     LastVolunteerName,
     TotalHandlingTime,
-    CallStatus,       
-    TotalAllocations  
+    CallStatus,
+    TotalAllocations
 }
+
+/// <summary>Fields used for open call listings.</summary>
 public enum OpenCallInListField
 {
-  Id ,
- callType ,
- description,
- Address ,
- OpeningTime ,
- maxEndingTime ,
- CallDistanceFromVolunteer
-
+    Id,
+    callType,
+    description,
+    Address,
+    OpeningTime,
+    maxEndingTime,
+    CallDistanceFromVolunteer
 }
+
+/// <summary>Fields used for closed call listings.</summary>
 public enum ClosedCallInListField
 {
     Id,
@@ -100,5 +114,3 @@ public enum ClosedCallInListField
     EndTime,
     EndTimeType
 }
-
-
