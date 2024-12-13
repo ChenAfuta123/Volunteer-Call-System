@@ -962,11 +962,7 @@ namespace BL
             {
                 Console.WriteLine("Invalid date format. Please enter the date in the format 'yyyy-MM-dd HH:mm:ss'.");
             }
-            else
-            {
-                // Successfully parsed date
-                Console.WriteLine($"You entered a valid date: {maxEndingTime}");
-            }
+     
 
 
 
