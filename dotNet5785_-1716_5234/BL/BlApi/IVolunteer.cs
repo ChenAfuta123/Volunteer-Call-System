@@ -3,7 +3,7 @@
 namespace BlApi;
 
 /// <summary>Interface for managing volunteer operations.</summary>
-public interface IVolunteer
+public interface IVolunteer: IObservable
 {
     /// <summary>Add a new volunteer.</summary>
     public void Add(BO.Volunteer volunteer);

@@ -18,6 +18,7 @@ namespace Helpers;
 internal static class VolunteerManager
 {
     private static IDal s_dal = Factory.Get;
+    internal static ObserverManager Observers = new();
     public static int TotalEndTimeType(int Vid,DO.EndTimeType endTimeType)
     {
 
