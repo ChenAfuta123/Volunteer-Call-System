@@ -5,8 +5,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<BaseOutputPath>$(SolutionDir)\bin\</BaseOutputPath>
-		<OutputPath>$(SolutionDir)\bin\</OutputPath>
+		<BaseOutputPath>$(SolutionDir)bin\</BaseOutputPath>
+		<OutputPath>$(SolutionDir)bin\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<UseCommonOutputDirectory>true</UseCommonOutputDirectory>
@@ -14,16 +14,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+
 		<PackageReference Include="System.Text.Json" Version="9.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="$(NuGetPackageRoot)system.text.json\9.0.0\lib\net8.0\System.Text.Json.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+	
+		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		
 		<ProjectReference Include="..\DalFacade\DalFacade.csproj" />
 		<ProjectReference Include="..\DalList\DalList.csproj" />
 		<ProjectReference Include="..\DalTest\DalTest.csproj" />

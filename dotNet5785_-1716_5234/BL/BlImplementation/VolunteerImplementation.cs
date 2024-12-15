@@ -11,12 +11,12 @@ internal class VolunteerImplementation : IVolunteer
     public void Add(BO.Volunteer? boVolunteer)
     {
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
-     
-        //var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boVolunteer.Address);
-        //double longtitude = coordinates.Latitude ?? 0.0;
-        //double latitude = coordinates.Latitude ?? 0.0;
-        //boVolunteer.Latitude = latitude;
-        //boVolunteer.Longitude = longtitude;
+
+        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boVolunteer.Address);
+        double longtitude = coordinates.Latitude ?? 0.0;
+        double latitude = coordinates.Latitude ?? 0.0;
+        boVolunteer.Latitude = latitude;
+        boVolunteer.Longitude = longtitude;
         VolunteerManager.ValidateVolunteer(boVolunteer);
         DO.Volunteer doVolunteer = new DO.Volunteer
         {
@@ -26,10 +26,10 @@ internal class VolunteerImplementation : IVolunteer
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
-            Password =/* boVolunteer.Password */BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
+            Password =BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
             Address = boVolunteer.Address,
-            Latitude = /*boVolunteer.Latitude*/ 0.0,
-            Longitude = /*boVolunteer.Longitude*/0.0,
+            Latitude = boVolunteer.Latitude ,
+            Longitude = boVolunteer.Longitude,
             MaxDistance = boVolunteer.MaxDistance,
             Active = boVolunteer.Active
         };

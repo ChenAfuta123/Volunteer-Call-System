@@ -96,13 +96,13 @@ internal static class Tools
 
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpResponseMessage response = httpClient.GetAsync(url).Result; // ניתן להשתמש ב-`await` במקום
+                HttpResponseMessage response = httpClient.GetAsync(url).Result; // ניתן להשתמש ב-await במקום
                 if (!response.IsSuccessStatusCode)
                     return false;
 
                 string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
-               
+
                 var results = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(jsonResponse);
 
                 if (results == null || results.Length == 0)
@@ -156,7 +156,7 @@ internal static class Tools
         private static double CalculateAirDistance(string address1, string address2)
         {
             (double? latitude1, double? longitude1) = GetAddressCoordinates(address1);
-            (double ? latitude2, double ? longitude2) = GetAddressCoordinates(address2);
+            (double? latitude2, double? longitude2) = GetAddressCoordinates(address2);
             double lat1 = latitude1 ?? throw new BO.BlNullPropertyException("Latitude1 is null.");
             double lon1 = longitude1 ?? throw new BO.BlNullPropertyException("Longitude1 is null.");
             double lat2 = latitude2 ?? throw new BO.BlNullPropertyException("Latitude2 is null.");
