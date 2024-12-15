@@ -26,7 +26,7 @@ internal class VolunteerImplementation : IVolunteer
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
-            Password = boVolunteer.Password /*BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password)*/,
+            Password =/* boVolunteer.Password */BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
             Address = boVolunteer.Address,
             Latitude = /*boVolunteer.Latitude*/ 0.0,
             Longitude = /*boVolunteer.Longitude*/0.0,
