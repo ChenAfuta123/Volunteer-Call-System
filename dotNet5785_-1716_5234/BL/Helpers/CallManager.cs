@@ -12,6 +12,7 @@ namespace Helpers;
 internal static class CallManager
 {
     private static IDal s_dal = Factory.Get;
+    internal static ObserverManager Observers = new();
     public static IEnumerable<BO.CallInList> FilterCalls(IEnumerable<BO.CallInList> calls, BO.CallInListField? filterField, object? filterValue)
     {
         if (filterField == null || filterValue == null)

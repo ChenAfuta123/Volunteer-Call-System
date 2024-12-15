@@ -7,11 +7,12 @@ namespace Helpers;
 /// <summary>
 /// Internal BL manager for all Application's Clock logic policies
 /// </summary>
-internal static class ClockManager //stage 4
+internal static class ClockManager 
 {
     #region Stage 4
-    private static readonly DalApi.IDal _dal = DalApi.Factory.Get; //stage 4
-  
+    private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    internal static ObserverManager Observers = new();
+
     /// <summary>
     /// Property for providing current application's clock value for any BL class that may need it
     /// </summary>
