@@ -11,6 +11,14 @@ internal class CallImplementation : ICall
 {
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    public void AddObserver(Action listObserver) =>
+    CallManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+   CallManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+   CallManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    CallManager.Observers.RemoveObserver(id, observer); //stage 5
 
     public void Add(BO.Call boCall)
     {
@@ -36,6 +44,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Create(doCall);
+            CallManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -57,6 +66,7 @@ internal class CallImplementation : ICall
             if (callStatus == BO.CallStatus.Open && !_dal.Assignment.ReadAll(a => a.CallId == callId).Any())
             {
                 _dal.Call.Delete(callId);
+                CallManager.Observers.NotifyListUpdated();
             }
             else
             {
@@ -154,6 +164,8 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Update(doCall);
+            CallManager.Observers.NotifyItemUpdated(doCall.Id);  //stage 5
+            CallManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -245,7 +257,7 @@ internal class CallImplementation : ICall
             assignment = assignment with
             {
 
-                EndTime = ClockManager.Now,
+                EndTime = AdminManager.Now,
                 EndTimeType = endTimeType
             };
 
@@ -284,7 +296,7 @@ internal class CallImplementation : ICall
 
             assignment = assignment with
             {
-                EndTime = ClockManager.Now,
+                EndTime = AdminManager.Now,
                 EndTimeType = DO.EndTimeType.Treated
             };
 

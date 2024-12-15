@@ -12,7 +12,7 @@ internal class AdminImplementation : IAdmin
     public void AdvanceClock(TimeUnit timeUnit)
     {
     
-        var currentTime = ClockManager.Now;
+        var currentTime = AdminManager.Now;
 
      
         var newTime = timeUnit switch
@@ -25,34 +25,49 @@ internal class AdminImplementation : IAdmin
             _ => throw new ArgumentOutOfRangeException(nameof(timeUnit), $"Unsupported time unit: {timeUnit}")
         };
 
-       
-        ClockManager.UpdateClock(newTime);
+
+        AdminManager.UpdateClock(newTime);
     }
 
     public  DateTime getClockTime()
     {
-        return ClockManager.Now;
+        return AdminManager.Now;
     }
 
     public TimeSpan getRiskTimeRange()
     {
-        var riskRange = _dal.Config.RiskRange;
+        var riskRange = AdminManager.RiskRange;
         return riskRange;
     }
 
     public void resetDatabase()
     {
         _dal.ResetDB();
+        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.RiskRange = AdminManager.RiskRange;
     }
 
     public void setDatabase()
     {
         _dal.ResetDB();
         Initialization.Do();
+        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.RiskRange = AdminManager.RiskRange;
+
     }
 
     public void setRiskTimeRange(TimeSpan riskTimeRange)
     {
-        _dal.Config.RiskRange= riskTimeRange;
+        AdminManager.RiskRange = riskTimeRange;
     }
+    #region Stage 5
+    public void AddClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers += clockObserver;
+    public void RemoveClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers -= clockObserver;
+    public void AddConfigObserver(Action configObserver) =>
+   AdminManager.ConfigUpdatedObservers += configObserver;
+    public void RemoveConfigObserver(Action configObserver) =>
+    AdminManager.ConfigUpdatedObservers -= configObserver;
+    #endregion Stage 5
 }
