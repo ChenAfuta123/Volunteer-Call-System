@@ -309,7 +309,9 @@ internal static class CallManager
     }
     internal static void CloseExpiredCalls(DateTime oldClock, DateTime newClock)
     {
-        var allCalls = s_dal.Call.ReadAll(); 
+        bool callUpdated;
+        var allCalls = s_dal.Call.ReadAll();
+        callUpdated = false;
         foreach (DO.Call call in allCalls)
         {
            
@@ -340,10 +342,15 @@ internal static class CallManager
 
                   
                     currentCall.callStatus = CallStatus.Closed;
+                    callUpdated = true;
                     s_dal.Call.Update(call);
+                    Observers.NotifyItemUpdated(call.Id); //stage 5
                 }
             }
         }
+        bool yearChanged = oldClock.Year != newClock.Year; //stage 5
+        if (yearChanged || callUpdated) //stage 5
+            Observers.NotifyListUpdated(); //stage 5
     }
 }
 
