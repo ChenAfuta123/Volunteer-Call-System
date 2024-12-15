@@ -7,7 +7,14 @@ namespace BlImplementation;
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-
+    public void AddObserver(Action listObserver) =>
+VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+VolunteerManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
     public void Add(BO.Volunteer? boVolunteer)
     {
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
@@ -37,6 +44,7 @@ internal class VolunteerImplementation : IVolunteer
         {
 
             _dal.Volunteer.Create(doVolunteer);
+            VolunteerManager.Observers.NotifyListUpdated();
 
         }
 
@@ -69,6 +77,7 @@ internal class VolunteerImplementation : IVolunteer
             }
 
             _dal.Volunteer.Delete(id);
+            VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -168,6 +177,8 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Update(updatedVolunteer);
+            VolunteerManager.Observers.NotifyItemUpdated(updatedVolunteer.Id);  //stage 5
+            VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {
