@@ -22,11 +22,4 @@ public interface IAdmin
 
     /// <summary>Initialize the database.</summary>
     public void setDatabase();
-
-    #region Stage 5
-    void AddConfigObserver(Action configObserver);
-    void RemoveConfigObserver(Action configObserver);
-    void AddClockObserver(Action clockObserver);
-    void RemoveClockObserver(Action clockObserver);
-    #endregion Stage 5
 }

@@ -6,7 +6,70 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
     <Grid>
+        <!-- Define rows -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- System Clock Area -->
+            <RowDefinition Height="*" />
+            <!-- Configuration Variables Area -->
+        </Grid.RowDefinitions>
 
+        <!-- System Clock Area -->
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <!-- System Clock -->
+                <ColumnDefinition Width="*" />
+                <!-- Buttons -->
+            </Grid.ColumnDefinitions>
+
+            <!-- System Clock -->
+            <Label Grid.Column="0" Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5">
+                <!-- Display the current system clock -->
+            </Label>
+
+            <!-- Time Advancement Buttons -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                <!-- Advance the clock by one minute -->
+                <Button Content="Add One Minute"  Click="btnAddOneMinute_Click" Margin="5" />
+                <!-- Advance the clock by one hour -->
+                <Button Content="Add One Hour" Click="btnAddOneHour_Click" Margin="5" />
+
+                <Button Content="Add One Month" Click="btnAddOneMonth_Click" Margin="5" />
+                <!-- Advance the clock by one day -->
+                <Button Content="Add One Day" Click="btnAddOneDay_Click" Margin="5" />
+                <!-- Advance the clock by one year -->
+                <Button Content="Add One Year" Click="btnAddOneYear_Click" Margin="5" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Configuration Variables Area -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Configuration Variable -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                <!-- TextBox for editing the configuration variable -->
+                <TextBox  Width="200" Margin="5" />
+                <!-- Button to update the configuration variable -->
+                <Button Content="Update risk renge" Margin="5" />
+            </StackPanel>
+
+            <!-- Additional Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+                <!-- Button to open the list view -->
+                <Button Content="Open List View" Margin="5" Width="200" Click="Button_Click_1" />
+                <!-- Button to initialize the database -->
+                <Button Content="Initialize Database" Margin="5" Width="200" />
+                <!-- Button to reset the database -->
+                <Button Content="Reset Database" Margin="5" Width="200" />
+            </StackPanel>
+        </Grid>
     </Grid>
+
 </Window>

@@ -3,7 +3,7 @@
 namespace BlApi;
 
 /// <summary>Interface for managing call operations.</summary>
-public interface ICall: IObservable
+public interface ICall
 {
 
     /// <summary>Add a new call.</summary>

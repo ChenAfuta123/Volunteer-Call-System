@@ -11,39 +11,23 @@ internal class CallImplementation : ICall
 {
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    public void AddObserver(Action listObserver) =>
-    CallManager.Observers.AddListObserver(listObserver); //stage 5
-    public void AddObserver(int id, Action observer) =>
-   CallManager.Observers.AddObserver(id, observer); //stage 5
-    public void RemoveObserver(Action listObserver) =>
-   CallManager.Observers.RemoveListObserver(listObserver); //stage 5
-    public void RemoveObserver(int id, Action observer) =>
-    CallManager.Observers.RemoveObserver(id, observer); //stage 5
 
-    public void AddObserver(Action listObserver) =>
-CallManager.Observers.AddListObserver(listObserver); //stage 5
-    public void AddObserver(int id, Action observer) =>
-CallManager.Observers.AddObserver(id, observer); //stage 5
-    public void RemoveObserver(Action listObserver) =>
-CallManager.Observers.RemoveListObserver(listObserver); //stage 5
-    public void RemoveObserver(int id, Action observer) =>
-CallManager.Observers.RemoveObserver(id, observer); //stage 5
     public void Add(BO.Call boCall)
     {
         CallManager.ValidateCall(boCall);
-        //var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
-        //double longtitude = coordinates.Latitude ?? 0.0;
-        //double latitude = coordinates.Latitude ?? 0.0;
-        //boCall.Latitude = latitude;
-        //boCall.Longitude = longtitude;
+        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
+        double longtitude = coordinates.Latitude ?? 0.0;
+        double latitude = coordinates.Latitude ?? 0.0;
+        boCall.Latitude = latitude;
+        boCall.Longitude = longtitude;
 
         DO.Call doCall = new DO.Call
         {
             Id = boCall.Id,
             callType = (DO.CallType)boCall.callType,
             Address = boCall.Address ?? " ",
-            Latitude = /*boCall.Latitude*/0.0,
-            Longitude = /*boCall.Longitude*/0.0,
+            Latitude = boCall.Latitude,
+            Longitude = boCall.Longitude,
             OpeningTime = boCall.OpeningTime,
             Description = boCall.Description,
             maxEndingTime = boCall.MaxEndingTime
@@ -52,7 +36,6 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
         try
         {
             _dal.Call.Create(doCall);
-            CallManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -74,7 +57,6 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
             if (callStatus == BO.CallStatus.Open && !_dal.Assignment.ReadAll(a => a.CallId == callId).Any())
             {
                 _dal.Call.Delete(callId);
-                CallManager.Observers.NotifyListUpdated();
             }
             else
             {
@@ -151,19 +133,19 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
     public void Update(BO.Call boCall)
     {
         CallManager.ValidateCall(boCall);
-        //var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
-        //double longtitude = coordinates.Latitude ?? 0.0;
-        //double latitude = coordinates.Latitude ?? 0.0;
-        //boCall.Latitude = latitude;
-        //boCall.Longitude = longtitude;
+        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
+        double longtitude = coordinates.Latitude ?? 0.0;
+        double latitude = coordinates.Latitude ?? 0.0;
+        boCall.Latitude = latitude;
+        boCall.Longitude = longtitude;
 
         DO.Call doCall = new DO.Call
         {
             Id = boCall.Id,
             callType = (DO.CallType)boCall.callType,
             Address = boCall.Address,
-            Latitude =/* boCall.Latitude*/0.0,
-            Longitude =/* boCall.Longitude*/0.0,
+            Latitude =boCall.Latitude,
+            Longitude =boCall.Longitude,
             OpeningTime = boCall.OpeningTime,
             Description = boCall.Description,
             maxEndingTime = boCall.MaxEndingTime,
@@ -172,8 +154,6 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
         try
         {
             _dal.Call.Update(doCall);
-            CallManager.Observers.NotifyItemUpdated(doCall.Id);
-            CallManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -189,7 +169,7 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
     public int[] CallQuantities()
     {
         var calls = _dal.Call.ReadAll();
-        
+
 
         var statusCounts = calls
             .GroupBy(call => (int)CallManager.Status(call.Id))
@@ -208,33 +188,33 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
 
     public void ChooseCallForTreatment(int volunteerId, int callId)
     {
-        
-
-            var callStatus = CallManager.Status(callId);
 
 
-            switch (callStatus)
-            {
-                case CallStatus.Open:
-                case CallStatus.OpenAtRisk:
-                    CallManager.HandleOpenCall(callId, volunteerId, callStatus);
-                    break;
+        var callStatus = CallManager.Status(callId);
 
-                case CallStatus.InProgress:
-                case CallStatus.InProgressAtRisk:
-                    throw new BO.BlValidationException("The call is already in progress and cannot be reassigned.");
 
-                case CallStatus.Closed:
-                    throw new BO.BlValidationException("The call has already been closed and cannot be assigned.");
+        switch (callStatus)
+        {
+            case CallStatus.Open:
+            case CallStatus.OpenAtRisk:
+                CallManager.HandleOpenCall(callId, volunteerId, callStatus);
+                break;
 
-                case CallStatus.Expired:
-                    throw new BO.BlValidationException("The call's validity period has expired and cannot be assigned.");
+            case CallStatus.InProgress:
+            case CallStatus.InProgressAtRisk:
+                throw new BO.BlValidationException("The call is already in progress and cannot be reassigned.");
 
-                default:
-                    throw new BO.BlValidationException("Unknown call status. Cannot assign the call.");
-            }
-        
-        
+            case CallStatus.Closed:
+                throw new BO.BlValidationException("The call has already been closed and cannot be assigned.");
+
+            case CallStatus.Expired:
+                throw new BO.BlValidationException("The call's validity period has expired and cannot be assigned.");
+
+            default:
+                throw new BO.BlValidationException("Unknown call status. Cannot assign the call.");
+        }
+
+
     }
 
     public void CanceltreatmentUpdate(int requesterId, int assignmentId)
@@ -265,7 +245,7 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
             assignment = assignment with
             {
 
-                EndTime = AdminManager.Now,
+                EndTime = ClockManager.Now,
                 EndTimeType = endTimeType
             };
 
@@ -304,7 +284,7 @@ CallManager.Observers.RemoveObserver(id, observer); //stage 5
 
             assignment = assignment with
             {
-                EndTime = AdminManager.Now,
+                EndTime = ClockManager.Now,
                 EndTimeType = DO.EndTimeType.Treated
             };
 

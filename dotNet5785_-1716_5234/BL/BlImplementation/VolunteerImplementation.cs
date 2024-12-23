@@ -7,21 +7,14 @@ namespace BlImplementation;
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    public void AddObserver(Action listObserver) =>
-   VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
-    public void AddObserver(int id, Action observer) =>
-   VolunteerManager.Observers.AddObserver(id, observer); //stage 5
-    public void RemoveObserver(Action listObserver) =>
-   VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
-    public void RemoveObserver(int id, Action observer) =>
-    VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+
     public void Add(BO.Volunteer? boVolunteer)
     {
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
 
-        var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boVolunteer.Address);
-        double longtitude = coordinates.Latitude ?? 0.0;
-        double latitude = coordinates.Latitude ?? 0.0;
+        var (Latitude, Longitude) = Tools.DistanceCalculator.GetAddressCoordinates(boVolunteer.Address);
+        double longtitude = Longitude ?? 0.0;
+        double latitude = Latitude ?? 0.0;
         boVolunteer.Latitude = latitude;
         boVolunteer.Longitude = longtitude;
         VolunteerManager.ValidateVolunteer(boVolunteer);
@@ -44,7 +37,7 @@ internal class VolunteerImplementation : IVolunteer
         {
 
             _dal.Volunteer.Create(doVolunteer);
-            VolunteerManager.Observers.NotifyListUpdated();
+
         }
 
         catch (DO.DalAlreadyExistsException ex)
@@ -76,7 +69,6 @@ internal class VolunteerImplementation : IVolunteer
             }
 
             _dal.Volunteer.Delete(id);
-            VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -140,7 +132,8 @@ internal class VolunteerImplementation : IVolunteer
     {
 
         DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
-        if (existingVolunteer == null) throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
+        if (existingVolunteer == null) 
+            throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
 
         DO.Role newRole = existingVolunteer.role;
         if (existingVolunteer.role == DO.Role.manager)
@@ -151,7 +144,7 @@ internal class VolunteerImplementation : IVolunteer
         {
             throw new BO.BlUnauthorizedException("Volunteer cannot update other volunteer");
         }
-        else if (existingVolunteer.role != DO.Role.manager&& existingVolunteer.role!= (DO.Role)boVolunteer.role)
+        else if (existingVolunteer.role != DO.Role.manager && existingVolunteer.role != (DO.Role)boVolunteer.role)
         {
             throw new BO.BlUnauthorizedException("Volunteer cannot update role");
         }
@@ -176,8 +169,6 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Update(updatedVolunteer);
-            VolunteerManager.Observers.NotifyItemUpdated(updatedVolunteer.Id);  //stage 5
-            VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {

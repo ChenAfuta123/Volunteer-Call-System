@@ -11,10 +11,10 @@ internal class AdminImplementation : IAdmin
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
     public void AdvanceClock(TimeUnit timeUnit)
     {
-    
-        var currentTime = AdminManager.Now;
 
-     
+        var currentTime = ClockManager.Now;
+
+
         var newTime = timeUnit switch
         {
             TimeUnit.MINUTE => currentTime.AddMinutes(1),
@@ -26,48 +26,33 @@ internal class AdminImplementation : IAdmin
         };
 
 
-        AdminManager.UpdateClock(newTime);
+        ClockManager.UpdateClock(newTime);
     }
 
-    public  DateTime getClockTime()
+    public DateTime getClockTime()
     {
-        return AdminManager.Now;
+        return ClockManager.Now;
     }
 
     public TimeSpan getRiskTimeRange()
     {
-        var riskRange = AdminManager.RiskRange;
+        var riskRange = _dal.Config.RiskRange;
         return riskRange;
     }
 
     public void resetDatabase()
     {
         _dal.ResetDB();
-        AdminManager.UpdateClock(AdminManager.Now);
-        AdminManager.RiskRange = AdminManager.RiskRange;
     }
 
     public void setDatabase()
     {
         _dal.ResetDB();
         Initialization.Do();
-        AdminManager.UpdateClock(AdminManager.Now);
-        AdminManager.RiskRange = AdminManager.RiskRange;
-
     }
 
     public void setRiskTimeRange(TimeSpan riskTimeRange)
     {
-        AdminManager.RiskRange = riskTimeRange;
+        _dal.Config.RiskRange = riskTimeRange;
     }
-    #region Stage 5
-    public void AddClockObserver(Action clockObserver) =>
-    AdminManager.ClockUpdatedObservers += clockObserver;
-    public void RemoveClockObserver(Action clockObserver) =>
-    AdminManager.ClockUpdatedObservers -= clockObserver;
-    public void AddConfigObserver(Action configObserver) =>
-   AdminManager.ConfigUpdatedObservers += configObserver;
-    public void RemoveConfigObserver(Action configObserver) =>
-    AdminManager.ConfigUpdatedObservers -= configObserver;
-    #endregion Stage 5
 }

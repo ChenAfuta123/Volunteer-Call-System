@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-namespace Helpers;
+//namespace Helpers;
 
 internal static class Tools
 {
@@ -85,10 +85,11 @@ internal static class Tools
                     return false;
             }
 
+            
             if (string.IsNullOrWhiteSpace(address))
                 return false;
 
-            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
             Console.WriteLine();
 
@@ -182,7 +183,7 @@ internal static class Tools
 
         private static double CalculateTravelDistance(string address1, string address2, string mode)
         {
-            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
             const string BaseUrl = "https://us1.locationiq.com/v1/directions/";
 
             var (latitude1, longitude1) = GetAddressCoordinates(address1);
@@ -216,7 +217,7 @@ internal static class Tools
             {
                 return (null, null);
             }
-            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string LocationIqApiKey = "pk.19fad8ec1f83727b2c89ca67732e304e";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
             string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
@@ -232,20 +233,78 @@ internal static class Tools
 
                 string responseContent = response.Content.ReadAsStringAsync().Result;
 
+                // חיפוש ידני של "lat" ו-"lon" בתוכן התגובה
+                string latKey = "\"lat\":\"";
+                string lonKey = "\"lon\":\"";
 
-                var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
+                int latStartIndex = responseContent.IndexOf(latKey);
+                int lonStartIndex = responseContent.IndexOf(lonKey);
 
-                if (locationData == null || locationData.Length == 0)
+                if (latStartIndex == -1 || lonStartIndex == -1)
                 {
                     throw new Exception($"No coordinates found for address: {address}");
                 }
 
-                double latitude = double.Parse(locationData[0].Lat);
-                double longitude = double.Parse(locationData[0].Lon);
+                latStartIndex += latKey.Length;
+                lonStartIndex += lonKey.Length;
 
-                return (latitude, longitude);
+                int latEndIndex = responseContent.IndexOf("\"", latStartIndex);
+                int lonEndIndex = responseContent.IndexOf("\"", lonStartIndex);
+
+                if (latEndIndex == -1 || lonEndIndex == -1)
+                {
+                    throw new Exception($"Invalid response format for address: {address}");
+                }
+
+                string latString = responseContent.Substring(latStartIndex, latEndIndex - latStartIndex);
+                string lonString = responseContent.Substring(lonStartIndex, lonEndIndex - lonStartIndex);
+
+                if (double.TryParse(latString, out double latitude) && double.TryParse(lonString, out double longitude))
+                {
+                    return (latitude, longitude);
+                }
+                else
+                {
+                    throw new Exception($"Failed to parse coordinates for address: {address}");
+                }
             }
         }
+        //public static (double? Latitude, double? Longitude) GetAddressCoordinates(string? address)
+        //{
+        //    if (string.IsNullOrWhiteSpace(address))
+        //    {
+        //        return (null, null);
+        //    }
+        //    const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
+        //    const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
+
+        //    string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            throw new Exception($"Error fetching coordinates for address: {response.ReasonPhrase}");
+        //        }
+
+        //        string responseContent = response.Content.ReadAsStringAsync().Result;
+
+
+        //        var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
+
+        //        if (locationData == null || locationData.Length == 0)
+        //        {
+        //            throw new Exception($"No coordinates found for address: {address}");
+        //        }
+
+        //        double latitude = double.Parse(locationData[0].Lat);
+        //        double longitude = double.Parse(locationData[0].Lon);
+
+        //        return (latitude, longitude);
+        //    }
+        //}
         private static double DegreesToRadians(double degrees)
         {
             return degrees * (Math.PI / 180.0);
