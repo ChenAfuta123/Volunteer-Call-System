@@ -52,6 +52,6 @@
         <Button Content="{Binding ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Left" Margin="174,391,0,0" VerticalAlignment="Top" Width="48" Height="15" />
       
 
-
+        
     </Grid>
 </Window>
