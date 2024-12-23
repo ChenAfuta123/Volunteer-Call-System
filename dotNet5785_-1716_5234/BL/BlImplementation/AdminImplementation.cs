@@ -12,7 +12,7 @@ internal class AdminImplementation : IAdmin
     public void AdvanceClock(TimeUnit timeUnit)
     {
 
-        var currentTime = ClockManager.Now;
+        var currentTime = AdminManager.Now;
 
 
         var newTime = timeUnit switch
@@ -26,12 +26,12 @@ internal class AdminImplementation : IAdmin
         };
 
 
-        ClockManager.UpdateClock(newTime);
+        AdminManager.UpdateClock(newTime);
     }
 
     public DateTime getClockTime()
     {
-        return ClockManager.Now;
+        return AdminManager.Now;
     }
 
     public TimeSpan getRiskTimeRange()

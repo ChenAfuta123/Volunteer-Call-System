@@ -245,7 +245,7 @@ internal class CallImplementation : ICall
             assignment = assignment with
             {
 
-                EndTime = ClockManager.Now,
+                EndTime = AdminManager.Now,
                 EndTimeType = endTimeType
             };
 
@@ -284,7 +284,7 @@ internal class CallImplementation : ICall
 
             assignment = assignment with
             {
-                EndTime = ClockManager.Now,
+                EndTime = AdminManager.Now,
                 EndTimeType = DO.EndTimeType.Treated
             };
 
