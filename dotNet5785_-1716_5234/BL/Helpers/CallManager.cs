@@ -73,7 +73,7 @@ internal static class CallManager
             Id = 0,
             CallId = callId,
             VolunteerId = volunteerId,
-            EntryTime = ClockManager.Now,
+            EntryTime = AdminManager.Now,
             EndTimeType = null,
             EndTime = null
         };
@@ -108,7 +108,7 @@ internal static class CallManager
 
 
             var remainingCallTime = doCall.maxEndingTime.HasValue
-                ? doCall.maxEndingTime.Value - ClockManager.Now
+                ? doCall.maxEndingTime.Value - AdminManager.Now
                 : (TimeSpan?)null;
 
             var totalHandlingTime = lastAssignment?.EndTime.HasValue == true
@@ -271,7 +271,7 @@ internal static class CallManager
 
 
 
-            var now = ClockManager.Now;
+            var now = AdminManager.Now;
 
 
             if (s_dal.Assignment.Read(a => a.CallId == call.Id && a.EndTime == null) != null)

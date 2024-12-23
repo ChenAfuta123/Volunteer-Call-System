@@ -88,7 +88,8 @@ public enum CallInListField
     LastVolunteerName,
     TotalHandlingTime,
     CallStatus,
-    TotalAllocations
+    TotalAllocations,
+    None
 }
 
 /// <summary>Fields used for open call listings.</summary>

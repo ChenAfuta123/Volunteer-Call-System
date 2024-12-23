@@ -88,7 +88,7 @@ internal static class Tools
             if (string.IsNullOrWhiteSpace(address))
                 return false;
 
-            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string LocationIqApiKey = "pk.19fad8ec1f83727b2c89ca67732e304e";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
             Console.WriteLine();
 
@@ -182,7 +182,7 @@ internal static class Tools
 
         private static double CalculateTravelDistance(string address1, string address2, string mode)
         {
-            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string LocationIqApiKey = "pk.19fad8ec1f83727b2c89ca67732e304e";
             const string BaseUrl = "https://us1.locationiq.com/v1/directions/";
 
             var (latitude1, longitude1) = GetAddressCoordinates(address1);
@@ -216,7 +216,7 @@ internal static class Tools
             {
                 return (null, null);
             }
-            const string LocationIqApiKey = "pk.ddce0bbd11edfee17d07cb35922321f7";
+            const string LocationIqApiKey = "pk.19fad8ec1f83727b2c89ca67732e304e";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
             string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";

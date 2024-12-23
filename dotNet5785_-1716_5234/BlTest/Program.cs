@@ -822,6 +822,11 @@ namespace BL
                     _ => BO.Role.volunteer 
                 };
             }
+            else
+            {
+                id = ID;
+                role = R;
+            }
             Console.Write("Enter Name: ");
             string name = Console.ReadLine()!;
 

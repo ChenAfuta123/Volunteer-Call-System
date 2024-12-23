@@ -60,7 +60,7 @@ internal class AdminImplementation : IAdmin
     {
         AdminManager.RiskRange = riskTimeRange;
     }
-    #region Stage 5
+    
     public void AddClockObserver(Action clockObserver) =>
     AdminManager.ClockUpdatedObservers += clockObserver;
     public void RemoveClockObserver(Action clockObserver) =>
@@ -69,5 +69,5 @@ internal class AdminImplementation : IAdmin
    AdminManager.ConfigUpdatedObservers += configObserver;
     public void RemoveConfigObserver(Action configObserver) =>
     AdminManager.ConfigUpdatedObservers -= configObserver;
-    #endregion Stage 5
+    
 }

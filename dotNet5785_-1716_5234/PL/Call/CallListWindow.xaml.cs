@@ -1,0 +1,98 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+
+namespace PL.Call
+{
+    /// <summary>
+    /// Interaction logic for CallListWindow.xaml
+    /// </summary>
+    public partial class CallListWindow : Window
+    {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+
+        public CallListWindow()
+        {
+            InitializeComponent();
+        }
+
+        public IEnumerable<BO.CallInList> CallList
+        {
+            get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
+            set { SetValue(CallListProperty, value); }
+        }
+
+        public static readonly DependencyProperty CallListProperty =
+            DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
+
+        // משתנה לסינון
+        private BO.CallInListField CallFilter { get; set; } = BO.CallInListField.None;
+
+        private void queryCallList()
+        {
+            CallList = (CallFilter == BO.CallInListField.None)
+                ? s_bl?.Call.ReadAll(null, null, null)!
+                : s_bl?.Call.ReadAll(null, BO.CallInListField.Id, CallFilter)!;
+        }
+
+        private void callListObserver()
+            => queryCallList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+            => s_bl.Call.AddObserver(callListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Call.RemoveObserver(callListObserver);
+
+        private void dgCallList_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            // הוסף את הלוגיקה לטיפול בלחיצה כפולה על רשומה
+        }
+        public BO.CallInList? SelectedCall { get; set; }
+        private void lsvCoursesList_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCall != null)
+                new CallWindow(SelectedCall.CallId).Show();
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedCall != null)
+                new CallWindow().Show();
+
+        }
+
+        private void DataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to delete call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                var button = sender as FrameworkElement;
+                var callToDelete = button?.DataContext as BO.Call;
+                try
+                {
+                    if (callToDelete != null)
+                    {
+                        s_bl.Call.Delete(callToDelete.Id);
+
+                    }
+                }
+                catch (BO.BlDoesNotExistsException ex)
+                {
+                    MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BO.BlCannotBeDeletedException ex)
+                {
+                    MessageBox.Show($"Error: The item cannot be deleted.\nDetails: {ex.Message}",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+    }
+}
