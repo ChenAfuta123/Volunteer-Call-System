@@ -159,10 +159,6 @@ internal class CallImplementation : ICall
         {
             throw new BO.BlDoesNotExistsException($"Error while updating a call:", ex);
         }
-        catch (Exception ex)
-        {
-            throw new Exception($"Unexpected error while updating a call: {ex.Message}");
-        }
 
     }
 
@@ -257,10 +253,6 @@ internal class CallImplementation : ICall
 
             throw new BO.BlDoesNotExistsException($"Error while reading assignment or related data: {ex.Message}", ex);
         }
-        catch (Exception ex)
-        {
-            throw new Exception($"Unexpected error while cancelling treatment: {ex.Message}", ex);
-        }
     }
 
     public void EndOftreatmentUpdate(int requesterId, int assignmentId)
@@ -295,10 +287,6 @@ internal class CallImplementation : ICall
         {
 
             throw new BO.BlDoesNotExistsException($"Error  while completing the treatment:", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"An error occurred while completing the treatment: {ex.Message}", ex);
         }
     }
 

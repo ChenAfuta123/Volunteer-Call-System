@@ -6,9 +6,9 @@
     <Address>Tel Aviv, Dizengoff St 50</Address>
     <Latitude>32.0805</Latitude>
     <Longitude>34.7818</Longitude>
-    <OpeningTime>2024-11-22T00:00:00</OpeningTime>
+    <OpeningTime>2022-02-26T00:00:00</OpeningTime>
     <Description>Providing hot meals to evacuees in shelters, ensuring nutritional needs are met.</Description>
-    <maxEndingTime>2024-11-22T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-02-26T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>1</Id>
@@ -16,9 +16,9 @@
     <Address>Jerusalem, Jaffa St 10</Address>
     <Latitude>31.7683</Latitude>
     <Longitude>35.2137</Longitude>
-    <OpeningTime>2023-10-03T00:00:00</OpeningTime>
+    <OpeningTime>2024-11-11T00:00:00</OpeningTime>
     <Description>Delivering snacks, such as pastries and cakes, to brighten the evacuees' day.</Description>
-    <maxEndingTime>2023-10-03T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-11-11T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>2</Id>
@@ -26,9 +26,9 @@
     <Address>Haifa, HaNassi Blvd 80</Address>
     <Latitude>32.794</Latitude>
     <Longitude>34.9896</Longitude>
-    <OpeningTime>2024-09-04T00:00:00</OpeningTime>
+    <OpeningTime>2023-01-28T00:00:00</OpeningTime>
     <Description>Distributing bottled water to evacuees to ensure hydration in shelters.</Description>
-    <maxEndingTime>2024-09-04T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-01-28T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>3</Id>
@@ -36,9 +36,9 @@
     <Address>Beersheba, Rager Blvd 15</Address>
     <Latitude>31.2518</Latitude>
     <Longitude>34.7915</Longitude>
-    <OpeningTime>2023-07-12T00:00:00</OpeningTime>
+    <OpeningTime>2024-01-11T00:00:00</OpeningTime>
     <Description>Providing ready-to-eat dry food packs for evacuees in temporary shelters.</Description>
-    <maxEndingTime>2023-07-12T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-01-11T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>4</Id>
@@ -46,9 +46,9 @@
     <Address>Eilat, HaTmarim Blvd 20</Address>
     <Latitude>29.5577</Latitude>
     <Longitude>34.9501</Longitude>
-    <OpeningTime>2024-01-23T00:00:00</OpeningTime>
+    <OpeningTime>2022-12-24T00:00:00</OpeningTime>
     <Description>Distributing blankets, sweaters, and socks to evacuees for warmth.</Description>
-    <maxEndingTime>2024-01-23T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-12-24T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>5</Id>
@@ -56,9 +56,9 @@
     <Address>Petah Tikva, Em Hamoshavot Rd 45</Address>
     <Latitude>32.084</Latitude>
     <Longitude>34.871</Longitude>
-    <OpeningTime>2023-09-16T00:00:00</OpeningTime>
+    <OpeningTime>2024-02-02T00:00:00</OpeningTime>
     <Description>Delivering tables and chairs to temporary housing to improve comfort.</Description>
-    <maxEndingTime>2023-09-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-02-02T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>6</Id>
@@ -66,9 +66,9 @@
     <Address>Netanya, Herzl St 12</Address>
     <Latitude>32.321</Latitude>
     <Longitude>34.853</Longitude>
-    <OpeningTime>2024-08-11T00:00:00</OpeningTime>
+    <OpeningTime>2024-08-15T00:00:00</OpeningTime>
     <Description>Transporting food supplies to remote shelter locations for easier access.</Description>
-    <maxEndingTime>2024-08-11T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-08-15T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>7</Id>
@@ -76,9 +76,9 @@
     <Address>Ashdod, HaNamal St 30</Address>
     <Latitude>31.804</Latitude>
     <Longitude>34.645</Longitude>
-    <OpeningTime>2023-01-16T00:00:00</OpeningTime>
+    <OpeningTime>2022-02-11T00:00:00</OpeningTime>
     <Description>Distributing thermoses with hot tea or coffee to evacuees for warmth.</Description>
-    <maxEndingTime>2023-01-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-02-11T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>8</Id>
@@ -86,9 +86,9 @@
     <Address>Rehovot, Herzl St 65</Address>
     <Latitude>31.894</Latitude>
     <Longitude>34.812</Longitude>
-    <OpeningTime>2022-12-02T00:00:00</OpeningTime>
+    <OpeningTime>2024-12-13T00:00:00</OpeningTime>
     <Description>Bringing groceries and hygiene products to shelters for immediate use.</Description>
-    <maxEndingTime>2022-12-02T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-12-13T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>9</Id>
@@ -96,9 +96,9 @@
     <Address>Holon, Sokolov St 22</Address>
     <Latitude>32.011</Latitude>
     <Longitude>34.772</Longitude>
-    <OpeningTime>2024-08-22T00:00:00</OpeningTime>
+    <OpeningTime>2022-11-20T00:00:00</OpeningTime>
     <Description>Providing nutrition packages that cater to specific dietary needs (e.g., gluten-free).</Description>
-    <maxEndingTime>2024-08-22T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-11-20T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>10</Id>
@@ -106,9 +106,9 @@
     <Address>Bat Yam, Ben Gurion Blvd 15</Address>
     <Latitude>32.017</Latitude>
     <Longitude>34.748</Longitude>
-    <OpeningTime>2022-01-16T00:00:00</OpeningTime>
+    <OpeningTime>2024-08-26T00:00:00</OpeningTime>
     <Description>Helping evacuees find safe and comfortable temporary accommodation.</Description>
-    <maxEndingTime>2022-01-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-08-26T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>11</Id>
@@ -116,9 +116,9 @@
     <Address>Rishon Lezion, Rothschild St 35</Address>
     <Latitude>31.972</Latitude>
     <Longitude>34.804</Longitude>
-    <OpeningTime>2023-09-21T00:00:00</OpeningTime>
+    <OpeningTime>2024-12-23T00:00:00</OpeningTime>
     <Description>Assisting with the relocation of evacuees' personal belongings to new housing.</Description>
-    <maxEndingTime>2023-09-21T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-12-23T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>12</Id>
@@ -126,9 +126,9 @@
     <Address>Ramat Gan, Abba Hillel Silver Rd 100</Address>
     <Latitude>32.082</Latitude>
     <Longitude>34.823</Longitude>
-    <OpeningTime>2024-07-06T00:00:00</OpeningTime>
+    <OpeningTime>2024-07-27T00:00:00</OpeningTime>
     <Description>Coordinating transport for evacuees from temporary shelters to more secure locations.</Description>
-    <maxEndingTime>2024-07-06T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-07-27T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>13</Id>
@@ -136,9 +136,9 @@
     <Address>Herzliya, Ben Yehuda St 55</Address>
     <Latitude>32.162</Latitude>
     <Longitude>34.839</Longitude>
-    <OpeningTime>2024-11-13T00:00:00</OpeningTime>
+    <OpeningTime>2023-12-08T00:00:00</OpeningTime>
     <Description>Arranging temporary shelters for families, ensuring privacy and security.</Description>
-    <maxEndingTime>2024-11-13T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-12-08T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>14</Id>
@@ -146,9 +146,9 @@
     <Address>Kfar Saba, Weizmann St 28</Address>
     <Latitude>32.175</Latitude>
     <Longitude>34.906</Longitude>
-    <OpeningTime>2023-05-16T00:00:00</OpeningTime>
+    <OpeningTime>2024-10-29T00:00:00</OpeningTime>
     <Description>Providing support in finding accessible housing for evacuees with disabilities.</Description>
-    <maxEndingTime>2023-05-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-10-29T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>15</Id>
@@ -156,9 +156,9 @@
     <Address>Ra'anana, Ahuza St 90</Address>
     <Latitude>32.185</Latitude>
     <Longitude>34.87</Longitude>
-    <OpeningTime>2023-04-20T00:00:00</OpeningTime>
+    <OpeningTime>2023-08-22T00:00:00</OpeningTime>
     <Description>Helping evacuees set up basic living spaces in temporary shelters.</Description>
-    <maxEndingTime>2023-04-20T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-08-22T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>16</Id>
@@ -166,9 +166,9 @@
     <Address>Modiin, Yigal Alon St 17</Address>
     <Latitude>31.896</Latitude>
     <Longitude>35.01</Longitude>
-    <OpeningTime>2022-08-06T00:00:00</OpeningTime>
+    <OpeningTime>2023-06-17T00:00:00</OpeningTime>
     <Description>Organizing transportation for evacuees to move to safer regions within the country.</Description>
-    <maxEndingTime>2022-08-06T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-06-17T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>17</Id>
@@ -176,9 +176,9 @@
     <Address>Ashkelon, Ben Gurion Blvd 60</Address>
     <Latitude>31.668</Latitude>
     <Longitude>34.599</Longitude>
-    <OpeningTime>2024-03-22T00:00:00</OpeningTime>
+    <OpeningTime>2024-11-14T00:00:00</OpeningTime>
     <Description>Setting up community kitchens in temporary housing to foster a sense of normalcy.</Description>
-    <maxEndingTime>2024-03-22T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-11-14T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>18</Id>
@@ -186,9 +186,9 @@
     <Address>Nahariya, Sokolov St 18</Address>
     <Latitude>33.008</Latitude>
     <Longitude>35.093</Longitude>
-    <OpeningTime>2024-04-16T00:00:00</OpeningTime>
+    <OpeningTime>2024-09-16T00:00:00</OpeningTime>
     <Description>Helping evacuees navigate local housing systems and rental assistance.</Description>
-    <maxEndingTime>2024-04-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-09-16T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>19</Id>
@@ -196,9 +196,9 @@
     <Address>Acre, Ben Ami Blvd 5</Address>
     <Latitude>32.923</Latitude>
     <Longitude>35.082</Longitude>
-    <OpeningTime>2024-04-16T00:00:00</OpeningTime>
+    <OpeningTime>2024-06-01T00:00:00</OpeningTime>
     <Description>Providing relocation assistance for evacuees needing to move to a permanent home.</Description>
-    <maxEndingTime>2024-04-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-06-01T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>20</Id>
@@ -206,9 +206,9 @@
     <Address>Karmiel, HaGalil St 7</Address>
     <Latitude>32.919</Latitude>
     <Longitude>35.297</Longitude>
-    <OpeningTime>2022-10-03T00:00:00</OpeningTime>
+    <OpeningTime>2024-02-20T00:00:00</OpeningTime>
     <Description>Providing trauma counseling services to evacuees affected by the war.</Description>
-    <maxEndingTime>2022-10-03T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-02-20T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>21</Id>
@@ -216,9 +216,9 @@
     <Address>Dimona, Haim Bar Lev St 40</Address>
     <Latitude>31.071</Latitude>
     <Longitude>35.034</Longitude>
-    <OpeningTime>2022-11-15T00:00:00</OpeningTime>
+    <OpeningTime>2024-01-22T00:00:00</OpeningTime>
     <Description>Organizing recreational activities such as games and crafts for children in shelters.</Description>
-    <maxEndingTime>2022-11-15T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-01-22T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>22</Id>
@@ -226,9 +226,9 @@
     <Address>Yokneam, HaTzabar St 2</Address>
     <Latitude>32.656</Latitude>
     <Longitude>35.104</Longitude>
-    <OpeningTime>2024-07-29T00:00:00</OpeningTime>
+    <OpeningTime>2023-09-05T00:00:00</OpeningTime>
     <Description>Offering group therapy sessions to evacuees dealing with emotional stress.</Description>
-    <maxEndingTime>2024-07-29T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-09-05T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>23</Id>
@@ -236,9 +236,9 @@
     <Address>Beit Shemesh, Nahar Hayarden St 8</Address>
     <Latitude>31.739</Latitude>
     <Longitude>34.989</Longitude>
-    <OpeningTime>2024-01-21T00:00:00</OpeningTime>
+    <OpeningTime>2023-11-08T00:00:00</OpeningTime>
     <Description>Connecting evacuees with support groups for shared experiences and healing.</Description>
-    <maxEndingTime>2024-01-21T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-11-08T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>24</Id>
@@ -246,9 +246,9 @@
     <Address>Afula, HaRakevet St 10</Address>
     <Latitude>32.607</Latitude>
     <Longitude>35.289</Longitude>
-    <OpeningTime>2023-01-24T00:00:00</OpeningTime>
+    <OpeningTime>2024-08-09T00:00:00</OpeningTime>
     <Description>Facilitating discussions and workshops about mental health coping strategies.</Description>
-    <maxEndingTime>2023-01-24T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-08-09T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>25</Id>
@@ -256,9 +256,9 @@
     <Address>Tiberias, HaBanim St 15</Address>
     <Latitude>32.792</Latitude>
     <Longitude>35.54</Longitude>
-    <OpeningTime>2024-02-12T00:00:00</OpeningTime>
+    <OpeningTime>2024-05-17T00:00:00</OpeningTime>
     <Description>Providing social workers and counselors on-site in shelters to assist evacuees.</Description>
-    <maxEndingTime>2024-02-12T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-05-17T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>26</Id>
@@ -266,9 +266,9 @@
     <Address>Sderot, HaDekel St 3</Address>
     <Latitude>31.527</Latitude>
     <Longitude>34.596</Longitude>
-    <OpeningTime>2022-05-25T00:00:00</OpeningTime>
+    <OpeningTime>2022-09-20T00:00:00</OpeningTime>
     <Description>Setting up quiet spaces for evacuees to rest and de-stress after traumatic experiences.</Description>
-    <maxEndingTime>2022-05-25T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-09-20T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>27</Id>
@@ -276,9 +276,9 @@
     <Address>Or Yehuda, HaTamar St 25</Address>
     <Latitude>32.031</Latitude>
     <Longitude>34.839</Longitude>
-    <OpeningTime>2023-04-22T00:00:00</OpeningTime>
+    <OpeningTime>2022-08-26T00:00:00</OpeningTime>
     <Description>Bringing in volunteer groups to engage evacuees in creative arts and self-expression.</Description>
-    <maxEndingTime>2023-04-22T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-08-26T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>28</Id>
@@ -286,9 +286,9 @@
     <Address>Ramat HaSharon, Sokolov St 40</Address>
     <Latitude>32.145</Latitude>
     <Longitude>34.839</Longitude>
-    <OpeningTime>2022-11-23T00:00:00</OpeningTime>
+    <OpeningTime>2022-01-22T00:00:00</OpeningTime>
     <Description>Coordinating with local religious leaders to offer spiritual support to evacuees.</Description>
-    <maxEndingTime>2022-11-23T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-01-22T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>29</Id>
@@ -296,9 +296,9 @@
     <Address>Giv'atayim, Katznelson St 5</Address>
     <Latitude>32.068</Latitude>
     <Longitude>34.81</Longitude>
-    <OpeningTime>2023-05-30T00:00:00</OpeningTime>
+    <OpeningTime>2022-01-24T00:00:00</OpeningTime>
     <Description>Arranging buddy systems in shelters to ensure evacuees have someone to rely on.</Description>
-    <maxEndingTime>2023-05-30T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-01-24T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>30</Id>
@@ -306,9 +306,9 @@
     <Address>Shoham, HaAtzmaut St 6</Address>
     <Latitude>32.035</Latitude>
     <Longitude>34.915</Longitude>
-    <OpeningTime>2023-10-11T00:00:00</OpeningTime>
+    <OpeningTime>2022-02-24T00:00:00</OpeningTime>
     <Description>Coordinating medical teams to provide basic health services in evacuation centers.</Description>
-    <maxEndingTime>2023-10-11T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-02-24T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>31</Id>
@@ -316,9 +316,9 @@
     <Address>Even Yehuda, HaShaked St 13</Address>
     <Latitude>31.938</Latitude>
     <Longitude>34.779</Longitude>
-    <OpeningTime>2022-03-16T00:00:00</OpeningTime>
+    <OpeningTime>2023-08-16T00:00:00</OpeningTime>
     <Description>Delivering essential medications to evacuees who have lost access to pharmacies.</Description>
-    <maxEndingTime>2022-03-16T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-08-16T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>32</Id>
@@ -326,9 +326,9 @@
     <Address>Gedera, HaZayit St 12</Address>
     <Latitude>31.888</Latitude>
     <Longitude>34.701</Longitude>
-    <OpeningTime>2024-07-15T00:00:00</OpeningTime>
+    <OpeningTime>2022-07-20T00:00:00</OpeningTime>
     <Description>Arranging transportation for evacuees needing urgent medical care.</Description>
-    <maxEndingTime>2024-07-15T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-07-20T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>33</Id>
@@ -336,9 +336,9 @@
     <Address>Yavne, HaGefen St 4</Address>
     <Latitude>31.878</Latitude>
     <Longitude>34.775</Longitude>
-    <OpeningTime>2023-07-30T00:00:00</OpeningTime>
+    <OpeningTime>2024-11-17T00:00:00</OpeningTime>
     <Description>Providing emergency first aid and triage for injured evacuees in shelters.</Description>
-    <maxEndingTime>2023-07-30T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-11-17T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>34</Id>
@@ -346,9 +346,9 @@
     <Address>Omer, HaShikma St 9</Address>
     <Latitude>32.946</Latitude>
     <Longitude>35.302</Longitude>
-    <OpeningTime>2024-04-07T00:00:00</OpeningTime>
+    <OpeningTime>2024-02-08T00:00:00</OpeningTime>
     <Description>Facilitating doctor consultations for evacuees with chronic health conditions.</Description>
-    <maxEndingTime>2024-04-07T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-02-08T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>35</Id>
@@ -356,9 +356,9 @@
     <Address>Shlomi, HaZayit St 16</Address>
     <Latitude>32.802</Latitude>
     <Longitude>35.571</Longitude>
-    <OpeningTime>2024-07-08T00:00:00</OpeningTime>
+    <OpeningTime>2022-08-30T00:00:00</OpeningTime>
     <Description>Ensuring the timely delivery of prescription medications to evacuees in need.</Description>
-    <maxEndingTime>2024-07-08T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-08-30T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>36</Id>
@@ -366,9 +366,9 @@
     <Address>Migdal HaEmek, HaDekel St 7</Address>
     <Latitude>33.207</Latitude>
     <Longitude>35.573</Longitude>
-    <OpeningTime>2023-04-24T00:00:00</OpeningTime>
+    <OpeningTime>2022-11-23T00:00:00</OpeningTime>
     <Description>Setting up mobile health clinics in temporary shelters for on-site medical assistance.</Description>
-    <maxEndingTime>2023-04-24T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-11-23T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>37</Id>
@@ -376,9 +376,9 @@
     <Address>Kiryat Shmona, David Elazar St 11</Address>
     <Latitude>32.799</Latitude>
     <Longitude>35.033</Longitude>
-    <OpeningTime>2024-08-23T00:00:00</OpeningTime>
+    <OpeningTime>2022-05-04T00:00:00</OpeningTime>
     <Description>Providing basic medical supplies such as bandages and pain relief to evacuees.</Description>
-    <maxEndingTime>2024-08-23T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-05-04T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>38</Id>
@@ -386,9 +386,9 @@
     <Address>Kiryat Bialik, HaTzafon St 3</Address>
     <Latitude>32.813</Latitude>
     <Longitude>35.113</Longitude>
-    <OpeningTime>2024-05-14T00:00:00</OpeningTime>
+    <OpeningTime>2023-05-15T00:00:00</OpeningTime>
     <Description>Coordinating with local pharmacies to ensure medical needs are met for evacuees.</Description>
-    <maxEndingTime>2024-05-14T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-05-15T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>39</Id>
@@ -396,9 +396,9 @@
     <Address>Rosh HaAyin, HaHagana St 1</Address>
     <Latitude>32.123</Latitude>
     <Longitude>34.88</Longitude>
-    <OpeningTime>2023-02-17T00:00:00</OpeningTime>
+    <OpeningTime>2023-03-16T00:00:00</OpeningTime>
     <Description>Offering mental health consultations in shelters for those affected by the trauma.</Description>
-    <maxEndingTime>2023-02-17T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-03-16T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>40</Id>
@@ -406,9 +406,9 @@
     <Address>Kiryat Ata, HaYovel St 25</Address>
     <Latitude>32.052</Latitude>
     <Longitude>34.9</Longitude>
-    <OpeningTime>2023-08-06T00:00:00</OpeningTime>
+    <OpeningTime>2022-08-11T00:00:00</OpeningTime>
     <Description>Providing legal guidance on obtaining government assistance and financial support.</Description>
-    <maxEndingTime>2023-08-06T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-08-11T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>41</Id>
@@ -416,9 +416,9 @@
     <Address>Lod, HaHistadrut St 30</Address>
     <Latitude>31.951</Latitude>
     <Longitude>34.873</Longitude>
-    <OpeningTime>2022-12-17T00:00:00</OpeningTime>
+    <OpeningTime>2023-08-24T00:00:00</OpeningTime>
     <Description>Assisting evacuees in filling out forms for emergency relief and aid programs.</Description>
-    <maxEndingTime>2022-12-17T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-08-24T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>42</Id>
@@ -426,9 +426,9 @@
     <Address>Ramla, Herzl St 27</Address>
     <Latitude>31.246</Latitude>
     <Longitude>34.792</Longitude>
-    <OpeningTime>2023-04-09T00:00:00</OpeningTime>
+    <OpeningTime>2022-11-03T00:00:00</OpeningTime>
     <Description>Helping evacuees understand their rights regarding property and compensation claims.</Description>
-    <maxEndingTime>2023-04-09T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-11-03T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>43</Id>
@@ -436,9 +436,9 @@
     <Address>Eilot, HaNegev St 2</Address>
     <Latitude>31.27</Latitude>
     <Longitude>34.736</Longitude>
-    <OpeningTime>2023-03-09T00:00:00</OpeningTime>
+    <OpeningTime>2022-08-18T00:00:00</OpeningTime>
     <Description>Providing assistance with the submission of claims for damages to property.</Description>
-    <maxEndingTime>2023-03-09T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-08-18T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>44</Id>
@@ -446,9 +446,9 @@
     <Address>Arad, HaShalom St 14</Address>
     <Latitude>33.015</Latitude>
     <Longitude>35.276</Longitude>
-    <OpeningTime>2022-06-30T00:00:00</OpeningTime>
+    <OpeningTime>2022-05-19T00:00:00</OpeningTime>
     <Description>Advising evacuees on how to navigate legal processes to apply for housing benefits.</Description>
-    <maxEndingTime>2022-06-30T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-05-19T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>45</Id>
@@ -456,9 +456,9 @@
     <Address>Ma'alot Tarshiha, HaTeena St 12</Address>
     <Latitude>32.573</Latitude>
     <Longitude>35.046</Longitude>
-    <OpeningTime>2022-03-31T00:00:00</OpeningTime>
+    <OpeningTime>2022-02-14T00:00:00</OpeningTime>
     <Description>Coordinating with legal aid organizations to offer free consultations to evacuees.</Description>
-    <maxEndingTime>2022-03-31T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-02-14T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>46</Id>
@@ -466,9 +466,9 @@
     <Address>Zichron Yaakov, HaEtrog St 19</Address>
     <Latitude>32.062</Latitude>
     <Longitude>34.814</Longitude>
-    <OpeningTime>2023-05-08T00:00:00</OpeningTime>
+    <OpeningTime>2024-08-22T00:00:00</OpeningTime>
     <Description>Helping evacuees access social security benefits and other state-sponsored programs.</Description>
-    <maxEndingTime>2023-05-08T12:00:00</maxEndingTime>
+    <maxEndingTime>2024-08-22T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>47</Id>
@@ -476,9 +476,9 @@
     <Address>Ramat Efal, HaRakevet St 8</Address>
     <Latitude>32.18</Latitude>
     <Longitude>34.935</Longitude>
-    <OpeningTime>2023-08-28T00:00:00</OpeningTime>
+    <OpeningTime>2023-07-06T00:00:00</OpeningTime>
     <Description>Offering advice on how to obtain identity documents and replacement papers after losing them.</Description>
-    <maxEndingTime>2023-08-28T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-07-06T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>48</Id>
@@ -486,9 +486,9 @@
     <Address>Tel Mond, HaGoren St 15</Address>
     <Latitude>31.861</Latitude>
     <Longitude>34.851</Longitude>
-    <OpeningTime>2022-10-09T00:00:00</OpeningTime>
+    <OpeningTime>2022-04-09T00:00:00</OpeningTime>
     <Description>Providing legal counseling to evacuees who need to resolve employment or housing issues.</Description>
-    <maxEndingTime>2022-10-09T12:00:00</maxEndingTime>
+    <maxEndingTime>2022-04-09T12:00:00</maxEndingTime>
   </Call>
   <Call>
     <Id>49</Id>
@@ -496,8 +496,28 @@
     <Address>Mazkeret Batya, HaDekel St 3</Address>
     <Latitude>31.845</Latitude>
     <Longitude>34.836</Longitude>
-    <OpeningTime>2022-02-08T00:00:00</OpeningTime>
+    <OpeningTime>2023-12-15T00:00:00</OpeningTime>
     <Description>Helping evacuees understand the process for applying for long-term housing support.</Description>
-    <maxEndingTime>2022-02-08T12:00:00</maxEndingTime>
+    <maxEndingTime>2023-12-15T12:00:00</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>50</Id>
+    <callType>EssentialSupplies</callType>
+    <Address> David Raziel 12</Address>
+    <Latitude>32.056234</Latitude>
+    <Longitude>32.056234</Longitude>
+    <OpeningTime>2024-12-24T11:35:41</OpeningTime>
+    <Description> ghjjkk jkl</Description>
+    <maxEndingTime>2024-12-25T12:12:12</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>51</Id>
+    <callType>EssentialSupplies</callType>
+    <Address> David Raziel 12</Address>
+    <Latitude>32.056234</Latitude>
+    <Longitude>32.056234</Longitude>
+    <OpeningTime>2024-12-24T11:35:41</OpeningTime>
+    <Description> ghjjkk jkl</Description>
+    <maxEndingTime>2024-12-25T12:12:12</maxEndingTime>
   </Call>
 </ArrayOfCall>
