@@ -7,7 +7,14 @@ namespace BlImplementation;
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-
+    public void AddObserver(Action listObserver) =>
+   VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+   VolunteerManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+   VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
     public void Add(BO.Volunteer? boVolunteer)
     {
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");

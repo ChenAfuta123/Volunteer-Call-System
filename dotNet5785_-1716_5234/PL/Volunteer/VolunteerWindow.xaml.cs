@@ -1,28 +1,112 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BlApi;
+using System;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Volunteer
 {
     /// <summary>
     /// Interaction logic for VolunteerWindow.xaml
     /// </summary>
-    
-    public partial class VolunteerWindow : Window
+    public partial class VolunteerWindow : Window, INotifyPropertyChanged
     {
-        public VolunteerWindow()
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        private BO.Volunteer? _currentVolunteer;
+        public BO.Volunteer? CurrentVolunteer
+        {
+            get { return _currentVolunteer; }
+            set
+            {
+                _currentVolunteer = value;
+                OnPropertyChanged(nameof(CurrentVolunteer));
+            }
+        }
+
+        private string _buttonText = "Add"; // Default value
+        public string ButtonText
+        {
+            get => _buttonText;
+            set
+            {
+                _buttonText = value;
+                OnPropertyChanged(nameof(ButtonText));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public VolunteerWindow(int id = 0)
         {
             InitializeComponent();
+            DataContext = this; // Set DataContext for data binding
+
+            try
+            {
+                if (id == 0)
+                {
+                    CurrentVolunteer = new BO.Volunteer
+                    {
+                        Id = 0,
+                        role = BO.Role.volunteer,
+                        Name = string.Empty,
+                        PhoneNumber = string.Empty,
+                        Email = string.Empty,
+                        Address = string.Empty,
+                        Latitude = null,
+                        Longitude = null,
+                        MaxDistance = null,
+                        Active = true,
+                        distanceType = BO.DistanceType.AirDistance,
+                        TotalHandledCalls = 0,
+                        TotalCanceledCalls = 0,
+                        TotalExpiredCalls = 0,
+                        VolunteerHandledCall = null
+                    };
+                    ButtonText = "Add"; // Set initial button text
+                }
+                else
+                {
+                    CurrentVolunteer = s_bl.Volunteer.Read(id);
+                    ButtonText = "Update"; // Set button text for updates
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading volunteer data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ButtonText == "Add")
+                {
+                    s_bl.Volunteer.Add(CurrentVolunteer!);
+                    MessageBox.Show("Volunteer added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else if (ButtonText == "Update")
+                {
+                    s_bl.Volunteer.Update(CurrentVolunteer!.Id, CurrentVolunteer);
+                    MessageBox.Show("Volunteer updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
+                Close();
+            }
+            catch (BO.BlDoesNotExistsException ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
