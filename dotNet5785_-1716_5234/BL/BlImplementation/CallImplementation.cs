@@ -9,6 +9,14 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class CallImplementation : ICall
 {
+    public void AddObserver(Action listObserver) =>
+CallManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+   CallManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+   CallManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    CallManager.Observers.RemoveObserver(id, observer); //stage 5
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 

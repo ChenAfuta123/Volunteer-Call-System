@@ -3,7 +3,7 @@
 namespace BlApi;
 
 /// <summary>Interface for managing call operations.</summary>
-public interface ICall
+public interface ICall : IObservable
 {
 
     /// <summary>Add a new call.</summary>
@@ -40,4 +40,6 @@ public interface ICall
 
     /// <summary>Get open calls assigned to a specific volunteer.</summary>
     public IEnumerable<BO.OpenCallInList> OpenCallsByVolunteer(int id, BO.CallType? calltype, BO.OpenCallInListField? Sorting);
+   
+   
 }

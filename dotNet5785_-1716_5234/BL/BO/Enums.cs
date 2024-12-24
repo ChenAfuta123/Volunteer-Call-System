@@ -65,7 +65,8 @@ public enum VolunteerInListFields
     HandledCallId,
     TotalHandledCalls,
     TotalExpiredCalls,
-    TotalCanceledCalls
+    TotalCanceledCalls,
+     None
 }
 
 /// <summary>Types of end times for calls.</summary>
