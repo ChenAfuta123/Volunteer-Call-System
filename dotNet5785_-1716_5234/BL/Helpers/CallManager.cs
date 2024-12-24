@@ -22,6 +22,9 @@ internal static class CallManager
 
         return filterField switch
         {
+            BO.CallInListField.Id when filterValue is int id =>
+             calls.Where(c => c.Id.HasValue && c.Id.Value == id),
+
             BO.CallInListField.CallType when filterValue is string =>
                 calls.Where(c => c.callType.Equals(filterValue)),
 

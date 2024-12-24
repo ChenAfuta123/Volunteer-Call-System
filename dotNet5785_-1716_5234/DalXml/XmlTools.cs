@@ -111,6 +111,7 @@ static class XMLTools
         Console.WriteLine($"Config date: {dt}");
         return dt;
     }
+
     public static TimeSpan GetConfigTimeSpanVal(string xmlFileName, string elemName)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
