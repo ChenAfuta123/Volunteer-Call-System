@@ -85,8 +85,8 @@ internal class CallImplementation : ICall
 
     public IEnumerable<BO.CallInList> ReadAll(CallInListField? filter, object? obg, CallInListField? sorting)
     {
-        try
-        {
+        //try
+        //{
 
 
             var calls = _dal.Call.ReadAll();
@@ -123,11 +123,11 @@ internal class CallImplementation : ICall
             return CallsInList;
 
 
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
-        }
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
+        //}
     }
 
     public void Update(BO.Call boCall)

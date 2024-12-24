@@ -29,7 +29,7 @@ internal static class CallManager
                 calls.Where(c => c.callType.Equals(filterValue)),
 
             BO.CallInListField.CallStatus when filterValue is string =>
-               calls.Where(c => c.Id.HasValue && CallManager.Status(c.Id.Value).Equals(filterValue)),
+               calls.Where(c => c.Id.HasValue && Status(c.Id.Value).Equals(filterValue)),
 
             BO.CallInListField.OpeningTime when filterValue is DateTime =>
                 calls.Where(c => c.OpeningTime.Equals((DateTime)filterValue)),
@@ -46,7 +46,7 @@ internal static class CallManager
             BO.CallInListField.TotalAllocations when filterValue is int =>
                 calls.Where(c => c.TotalAllocations == (int)filterValue),
 
-            _ => throw new BO.BlNullPropertyException($"Unsupported or mismatched filter field")
+            _ =>calls
         };
     }
     public static void HandleOpenCall(int callId, int volunteerId, CallStatus callStatus)

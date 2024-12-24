@@ -406,19 +406,22 @@ namespace BL
              ? (CallInListField?)(input2 - 1)
              : null;
 
-            try
-            {
-                var callinlist = s_bl.Call.ReadAll(filterField, filterValue, sortField);
-                PrintCallInList(callinlist);
-            }
-            catch (BO.BlNullPropertyException ex)
-            {
-                Console.WriteLine(ex);
-            }
-            catch (BO.BlValidationException ex)
-            {
-                Console.WriteLine(ex);
-            }
+            var callinlist = s_bl.Call.ReadAll(filterField, filterValue, sortField);
+            PrintCallInList(callinlist);
+
+            //try
+            //{
+            //    var callinlist = s_bl.Call.ReadAll(filterField, filterValue, sortField);
+            //    PrintCallInList(callinlist);
+            //}
+            //catch (BO.BlNullPropertyException ex)
+            //{
+            //    Console.WriteLine(ex);
+            //}
+            //catch (BO.BlValidationException ex)
+            //{
+            //    Console.WriteLine(ex);
+            //}
 
         }
 

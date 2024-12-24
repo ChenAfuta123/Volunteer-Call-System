@@ -87,11 +87,11 @@ internal class VolunteerImplementation : IVolunteer
         {
             throw new BO.BlDoesNotExistsException($"Error while reading a volunteer:", ex);
         }
-        catch (Exception ex)
-        {
-            throw new Exception($"Unexpected error while  reading a volunteer: {ex.Message}");
+        //catch (Exception ex)
+        //{
+        //    throw new Exception($"Unexpected error while  reading a volunteer: {ex.Message}");
 
-        }
+        //}
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {

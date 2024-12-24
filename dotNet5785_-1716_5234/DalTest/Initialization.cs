@@ -305,6 +305,21 @@ public static class Initialization
         create_call();
         create_assignment();
     }
+    public static void Bo()
+    {
+        s_dal = DalApi.Factory.Get;
 
+        Console.WriteLine("Resetting configuration values and clearing lists...");
+
+        /// <summary>
+        /// Resets configuration values to defaults and deletes all existing entries in volunteers, assignments, and calls lists.
+        /// </summary>
+        s_dal.ResetDB();
+
+        Console.WriteLine("Reset Configuration values and List values...");
+        create_volunteer();
+        create_call();
+        create_assignment();
+    }
 }
 
