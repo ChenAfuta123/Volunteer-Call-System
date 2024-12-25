@@ -5,39 +5,115 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerWindow" Height="600" Width="800" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Title="Volunteer Management" Height="945" Width="951"
+        Background="#F7F9FC"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
-    <Grid Margin="0,-1,0,1">
-        <TextBox Grid.Row="0" HorizontalAlignment="Left" Height="NaN" Margin="138,68,0,0"
-            Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"
-            VerticalAlignment="Top" Width="120" />
+    <Window.Resources>
+        <!-- Style for TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,119,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- Style for Label -->
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#2D3748"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,170,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- Style for Button -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#007BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="50"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,221,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- Style for ComboBox -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+    </Window.Resources>
 
-        <ComboBox HorizontalAlignment="Left" Height="NaN" Margin="138,270,0,0"
-            ItemsSource="{Binding RolesCollection}"
-            SelectedValue="{Binding CurrentVolunteer.role, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            VerticalAlignment="Top" Width="120" />
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <TextBox Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,320,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- Header -->
+        <TextBlock Text="פרטי מתנדב" FontSize="24" FontWeight="Bold" Foreground="#007BFF" Margin="0,0,0,20" Grid.Row="0" HorizontalAlignment="Center"/>
 
-        <Label Content="ID:" HorizontalAlignment="Left" Margin="22,68,0,0" VerticalAlignment="Top" />
-        <Label Content="Name:" HorizontalAlignment="Left" Margin="22,119,0,0" VerticalAlignment="Top" />
-        <Label Content="Phone:" HorizontalAlignment="Left" Margin="22,170,0,0" VerticalAlignment="Top" />
-        <Label Content="Email:" HorizontalAlignment="Left" Margin="22,221,0,0" VerticalAlignment="Top" />
-        <Label Content="Role:" HorizontalAlignment="Left" Margin="22,270,0,0" VerticalAlignment="Top" />
-        <Label Content="Address:" HorizontalAlignment="Left" Margin="22,320,0,0" VerticalAlignment="Top" />
+        <!-- Volunteer Details -->
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="תעודת זהות:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Id, Mode=TwoWay}"/>
+            </StackPanel>
 
-        <Button Content="{Binding ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Left" Margin="174,400,0,0"
-            VerticalAlignment="Top" Width="48" Height="15" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="שם מלא:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Name, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="מספר טלפון:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="כתובת דואל:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Email, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="תפקיד:" Width="120"/>
+                <ComboBox ItemsSource="{Binding RolesCollection}" SelectedValue="{Binding CurrentVolunteer.role, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="כתובת:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Address, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="מרחק מקסימלי:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.MaxDistance, Mode=TwoWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="סיסמה:" Width="120"/>
+                <PasswordBox x:Name="PasswordBox" VerticalAlignment="Top" Width="200" PasswordChanged="PasswordBox_PasswordChanged" Height="38"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="פעיל:" Width="120"/>
+                <CheckBox Content="Active" IsChecked="{Binding CurrentVolunteer.Active, Mode=TwoWay}" Width="110" Checked="CheckBox_Checked"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="סוג מרחק:" Width="120"/>
+                <ComboBox ItemsSource="{Binding DistanceTypesCollection}" SelectedValue="{Binding CurrentVolunteer.distanceType, Mode=TwoWay}" />
+            </StackPanel>
+
+            <Button Content="הוספה" Click="btnAddUpdate_Click" HorizontalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -20,35 +20,41 @@ internal static class CallManager
             return calls;
         }
 
-        return filterField switch
+
+        IEnumerable<BO.CallInList> filteredCalls = filterField switch
         {
             BO.CallInListField.Id when filterValue is int id =>
-             calls.Where(c => c.Id.HasValue && c.Id.Value == id),
+                calls.Where(c => c.Id.HasValue && c.Id.Value == id),
 
-            BO.CallInListField.CallType when filterValue is string =>
-                calls.Where(c => c.callType.Equals(filterValue)),
+            BO.CallInListField.CallType when filterValue is string callType =>
+                calls.Where(c => c.callType.ToString().Equals(callType, StringComparison.OrdinalIgnoreCase)),
 
-            BO.CallInListField.CallStatus when filterValue is string =>
-               calls.Where(c => c.Id.HasValue && Status(c.Id.Value).Equals(filterValue)),
+            BO.CallInListField.CallStatus when filterValue is string status =>
+                calls.Where(c =>c.callStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase)),
 
-            BO.CallInListField.OpeningTime when filterValue is DateTime =>
-                calls.Where(c => c.OpeningTime.Equals((DateTime)filterValue)),
+            BO.CallInListField.OpeningTime when filterValue is DateTime openingTime =>
+                calls.Where(c => c.OpeningTime.Equals(openingTime)),
 
-            BO.CallInListField.RemainingCallTime when filterValue is TimeSpan =>
-                calls.Where(c => c.RemainingCallTime.Equals((TimeSpan)filterValue)),
+            BO.CallInListField.RemainingCallTime when filterValue is TimeSpan remainingTime =>
+                calls.Where(c => c.RemainingCallTime.Equals(remainingTime)),
 
-            BO.CallInListField.LastVolunteerName when filterValue is string =>
-                calls.Where(c => c.LastVolunteerName != null && c.LastVolunteerName.Equals(filterValue)),
+            BO.CallInListField.LastVolunteerName when filterValue is string volunteerName =>
+                calls.Where(c => c.LastVolunteerName != null && c.LastVolunteerName.Equals(volunteerName, StringComparison.OrdinalIgnoreCase)),
 
-            BO.CallInListField.TotalHandlingTime when filterValue is TimeSpan =>
-                calls.Where(c => c.TotalHandlingTime.Equals((TimeSpan)filterValue)),
+            BO.CallInListField.TotalHandlingTime when filterValue is TimeSpan handlingTime =>
+                calls.Where(c => c.TotalHandlingTime.Equals(handlingTime)),
 
-            BO.CallInListField.TotalAllocations when filterValue is int =>
-                calls.Where(c => c.TotalAllocations == (int)filterValue),
+            BO.CallInListField.TotalAllocations when filterValue is int totalAllocations =>
+                calls.Where(c => c.TotalAllocations == totalAllocations),
 
-            _ =>calls
+            _ => calls
         };
+
+        return filteredCalls;
     }
+
+
+
     public static void HandleOpenCall(int callId, int volunteerId, CallStatus callStatus)
     {
 

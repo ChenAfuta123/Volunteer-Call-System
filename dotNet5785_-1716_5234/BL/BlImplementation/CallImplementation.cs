@@ -90,29 +90,33 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
 
 
     }
-
     public IEnumerable<BO.CallInList> ReadAll(CallInListField? filter, object? obg, CallInListField? sorting)
     {
-        //try
-        //{
-
-
+      
+            
             var calls = _dal.Call.ReadAll();
-            IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
+
+            
 
             if (calls == null || !calls.Any())
             {
-                throw new BO.BlNullPropertyException("No calls found in the database.");
+                throw new BO.BlNullPropertyException("לא נמצאו קריאות בבסיס הנתונים.");
             }
-            if (filter != null)
+
+            IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
+
+            // סינון
+            if (filter != null && obg != null)
             {
                 CallsInList = CallManager.FilterCalls(CallsInList, filter, obg);
             }
+
+            // מיון
             if (sorting == null)
             {
                 CallsInList = CallsInList.OrderBy(c => c.Id);
             }
-            else if (sorting != null)
+            else
             {
                 CallsInList = sorting switch
                 {
@@ -125,17 +129,13 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
                     CallInListField.TotalHandlingTime => CallsInList.OrderBy(c => c.TotalHandlingTime),
                     CallInListField.CallStatus => CallsInList.OrderBy(c => c.callStatus),
                     CallInListField.TotalAllocations => CallsInList.OrderBy(c => c.TotalAllocations),
-                    _ => CallsInList.OrderBy(c => c.Id) // מיון ברירת מחדל לפי Id
+                    _ => CallsInList.OrderBy(c => c.Id)
                 };
             }
+
             return CallsInList;
-
-
-        //}
-        //catch (Exception ex)
-        //{
-        //    throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
-        //}
+        
+       
     }
 
     public void Update(BO.Call boCall)

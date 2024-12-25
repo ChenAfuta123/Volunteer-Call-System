@@ -20,34 +20,29 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        //public DateTime CurrentTime
+        //{
+        //    get { return (DateTime)GetValue(CurrentTimeProperty); }
+        //    set { SetValue(CurrentTimeProperty, value); }
+        //}
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
             set { SetValue(CurrentTimeProperty, value); }
         }
+        public static readonly DependencyProperty CurrentTimeProperty =
+            DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+
         public TimeSpan RiskRange
         {
             get { return (TimeSpan)GetValue(RiskRangeProperty); }
             set { SetValue(RiskRangeProperty, value); }
         }
-        //public IEnumerable<BO.CallInList> CallList
-        //{
-        //    get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
-        //    set { SetValue(CallListProperty, value); }
-        //}
-        //public static readonly DependencyProperty CallListProperty =
-        //    DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty CurrentTimeProperty =
-        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
-
-     
          public static readonly DependencyProperty RiskRangeProperty =
         DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
         public MainWindow()
         {
             InitializeComponent();
-           
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {

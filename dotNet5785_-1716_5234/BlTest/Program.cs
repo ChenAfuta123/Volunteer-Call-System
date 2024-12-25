@@ -391,12 +391,12 @@ namespace BL
             }
             CallInListField? filterField = int.TryParse(Console.ReadLine(), out int input1)
      ? (CallInListField?)(input1 - 1)
-     : null; 
+     : null;
 
             Console.Write("Enter a value to filter by (or leave empty to skip): ");
             var filterValue = Console.ReadLine();
 
-       
+
             Console.WriteLine("Select a field to sort by:");
             foreach (var value in Enum.GetValues(typeof(CallInListField)))
             {
@@ -424,6 +424,8 @@ namespace BL
             //}
 
         }
+
+
 
         private static void ReadSpecificCall()
         {

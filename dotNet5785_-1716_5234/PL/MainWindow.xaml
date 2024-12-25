@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    
+        Title="MainWindow" Height="523" Width="864">
+
+    <Window.Background>
+        <SolidColorBrush Color="White"/>
+    </Window.Background>
+
     <Grid>
         <!-- Define rows -->
         <Grid.RowDefinitions>
@@ -15,7 +19,6 @@
             <RowDefinition Height="*" />
             <!-- Configuration Variables Area -->
         </Grid.RowDefinitions>
-
         <!-- System Clock Area -->
         <Grid Grid.Row="0" Margin="10,10,10,10">
             <Grid.RowDefinitions>
@@ -30,25 +33,24 @@
                 <ColumnDefinition Width="*" />
                 <!-- Buttons -->
             </Grid.ColumnDefinitions>
-
-            <!-- System Clock -->
-
+            <Label Content="{Binding CurrentTime}" 
+  FontSize="35" 
+  HorizontalAlignment="Center" 
+  VerticalAlignment="Center" 
+  Foreground="Black"/>
             <!-- Time Advancement Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="310,0,0,0" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="3">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="31,60,0,0" Grid.RowSpan="3" Grid.Row="1">
                 <!-- Advance the clock by one minute -->
-                <Button Content="Add One Minute"  Click="btnAddOneMinute_Click" Margin="5"/>
+                <Button Content="הוסף דקה" Click="btnAddOneMinute_Click" Margin="5" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
                 <!-- Advance the clock by one hour -->
-                <Button Content="Add One Hour"  Click="btnAddOneHour_Click" Margin="5"/>
+                <Button Content="הוסף שעה" Click="btnAddOneHour_Click" Margin="5" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
                 <!-- Advance the clock by one day -->
-                <Button Content="Add One Day"  Click="btnAddOneDay_Click" Margin="5"/>
+                <Button Content="הוסף יום" Click="btnAddOneDay_Click" Margin="5" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
                 <!-- Advance the clock by one month -->
-                <Button Content="Add One Month"  Click="btnAddOneMonth_Click" Margin="5"/>
+                <Button Content="הוסף חודש" Click="btnAddOneMonth_Click" Margin="5" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
                 <!-- Advance the clock by one year -->
-                <Button Content="Add One Year"  Click="btnAddOneYear_Click" Margin="5"/>
+                <Button Content="הוסף שנה" Click="btnAddOneYear_Click" Margin="5" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
             </StackPanel>
-            <Label Content="{Binding CurrentTime}"  Grid.Column="0" FontSize="35"   Foreground="Black"   HorizontalAlignment="Left" Margin="5,4,0,4" Background="{x:Null}" Grid.Row="2" Width="72">
-                <!-- Display the current system clock -->
-            </Label>
         </Grid>
 
         <!-- Configuration Variables Area -->
@@ -62,32 +64,23 @@
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
                 <!-- TextBox for editing the configuration variable -->
                 <TextBox x:Name="txtTimeSpan" Width="153" Margin="5" />
-
-                <Button Content="Update" Click="btRiskRangeUpdate_Click" Margin="5" />
-                <!-- Button to update the configuration variable -->
-                <Label Content="{Binding RiskRange}"  Grid.Column="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Background="{x:Null}">
-                    <!-- Display the current system clock -->
-                </Label>
-
+                <Button Content="עדכון" Click="btRiskRangeUpdate_Click" Margin="5" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
+                <!-- Label for displaying RiskRange -->
+                <Label Content="{Binding RiskRange}" Grid.Column="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Background="Transparent"/>
             </StackPanel>
 
             <!-- Additional Buttons -->
             <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
                 <!-- Button to open the list view -->
-                <Button Content="Open List View" Margin="5" Width="200" />
+                <Button Content="פתח תצוגת רשימה" Margin="5" Width="200" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
                 <!-- Button to initialize the database -->
-                <Button Content="Initialize Database" Click="btnInitializeDB_Click" Margin="5" Width="200" />
+                <Button Content="אתחול מסד נתונים" Click="btnInitializeDB_Click" Margin="5" Width="200" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
                 <!-- Button to reset the database -->
-                <Button Content="Reset Database" Click="btnResetDB_Click" Margin="5" Width="200" />
-                <!-- כפתור לפתיחת מסך תצוגת רשימת קורסים -->
-                <Button Content="Handle Calls" Click="btnCalls_Click" Width="150" Height="30" />
-
-                <Button Content="Handle Volunteers" Click="btnVolunteers_Click" Width="150" Height="30" />
-
-                <!--<ComboBox ItemsSource="{Binding Source={StaticResource CallsCollectionKey}}" SelectedValue="{Binding Path=Call, Mode=TwoWay}"
-
-                   Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="ComboBox_SelectionChanged"/>-->
-
+                <Button Content="איפוס מסד נתונים" Click="btnResetDB_Click" Margin="5" Width="200" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
+                <!-- Button for handling calls -->
+                <Button Content="טיפול בשיחות" Click="btnCalls_Click" Width="150" Height="30" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
+                <!-- Button for handling volunteers -->
+                <Button Content="טיפול בהתנדבות" Click="btnVolunteers_Click" Width="150" Height="30" Background="#87CEEB" Foreground="Black" BorderBrush="Transparent"/>
             </StackPanel>
         </Grid>
     </Grid>
