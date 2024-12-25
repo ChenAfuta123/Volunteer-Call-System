@@ -160,7 +160,15 @@ namespace BL
             try
             {
                 Console.Write("Filter by active volunteers? (true/false): ");
-                bool? filterByActive = bool.Parse(Console.ReadLine()!);
+                string? input = Console.ReadLine();
+
+                // אם הקלט הוא "false" נשלח NULL
+                bool? filterByActive = input?.ToLower() switch
+                {
+                    "true" => true,
+                    "false" => null,
+                    _ => throw new FormatException("Invalid input. Please enter 'true' or 'false'.")
+                };
 
                 Console.WriteLine("Choose a field to sort the list by:");
                 foreach (var field in Enum.GetValues(typeof(VolunteerInListFields)))
@@ -172,27 +180,36 @@ namespace BL
                 {
                     Console.Write("Enter the number corresponding to the field: ");
                     VolunteerInListFields? sortField = (VolunteerInListFields)Enum.Parse(typeof(VolunteerInListFields), Console.ReadLine()!);
+
+                    Console.WriteLine($"Filtering by active: {filterByActive}");
+                    Console.WriteLine($"Sorting by field: {sortField}");
+
                     var volunteerList = s_bl.Volunteer.ReadAll(filterByActive, sortField);
                     PrintvolunteerInList(volunteerList);
                 }
                 catch (BO.BlNullPropertyException ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine($"Business logic exception: {ex.Message}");
                 }
                 catch (BO.BlDoesNotExistsException ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine($"Business logic exception: {ex.Message}");
                 }
                 catch (BO.BlObjectNotFoundException ex)
                 {
-                    Console.WriteLine(ex);
+                    Console.WriteLine($"Business logic exception: {ex.Message}");
                 }
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"Input error: {ex.Message}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
             }
         }
+
 
 
         private static void ReadSpecificVolunteer()
@@ -824,7 +841,7 @@ namespace BL
             }
             else
             {
-                id = ID;
+                id = ID; 
                 role = R;
             }
             Console.Write("Enter Name: ");
@@ -910,7 +927,7 @@ namespace BL
             }
             else
             {
-                Console.WriteLine("  No assignments.");
+                Console.WriteLine("No assignments.");
             }
         }
         private static void printOpenCallInList(IEnumerable<OpenCallInList> openCallInList)

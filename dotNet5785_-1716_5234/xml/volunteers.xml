@@ -1,13 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer>
   <Volunteer>
-    <Id>328241716</Id>
+    <Id>328976543</Id>
     <DistanceType>AirDistance</DistanceType>
     <Role>volunteer</Role>
-    <Name>chen</Name>
+    <Name>kjhg</Name>
+    <PhoneNumber>0503939002</PhoneNumber>
+    <Email>kjh@gmail.com</Email>
+    <Password>$2a$11$Z9BeXNpvHNIvjvrasRd65uXbQkPgN.qOy04vYf384IYtSq3omfXYK</Password>
+    <Address>Tel Aviv, Rothschild Boulevard 1</Address>
+    <Latitude>32.0631559</Latitude>
+    <Longitude>34.7688262</Longitude>
+    <MaxDistance>45</MaxDistance>
+    <Active>true</Active>
+  </Volunteer>
+  <Volunteer>
+    <Id>328241719</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>hjk</Name>
     <PhoneNumber>0539217152</PhoneNumber>
-    <Email>cgfds@gmail.com</Email>
-    <Password>$2a$11$Gz6UPNswmMp/kPq2R9hXx.GQxe9Wr/xcshxnjlie/kcZLSgMDLWJy</Password>
+    <Email>ghjk@gmail.com</Email>
+    <Password>$2a$11$APqhepdSP1xRI4LG0wKAeuFkTkjikK.nlOS2txSVxSz0/DWFneBVi</Password>
     <Address>Tel Aviv, Rothschild Boulevard 1</Address>
     <Latitude>32.0631559</Latitude>
     <Longitude>34.7688262</Longitude>

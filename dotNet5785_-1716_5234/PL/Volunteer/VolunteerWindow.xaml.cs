@@ -5,11 +5,9 @@ using System.Windows;
 
 namespace PL.Volunteer
 {
-    /// <summary>
-    /// Interaction logic for VolunteerWindow.xaml
-    /// </summary>
     public partial class VolunteerWindow : Window, INotifyPropertyChanged
     {
+
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         private BO.Volunteer? _currentVolunteer;
@@ -22,8 +20,8 @@ namespace PL.Volunteer
                 OnPropertyChanged(nameof(CurrentVolunteer));
             }
         }
-
-        private string _buttonText = "Add"; // Default value
+       
+        private string _buttonText = "Add";
         public string ButtonText
         {
             get => _buttonText;
@@ -35,7 +33,6 @@ namespace PL.Volunteer
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -44,7 +41,7 @@ namespace PL.Volunteer
         public VolunteerWindow(int id = 0)
         {
             InitializeComponent();
-            DataContext = this; // Set DataContext for data binding
+            DataContext = this;
 
             try
             {
@@ -61,6 +58,7 @@ namespace PL.Volunteer
                         Latitude = null,
                         Longitude = null,
                         MaxDistance = null,
+                        Password = null,
                         Active = true,
                         distanceType = BO.DistanceType.AirDistance,
                         TotalHandledCalls = 0,
@@ -68,17 +66,44 @@ namespace PL.Volunteer
                         TotalExpiredCalls = 0,
                         VolunteerHandledCall = null
                     };
-                    ButtonText = "Add"; // Set initial button text
+                    ButtonText = "Add";
                 }
                 else
                 {
                     CurrentVolunteer = s_bl.Volunteer.Read(id);
-                    ButtonText = "Update"; // Set button text for updates
+                    ButtonText = "Update";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading volunteer data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void RefreshVolunteer()
+        {
+            int id = CurrentVolunteer!.Id;
+            CurrentVolunteer = null;
+            CurrentVolunteer = s_bl.Volunteer.Read(id);
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            if (CurrentVolunteer!.Id != 0)
+            {
+                s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, RefreshVolunteer);
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+            {
+                s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, RefreshVolunteer);
             }
         }
 
@@ -90,11 +115,13 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.Add(CurrentVolunteer!);
                     MessageBox.Show("Volunteer added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 }
                 else if (ButtonText == "Update")
                 {
                     s_bl.Volunteer.Update(CurrentVolunteer!.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 }
 
                 Close();
@@ -106,6 +133,14 @@ namespace PL.Volunteer
             catch (Exception ex)
             {
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is VolunteerWindow window)
+            {
+                window.CurrentVolunteer!.Password = PasswordBox.Password;
             }
         }
     }

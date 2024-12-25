@@ -1,13 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Call>
-    <Id>0</Id>
-    <callType>EssentialSupplies</callType>
-    <Address> David Raziel 12</Address>
-    <Latitude>32.056234</Latitude>
-    <Longitude>32.056234</Longitude>
-    <OpeningTime>2024-12-24T11:02:47</OpeningTime>
-    <Description> ghjjkk jkl</Description>
-    <maxEndingTime>2024-12-25T12:12:12</maxEndingTime>
-  </Call>
-</ArrayOfCall>
+<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
