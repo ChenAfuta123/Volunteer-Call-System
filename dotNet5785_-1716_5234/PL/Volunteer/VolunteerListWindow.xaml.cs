@@ -45,7 +45,7 @@ namespace PL.Volunteer
                 if (_volunteerFilter != value)
                 {
                     _volunteerFilter = value;
-                    /* OnPropertyChanged(); */// Notify the UI about the change
+                   /* OnPropertyChanged(); */// Notify the UI about the change
                     queryVolunteerList(); // Refresh the list based on the new filter
                 }
             }
@@ -59,7 +59,7 @@ namespace PL.Volunteer
                 if (_volunteerSort != value)
                 {
                     _volunteerSort = value;
-                    /*  OnPropertyChanged();*/ // Notify the UI about the change
+                  /*  OnPropertyChanged();*/ // Notify the UI about the change
                     queryVolunteerList(); // Refresh the list based on the new sort
                 }
             }

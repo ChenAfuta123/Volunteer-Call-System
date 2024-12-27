@@ -38,7 +38,7 @@
 
             <!--Sorting-->
             <Label Grid.Row="0" Grid.Column="0" Margin="10" Content="מיון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
+           <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
           ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
           SelectedValue="{Binding VolunteerSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
           SelectionChanged="ComboBox_SelectionChanged"
