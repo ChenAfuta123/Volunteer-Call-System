@@ -39,16 +39,20 @@
             <!--Sorting-->
             <Label Grid.Row="0" Grid.Column="0" Margin="10" Content="מיון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
             <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
-                      ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
-                      Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
-                      FontFamily="{DynamicResource HebrewFont}"/>
+          ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
+          SelectedValue="{Binding VolunteerSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+          SelectionChanged="ComboBox_SelectionChanged"
+          Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+          FontFamily="{DynamicResource HebrewFont}"/>
 
             <!--Filtering-->
             <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="סינון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
             <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
-                      ItemsSource="{Binding Source={StaticResource IsActiveFilterCollectionKey}}" 
-                      Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
-                      FontFamily="{DynamicResource HebrewFont}"/>
+          ItemsSource="{Binding Source={StaticResource IsActiveFilterCollectionKey}}" 
+          SelectedValue="{Binding VolunteerFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+          SelectionChanged="ComboBox_FilterSelectionChanged"
+          Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+          FontFamily="{DynamicResource HebrewFont}"/>
         </Grid>
 
         <!--DataGrid Section-->

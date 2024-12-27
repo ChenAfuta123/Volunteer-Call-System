@@ -20,11 +20,6 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        //public DateTime CurrentTime
-        //{
-        //    get { return (DateTime)GetValue(CurrentTimeProperty); }
-        //    set { SetValue(CurrentTimeProperty, value); }
-        //}
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -36,30 +31,42 @@ namespace PL
             get { return (TimeSpan)GetValue(RiskRangeProperty); }
             set { SetValue(RiskRangeProperty, value); }
         }
-         public static readonly DependencyProperty RiskRangeProperty =
-        DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
+        //public IEnumerable<BO.CallInList> CallList
+        //{
+        //    get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
+        //    set { SetValue(CallListProperty, value); }
+        //}
+        //public static readonly DependencyProperty CallListProperty =
+        //    DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty CurrentTimeProperty =
+        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+
+
+        public static readonly DependencyProperty RiskRangeProperty =
+       DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
         public MainWindow()
         {
             InitializeComponent();
-          
+
 
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-              
+
                 CurrentTime = s_bl.Admin.getClockTime();
 
-                var configValues = s_bl.Admin.getRiskTimeRange(); 
-               
+                var configValues = s_bl.Admin.getRiskTimeRange();
+
 
                 s_bl.Admin.AddClockObserver(clockObserver);
 
-            
+
                 s_bl.Admin.AddConfigObserver(configObserver);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -71,12 +78,12 @@ namespace PL
             try
             {
 
-              
+
                 s_bl.Admin.RemoveClockObserver(clockObserver);
 
                 s_bl.Admin.RemoveConfigObserver(configObserver);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -88,7 +95,7 @@ namespace PL
             try
             {
                 CurrentTime = s_bl.Admin.getClockTime();
-               
+
             }
             catch (Exception ex)
             {
@@ -102,7 +109,7 @@ namespace PL
             {
                 // כאן ניתן לקרוא למתודה רלוונטית מה-BL לעדכון משתני התצורה
                 var configValues = s_bl.Admin.getRiskTimeRange();
-               
+
             }
             catch (Exception ex)
             {
@@ -135,19 +142,19 @@ namespace PL
             s_bl.Admin.AdvanceClock(BO.TimeUnit.YEAR);
 
         }
-     
+
         private void btRiskRangeUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                
+
                 if (TimeSpan.TryParse(txtTimeSpan.Text, out TimeSpan timeSpanValue))
                 {
-                    
+
                     s_bl.Admin.setRiskTimeRange(timeSpanValue);
                     RiskRange = s_bl.Admin.getRiskTimeRange();
-                    
-                } 
+
+                }
                 else
                 {
                     MessageBox.Show("Invalid TimeSpan format. Please use HH:mm:ss.");
@@ -177,22 +184,22 @@ namespace PL
             {
                 //try
                 //{
-                    // שינוי סמן העכבר לשעון חול
-                    Mouse.OverrideCursor = Cursors.Wait;
+                // שינוי סמן העכבר לשעון חול
+                Mouse.OverrideCursor = Cursors.Wait;
 
-                    // סגירת כל החלונות הפתוחים פרט לחלון הנוכחי
-                    foreach (Window window in Application.Current.Windows)
+                // סגירת כל החלונות הפתוחים פרט לחלון הנוכחי
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window != this)
                     {
-                        if (window != this)
-                        {
-                            window.Close();
-                        }
+                        window.Close();
                     }
+                }
 
-                    // קריאה למתודה לאתחול בסיס הנתונים
-                    s_bl.Admin.setDatabase();
+                // קריאה למתודה לאתחול בסיס הנתונים
+                s_bl.Admin.setDatabase();
 
-                    MessageBox.Show("Database initialized successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Database initialized successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 //}
                 //catch (Exception ex)
                 //{
@@ -200,8 +207,8 @@ namespace PL
                 //}
                 //finally
                 //{
-                    // החזרת סמן העכבר לברירת המחדל
-                    Mouse.OverrideCursor = null;
+                // החזרת סמן העכבר לברירת המחדל
+                Mouse.OverrideCursor = null;
                 //}
             }
 
@@ -256,7 +263,7 @@ namespace PL
         //    s_bl?.Call.ReadAll(null,null,null)! : s_bl?.Call.ReadAll(null, BO.CallInListField.Id, Call)!;
 
         //}
-      
+
 
     }
 }

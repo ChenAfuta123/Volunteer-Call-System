@@ -18,6 +18,7 @@ namespace PL.Volunteer
             InitializeComponent();
         }
 
+
         // Property to bind Volunteer List
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
@@ -33,8 +34,37 @@ namespace PL.Volunteer
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
         // Filter variable
-        private BO.VolunteerInListFields? VolunteerSort { get; set; } = null;
-        private BO.IsActiveFilter? VolunteerFilter { get; set; } = IsActiveFilter.None;
+        //private BO.VolunteerInListFields? VolunteerSort { get; set; } = null;
+        //private BO.IsActiveFilter? VolunteerFilter { get; set; } = IsActiveFilter.None;
+        private BO.IsActiveFilter? _volunteerFilter = BO.IsActiveFilter.None;
+        public BO.IsActiveFilter? VolunteerFilter
+        {
+            get => _volunteerFilter;
+            set
+            {
+                if (_volunteerFilter != value)
+                {
+                    _volunteerFilter = value;
+                    /* OnPropertyChanged(); */// Notify the UI about the change
+                    queryVolunteerList(); // Refresh the list based on the new filter
+                }
+            }
+        }
+        private BO.VolunteerInListFields? _volunteerSort;
+        public BO.VolunteerInListFields? VolunteerSort
+        {
+            get => _volunteerSort;
+            set
+            {
+                if (_volunteerSort != value)
+                {
+                    _volunteerSort = value;
+                    /*  OnPropertyChanged();*/ // Notify the UI about the change
+                    queryVolunteerList(); // Refresh the list based on the new sort
+                }
+            }
+        }
+
 
 
         // Query the volunteer list
@@ -45,12 +75,15 @@ namespace PL.Volunteer
                 BO.IsActiveFilter.None => null,
                 BO.IsActiveFilter.Active => true,
                 BO.IsActiveFilter.Not_Active => false,
-              _ => null // Handle any unexpected cases
+                _ => null // Handle any unexpected cases
             };
             VolunteerList = s_bl?.Volunteer.ReadAll(isActiveFilter, VolunteerSort)!;
-           
-        }
 
+        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryVolunteerList(); // Refresh the list whenever a filter or sort option changes
+        }
         // Observer method for volunteer list
         private void volunteerListObserver()
         {
@@ -95,6 +128,10 @@ namespace PL.Volunteer
         {
             // Handle selection changed event if needed
         }
+        private void ComboBox_FilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryVolunteerList(); // Refresh the list whenever the filter changes
+        }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -119,11 +156,6 @@ namespace PL.Volunteer
                     MessageBox.Show($"Error: The item cannot be deleted.\nDetails: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-        }
-
-        private void DataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-             
         }
     }
 }
