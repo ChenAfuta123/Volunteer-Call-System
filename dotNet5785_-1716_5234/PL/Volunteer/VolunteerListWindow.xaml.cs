@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,12 +31,21 @@ namespace PL.Volunteer
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
         // Filter variable
-        private BO.VolunteerInListFields? VolunteerFilter { get; set; } = null;
+        private BO.VolunteerInListFields? VolunteerSort { get; set; } = null;
+        private BO.IsActiveFilter? VolunteerFilter { get; set; } = IsActiveFilter.None;
+
 
         // Query the volunteer list
         private void queryVolunteerList()
         {
-            VolunteerList = s_bl?.Volunteer.ReadAll(null, VolunteerFilter)!;
+            bool? isActiveFilter = VolunteerFilter switch
+            {
+                BO.IsActiveFilter.None => null,
+                BO.IsActiveFilter.Active => true,
+                BO.IsActiveFilter.Not_Active => false,
+              _ => null // Handle any unexpected cases
+            };
+            VolunteerList = s_bl?.Volunteer.ReadAll(isActiveFilter, VolunteerSort)!;
            
         }
 

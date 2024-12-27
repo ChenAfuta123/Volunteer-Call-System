@@ -1,31 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer>
   <Volunteer>
-    <Id>328976543</Id>
+    <Id>223456796</Id>
     <DistanceType>AirDistance</DistanceType>
     <Role>volunteer</Role>
-    <Name>kjhg</Name>
+    <Name>David Cohen</Name>
+    <PhoneNumber>0529452458</PhoneNumber>
+    <Email>d@gmail.com</Email>
+    <Password>$2a$11$wkUvYoxI9OBiFx4aRlggfOAdDh3gZfMwPwUcJCyCzPQY3EbOynpz6</Password>
+    <Address>Jaffa Street 101, Jerusalem</Address>
+    <Latitude>31.498972</Latitude>
+    <Longitude>35.051057</Longitude>
+    <MaxDistance>49</MaxDistance>
+    <Active>true</Active>
+  </Volunteer>
+  <Volunteer>
+    <Id>325874634</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>Dina Sasson</Name>
+    <PhoneNumber>0525381648</PhoneNumber>
+    <Email>d@gmail.com</Email>
+    <Password>$2a$11$I/eZaWTqX/APYZgcI9RZsejNN6XQsuyxPw5L2ts3QQJbnCLwHpacK</Password>
+    <Address>Moshe Dayan Street 1, Petah Tikva</Address>
+    <Latitude>32.0919411</Latitude>
+    <Longitude>34.8619466</Longitude>
+    <MaxDistance>12</MaxDistance>
+    <Active>true</Active>
+  </Volunteer>
+  <Volunteer>
+    <Id>328241715</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>Hallel Ochana</Name>
     <PhoneNumber>0503939002</PhoneNumber>
-    <Email>kjh@gmail.com</Email>
-    <Password>$2a$11$Z9BeXNpvHNIvjvrasRd65uXbQkPgN.qOy04vYf384IYtSq3omfXYK</Password>
-    <Address>Tel Aviv, Rothschild Boulevard 1</Address>
-    <Latitude>32.0631559</Latitude>
-    <Longitude>34.7688262</Longitude>
+    <Email>hallel@gmail.com</Email>
+    <Password>$2a$11$AsFPd0DC8TkuDRCWpUjxL.HtUzbKtMP/n/HwvPaa3V7Qk4BjRn2fS</Password>
+    <Address>Dizengoff Street 50, Tel Aviv</Address>
+    <Latitude>32.075449</Latitude>
+    <Longitude>34.775321</Longitude>
     <MaxDistance>45</MaxDistance>
     <Active>true</Active>
   </Volunteer>
   <Volunteer>
-    <Id>328241719</Id>
+    <Id>328241716</Id>
     <DistanceType>AirDistance</DistanceType>
     <Role>volunteer</Role>
-    <Name>hjk</Name>
+    <Name>Chen Afuta</Name>
     <PhoneNumber>0539217152</PhoneNumber>
-    <Email>ghjk@gmail.com</Email>
-    <Password>$2a$11$APqhepdSP1xRI4LG0wKAeuFkTkjikK.nlOS2txSVxSz0/DWFneBVi</Password>
+    <Email>chen@gmail.com</Email>
+    <Password>$2a$11$../tKodx7I8vrzoQypp1x.c0e.lRyvvx9LwImbEkDzqAYZ3PdHSuO</Password>
     <Address>Tel Aviv, Rothschild Boulevard 1</Address>
     <Latitude>32.0631559</Latitude>
     <Longitude>34.7688262</Longitude>
-    <MaxDistance>45</MaxDistance>
-    <Active>true</Active>
+    <MaxDistance>15</MaxDistance>
+    <Active>false</Active>
+  </Volunteer>
+  <Volunteer>
+    <Id>324587659</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>Yossi Levi</Name>
+    <PhoneNumber>0506543228</PhoneNumber>
+    <Email>y@gmail.com</Email>
+    <Password>$2a$11$s9CgVikM4fsKVTAJN2EKwun.CeMrlk.SevrK3oun.pvQHklSR/ppa</Password>
+    <Address>HaNasi Street 100, Ra'anana</Address>
+    <Latitude>32.1836</Latitude>
+    <Longitude>34.87386</Longitude>
+    <MaxDistance>67</MaxDistance>
+    <Active>false</Active>
   </Volunteer>
 </ArrayOfVolunteer>

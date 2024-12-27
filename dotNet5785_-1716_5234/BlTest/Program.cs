@@ -159,14 +159,15 @@ namespace BL
         {
             try
             {
-                Console.Write("Filter by active volunteers? (true/false): ");
+                Console.Write("Filter by active volunteers? (true/false/none): ");
                 string? input = Console.ReadLine();
 
                 // אם הקלט הוא "false" נשלח NULL
                 bool? filterByActive = input?.ToLower() switch
                 {
                     "true" => true,
-                    "false" => null,
+                    "false" => false,
+                    "none"=>null,
                     _ => throw new FormatException("Invalid input. Please enter 'true' or 'false'.")
                 };
 

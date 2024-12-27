@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{F0726BB7-52E
 		xml\calls.xml = xml\calls.xml
 		xml\dal-config.xml = xml\dal-config.xml
 		xml\data-config.xml = xml\data-config.xml
+		BL\BlApi\IVolunteer.cs = BL\BlApi\IVolunteer.cs
 		xml\volunteers.xml = xml\volunteers.xml
 	EndProjectSection
 EndProject
@@ -34,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{FC7A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlTest", "BlTest\BlTest.csproj", "{32AB7B7D-3A82-4645-9709-F750C225DD54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{E21379B6-A761-40B6-B7DB-8509200DA4A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{E21379B6-A761-40B6-B7DB-8509200DA4A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -146,17 +146,27 @@ internal static class VolunteerManager
 
             throw new BO.BlValidationException("Error validating volunteer details: " + ex.Message);
         }
-    } 
+    }
     private static bool IsValidName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
             return false;
+
+        // Check length constraints
         if (name.Length < 2 || name.Length > 12)
             return false;
-        if (!name.All(c => char.IsLetter(c)))
+
+        // Ensure only letters and spaces are allowed
+        if (!name.All(c => char.IsLetter(c) || c == ' '))
             return false;
+
+        // Ensure no leading, trailing, or multiple consecutive spaces
+        if (name.StartsWith(' ') || name.EndsWith(' ') || name.Contains("  "))
+            return false;
+
         return true;
     }
+
     private static bool IsValidPhoneNumber(string phoneNumber)
     {
 

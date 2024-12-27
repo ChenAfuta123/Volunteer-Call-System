@@ -1,9 +1,10 @@
 ﻿namespace DalTest;
 using DalApi;
 using DO;
+
 public static class Initialization
 {
-   
+
     private static IDal? s_dal;
 
     private static readonly Random s_rand = new();
@@ -32,7 +33,7 @@ public static class Initialization
             205678901, 206789012, 207890123, 208901234, 209012345,
             210123456, 211234567, 212345678, 213456789, 214567890,
             215678901, 216789012, 217890123, 218901234, 219012345
-        }; 
+        };
 
         string[] names = {
             "Manager", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
@@ -72,7 +73,7 @@ public static class Initialization
             35.4950, 35.5724
         };
 
-      
+
         for (int i = 0; i < 20; i++)
         {
             int id = ids[i];
@@ -84,12 +85,12 @@ public static class Initialization
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(1, 50);
             Role role = (i == 0) ? Role.volunteer : Role.manager;
-            DistanceType distanceType = (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);
+            DistanceType distanceType = DistanceType.AirDistance;/* (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);*/
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
 
-            Volunteer newVolunteer = new(id, distanceType, role,name, phoneNumber, email, null, address, latitude, longitude, maxDistance, true);
+            Volunteer newVolunteer = new(id, distanceType, role, name, phoneNumber, email, null, address, latitude, longitude, maxDistance, true);
 
             s_dal!.Volunteer.Create(newVolunteer);
         }
@@ -144,7 +145,7 @@ public static class Initialization
             "Bringing groceries and hygiene products to shelters for immediate use.",
             "Providing nutrition packages that cater to specific dietary needs (e.g., gluten-free).",
 
-         
+
             "Helping evacuees find safe and comfortable temporary accommodation.",
             "Assisting with the relocation of evacuees' personal belongings to new housing.",
             "Coordinating transport for evacuees from temporary shelters to more secure locations.",
@@ -156,7 +157,7 @@ public static class Initialization
             "Helping evacuees navigate local housing systems and rental assistance.",
             "Providing relocation assistance for evacuees needing to move to a permanent home.",
 
-            
+
             "Providing trauma counseling services to evacuees affected by the war.",
             "Organizing recreational activities such as games and crafts for children in shelters.",
             "Offering group therapy sessions to evacuees dealing with emotional stress.",
@@ -179,7 +180,7 @@ public static class Initialization
             "Coordinating with local pharmacies to ensure medical needs are met for evacuees.",
             "Offering mental health consultations in shelters for those affected by the trauma.",
 
-          
+
             "Providing legal guidance on obtaining government assistance and financial support.",
             "Assisting evacuees in filling out forms for emergency relief and aid programs.",
             "Helping evacuees understand their rights regarding property and compensation claims.",
@@ -305,6 +306,21 @@ public static class Initialization
         create_call();
         create_assignment();
     }
+    public static void Bo()
+    {
+        s_dal = DalApi.Factory.Get;
+
+        Console.WriteLine("Resetting configuration values and clearing lists...");
+
+        /// <summary>
+        /// Resets configuration values to defaults and deletes all existing entries in volunteers, assignments, and calls lists.
+        /// </summary>
+        s_dal.ResetDB();
+
+        Console.WriteLine("Reset Configuration values and List values...");
+        create_volunteer();
+        //create_call();
+       /* create_assignment()*/;
+    }
 
 }
-
