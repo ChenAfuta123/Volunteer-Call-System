@@ -3,64 +3,125 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerWindow" Height="600" Width="800" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-    <Grid Margin="0,-1,0,1">
-        <TextBox Grid.Row="0" HorizontalAlignment="Left" Height="NaN" Margin="138,68,0,0"
-            Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"
-            VerticalAlignment="Top" Width="120" />
+        Title="חלון מתנדב" Height="600" Width="800" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Background="#FFFFFF">
+    <Window.Resources>
+        <!-- סגנון לטקסטבוקסים -->
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="BorderBrush" Value="#7AB9E7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Width" Value="250"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,119,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- סגנון לכפתורים -->
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="BorderBrush" Value="#005B99"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,170,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- סגנון לתוויות -->
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#005B99"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,221,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- סגנון לקומבובוקסים -->
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="BorderBrush" Value="#7AB9E7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Width" Value="250"/>
+        </Style>
 
-        <ComboBox HorizontalAlignment="Left" Height="NaN" Margin="138,270,0,0"
-            ItemsSource="{Binding RolesCollection}"
-            SelectedValue="{Binding CurrentVolunteer.role, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            VerticalAlignment="Top" Width="120" />
+        <!-- סגנון לצ'קבוקס -->
+        <Style TargetType="CheckBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="#005B99"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
 
-        <TextBox Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,320,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- סגנון ל-PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="BorderBrush" Value="#7AB9E7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Width" Value="250"/>
+        </Style>
+    </Window.Resources>
 
-        <TextBox Text="{Binding CurrentVolunteer.MaxDistance, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            HorizontalAlignment="Left" Height="NaN" Margin="138,370,0,0" VerticalAlignment="Top" Width="120" />
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <PasswordBox 
-            x:Name="PasswordBox"
-            HorizontalAlignment="Left" 
-            Height="NaN" 
-            Margin="138,420,0,0"
-            VerticalAlignment="Top" 
-            Width="120"
-            PasswordChanged="PasswordBox_PasswordChanged" />
+        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="ת.ז:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Id}" IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="שם:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Name}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="טלפון:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.PhoneNumber}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="אימייל:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Email}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="תפקיד:" Width="120"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}" SelectedValue="{Binding CurrentVolunteer.role}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="כתובת:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.Address}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="מרחק מקסימלי:" Width="120"/>
+                <TextBox Text="{Binding CurrentVolunteer.MaxDistance}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="סיסמה:" Width="120"/>
+                <PasswordBox x:Name="PasswordBox" PasswordChanged="PasswordBox_PasswordChanged"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Content="פעיל" IsChecked="{Binding CurrentVolunteer.Active}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="סוג מרחק:" Width="120"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}" SelectedValue="{Binding CurrentVolunteer.distanceType}"/>
+            </StackPanel>
+        </StackPanel>
 
-        <CheckBox Content="Active" IsChecked="{Binding CurrentVolunteer.Active, Mode=TwoWay}"
-            HorizontalAlignment="Left" Margin="138,470,0,0" VerticalAlignment="Top" />
-
-        <ComboBox HorizontalAlignment="Left" Height="NaN" Margin="138,520,0,0"
-            ItemsSource="{Binding DistanceTypesCollection}"
-            SelectedValue="{Binding CurrentVolunteer.distanceType, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, NotifyOnSourceUpdated=true}"
-            VerticalAlignment="Top" Width="120" />
-
-        <Label Content="ID:" HorizontalAlignment="Left" Margin="22,68,0,0" VerticalAlignment="Top" />
-        <Label Content="Name:" HorizontalAlignment="Left" Margin="22,119,0,0" VerticalAlignment="Top" />
-        <Label Content="Phone:" HorizontalAlignment="Left" Margin="22,170,0,0" VerticalAlignment="Top" />
-        <Label Content="Email:" HorizontalAlignment="Left" Margin="22,221,0,0" VerticalAlignment="Top" />
-        <Label Content="Role:" HorizontalAlignment="Left" Margin="22,270,0,0" VerticalAlignment="Top" />
-        <Label Content="Address:" HorizontalAlignment="Left" Margin="22,320,0,0" VerticalAlignment="Top" />
-        <Label Content="Max Distance:" HorizontalAlignment="Left" Margin="22,370,0,0" VerticalAlignment="Top" />
-        <Label Content="Password:" HorizontalAlignment="Left" Margin="22,420,0,0" VerticalAlignment="Top" />
-        <Label Content="Active:" HorizontalAlignment="Left" Margin="22,470,0,0" VerticalAlignment="Top" />
-        <Label Content="Distance Type:" HorizontalAlignment="Left" Margin="22,520,0,0" VerticalAlignment="Top" />
-
-        <Button Content="{Binding ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Left" Margin="174,570,0,0"
-            VerticalAlignment="Top" Width="48" Height="15" />
+        <Button Grid.Row="1" Content="הוספה" Click="btnAddUpdate_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

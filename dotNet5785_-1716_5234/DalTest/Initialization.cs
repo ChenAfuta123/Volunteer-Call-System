@@ -1,6 +1,7 @@
 ﻿namespace DalTest;
 using DalApi;
 using DO;
+
 public static class Initialization
 {
    
@@ -84,7 +85,7 @@ public static class Initialization
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(1, 50);
             Role role = (i == 0) ? Role.volunteer : Role.manager;
-            DistanceType distanceType = (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);
+            DistanceType distanceType = DistanceType.AirDistance;/* (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);*/
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
@@ -321,5 +322,6 @@ public static class Initialization
         create_call();
         create_assignment();
     }
+
 }
 

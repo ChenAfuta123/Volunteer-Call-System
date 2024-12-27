@@ -7,8 +7,18 @@
         mc:Ignorable="d"
         Title="VolunteerListWindow" Height="640" Width="800" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
+    <!-- Define Colors -->
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryBlue" Color="#1E3A8A"/>
+        <SolidColorBrush x:Key="SecondaryWhite" Color="White"/>
+        <SolidColorBrush x:Key="AccentBlue" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="GrayBorder" Color="#E5E7EB"/>
+        <!-- Hebrew Font -->
+        <FontFamily x:Key="HebrewFont">David</FontFamily>
+    </Window.Resources>
+
     <!--External Grid-->
-    <Grid>
+    <Grid Background="{DynamicResource SecondaryWhite}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -17,19 +27,37 @@
 
         <!--Internal, Upper Grid-->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Margin="10" Grid.Column="0" Content="Filter:" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10"/>
+
+            <!--Sorting-->
+            <Label Grid.Row="0" Grid.Column="0" Margin="10" Content="מיון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
+                      ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
+                      Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+                      FontFamily="{DynamicResource HebrewFont}"/>
+
+            <!--Filtering-->
+            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="סינון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
+                      ItemsSource="{Binding Source={StaticResource IsActiveFilterCollectionKey}}" 
+                      Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+                      FontFamily="{DynamicResource HebrewFont}"/>
         </Grid>
 
         <!--DataGrid Section-->
         <DataGrid Grid.Row="1" ItemsSource="{Binding VolunteerList}" IsReadOnly="True" AutoGenerateColumns="False"
                   EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
                   MouseDoubleClick="dgVolunteerList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" 
+                  Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+                  FontFamily="{DynamicResource HebrewFont}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="*"/>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="*"/>
@@ -41,7 +69,7 @@
                 <DataGridTemplateColumn Header="Actions" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete" Click="DeleteButton_Click" Width="75"/>
+                            <Button Content="Delete" Click="DeleteButton_Click" Width="75" Background="{DynamicResource AccentBlue}" Foreground="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource AccentBlue}" BorderThickness="1"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -49,6 +77,7 @@
         </DataGrid>
 
         <!--Add Button-->
-        <Button Content="Add" Click="btnAdd_Click" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Margin="10"/>
+        <Button Content="Add" Click="btnAdd_Click" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Margin="10"
+                Background="{DynamicResource AccentBlue}" Foreground="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource AccentBlue}" BorderThickness="1"/>
     </Grid>
 </Window>

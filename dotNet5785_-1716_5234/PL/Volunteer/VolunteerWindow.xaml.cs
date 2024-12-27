@@ -1,14 +1,16 @@
 ﻿using BlApi;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PL.Volunteer
 {
     public partial class VolunteerWindow : Window, INotifyPropertyChanged
     {
-
-        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        static readonly IBl s_bl = Factory.Get();
 
         private BO.Volunteer? _currentVolunteer;
         public BO.Volunteer? CurrentVolunteer
@@ -20,7 +22,7 @@ namespace PL.Volunteer
                 OnPropertyChanged(nameof(CurrentVolunteer));
             }
         }
-       
+
         private string _buttonText = "Add";
         public string ButtonText
         {
@@ -32,6 +34,9 @@ namespace PL.Volunteer
             }
         }
 
+        public IEnumerable<BO.Role> RolesCollection { get; set; }
+        public IEnumerable<BO.DistanceType> DistanceTypesCollection { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
@@ -42,6 +47,10 @@ namespace PL.Volunteer
         {
             InitializeComponent();
             DataContext = this;
+
+            // Initialize enum collections
+            RolesCollection = Enum.GetValues(typeof(BO.Role)).Cast<BO.Role>();
+            DistanceTypesCollection = Enum.GetValues(typeof(BO.DistanceType)).Cast<BO.DistanceType>();
 
             try
             {
@@ -115,13 +124,11 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.Add(CurrentVolunteer!);
                     MessageBox.Show("Volunteer added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 }
                 else if (ButtonText == "Update")
                 {
                     s_bl.Volunteer.Update(CurrentVolunteer!.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 }
 
                 Close();
@@ -140,7 +147,7 @@ namespace PL.Volunteer
         {
             if (DataContext is VolunteerWindow window)
             {
-                window.CurrentVolunteer!.Password = PasswordBox.Password;
+                window.CurrentVolunteer!.Password = ((PasswordBox)sender).Password;
             }
         }
     }

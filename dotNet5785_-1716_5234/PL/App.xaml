@@ -5,6 +5,8 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:CallsCollection x:Key="CallsCollectionKey" />
+        <local:RoleCollection x:Key="RoleCollectionKey" />
+        <local:DistanceTypeCollection x:Key="DistanceTypeCollectionKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
     </Application.Resources>

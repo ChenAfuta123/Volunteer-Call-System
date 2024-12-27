@@ -21,8 +21,10 @@ namespace PL.Volunteer
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
             get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
-            set { SetValue(VolunteerListProperty, value);
-                
+            set
+            {
+                SetValue(VolunteerListProperty, value);
+
             }
         }
 
@@ -36,13 +38,13 @@ namespace PL.Volunteer
         private void queryVolunteerList()
         {
             VolunteerList = s_bl?.Volunteer.ReadAll(null, VolunteerFilter)!;
-           
+
         }
 
         // Observer method for volunteer list
         private void volunteerListObserver()
         {
-       
+
             queryVolunteerList();
         }
 
@@ -51,7 +53,7 @@ namespace PL.Volunteer
         {
             queryVolunteerList();
             s_bl.Volunteer.AddObserver(volunteerListObserver);
-            
+
         }
 
         // Remove the observer on Window Closed
@@ -64,19 +66,19 @@ namespace PL.Volunteer
         {
             if (SelectedVolunteer != null)
                 new VolunteerWindow(SelectedVolunteer.Id).Show();
-                queryVolunteerList();
-            
+            queryVolunteerList();
+
         }
 
         public BO.VolunteerInList? SelectedVolunteer { get; set; }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-        
+
             var volunteerWindow = new VolunteerWindow();
-           if(volunteerWindow.ShowDialog()==true)
+            if (volunteerWindow.ShowDialog() == true)
                 queryVolunteerList(); // Refresh the list to include the new volunteer
-            
+
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -107,6 +109,11 @@ namespace PL.Volunteer
                     MessageBox.Show($"Error: The item cannot be deleted.\nDetails: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
+        }
+
+        private void DataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+             
         }
     }
 }
