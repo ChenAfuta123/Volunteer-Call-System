@@ -44,7 +44,8 @@ internal class VolunteerImplementation : IVolunteer
         {
 
             _dal.Volunteer.Create(doVolunteer);
-
+            VolunteerManager.Observers.NotifyItemUpdated(doVolunteer.Id);
+            VolunteerManager.Observers.NotifyListUpdated();
         }
 
         catch (DO.DalAlreadyExistsException ex)
@@ -52,11 +53,6 @@ internal class VolunteerImplementation : IVolunteer
 
             throw new BO.BlAlreadyExistsException("Error occurred while attempting to add the volunteer.", ex);
 
-        }
-
-        catch (Exception ex)
-        {
-            throw new Exception($"Unexpected error while adding a volunteer: {ex.Message}");
         }
 
 
@@ -76,6 +72,8 @@ internal class VolunteerImplementation : IVolunteer
             }
 
             _dal.Volunteer.Delete(id);
+            VolunteerManager.Observers.NotifyItemUpdated(id);
+            VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -102,18 +100,28 @@ internal class VolunteerImplementation : IVolunteer
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {
-        var volunteers = _dal.Volunteer.ReadAll();
+       
 
+        // קריאה ל-DAL
+        var volunteers = _dal.Volunteer.ReadAll();
+    
+
+        // פילטר לפי Active
         if (active.HasValue)
         {
             volunteers = volunteers.Where(v => v.Active == active.Value);
+           
         }
 
-
+        // המרה מ-DO ל-BO
         var BOvolunteers = volunteers.Select(VolunteerManager.DOtoBO);
+      
+
+        // המרה לרשימת VolunteerInList
         var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);
+ 
 
-
+        // מיון
         volunteerList = sort switch
         {
             BO.VolunteerInListFields.Name => volunteerList.OrderBy(v => v.Name),
@@ -122,8 +130,11 @@ internal class VolunteerImplementation : IVolunteer
             _ => volunteerList.OrderBy(v => v.Id)
         };
 
+
         return volunteerList;
     }
+ 
+  
     public DO.Role LoginUser(string name, string password)
     {
         DO.Volunteer? user = _dal.Volunteer.Read(v => v.Name == name);
@@ -176,6 +187,8 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Update(updatedVolunteer);
+            VolunteerManager.Observers.NotifyItemUpdated(existingVolunteer.Id);
+            VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistsException ex)
         {

@@ -42,7 +42,7 @@ internal class VolunteerImplementation : IVolunteer
 
         Volunteer? volunteer = Read(item.Id);
 
-        if (volunteer != null) throw new DO.DalDoesNotExistsException($"Volunteer with ID={item.Id} does not exist");
+        if (volunteer != null) throw new DO.DalAlreadyExistsException($"Volunteer with ID={item.Id} already exist");
 
         volunteersRootElem.Add(createVolunteerElement(item));
         XMLTools.SaveListToXMLElement(volunteersRootElem, Config.s_volunteers_xml);

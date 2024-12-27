@@ -1,16 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Volunteer
 {
@@ -21,16 +12,18 @@ namespace PL.Volunteer
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-
         public VolunteerListWindow()
         {
             InitializeComponent();
         }
 
+        // Property to bind Volunteer List
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
             get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
-            set { SetValue(VolunteerListProperty, value); }
+            set { SetValue(VolunteerListProperty, value);
+                
+            }
         }
 
         public static readonly DependencyProperty VolunteerListProperty =
@@ -39,41 +32,56 @@ namespace PL.Volunteer
         // Filter variable
         private BO.VolunteerInListFields? VolunteerFilter { get; set; } = null;
 
+        // Query the volunteer list
         private void queryVolunteerList()
         {
             VolunteerList = s_bl?.Volunteer.ReadAll(null, VolunteerFilter)!;
+           
         }
 
+        // Observer method for volunteer list
         private void volunteerListObserver()
-            => queryVolunteerList();
+        {
+       
+            queryVolunteerList();
+        }
 
+        // Register the observer on Window Loaded
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.Volunteer.AddObserver(volunteerListObserver);
+        {
+            queryVolunteerList();
+            s_bl.Volunteer.AddObserver(volunteerListObserver);
+            
+        }
 
+        // Remove the observer on Window Closed
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
+        {
+            s_bl.Volunteer.RemoveObserver(volunteerListObserver);
+        }
 
         private void dgVolunteerList_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            // Add logic for handling double-click on a row
+            if (SelectedVolunteer != null)
+                new VolunteerWindow(SelectedVolunteer.Id).Show();
+                queryVolunteerList();
+            
         }
 
         public BO.VolunteerInList? SelectedVolunteer { get; set; }
 
-        private void lsvVolunteerList_MouseDoubleClick(object sender, RoutedEventArgs e)
-        {
-            if (SelectedVolunteer != null)
-                new VolunteerWindow(SelectedVolunteer.Id).Show();
-        }
-
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            new VolunteerWindow().Show();
+        
+            var volunteerWindow = new VolunteerWindow();
+           if(volunteerWindow.ShowDialog()==true)
+                queryVolunteerList(); // Refresh the list to include the new volunteer
+            
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            // Handle selection changed event if needed
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -87,17 +95,16 @@ namespace PL.Volunteer
                     if (volunteerToDelete != null)
                     {
                         s_bl.Volunteer.Delete(volunteerToDelete.Id);
+                        queryVolunteerList();
                     }
                 }
                 catch (BO.BlDoesNotExistsException ex)
                 {
-                    MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
-                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (BO.BlCannotBeDeletedException ex)
                 {
-                    MessageBox.Show($"Error: The item cannot be deleted.\nDetails: {ex.Message}",
-                        "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show($"Error: The item cannot be deleted.\nDetails: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
