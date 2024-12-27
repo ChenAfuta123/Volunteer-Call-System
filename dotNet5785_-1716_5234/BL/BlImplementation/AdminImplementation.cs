@@ -47,9 +47,10 @@ internal class AdminImplementation : IAdmin
 
     public void setDatabase()
     {
-        Initialization.Do;
-        _dal.Volunteer.ReadAll();
-        
+        _dal.ResetDB();
+        Initialization.Do();
+        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.RiskRange = AdminManager.RiskRange;
     }
 
     public void setRiskTimeRange(TimeSpan riskTimeRange)

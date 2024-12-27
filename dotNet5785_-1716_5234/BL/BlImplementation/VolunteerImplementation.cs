@@ -100,17 +100,24 @@ internal class VolunteerImplementation : IVolunteer
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {
-       
+  // קריאה ל-DAL
+            var volunteers = _dal.Volunteer.ReadAll();
 
-        // קריאה ל-DAL
-        var volunteers = _dal.Volunteer.ReadAll();
-    
+        if (active == null)
+        {
+            volunteers = _dal.Volunteer.ReadAll();
 
+        }
         // פילטר לפי Active
-        if (active.HasValue)
+        if (active==true)
         {
             volunteers = volunteers.Where(v => v.Active == active.Value);
            
+        }
+        if (active == false)
+        {
+            volunteers = volunteers.Where(v => v.Active == active.Value);
+
         }
 
         // המרה מ-DO ל-BO

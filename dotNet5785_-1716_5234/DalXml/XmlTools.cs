@@ -102,11 +102,13 @@ static class XMLTools
     }
     public static DateTime GetConfigDateVal(string xmlFileName, string elemName)
     {
+        //Console.WriteLine($"Reading config date from file: {xmlFileName}, element: {elemName}");
 
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
         DateTime dt = root.ToDateTimeNullable(elemName)
             ?? throw new FormatException($"Can't convert: {xmlFileName}, {elemName}");
 
+        //Console.WriteLine($"Config date: {dt}");
         return dt;
     }
 

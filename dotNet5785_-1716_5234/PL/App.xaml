@@ -5,9 +5,45 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:CallsCollection x:Key="CallsCollectionKey" />
-        <local:RoleCollection x:Key="RoleCollectionKey" />
+        <local:VolunteersCollection x:Key="VolunteersCollectionKey" />
         <local:DistanceTypeCollection x:Key="DistanceTypeCollectionKey" />
+        <local:RoleCollection x:Key="RoleCollectionKey" />
+        <local:IsActiveFilterCollection x:Key="IsActiveFilterCollectionKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
+        <!-- סגנון כללי לכפתורים -->
+        <Style x:Key="StyledButton" TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#87CEEB"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="5" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- שינוי צבע בעת מעבר עכבר -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#6495ED" />
+                            </Trigger>
+                            <!-- שינוי צבע בעת לחיצה -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#4682B4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

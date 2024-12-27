@@ -30,8 +30,6 @@ namespace PL
             get { return (DateTime)GetValue(CurrentTimeProperty); }
             set { SetValue(CurrentTimeProperty, value); }
         }
-        public static readonly DependencyProperty CurrentTimeProperty =
-            DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
 
         public TimeSpan RiskRange
         {
@@ -43,6 +41,8 @@ namespace PL
         public MainWindow()
         {
             InitializeComponent();
+          
+
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -145,7 +145,8 @@ namespace PL
                 {
                     
                     s_bl.Admin.setRiskTimeRange(timeSpanValue);
-                    MessageBox.Show($"Risk time range updated successfully: {timeSpanValue}");
+                    RiskRange = s_bl.Admin.getRiskTimeRange();
+                    
                 } 
                 else
                 {
