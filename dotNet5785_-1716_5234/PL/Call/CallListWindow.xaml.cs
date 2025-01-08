@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,11 +87,11 @@ namespace PL.Call
                 try
                 {
                     if (callToDelete != null)
-        {
+                    {
                         s_bl.Call.Delete(callToDelete.Id);
 
-        }
-    }
+                    }
+                }
                 catch (BO.BlDoesNotExistsException ex)
                 {
                     MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",

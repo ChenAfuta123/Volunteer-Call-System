@@ -122,3 +122,13 @@ public enum IsActiveFilter
    Not_Active,
     None
 }
+public enum ClosedCallInListFilter
+{
+    Id,
+    //callType,
+    Address,
+    OpeningTime,
+    EntryTime,
+    EndTime,
+    //EndTimeType
+}

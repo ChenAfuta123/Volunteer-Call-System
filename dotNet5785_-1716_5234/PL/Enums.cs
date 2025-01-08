@@ -43,6 +43,14 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class ClosedCallInListFieldCollection : IEnumerable
+    {
+        // יצירת IEnumerable עבור הערכים של ה-enum Role
+        static readonly IEnumerable<BO.ClosedCallInListField> s_enums =
+            Enum.GetValues(typeof(BO.ClosedCallInListField)).Cast<BO.ClosedCallInListField>();
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     public class Enums
     {
 
@@ -56,6 +64,16 @@ namespace PL
             AirDistance,
             WalkingDistance,
             DrivingDistance
+        }
+        public enum ClosedCallInListField
+        {
+            Id,
+            CallType,
+            Address,
+            OpeningTime,
+            EntryTime,
+            EndTime,
+            EndTimeType
         }
 
     }

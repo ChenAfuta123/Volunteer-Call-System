@@ -5,75 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#FFFFFF">
-
-    <Window.Resources>
-        <!-- סגנונות כלליים -->
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="Padding" Value="8"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="BorderBrush" Value="#7AB9E7"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="#FFFFFF"/>
-        </Style>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="Padding" Value="8"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="BorderBrush" Value="#7AB9E7"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="#FFFFFF"/>
-        </Style>
-
-        <Style TargetType="Button">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="Padding" Value="8"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Background" Value="#007ACC"/>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="BorderBrush" Value="#005B99"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
-    </Window.Resources>
-
-    <Grid Margin="20">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <!-- אזור הסינון -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-            <ComboBox Width="200" Margin="5"
-                      ItemsSource="{Binding FilterOptions}" 
-                      SelectedValue="{Binding SelectedFilter}"/>
-            <ComboBox Width="200" Margin="5"
-                      ItemsSource="{Binding SortOptions}" 
-                      SelectedValue="{Binding SelectedSort}"/>
-            <Button Content="עדכן רשימה" Width="150" Margin="5" Command="{Binding RefreshCommand}"/>
+        <!-- אזור הסינון והמיון -->
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
+            <TextBlock Text="סינון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="FilterComboBox" Width="150" Margin="0,0,20,0">
+                <ComboBoxItem Content="סטטוס" />
+                <ComboBoxItem Content="תאריך" />
+                <ComboBoxItem Content="קטגוריה" />
+            </ComboBox>
+            <TextBlock Text="מיון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="SortComboBox" Width="150">
+                <ComboBoxItem Content="שם" />
+                <ComboBoxItem Content="תאריך" />
+                <ComboBoxItem Content="עדיפות" />
+            </ComboBox>
         </StackPanel>
-
-        <!-- רשימת הקריאות -->
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding Calls}" 
-                  AutoGenerateColumns="False" 
-                  IsReadOnly="True" 
-                  Margin="0,10">
+        <!-- DataGrid -->
+        <DataGrid x:Name="OpenCallsDataGrid" Grid.Row="1" AutoGenerateColumns="False" Margin="10" CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="מספר קריאה" Binding="{Binding Id}" Width="*"/>
-                <DataGridTextColumn Header="כתובת" Binding="{Binding Address}" Width="2*"/>
-                <DataGridTextColumn Header="מרחק (ק"מ)" Binding="{Binding Distance}" Width="*"/>
-                    <DataGridTextColumn Header="עדיפות" Binding="{Binding Priority}" Width="*"/>
-                    <DataGridTextColumn Header="תיאור" Binding="{Binding Description}" Width="3*"/>
+                <DataGridTextColumn Header="מזהה" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="סוג הקריאה" Binding="{Binding callType}" />
+                <DataGridTextColumn Header="תיאור" Binding="{Binding description}" />
+                <DataGridTextColumn Header="כתובת" Binding="{Binding Address}" />
+                <DataGridTextColumn Header="זמן פתיחה" Binding="{Binding OpeningTime, StringFormat=dd/MM/yyyy HH:mm}" />
+                <DataGridTextColumn Header="זמן סיום מקסימלי" Binding="{Binding maxEndingTime, StringFormat=dd/MM/yyyy HH:mm}" />
+                <DataGridTextColumn Header="מרחק מהמתנדב" Binding="{Binding CallDistanceFromVolunteer, StringFormat=F2}" />
+                <DataGridTemplateColumn Header="פעולה">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="בחירה" Click="SelectButton_Click" Tag="{Binding}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <!-- כפתור לבחירת קריאה -->
-        <Button Grid.Row="2" Content="בחר קריאה" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0" Width="150" Command="{Binding SelectCallCommand}"/>
     </Grid>
 </Window>
+

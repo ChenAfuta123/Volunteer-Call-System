@@ -5,10 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="PersonalVolunteerWindow" Height="450" Width="800">
+        Title="Personal Volunteer Window" Height="600" Width="800" FlowDirection="RightToLeft">
     <Grid>
-        <Button Content="הסטוריית קריאות" HorizontalAlignment="Left" Margin="492,117,0,0" VerticalAlignment="Top" Click="HistoryButton_Click"/>
-        <Button Content="פרטים אישיים" HorizontalAlignment="Left" Margin="516,142,0,0" VerticalAlignment="Top" Click="VolunteerButton_Click"/>
+        <!-- כפתורים ראשיים -->
+        <Button Content="היסטוריית קריאות" HorizontalAlignment="Right" Margin="10,20,20,0" VerticalAlignment="Top" Click="HistoryButton_Click" Height="44" Width="114"/>
+        <Button Content="פרטים אישיים" HorizontalAlignment="Right" Margin="10,80,20,0" VerticalAlignment="Top" Click="VolunteerButton_Click" Height="44" Width="114"/>
 
+        <!-- כותרת פרטי קריאה -->
+        <TextBlock Text="פרטי קריאה" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+
+        <!-- פרטי קריאה -->
+        <StackPanel Orientation="Vertical" Margin="10,50,20,0">
+            <!-- מזהה קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="מזהה קריאה:" Width="100" />
+                <TextBox Name="CallIdTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+
+            <!-- סטטוס קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="סטטוס קריאה:" Width="100" />
+                <TextBox Name="CallStatusTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+
+            <!-- סוג קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="סוג קריאה:" Width="100" />
+                <TextBox Name="CallTypeTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+
+            <!-- מרחק מכתובת נוכחית -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="מרחק מכתובת:" Width="100" />
+                <TextBox Name="CallDistanceTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+
+            <!-- כתובת קריאה -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="כתובת קריאה:" Width="100" />
+                <TextBox Name="CallAddressTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+         
+
+            <!-- זמן פתיחה -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="זמן פתיחה:" Width="100" />
+                <TextBox Name="CallOpeningTimeTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+
+            <!-- זמן סיום מקסימלי -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Label Content="זמן סיום מקסימלי:" Width="100" />
+                <TextBox Name="CallMaxEndingTimeTextBox" Width="200" IsReadOnly="True" />
+            </StackPanel>
+
+            <!-- פרטי קריאה מוקצה -->
+            <!--
+            <TextBlock Text="פרטי קריאה מוקצה" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" />
+
+            -->
+            <!-- DataGrid להצגת פרטי המתנדבים המוקצים -->
+            <!--
+            <DataGrid Name="CallAssignDataGrid" Width="500" Height="150" Margin="10,10,20,0" AutoGenerateColumns="True" SelectionChanged="CallAssignDataGrid_SelectionChanged" />-->
+        </StackPanel>
+
+        <!-- כפתורי פעולה -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+            <Button Content="סיום טיפול" Width="100" Margin="10" Click="FinishCallButton_Click" />
+            <Button Content="ביטול טיפול" Width="100" Margin="10" Click="CancelCallButton_Click" />
+            <Button x:Name="CallSelectionButton" Content="בחירת קריאה" Height="37" Width="146" Click="ButtonCallSelection_Click" IsEnabled="False"/>
+        </StackPanel>
     </Grid>
 </Window>

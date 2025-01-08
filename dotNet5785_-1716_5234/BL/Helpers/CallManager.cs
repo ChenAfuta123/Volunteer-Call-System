@@ -361,6 +361,71 @@ internal static class CallManager
         if (yearChanged || callUpdated) //stage 5
             Observers.NotifyListUpdated(); //stage 5
     }
+    public static IEnumerable<BO.OpenCallInList> FilterCalls(IEnumerable<BO.OpenCallInList> calls, BO.OpenCallInListField? filterField, object? filterValue)
+
+    {
+
+        if (filterField == null || filterValue == null)
+
+        {
+
+            return calls;
+
+        }
+
+
+
+        return filterField switch
+
+        {
+
+            BO.OpenCallInListField.Id when filterValue is int id =>
+
+                calls.Where(c => c.Id == id),
+
+
+
+            BO.OpenCallInListField.callType when filterValue is string callTypeStr && Enum.TryParse<BO.CallType>(callTypeStr, out var callType) =>
+
+                calls.Where(c => c.callType == callType),
+
+
+
+            BO.OpenCallInListField.description when filterValue is string description =>
+
+                calls.Where(c => c.description != null && c.description.Contains(description, StringComparison.OrdinalIgnoreCase)),
+
+
+
+            BO.OpenCallInListField.Address when filterValue is string address =>
+
+                calls.Where(c => c.Address != null && c.Address.Contains(address, StringComparison.OrdinalIgnoreCase)),
+
+
+
+            BO.OpenCallInListField.OpeningTime when filterValue is DateTime openingTime =>
+
+                calls.Where(c => c.OpeningTime.Date == openingTime.Date),
+
+
+
+            BO.OpenCallInListField.maxEndingTime when filterValue is DateTime maxEndingTime =>
+
+                calls.Where(c => c.maxEndingTime.HasValue && c.maxEndingTime.Value.Date == maxEndingTime.Date),
+
+
+
+            BO.OpenCallInListField.CallDistanceFromVolunteer when filterValue is double distance =>
+
+                calls.Where(c => Math.Abs(c.CallDistanceFromVolunteer - distance) < 0.01),
+
+
+
+            _ => throw new BO.BlNullPropertyException("Unsupported or mismatched filter field")
+
+        };
+
+    }
 }
 
 

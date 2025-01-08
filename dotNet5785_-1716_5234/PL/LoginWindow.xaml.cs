@@ -41,7 +41,7 @@ namespace PL
                 // ניתוב לפי סוג המשתמש
                 if (V_role == DO.Role.volunteer)
                 {
-                    VolunteerWindow volunteerWindow = new VolunteerWindow(userId);
+                    PersonalVolunteerWindow volunteerWindow = new PersonalVolunteerWindow(userId);
                     volunteerWindow.Show();
                     Close();
                 }

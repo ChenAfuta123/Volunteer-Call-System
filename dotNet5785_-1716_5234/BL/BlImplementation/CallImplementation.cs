@@ -1,6 +1,8 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
+using DalApi;
+using DO;
 using Helpers;
 using Microsoft.VisualBasic;
 using System;
@@ -366,9 +368,108 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
             _ => boCalls.OrderBy(c => c.Id)
         };
         return boCalls;
+    }
+    public IEnumerable<BO.OpenCallInList> ReadAll(OpenCallInListField? filter, object? obg, OpenCallInListField? sorting,int VolunteerID)
+
+    {
+        var volunteer=_dal.Volunteer.Read(VolunteerID);
+        try
+
+        {
+            bool ifIsOpen(DO.Call? call)
+            {
+               
+                return CallManager.Status(call!.Id) == CallStatus.Open || CallManager.Status(call.Id) == CallStatus.OpenAtRisk;
+            }
+            var calls = _dal.Call.ReadAll(ifIsOpen);
+          
+
+            IEnumerable<BO.OpenCallInList> openCallsInList = calls.Select(call => new BO.OpenCallInList
+
+            {
+
+                Id = call.Id,
+
+                callType = (BO.CallType)call.callType,
+
+                description = call.Description,
+
+                Address = call.Address,
+
+                OpeningTime = call.OpeningTime,
+
+                maxEndingTime = call.maxEndingTime,
+               
+                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(call.Address, volunteer!.Address, volunteer.distanceType)
+            });
+            if (calls == null || !calls.Any())
+            {
+
+                throw new BO.BlNullPropertyException("No calls found in the database.");
+
+            }
 
 
+
+            if (filter != null)
+
+            {
+
+                openCallsInList = CallManager.FilterCalls(openCallsInList, filter, obg);
+
+            }
+
+
+
+            if (sorting == null)
+
+            {
+
+                openCallsInList = openCallsInList.OrderBy(c => c.Id);
+
+            }
+
+            else
+
+            {
+
+                openCallsInList = sorting switch
+
+                {
+
+                    OpenCallInListField.Id => openCallsInList.OrderBy(c => c.Id),
+
+                    OpenCallInListField.callType => openCallsInList.OrderBy(c => c.callType),
+
+                    OpenCallInListField.description => openCallsInList.OrderBy(c => c.description),
+
+                    OpenCallInListField.Address => openCallsInList.OrderBy(c => c.Address),
+
+                    OpenCallInListField.OpeningTime => openCallsInList.OrderBy(c => c.OpeningTime),
+
+                    OpenCallInListField.maxEndingTime => openCallsInList.OrderBy(c => c.maxEndingTime),
+
+                    OpenCallInListField.CallDistanceFromVolunteer => openCallsInList.OrderBy(c => c.CallDistanceFromVolunteer),
+
+                    _ => openCallsInList.OrderBy(c => c.Id) // מיון ברירת מחדל לפי Id
+
+                };
+
+            }
+
+
+
+            return openCallsInList;
+
+        }
+
+        catch (Exception ex)
+
+        {
+
+            throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
+
+        }
 
     }
-
 }
