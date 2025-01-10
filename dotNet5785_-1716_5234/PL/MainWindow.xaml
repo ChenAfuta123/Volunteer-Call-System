@@ -81,6 +81,12 @@
                 <Label Content="קריאות שטופלו" HorizontalAlignment="Left" Margin="967,157,0,0" VerticalAlignment="Top" Grid.Row="1"/>
                 <TextBox HorizontalAlignment="Left" Margin="910,163,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
                 <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,158,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="46" Click="Button_Click_3"/>
+                <Label Content="קריאות בטיפול בסיכון" HorizontalAlignment="Left" Margin="967,254,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+                <TextBox HorizontalAlignment="Left" Margin="910,254,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,251,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="46" Click="Button_Click_6"/>
+                <Label Content="קריאות פתוחות בסיכון" HorizontalAlignment="Left" Margin="961,207,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+                <TextBox HorizontalAlignment="Left" Margin="910,207,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,202,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="46" Click="Button_Click_5"/>
             </Grid>
         </Border>
     </Grid>

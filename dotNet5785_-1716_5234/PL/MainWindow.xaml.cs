@@ -290,6 +290,19 @@ namespace PL
             if (callListWindow.ShowDialog() == true)
                 s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Expired, null);
         }
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.OpenAtRisk, null);
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgressAtRisk, null);
+        }
         //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
 

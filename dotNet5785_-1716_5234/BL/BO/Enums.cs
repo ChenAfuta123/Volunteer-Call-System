@@ -115,7 +115,8 @@ public enum ClosedCallInListField
     OpeningTime,
     EntryTime,
     EndTime,
-    EndTimeType
+    EndTimeType,
+    None
 }
 public enum IsActiveFilter
 {

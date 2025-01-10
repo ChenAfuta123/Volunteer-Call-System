@@ -59,6 +59,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class CallType : IEnumerable
+    {
+        static readonly IEnumerable<BO.CallType> s_enums =
+            (Enum.GetValues(typeof(BO.CallType)) as IEnumerable<BO.CallType>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     public class Enums
     {
 
@@ -82,6 +89,20 @@ namespace PL
             EntryTime,
             EndTime,
             EndTimeType
+        }
+        public enum CallType
+        {
+            EssentialSupplies,
+
+            HousingAndRelocation,
+
+            EmotionalAndSocialSupport,
+
+            MedicalAndPharmaceuticalAid,
+
+            LegalAndAdministrativeSupport,
+
+            None
         }
 
     }

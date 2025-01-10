@@ -23,7 +23,7 @@
             <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}"/>
             <!--Filtering-->
             <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="סינון לפי:" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" SelectionChanged="ComboBox_SelectionChanged"/>
         </Grid>
         <!--DataGrid Section-->
         <DataGrid Grid.Row="1" ItemsSource="{Binding VolunteerList}" IsReadOnly="True" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected" MouseDoubleClick="dgVolunteerList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
