@@ -27,7 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{F0726BB7-52E
 		xml\calls.xml = xml\calls.xml
 		xml\dal-config.xml = xml\dal-config.xml
 		xml\data-config.xml = xml\data-config.xml
-		BL\BlApi\IVolunteer.cs = BL\BlApi\IVolunteer.cs
 		xml\volunteers.xml = xml\volunteers.xml
 	EndProjectSection
 EndProject

@@ -260,7 +260,7 @@ namespace PL
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-          
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -290,14 +290,27 @@ namespace PL
             if (callListWindow.ShowDialog() == true)
                 s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Expired, null);
         }
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.OpenAtRisk, null);
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgressAtRisk, null);
+        }
         //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
 
         //    CallList = (Call == BO.CallInListField.None) ?//לתקן
         //    s_bl?.Call.ReadAll(null,null,null)! : s_bl?.Call.ReadAll(null, BO.CallInListField.Id, Call)!;
 
-        //}
+        //}
 
 
-    }
+    }
 }

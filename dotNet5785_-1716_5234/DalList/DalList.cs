@@ -35,7 +35,7 @@ sealed internal class DalList : IDal
     public void ResetDB()
     {
         Call.DeleteAll();
-        Volunteer.DeleteAll();
+        //Volunteer.DeleteAll();
         Assignment.DeleteAll();
         Config.Reset();
     }

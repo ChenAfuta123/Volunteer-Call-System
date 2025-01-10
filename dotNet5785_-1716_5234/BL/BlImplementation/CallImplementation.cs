@@ -9,7 +9,7 @@ using System;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-internal class CallImplementation : ICall
+internal class CallImplementation : BlApi.ICall
 {
     public void AddObserver(Action listObserver) =>
 CallManager.Observers.AddListObserver(listObserver); //stage 5
@@ -100,10 +100,10 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
 
             
 
-            if (calls == null || !calls.Any())
-            {
-                throw new BO.BlNullPropertyException("לא נמצאו קריאות בבסיס הנתונים.");
-            }
+            //if (calls == null || !calls.Any())
+            //{
+            //    throw new BO.BlNullPropertyException("לא נמצאו קריאות בבסיס הנתונים.");
+            //}
 
             IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
 

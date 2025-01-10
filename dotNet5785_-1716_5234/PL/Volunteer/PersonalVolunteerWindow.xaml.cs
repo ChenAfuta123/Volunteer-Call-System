@@ -39,7 +39,7 @@ namespace PL.Volunteer
             volunteerWindow.Show();
 
         }
-        private void LoadCallDetails()
+        private void LoadCallDetails(object sender, RoutedEventArgs e)
         {
             try
             {

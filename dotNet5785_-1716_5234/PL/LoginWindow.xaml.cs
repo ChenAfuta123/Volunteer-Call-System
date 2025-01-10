@@ -53,10 +53,19 @@ namespace PL
                     Close();
                 }
             }
-            catch (Exception ex)
+            catch (BO.BlObjectNotFoundException ex)
             {
-                MessageBox.Show($"תעודת זהות או סיסמה שגויים.\" {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            catch (BO.BlValidationException ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+
         }
 
     }
