@@ -1,10 +1,10 @@
-﻿<Window x:Class="PL.Volunteer.CallSelectionWindow"
+﻿<Window x:Class="PL.Volunteer.CallSelectionWindow" Loaded="Window_Loaded"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#FFFFFF">
+        Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#FFFFFF"   DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -13,17 +13,16 @@
         <!-- אזור הסינון והמיון -->
         <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
             <TextBlock Text="סינון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox x:Name="FilterComboBox" Width="150" Margin="0,0,20,0">
-                <ComboBoxItem Content="סטטוס" />
-                <ComboBoxItem Content="תאריך" />
-                <ComboBoxItem Content="קטגוריה" />
-            </ComboBox>
+            <ComboBox  Width="150"
+             ItemsSource="{Binding Source={StaticResource OpenCallsCollectionKey}}"
+             SelectedValue="{Binding CallFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+             SelectionChanged="ComboBox_SelectionChanged"/>
             <TextBlock Text="מיון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox x:Name="SortComboBox" Width="150">
-                <ComboBoxItem Content="שם" />
-                <ComboBoxItem Content="תאריך" />
-                <ComboBoxItem Content="עדיפות" />
-            </ComboBox>
+            <ComboBox  Width="150"
+                ItemsSource="{Binding Source={StaticResource OpenCallsCollectionKey}}"
+                SelectedValue="{Binding CallSorter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectionChanged="ComboBox_SelectionChanged"/>
+
         </StackPanel>
         <!-- DataGrid -->
         <DataGrid x:Name="OpenCallsDataGrid" Grid.Row="1" AutoGenerateColumns="False" Margin="10" CanUserAddRows="False">
@@ -38,12 +37,13 @@
                 <DataGridTemplateColumn Header="פעולה">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="בחירה" Click="SelectButton_Click" Tag="{Binding}" />
+                            <Button Content="טיפול" Click="TreatmentButton_Click" Tag="{Binding}" />
+                            <!--<Button Content="פרטי קריאה" Click="DescriptionButton_Click" Tag="{Binding}" />-->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </Window>
-

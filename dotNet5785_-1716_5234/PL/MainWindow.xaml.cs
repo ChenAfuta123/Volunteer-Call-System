@@ -1,4 +1,5 @@
-﻿using PL.Call;
+﻿using BO;
+using PL.Call;
 using PL.Volunteer;
 using System.Text;
 using System.Windows;
@@ -256,6 +257,39 @@ namespace PL
         }
 
         public BO.CallInListField Call { get; set; } = BO.CallInListField.None;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+          
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Open, null);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Closed, null);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgress, null);
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            var callListWindow = new CallListWindow();
+            if (callListWindow.ShowDialog() == true)
+                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Expired, null);
+        }
         //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
 

@@ -102,7 +102,8 @@ public enum OpenCallInListField
     Address,
     OpeningTime,
     maxEndingTime,
-    CallDistanceFromVolunteer
+    CallDistanceFromVolunteer,
+    None
 }
 
 /// <summary>Fields used for closed call listings.</summary>

@@ -51,6 +51,14 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+
+    internal class OpenCallsCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.OpenCallInListField> s_enums =
+            (Enum.GetValues(typeof(BO.OpenCallInListField)) as IEnumerable<BO.OpenCallInListField>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     public class Enums
     {
 
