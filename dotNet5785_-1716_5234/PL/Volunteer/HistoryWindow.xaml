@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="היסטוריית קריאות" Height="600" Width="800" FlowDirection="RightToLeft" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
-  
+
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <StackPanel Orientation="Horizontal">
