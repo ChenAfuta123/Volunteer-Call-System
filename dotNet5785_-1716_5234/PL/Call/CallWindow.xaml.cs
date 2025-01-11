@@ -44,6 +44,9 @@ namespace PL.Call
         public static readonly DependencyProperty CurrentCallProperty =
             DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
 
+        public IEnumerable<BO.CallType> CallTypeCollection { get; set; }
+        public IEnumerable<BO.CallStatus> StatusCollection { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -55,6 +58,10 @@ namespace PL.Call
         {
             InitializeComponent();
             DataContext = this; // Set DataContext for data binding
+
+
+            StatusCollection = Enum.GetValues(typeof(BO.CallStatus)).Cast<BO.CallStatus>();
+            CallTypeCollection = Enum.GetValues(typeof(BO.CallType)).Cast<BO.CallType>();
 
             try
             {
@@ -86,6 +93,32 @@ namespace PL.Call
                 MessageBox.Show($"Error loading call data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        //private void RefreshVolunteer()
+        //{
+        //    int id = CurrentVolunteer!.Id;
+        //    CurrentVolunteer = null;
+        //    CurrentVolunteer = s_bl.Volunteer.Read(id);
+        //}
+
+        //protected override void OnSourceInitialized(EventArgs e)
+        //{
+        //    base.OnSourceInitialized(e);
+
+        //    if (CurrentVolunteer!.Id != 0)
+        //    {
+        //        s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, RefreshVolunteer);
+        //    }
+        //}
+
+        //protected override void OnClosed(EventArgs e)
+        //{
+        //    base.OnClosed(e);
+
+        //    if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+        //    {
+        //        s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, RefreshVolunteer);
+        //    }
+        //}
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -113,5 +146,7 @@ namespace PL.Call
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+     
     }
 }

@@ -11,6 +11,23 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class CallTypeCollection : IEnumerable
+    {
+        // יצירת IEnumerable עבור הערכים של ה-enum DistanceType
+        static readonly IEnumerable<Enums.CallType> s_enums =
+            Enum.GetValues(typeof(Enums.CallType)).Cast<Enums.CallType>();
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
+
+    internal class StatusCollection : IEnumerable
+    {
+        // יצירת IEnumerable עבור הערכים של ה-enum Role
+        static readonly IEnumerable<Enums.Status> s_enums =
+            Enum.GetValues(typeof(Enums.Status)).Cast<Enums.Status>();
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     internal class VolunteersCollection : IEnumerable
     {
         static readonly IEnumerable<BO.VolunteerInListFields> s_enums =
@@ -83,6 +100,34 @@ namespace PL
             EndTime,
             EndTimeType
         }
+        public enum Status
+        {
+            Open,
+            InProgress,
+            Closed,
+            Expired,
+            OpenAtRisk,
+            InProgressAtRisk
+        }
+        public enum CallType
+        {
+            /// <summary>Providing food, drinks, clothing, and essential supplies to evacuees.</summary>
+            EssentialSupplies,
 
+            /// <summary>Helping evacuees find temporary housing and assisting with relocation and transport.</summary>
+            HousingAndRelocation,
+
+            /// <summary>Offering emotional support, trauma counseling, and organizing social activities.</summary>
+            EmotionalAndSocialSupport,
+
+            /// <summary>Delivering medications and assisting with access to medical services.</summary>
+            MedicalAndPharmaceuticalAid,
+
+            /// <summary>Providing legal advice and guidance on accessing government aid and support.</summary>
+            LegalAndAdministrativeSupport,
+
+            /// <summary>Call does not exist in volunteer's treatment.</summary>
+            None
+        }
     }
 }

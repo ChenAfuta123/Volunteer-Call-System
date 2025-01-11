@@ -34,16 +34,28 @@ static class XMLTools
 
         try
         {
-            if (!File.Exists(xmlFilePath)) return new();
+            if (!File.Exists(xmlFilePath))
+            {
+                Console.WriteLine($"File does not exist: {xmlFilePath}");
+                return new();
+            }
+
+            if (new FileInfo(xmlFilePath).Length == 0)
+            {
+                Console.WriteLine($"File is empty: {xmlFilePath}");
+                return new();
+            }
+
             using FileStream file = new(xmlFilePath, FileMode.Open);
             XmlSerializer x = new(typeof(List<T>));
             return x.Deserialize(file) as List<T> ?? new();
         }
         catch (Exception ex)
         {
-            throw new DalXMLFileLoadCreateException($"fail to load xml file: {xmlFilePath}, {ex.Message}");
+            throw new Exception($"Failed to load XML file: {xmlFilePath}. Error: {ex.Message}", ex);
         }
     }
+
     #endregion
 
     #region SaveLoadWithXElement

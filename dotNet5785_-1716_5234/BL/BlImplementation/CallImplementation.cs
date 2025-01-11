@@ -98,14 +98,14 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
             
             var calls = _dal.Call.ReadAll();
 
-            
 
-            //if (calls == null || !calls.Any())
-            //{
-            //    throw new BO.BlNullPropertyException("לא נמצאו קריאות בבסיס הנתונים.");
-            //}
 
-            IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
+        if (calls == null || !calls.Any())
+        {
+            throw new BO.BlNullPropertyException("לא נמצאו קריאות בבסיס הנתונים.");
+        }
+
+        IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
 
             // סינון
             if (filter != null && obg != null)

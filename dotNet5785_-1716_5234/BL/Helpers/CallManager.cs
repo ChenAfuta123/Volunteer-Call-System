@@ -250,8 +250,8 @@ internal static class CallManager
                 throw new Exception("Invalid call status.");
 
 
-            if (string.IsNullOrEmpty(call.Description))
-                throw new Exception("Invalid call description.");
+            //if (string.IsNullOrEmpty(call.Description))
+            //    throw new Exception("Invalid call description.");
 
 
             //if (!Tools.DistanceCalculator.IsValidAddress(call.Address, call.Longitude, call.Latitude))

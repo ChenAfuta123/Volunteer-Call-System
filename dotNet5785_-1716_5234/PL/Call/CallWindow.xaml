@@ -76,16 +76,16 @@
 
         <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" Margin="0,5">
-                <Label Content="ת.ז שיחה:" Width="120"/>
-                <TextBox Text="{Binding CurrentCall.Id}" IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"/>
+                <Label Content="מזהה קריאה:" Width="120"/>
+                <TextBox  IsEnabled="false" Text="{Binding CurrentCall.Id}" Visibility ="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="כתובת:" Width="120"/>
                 <TextBox Text="{Binding CurrentCall.Address}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="סוג שיחה:" Width="120"/>
-                <ComboBox ItemsSource="{Binding CallsCollection}" SelectedValue="{Binding CurrentCall.callType}"/>
+                <Label Content="סוג קריאה:" Width="120"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding CurrentCall.callType}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="תיאור:" Width="120"/>
@@ -97,11 +97,11 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="זמן פתיחה:" Width="120"/>
-                <DatePicker IsEnabled="false" Visibility ="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisible}}" SelectedDate="{Binding CurrentCall.OpeningTime}"/>
+                <DatePicker IsEnabled="false" Visibility ="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}" SelectedDate="{Binding CurrentCall.OpeningTime}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="סטטוס שיחה:" Width="120"/>
-                <TextBox Text="{Binding CurrentCall.callStatus}"/>
+                <Label Content="סטטוס קריאה:" Width="120"/>
+                <ComboBox Width="250" ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}" SelectedValue="{Binding CurrentCall.callStatus}" />
             </StackPanel>
         </StackPanel>
 
