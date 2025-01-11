@@ -1,15 +1,16 @@
-﻿<Window x:Class="PL.Volunteer.HistoryWindow"
+﻿<Window x:Class="PL.Volunteer.HistoryWindow" Loaded="Window_Loaded"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="היסטוריית קריאות" Height="600" Width="800" FlowDirection="RightToLeft">
+        Title="היסטוריית קריאות" Height="600" Width="800" FlowDirection="RightToLeft" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Grid>
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="FilterComboBox" SelectionChanged="OnFilterChanged" Width="200" Margin="5">
+                <ComboBox x:Name="FilterComboBox" SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
                     <ComboBoxItem Content="כל הקריאות" Tag="All"/>
                     <ComboBoxItem Content="לפי סוג" Tag="ByType"/>
                     <ComboBoxItem Content="לפי כתובת" Tag="ByAddress"/>
@@ -17,7 +18,7 @@
                     <ComboBoxItem Content="לפי סוג זמן סיום" Tag="ByEndTimeType"/>
                 </ComboBox>
 
-                <ComboBox x:Name="SortComboBox" SelectionChanged="OnSortChanged" Width="200" Margin="5">
+                <ComboBox x:Name="SortComboBox" SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
                     <ComboBoxItem Content="ללא מיון" Tag="None"/>
                     <ComboBoxItem Content="לפי מזהה" Tag="ById"/>
                     <ComboBoxItem Content="לפי סוג" Tag="ByType"/>

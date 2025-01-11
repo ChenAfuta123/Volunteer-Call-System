@@ -148,9 +148,9 @@ internal class VolunteerImplementation : IVolunteer
 
         if (user == null)
             throw new BO.BlObjectNotFoundException("User not found.");
-        if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+        //if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
 
-            throw new BO.BlValidationException("Incorrect password.");
+        //    throw new BO.BlValidationException("Incorrect password.");
         return user.role;
     }
     public void Update(int id, BO.Volunteer boVolunteer)

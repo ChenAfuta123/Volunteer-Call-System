@@ -260,7 +260,7 @@ namespace PL
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-          
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -309,8 +309,8 @@ namespace PL
         //    CallList = (Call == BO.CallInListField.None) ?//לתקן
         //    s_bl?.Call.ReadAll(null,null,null)! : s_bl?.Call.ReadAll(null, BO.CallInListField.Id, Call)!;
 
-        //}
+        //}
 
 
-    }
+    }
 }

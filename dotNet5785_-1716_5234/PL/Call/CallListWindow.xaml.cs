@@ -1,4 +1,5 @@
 ﻿
+using PL.Volunteer;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace PL.Call
         {
             InitializeComponent();
         }
-
+        
         public IEnumerable<BO.CallInList> CallList
         {
             get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
@@ -36,8 +37,37 @@ namespace PL.Call
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
-        // משתנה לסינון
-        private BO.CallInListField CallFilter { get; set; } = BO.CallInListField.None;
+        private BO.CallInListField? _callFilter = BO.CallInListField.None;
+        public BO.CallInListField? CallFilter
+        {
+            get => _callFilter;
+            set
+            {
+                if (_callFilter != value)
+                {
+                    _callFilter = value;
+                    queryCallList(); // Refresh the list based on the new filter
+                }
+            }
+        }
+        private BO.CallInListField? _callSort;
+        public BO.CallInListField? CallSort
+        {
+            get => _callSort;
+            set
+            {
+                if (_callSort != value)
+                {
+                    _callSort = value;
+                    queryCallList(); // Refresh the list based on the new sort
+                }
+            }
+        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryCallList(); // Refresh the list whenever the filter changes
+        }
+
 
         private void queryCallList()
         {
@@ -49,18 +79,19 @@ namespace PL.Call
         private void callListObserver()
             => queryCallList();
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.Call.AddObserver(callListObserver);
-
+        
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Call.RemoveObserver(callListObserver);
 
-        private void dgCallList_MouseDoubleClick(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // הוסף את הלוגיקה לטיפול בלחיצה כפולה על רשומה
+            queryCallList();
+            s_bl.Volunteer.AddObserver(callListObserver);
+
         }
+
         public BO.CallInList? SelectedCall { get; set; }
-        private void lsvCoursesList_MouseDoubleClick(object sender, RoutedEventArgs e)
+        private void dgCallList_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
             if (SelectedCall != null)
                 new CallWindow(SelectedCall.CallId).Show();
@@ -69,11 +100,13 @@ namespace PL.Call
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedCall != null)
-                new CallWindow().Show();
+            var callWindow = new CallWindow();
+            if(callWindow.ShowDialog() == true)
+                queryCallList(); 
 
         }
-
+        
+      
         private void DataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
 

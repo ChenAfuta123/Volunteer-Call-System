@@ -132,5 +132,6 @@ public enum ClosedCallInListFilter
     OpeningTime,
     EntryTime,
     EndTime,
+    None
     //EndTimeType
 }

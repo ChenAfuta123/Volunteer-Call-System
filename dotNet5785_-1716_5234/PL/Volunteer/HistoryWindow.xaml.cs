@@ -16,7 +16,7 @@ namespace PL.Volunteer
         {
             InitializeComponent();
             UserId = userId;
-          
+
         }
         public IEnumerable<BO.ClosedCallInList> ClosedCallInList
         {
@@ -52,6 +52,25 @@ namespace PL.Volunteer
             // הצגת הנתונים ב-DataGrid
             HistoryDataGrid.ItemsSource = closedCalls;
         }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryCallList(); // Refresh the list whenever the filter changes
+        }
+        private void callListObserver()
+           => queryCallList();
+
+
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Call.RemoveObserver(callListObserver);
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            queryCallList();
+            s_bl.Volunteer.AddObserver(callListObserver);
+
+        }
+
+      
         //private void LoadClosedCalls(BO.CallType? filterCriteria = null, BO.ClosedCallInListField? sortCriteria = null)
         //{
         //    try
@@ -79,7 +98,7 @@ namespace PL.Volunteer
         //    var selectedSort = (ClosedCallInListField)((ComboBoxItem)((ComboBox)sender).SelectedItem).Tag;
         //    LoadClosedCalls(null, selectedSort);
         //}
-    }
+    }
 
-   
+
 }
