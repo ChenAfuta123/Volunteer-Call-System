@@ -270,6 +270,7 @@ namespace PL
             callListWindow.ShowDialog();
         }
 
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
@@ -281,6 +282,7 @@ namespace PL
             // הצגת החלון
             callListWindow.ShowDialog();
         }
+
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
@@ -294,6 +296,9 @@ namespace PL
             callListWindow.ShowDialog();
         }
 
+            // הצגת החלון
+            callListWindow.ShowDialog();
+        }
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
@@ -317,6 +322,9 @@ namespace PL
             // הצגת החלון
             callListWindow.ShowDialog();
         }
+
+
+
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {

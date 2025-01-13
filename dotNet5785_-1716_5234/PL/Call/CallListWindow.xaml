@@ -44,7 +44,7 @@
             </StackPanel>
 
         </Grid>
-
+      
         <!-- DataGrid Section -->
         <DataGrid Grid.Row="1" ItemsSource="{Binding CallList}" IsReadOnly="True" AutoGenerateColumns="False" 
                   EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected" 

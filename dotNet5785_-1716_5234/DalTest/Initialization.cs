@@ -50,28 +50,34 @@ public static class Initialization
         };
 
         string[] addresses = {
-            "Tel Aviv, Rothschild Blvd 15", "Jerusalem, Jaffa St 23", "Haifa, Ben Gurion Blvd 33",
-            "Beer Sheva, Rager Blvd 12", "Eilat, Derech Yotam 4", "Rishon LeZion, Herzl St 22",
-            "Netanya, Independence Square 9", "Ashdod, HaShalom St 17", "Herzliya, Ben Yehuda St 10",
+            "Kfar Saba, Weizmann St 30", "Sderot, HaDekel St 9", "Lod, HaHistadrut St 20",
+            "Beer Sheva, Rager Blvd 12", "Mazkeret Batya, HaDekel St 15", "Rishon LeZion, Herzl St 22",
+            "Petach Tikva, HaHistadrut St 18", "Lod, HaHistadrut St 28", "Herzliya, Ben Yehuda St 10",
             "Holon, Eilat St 5", "Kfar Saba, Weizmann St 8", "Bat Yam, Begin Blvd 14",
-            "Ra'anana, HaPark St 7", "Modiin, Ironi Dalet 3", "Beit Shemesh, Savyon Blvd 11",
-            "Acre, Old City 2", "Nahariya, Ga'aton Blvd 6", "Tiberias, HaGalil St 18",
+            "Ra'anana, HaPark St 7", "Ramat Gan, Abba Hillel Silver Rd 95", "Jerusalem, Hertzel St 20",
+            "Kiryat Shmona, HaBanim St 10", "Petach Tikva, HaHistadrut St 18", "Tiberias, HaGalil St 18",
             "Safed, HaAri St 4", "Kiryat Shmona, HaBanim St 12"
         };
 
         double[] latitudes = {
-            32.0655, 31.7833, 32.8191, 31.2529, 29.5581, 31.9702,
-            32.3294, 31.8066, 32.1643, 32.0153, 32.1750, 32.0248,
-            32.1839, 31.8961, 31.7498, 32.9263, 33.0068, 32.7922,
-            32.9656, 33.2074
-        };
+    32.175500, 31.523400, 31.951400,
+    31.252200, 31.853500, 31.967100,
+    32.0858939, 31.951700, 32.162200,
+    32.013900, 32.178200, 32.016700,
+    32.183300, 32.090000, 31.775800,
+    33.207700, 32.086094, 32.793500,
+    32.966800, 33.208500
+};
 
         double[] longitudes = {
-            34.7754, 35.2170, 34.9885, 34.7903, 34.9482, 34.8037,
-            34.8500, 34.6403, 34.8431, 34.7805, 34.9063, 34.7474,
-            34.8708, 35.0094, 34.9934, 35.0713, 35.0948, 35.5372,
-            35.4950, 35.5724
-        };
+    34.905500, 34.593900, 34.895200,
+    34.794800, 34.836800, 34.807700,
+    34.8838329, 34.895400, 34.843800,
+    34.771700, 34.903800, 34.748600,
+    34.870800, 34.804100, 35.179800,
+    35.570400, 34.886269, 35.539700,
+    35.495000, 35.570000
+};
 
 
         for (int i = 0; i < 20; i++)
@@ -102,34 +108,45 @@ public static class Initialization
     private static void create_call()
     {
         string[] addresses = {
-    "Tel Aviv, Dizengoff St 50", "Jerusalem, Jaffa St 10", "Haifa, HaNassi Blvd 80", "Beersheba, Rager Blvd 15", "Eilat, HaTmarim Blvd 20",
-    "Petah Tikva, Em Hamoshavot Rd 45", "Netanya, Herzl St 12", "Ashdod, HaNamal St 30", "Rehovot, Herzl St 65", "Holon, Sokolov St 22",
-    "Bat Yam, Ben Gurion Blvd 15", "Rishon Lezion, Rothschild St 35", "Ramat Gan, Abba Hillel Silver Rd 100", "Herzliya, Ben Yehuda St 55",
-    "Kfar Saba, Weizmann St 28", "Ra'anana, Ahuza St 90", "Modiin, Yigal Alon St 17", "Ashkelon, Ben Gurion Blvd 60", "Nahariya, Sokolov St 18",
-    "Acre, Ben Ami Blvd 5", "Karmiel, HaGalil St 7", "Dimona, Haim Bar Lev St 40", "Yokneam, HaTzabar St 2", "Beit Shemesh, Nahar Hayarden St 8",
-    "Afula, HaRakevet St 10", "Tiberias, HaBanim St 15", "Sderot, HaDekel St 3", "Or Yehuda, HaTamar St 25", "Ramat HaSharon, Sokolov St 40",
-    "Giv'atayim, Katznelson St 5", "Shoham, HaAtzmaut St 6", "Even Yehuda, HaShaked St 13", "Gedera, HaZayit St 12", "Yavne, HaGefen St 4",
-    "Omer, HaShikma St 9", "Shlomi, HaZayit St 16", "Migdal HaEmek, HaDekel St 7", "Kiryat Shmona, David Elazar St 11",
-    "Kiryat Bialik, HaTzafon St 3", "Rosh HaAyin, HaHagana St 1", "Kiryat Ata, HaYovel St 25", "Lod, HaHistadrut St 30",
-    "Ramla, Herzl St 27", "Eilot, HaNegev St 2", "Arad, HaShalom St 14", "Ma'alot Tarshiha, HaTeena St 12", "Zichron Yaakov, HaEtrog St 19",
-    "Ramat Efal, HaRakevet St 8", "Tel Mond, HaGoren St 15", "Mazkeret Batya, HaDekel St 3"
+    "Tel Aviv, Dizengoff St 50", "Jerusalem, Jaffa St 10", "Rishon LeZion, Herzl St 28", "Tel Aviv, Dizengoff St 50", "Bat Yam, Ben Gurion Blvd 15",
+    "Petah Tikva, Em Hamoshavot Rd 45", "Netanya, Herzl St 12", "Safed, HaAri St 20", "Jerusalem, Jaffa St 20", "Holon, Sokolov St 1",
+    "Bat Yam, Ben Gurion Blvd 15","Rishon LeZion, Herzl St 28", "Ramat Gan, Abba Hillel Silver Rd 100", "Herzliya, Ben Yehuda St 55",
+    "Kfar Saba, Weizmann St 28", "Herzliya, Ben Yehuda St 20", "TelAviv, Yigal Alon St 50", "Yavne, HaGefen St 15", "Nahariya, Sokolov St 18",
+    "Safed, HaAri St 15", "Karmiel, HaGalil St 7", "Tiberias, HaGalil St 20", "Tel Aviv, Dizengoff St 48", "Jerusalem, Hertzel St 10",
+    "Kfar Saba, Weizmann St 20", "Tiberias, HaBanim St 15", "Sderot, HaDekel St 3", "Ramat HaSharon, Sokolov St 38", "Ramat HaSharon, Sokolov St 40",
+    "Holon, Sokolov St 10", "Even Yehuda, HaShaked St 17", "Even Yehuda, HaShaked St 13", "Gedera, HaZayit St 12", "Yavne, HaGefen St 4",
+    "Kiryat Shmona, HaBanim St 14", "Petah Tikva, Em Hamoshavot Rd 40", "Karmiel, HaGalil St 10", "Bet Shemesh, HaGefen St 20",
+    "Rosh HaAyin, HaHagana St 3", "Rosh HaAyin, HaHagana St 1", "Jerusalem, Hillel St 20", "Lod, HaHistadrut St 30",
+    "Ramla, Herzl St 27", "Bet Shemesh, HaGalil St 10", "Bet Shemesh, HaGalil St 20", "Ma'alot Tarshiha, HaTeena St 12", "Ma'alot Tarshiha, HaTeena St 19",
+     "Tel Mond, HaGoren St 10", "Tel Mond, HaGoren St 15", "Mazkeret Batya, HaDekel St 3"
 };
 
-        double[] latitudes = {
-    32.0805, 31.7683, 32.7940, 31.2518, 29.5577, 32.084, 32.321, 31.804, 31.894, 32.011,
-    32.017, 31.972, 32.082, 32.162, 32.175, 32.185, 31.896, 31.668, 33.008, 32.923,
-    32.919, 31.071, 32.656, 31.739, 32.607, 32.792, 31.527, 32.031, 32.145, 32.068,
-    32.035, 31.938, 31.888, 31.878, 32.946, 32.802, 33.207, 32.799, 32.813, 32.123,
-    32.052, 31.951, 31.246, 31.27, 33.015, 32.573, 32.062, 32.180, 31.861, 31.845
-};
-
+    double[] latitudes = {
+    32.080480, 31.783180, 31.964600, 32.080480, 32.017136,
+    32.091800, 32.332900, 32.968000, 31.783600, 32.015200,
+    32.017136, 31.964600, 32.090800, 32.165000, 32.175000,
+    32.164000, 32.069000, 31.876000, 33.005000, 32.968000,
+    32.917000, 32.792000, 32.080400,31.786207,
+    32.174000, 32.792000, 31.522000, 32.147000, 32.147000,
+    32.015500, 32.270000, 32.270000, 31.814000, 31.876000,
+    33.209000, 32.091500, 32.917000, 31.749000, 32.095000,
+    32.095000, 31.780000, 31.951000, 31.929000, 31.749000,
+    31.749000, 33.016000, 33.016000, 32.249000, 32.249000,
+    31.853000
+    };
         double[] longitudes = {
-    34.7818, 35.2137, 34.9896, 34.7915, 34.9501, 34.871, 34.853, 34.645, 34.812, 34.772,
-    34.748, 34.804, 34.823, 34.839, 34.906, 34.870, 35.010, 34.599, 35.093, 35.082,
-    35.297, 35.034, 35.104, 34.989, 35.289, 35.540, 34.596, 34.839, 34.839, 34.810,
-    34.915, 34.779, 34.701, 34.775, 35.302, 35.571, 35.573, 35.033, 35.113, 34.880,
-    34.900, 34.873, 34.792, 34.736, 35.276, 35.046, 34.814, 34.935, 34.851, 34.836
-};
+    34.775610, 35.219360, 34.804400, 34.775610, 34.745441,
+    34.887500, 34.859900, 35.494000, 35.219800, 34.774800,
+    34.745441, 34.804400, 34.804000, 34.842000, 34.906000,
+    34.841000, 34.794000, 34.738000, 35.094000, 35.494000,
+    35.305000, 35.540000, 34.775500, 35.1984677,
+    34.905000, 35.537000, 34.595000, 34.841000, 34.841000,
+    34.774900, 34.888000, 34.888000, 34.779000, 34.737000,
+    35.570000, 34.887200, 35.305000, 34.987000, 34.950000,
+    34.950000, 35.220000, 34.895000, 34.869000, 34.987000,
+    34.987000, 35.275000, 35.275000, 34.918000, 34.918000,
+    34.836000
+    };
 
         string[] descriptions =
          {
@@ -229,6 +246,7 @@ public static class Initialization
 
         for (int i = 0; i < 50; i++) // Generating 50 assignments
         {
+
             // Select a call based on i
             var randomCall = calls.ElementAt(i % callsCount);
 
@@ -319,8 +337,8 @@ public static class Initialization
 
         Console.WriteLine("Reset Configuration values and List values...");
         create_volunteer();
-        //create_call();
-       /* create_assignment()*/;
+        create_call();
+        create_assignment();
     }
 
 }

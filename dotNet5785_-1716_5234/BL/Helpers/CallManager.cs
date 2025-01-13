@@ -128,7 +128,7 @@ internal static class CallManager
 
             return new BO.CallInList
             {
-                Id = lastAssignment?.Id,
+                Id = lastVolunteer?.Id,
                 CallId = doCall.Id,
                 callType = (BO.CallType)doCall.callType,
                 OpeningTime = doCall.OpeningTime,

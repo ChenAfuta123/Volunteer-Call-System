@@ -69,7 +69,7 @@ namespace PL.Call
                 {
                     CurrentCall = new BO.Call
                     {
-                        Id = 0,
+                        Id =0 ,
                         callType = BO.CallType.None,
                         Description = null,
                         Address = "",
@@ -104,7 +104,7 @@ namespace PL.Call
         {
             base.OnSourceInitialized(e);
 
-            if (CurrentCall!.Id != 0)
+            if (CurrentCall.Id != 0)
             {
                 s_bl.Call.AddObserver(CurrentCall.Id, RefreshCall);
             }
@@ -146,7 +146,8 @@ namespace PL.Call
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
      
+
+
     }
 }

@@ -25,6 +25,7 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
     public void Add(BO.Call boCall)
     {
         CallManager.ValidateCall(boCall);
+        //Task.Delay(1000).Wait();
         var coordinates = Tools.DistanceCalculator.GetAddressCoordinates(boCall.Address);
         double longtitude = coordinates.Latitude ?? 0.0;
         double latitude = coordinates.Latitude ?? 0.0;
@@ -98,12 +99,6 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
             
             var calls = _dal.Call.ReadAll();
 
-
-
-        if (calls == null || !calls.Any())
-        {
-            throw new BO.BlNullPropertyException("לא נמצאו קריאות בבסיס הנתונים.");
-        }
 
         IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
 

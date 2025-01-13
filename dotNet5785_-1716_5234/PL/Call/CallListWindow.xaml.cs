@@ -22,9 +22,16 @@ namespace PL.Call
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
 
-        public CallListWindow(BO.CallInListField? callFilter = BO.CallInListField.None, BO.CallInListField? callSorter = BO.CallInListField.None)
+        public CallListWindow(BO.CallInListField? callFilter = BO.CallInListField.None, object? customFilter = null, BO.CallInListField? callSort = BO.CallInListField.None)
         {
             InitializeComponent();
+
+            _callFilter = callFilter;
+            _obj = customFilter;
+            _callSort = callSort;
+
+            // קריאה לעדכון הרשימה לפי הפילטרים
+            queryCallList();
         }
 
         public IEnumerable<BO.CallInList> CallList
@@ -36,7 +43,7 @@ namespace PL.Call
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
-        private BO.CallInListField? _callFilter = BO.CallInListField.None;
+        private BO.CallInListField? _callFilter;
         public BO.CallInListField? CallFilter
         {
             get => _callFilter;
@@ -62,7 +69,7 @@ namespace PL.Call
                 }
             }
         }
-        private object? _obj = null;
+        private object? _obj;
         public object? CustomFilter
         {
             get => _obj;
@@ -74,7 +81,7 @@ namespace PL.Call
                     queryCallList(); // Refresh the list based on the new sort
                 }
             }
-        }
+        } 
 
         private void CustomFilterTextBox_TextChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -116,7 +123,7 @@ namespace PL.Call
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             queryCallList();
-            s_bl.Volunteer.AddObserver(callListObserver);
+            s_bl.Call.AddObserver(callListObserver);
 
         }
 
