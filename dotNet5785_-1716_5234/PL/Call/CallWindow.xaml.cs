@@ -93,32 +93,32 @@ namespace PL.Call
                 MessageBox.Show($"Error loading call data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        //private void RefreshVolunteer()
-        //{
-        //    int id = CurrentVolunteer!.Id;
-        //    CurrentVolunteer = null;
-        //    CurrentVolunteer = s_bl.Volunteer.Read(id);
-        //}
+        private void RefreshCall()
+        {
+            int id = CurrentCall!.Id;
+            CurrentCall = null;
+            CurrentCall = s_bl.Call.Read(id);
+        }
 
-        //protected override void OnSourceInitialized(EventArgs e)
-        //{
-        //    base.OnSourceInitialized(e);
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
 
-        //    if (CurrentVolunteer!.Id != 0)
-        //    {
-        //        s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, RefreshVolunteer);
-        //    }
-        //}
+            if (CurrentCall!.Id != 0)
+            {
+                s_bl.Call.AddObserver(CurrentCall.Id, RefreshCall);
+            }
+        }
 
-        //protected override void OnClosed(EventArgs e)
-        //{
-        //    base.OnClosed(e);
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
 
-        //    if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
-        //    {
-        //        s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, RefreshVolunteer);
-        //    }
-        //}
+            if (CurrentCall != null && CurrentCall.Id != 0)
+            {
+                s_bl.Call.RemoveObserver(CurrentCall.Id, RefreshCall);
+            }
+        }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {

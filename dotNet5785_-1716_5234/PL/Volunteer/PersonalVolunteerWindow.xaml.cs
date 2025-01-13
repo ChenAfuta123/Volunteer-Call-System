@@ -33,20 +33,21 @@ namespace PL.Volunteer
             {
                 var volunteer = s_bl.Volunteer.Read(UserId);
 
-                if (volunteer.VolunteerHandledCall == null)
+                if ((volunteer.VolunteerHandledCall!.callStatus == BO.CallStatus.InProgress|| volunteer.VolunteerHandledCall.callStatus == BO.CallStatus.InProgressAtRisk)& volunteer.VolunteerHandledCall!= null)
+                {
+
+                    var callid = volunteer.VolunteerHandledCall!.CallId;
+                    var call = s_bl.Call.Read(callid);
+                    ShowCallDetails(call);  // הצגת פרטי הקריאה כאשר יש קריאה בטיפול
+                    CallSelectionButton.IsEnabled = false; // ביטול אפשרות בחירת קריאה
+                }
+                else
                 {
                     HideCallDetails();  // הסתרת פרטי הקריאה כאשר אין קריאה בטיפול
                     if (volunteer.Active)
                         CallSelectionButton.IsEnabled = true; // מאפשר את כפתור בחירת קריאה
                     else
                         CallSelectionButton.IsEnabled = false;
-                }
-                else
-                {
-                    var callid = volunteer.VolunteerHandledCall.CallId;
-                    var call = s_bl.Call.Read(callid);
-                    ShowCallDetails(call);  // הצגת פרטי הקריאה כאשר יש קריאה בטיפול
-                    CallSelectionButton.IsEnabled = false; // ביטול אפשרות בחירת קריאה
                 }
             }
             catch (Exception ex)

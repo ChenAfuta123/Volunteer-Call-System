@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer>
   <Volunteer>
-    <Id>223456796</Id>
-    <DistanceType>AirDistance</DistanceType>
-    <Role>volunteer</Role>
-    <Name>David Cohen</Name>
-    <PhoneNumber>0529452458</PhoneNumber>
-    <Email>d@gmail.com</Email>
-    <Password>$2a$11$wkUvYoxI9OBiFx4aRlggfOAdDh3gZfMwPwUcJCyCzPQY3EbOynpz6</Password>
-    <Address>Jaffa Street 101, Jerusalem</Address>
-    <Latitude>31.498972</Latitude>
-    <Longitude>35.051057</Longitude>
-    <MaxDistance>49</MaxDistance>
-    <Active>true</Active>
-  </Volunteer>
-  <Volunteer>
     <Id>324587659</Id>
     <DistanceType>AirDistance</DistanceType>
     <Role>volunteer</Role>
@@ -54,20 +40,6 @@
     <Latitude>32.075449</Latitude>
     <Longitude>34.775321</Longitude>
     <MaxDistance>44</MaxDistance>
-    <Active>true</Active>
-  </Volunteer>
-  <Volunteer>
-    <Id>200123456</Id>
-    <DistanceType>AirDistance</DistanceType>
-    <Role>volunteer</Role>
-    <Name>Manager</Name>
-    <PhoneNumber>058-8341337</PhoneNumber>
-    <Email>Manager@example.com</Email>
-    <Password />
-    <Address>Tel Aviv, Rothschild Blvd 15</Address>
-    <Latitude>32.0655</Latitude>
-    <Longitude>34.7754</Longitude>
-    <MaxDistance>32</MaxDistance>
     <Active>true</Active>
   </Volunteer>
   <Volunteer>
@@ -337,17 +309,45 @@
     <Active>true</Active>
   </Volunteer>
   <Volunteer>
+    <Id>200123456</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>Manager</Name>
+    <PhoneNumber>059-5130118</PhoneNumber>
+    <Email>Manager@example.com</Email>
+    <Password />
+    <Address>Tel Aviv, Rothschild Blvd 15</Address>
+    <Latitude>32.0655</Latitude>
+    <Longitude>34.7754</Longitude>
+    <MaxDistance>21</MaxDistance>
+    <Active>true</Active>
+  </Volunteer>
+  <Volunteer>
     <Id>328241716</Id>
     <DistanceType>AirDistance</DistanceType>
     <Role>volunteer</Role>
     <Name>Chen Afuta</Name>
     <PhoneNumber>0539217152</PhoneNumber>
     <Email>chen@gmail.com</Email>
-    <Password>$2a$11$dcUP0xzC7T8ar40Q5rlAPOzYU5l5xytBqcJF6yuyj8Qic3fYh53fu</Password>
+    <Password>$2a$11$6R3bOBbaWeoU/2vs5JtbHuSUDMQyDI7xwPNrBMOfL4Ox94WOL8012</Password>
     <Address>Tel Aviv, Rothschild Boulevard 1</Address>
     <Latitude>32.0631559</Latitude>
     <Longitude>34.7688262</Longitude>
     <MaxDistance>15</MaxDistance>
+    <Active>true</Active>
+  </Volunteer>
+  <Volunteer>
+    <Id>223456796</Id>
+    <DistanceType>AirDistance</DistanceType>
+    <Role>volunteer</Role>
+    <Name>David Cohen</Name>
+    <PhoneNumber>0529452458</PhoneNumber>
+    <Email>d@gmail.com</Email>
+    <Password>$2a$11$c532.//73T.IPsfi86J3.uTT5AM3oNT2kO/xdmUubDkE53SmCiFUq</Password>
+    <Address>Jaffa Street 101, Jerusalem</Address>
+    <Latitude>31.498972</Latitude>
+    <Longitude>35.051057</Longitude>
+    <MaxDistance>49</MaxDistance>
     <Active>false</Active>
   </Volunteer>
 </ArrayOfVolunteer>

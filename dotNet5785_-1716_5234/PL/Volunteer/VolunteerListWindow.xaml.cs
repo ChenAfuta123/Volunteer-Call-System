@@ -6,9 +6,6 @@ using System.Windows.Controls;
 
 namespace PL.Volunteer
 {
-    /// <summary>
-    /// Interaction logic for VolunteerListWindow.xaml
-    /// </summary>
     public partial class VolunteerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -18,24 +15,16 @@ namespace PL.Volunteer
             InitializeComponent();
         }
 
-
         // Property to bind Volunteer List
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
             get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
-            set
-            {
-                SetValue(VolunteerListProperty, value);
-
-            }
+            set { SetValue(VolunteerListProperty, value); }
         }
 
         public static readonly DependencyProperty VolunteerListProperty =
             DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
 
-        // Filter variable
-        //private BO.VolunteerInListFields? VolunteerSort { get; set; } = null;
-        //private BO.IsActiveFilter? VolunteerFilter { get; set; } = IsActiveFilter.None;
         private BO.IsActiveFilter? _volunteerFilter = BO.IsActiveFilter.None;
         public BO.IsActiveFilter? VolunteerFilter
         {
@@ -45,11 +34,11 @@ namespace PL.Volunteer
                 if (_volunteerFilter != value)
                 {
                     _volunteerFilter = value;
-                   /* OnPropertyChanged(); */// Notify the UI about the change
-                    queryVolunteerList(); // Refresh the list based on the new filter
+                    queryVolunteerList();
                 }
             }
         }
+
         private BO.VolunteerInListFields? _volunteerSort;
         public BO.VolunteerInListFields? VolunteerSort
         {
@@ -59,13 +48,10 @@ namespace PL.Volunteer
                 if (_volunteerSort != value)
                 {
                     _volunteerSort = value;
-                  /*  OnPropertyChanged();*/ // Notify the UI about the change
-                    queryVolunteerList(); // Refresh the list based on the new sort
+                    queryVolunteerList();
                 }
             }
         }
-
-
 
         // Query the volunteer list
         private void queryVolunteerList()
@@ -75,19 +61,19 @@ namespace PL.Volunteer
                 BO.IsActiveFilter.None => null,
                 BO.IsActiveFilter.Active => true,
                 BO.IsActiveFilter.Not_Active => false,
-                _ => null // Handle any unexpected cases
+                _ => null
             };
             VolunteerList = s_bl?.Volunteer.ReadAll(isActiveFilter, VolunteerSort)!;
-
         }
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            queryVolunteerList(); // Refresh the list whenever a filter or sort option changes
+            queryVolunteerList();
         }
+
         // Observer method for volunteer list
         private void volunteerListObserver()
         {
-
             queryVolunteerList();
         }
 
@@ -96,7 +82,6 @@ namespace PL.Volunteer
         {
             queryVolunteerList();
             s_bl.Volunteer.AddObserver(volunteerListObserver);
-
         }
 
         // Remove the observer on Window Closed
@@ -110,24 +95,17 @@ namespace PL.Volunteer
             if (SelectedVolunteer != null)
                 new VolunteerWindow(SelectedVolunteer.Id).Show();
             queryVolunteerList();
-
         }
 
         public BO.VolunteerInList? SelectedVolunteer { get; set; }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
             var volunteerWindow = new VolunteerWindow();
             if (volunteerWindow.ShowDialog() == true)
                 queryVolunteerList(); // Refresh the list to include the new volunteer
-
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Handle selection changed event if needed
-        }
         private void ComboBox_FilterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             queryVolunteerList(); // Refresh the list whenever the filter changes

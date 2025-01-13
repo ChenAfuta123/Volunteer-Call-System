@@ -4,7 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#FFFFFF"   DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#FFFFFF"   
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
+    <Window.Resources>
+        <!-- הגדרת CollectionViewSource עבור OpenCalls -->
+        <CollectionViewSource x:Key="OpenCallsCollectionKey" Source="{Binding OpenCallList}" />
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -13,17 +20,31 @@
         <!-- אזור הסינון והמיון -->
         <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
             <TextBlock Text="סינון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox  Width="150"
-             ItemsSource="{Binding Source={StaticResource OpenCallsCollectionKey}}"
-             SelectedValue="{Binding CallFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-             SelectionChanged="ComboBox_SelectionChanged"/>
+            <ComboBox x:Name="FiltererComboBox" SelectedValue="{Binding CallFilter, Mode=TwoWay}" 
+          SelectedValuePath="Tag" Width="200" Margin="5">
+                <ComboBoxItem Content=" Id" Tag="Id"/>
+                <ComboBoxItem Content="callType" Tag="callType"/>
+                <ComboBoxItem Content="Description" Tag="Description"/>
+                <ComboBoxItem Content="Address" Tag="Address"/>
+                <ComboBoxItem Content="Opening Time" Tag="OpeningTime"/>
+                <ComboBoxItem Content="Max Ending Time" Tag="MaxEndingTime"/>
+                <ComboBoxItem Content="Call Distance From Volunteer" Tag="CallDistanceFromVolunteer"/>
+                <ComboBoxItem Content="None" Tag="None"/>
+            </ComboBox>
             <TextBlock Text="מיון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox  Width="150"
-                ItemsSource="{Binding Source={StaticResource OpenCallsCollectionKey}}"
-                SelectedValue="{Binding CallSorter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectionChanged="ComboBox_SelectionChanged"/>
-
+            <ComboBox x:Name="SorterComboBox" SelectedValue="{Binding CallSorter, Mode=TwoWay}" 
+          SelectedValuePath="Tag" Width="200" Margin="5">
+                <ComboBoxItem Content=" Id" Tag="Id"/>
+                <ComboBoxItem Content="callType" Tag="callType"/>
+                <ComboBoxItem Content="Description" Tag="Description"/>
+                <ComboBoxItem Content="Address" Tag="Address"/>
+                <ComboBoxItem Content="Opening Time" Tag="OpeningTime"/>
+                <ComboBoxItem Content="Max Ending Time" Tag="MaxEndingTime"/>
+                <ComboBoxItem Content="Call Distance From Volunteer" Tag="CallDistanceFromVolunteer"/>
+                 <ComboBoxItem Content="None" Tag="None"/>
+                </ComboBox>
         </StackPanel>
+
         <!-- DataGrid -->
         <DataGrid x:Name="OpenCallsDataGrid" Grid.Row="1" AutoGenerateColumns="False" Margin="10" CanUserAddRows="False">
             <DataGrid.Columns>
@@ -38,11 +59,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="טיפול" Click="TreatmentButton_Click" Tag="{Binding}" />
-                            <!--<Button Content="פרטי קריאה" Click="DescriptionButton_Click" Tag="{Binding}" />-->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

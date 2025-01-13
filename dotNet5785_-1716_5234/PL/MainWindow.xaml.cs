@@ -258,59 +258,81 @@ namespace PL
 
         public BO.CallInListField Call { get; set; } = BO.CallInListField.None;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Open, null);
+
+            // הגדרת הפילטר כך שיציג רק קריאות עם סטטוס 'Expired'
+            callListWindow.CustomFilter = BO.CallStatus.Open; // הגדרת הפילטר לפי CallStatus
+            callListWindow.CallFilter = BO.CallInListField.CallStatus;  // אפשרות למיין לפי CallStatus אם צריך
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Closed, null);
+
+            // הגדרת הפילטר כך שיציג רק קריאות עם סטטוס 'Expired'
+            callListWindow.CustomFilter = BO.CallStatus.Closed; // הגדרת הפילטר לפי CallStatus
+            callListWindow.CallFilter = BO.CallInListField.CallStatus;  // אפשרות למיין לפי CallStatus אם צריך
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgress, null);
+
+            // הגדרת הפילטר כך שיציג רק קריאות עם סטטוס 'Expired'
+            callListWindow.CustomFilter = BO.CallStatus.InProgress; // הגדרת הפילטר לפי CallStatus
+            callListWindow.CallFilter = BO.CallInListField.CallStatus;  // אפשרות למיין לפי CallStatus אם צריך
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Expired, null);
+
+            // הגדרת הפילטר כך שיציג רק קריאות עם סטטוס 'Expired'
+            callListWindow.CustomFilter = BO.CallStatus.Expired; // הגדרת הפילטר לפי CallStatus
+            callListWindow.CallFilter = BO.CallInListField.CallStatus;  // אפשרות למיין לפי CallStatus אם צריך
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
+
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.OpenAtRisk, null);
+
+            // הגדרת הפילטר כך שיציג רק קריאות עם סטטוס 'Expired'
+            callListWindow.CustomFilter = BO.CallStatus.OpenAtRisk; // הגדרת הפילטר לפי CallStatus
+            callListWindow.CallFilter = BO.CallInListField.CallStatus;  // אפשרות למיין לפי CallStatus אם צריך
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgressAtRisk, null);
+
+            // הגדרת הפילטר כך שיציג רק קריאות עם סטטוס 'Expired'
+            callListWindow.CustomFilter = BO.CallStatus.InProgressAtRisk; // הגדרת הפילטר לפי CallStatus
+            callListWindow.CallFilter = BO.CallInListField.CallStatus;  // אפשרות למיין לפי CallStatus אם צריך
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
-        //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
 
-        //    CallList = (Call == BO.CallInListField.None) ?//לתקן
-        //    s_bl?.Call.ReadAll(null,null,null)! : s_bl?.Call.ReadAll(null, BO.CallInListField.Id, Call)!;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
-        //}
-
-
-    }
+        }
+    }
 }

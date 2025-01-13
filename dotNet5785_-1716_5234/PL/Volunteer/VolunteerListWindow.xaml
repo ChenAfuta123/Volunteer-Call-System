@@ -38,21 +38,21 @@
 
             <!--Sorting-->
             <Label Grid.Row="0" Grid.Column="0" Margin="10" Content="מיון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
-           <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
-          ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
-          SelectedValue="{Binding VolunteerSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-          SelectionChanged="ComboBox_SelectionChanged"
-          Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
-          FontFamily="{DynamicResource HebrewFont}"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
+                      ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
+                      SelectedValue="{Binding VolunteerSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectionChanged="ComboBox_SelectionChanged"
+                      Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+                      FontFamily="{DynamicResource HebrewFont}"/>
 
             <!--Filtering-->
             <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="סינון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
             <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
-          ItemsSource="{Binding Source={StaticResource IsActiveFilterCollectionKey}}" 
-          SelectedValue="{Binding VolunteerFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-          SelectionChanged="ComboBox_FilterSelectionChanged"
-          Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
-          FontFamily="{DynamicResource HebrewFont}"/>
+                      ItemsSource="{Binding Source={StaticResource IsActiveFilterCollectionKey}}" 
+                      SelectedValue="{Binding VolunteerFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectionChanged="ComboBox_FilterSelectionChanged"
+                      Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
+                      FontFamily="{DynamicResource HebrewFont}"/>
         </Grid>
 
         <!--DataGrid Section-->
@@ -65,7 +65,31 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="*"/>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Active}" Header="Active" Width="*"/>
+
+                <!-- Active Column with Full Cell Background and Text -->
+                <DataGridTemplateColumn Header="Active" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="2" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Active}" Value="True">
+                                                <Setter Property="Background" Value="Green"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Active}" Value="False">
+                                                <Setter Property="Background" Value="Red"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding Active}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn Binding="{Binding TotalHandledCalls}" Header="Total Handled Calls" Width="*"/>
                 <DataGridTextColumn Binding="{Binding TotalCanceledCalls}" Header="Total Canceled Calls" Width="*"/>
                 <DataGridTextColumn Binding="{Binding TotalExpiredCalls}" Header="Total Expired Calls" Width="*"/>

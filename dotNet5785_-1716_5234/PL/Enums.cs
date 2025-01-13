@@ -83,6 +83,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class OpenCallInListField : IEnumerable
+    {
+        static readonly IEnumerable<BO.OpenCallInListField> s_enums =
+            (Enum.GetValues(typeof(BO.OpenCallInListField)) as IEnumerable<BO.OpenCallInListField>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     public class Enums
     {
 
@@ -134,6 +141,17 @@ namespace PL
             LegalAndAdministrativeSupport,
 
             /// <summary>Call does not exist in volunteer's treatment.</summary>
+            None
+        }
+        public enum OpenCallInListField
+        {
+            Id,
+            callType,
+            description,
+            Address,
+            OpeningTime,
+            maxEndingTime,
+            CallDistanceFromVolunteer,
             None
         }
     }
