@@ -1,5 +1,4 @@
 ﻿using BO;
-
 namespace BlApi;
 
 /// <summary>Interface for managing call operations.</summary>

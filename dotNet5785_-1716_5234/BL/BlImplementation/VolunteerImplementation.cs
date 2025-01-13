@@ -121,8 +121,14 @@ internal class VolunteerImplementation : IVolunteer
         }
 
         // המרה מ-DO ל-BO
-        var BOvolunteers = volunteers.Select(VolunteerManager.DOtoBO);
-      
+        var BOvolunteers = volunteers.Select(v =>
+        {
+            // הוספת השהייה לפני כל קריאה ל-DOtoBO
+           /* Task.Delay(1000).Wait();*/  // השהייה של שנייה אחת
+            return VolunteerManager.DOtoBO(v);
+        });
+
+
 
         // המרה לרשימת VolunteerInList
         var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);

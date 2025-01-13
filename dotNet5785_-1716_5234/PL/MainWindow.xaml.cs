@@ -265,44 +265,69 @@ namespace PL
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Open, null);
+            var callListWindow = new CallListWindow(
+                callFilter: BO.CallInListField.CallStatus,
+                customFilter: BO.CallStatus.Open); // סינון על סטטוס 'Open'
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
+
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Closed, null);
+            var callListWindow = new CallListWindow(
+                callFilter: BO.CallInListField.CallStatus,
+                customFilter: BO.CallStatus.Closed); // סינון על סטטוס 'Closed'
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
+
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgress, null);
-        }
+            var callListWindow = new CallListWindow(
+                callFilter: BO.CallInListField.CallStatus,
+                customFilter: BO.CallStatus.InProgress); // סינון על סטטוס 'InProgress'
 
+            // הצגת החלון
+            callListWindow.ShowDialog();
+        }
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.Expired, null);
+            var callListWindow = new CallListWindow(
+                callFilter: BO.CallInListField.CallStatus,
+                customFilter: BO.CallStatus.Expired); // סינון על סטטוס 'Expired'
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
+
+
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.OpenAtRisk, null);
+            var callListWindow = new CallListWindow(
+                callFilter: BO.CallInListField.CallStatus,
+                customFilter: BO.CallStatus.OpenAtRisk); // סינון על סטטוס 'OpenAtRisk'
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
+
+
+
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            var callListWindow = new CallListWindow();
-            if (callListWindow.ShowDialog() == true)
-                s_bl.Call.ReadAll(CallInListField.CallStatus, CallStatus.InProgressAtRisk, null);
+            var callListWindow = new CallListWindow(
+                callFilter: BO.CallInListField.CallStatus,
+                customFilter: BO.CallStatus.InProgressAtRisk); // סינון על סטטוס 'InProgressAtRisk'
+
+            // הצגת החלון
+            callListWindow.ShowDialog();
         }
+
         //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
 

@@ -33,7 +33,7 @@ sealed internal class DalXml : IDal
     /// </summary>
     public void ResetDB()
     {
-        //Volunteer.DeleteAll();
+        Volunteer.DeleteAll();
         Call.DeleteAll();
         Assignment.DeleteAll();
         Config.Reset();

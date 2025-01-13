@@ -70,16 +70,24 @@ namespace PL.Volunteer
         // Query the volunteer list
         private void queryVolunteerList()
         {
-            bool? isActiveFilter = VolunteerFilter switch
+            try
             {
-                BO.IsActiveFilter.None => null,
-                BO.IsActiveFilter.Active => true,
-                BO.IsActiveFilter.Not_Active => false,
-                _ => null // Handle any unexpected cases
-            };
-            VolunteerList = s_bl?.Volunteer.ReadAll(isActiveFilter, VolunteerSort)!;
+                bool? isActiveFilter = VolunteerFilter switch
+                {
+                    BO.IsActiveFilter.None => null,
+                    BO.IsActiveFilter.Active => true,
+                    BO.IsActiveFilter.Not_Active => false,
+                    _ => null // Handle any unexpected cases
+                };
 
+                VolunteerList = s_bl?.Volunteer.ReadAll(isActiveFilter, VolunteerSort)!;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching volunteer list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             queryVolunteerList(); // Refresh the list whenever a filter or sort option changes

@@ -23,11 +23,18 @@ namespace PL.Call
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
 
-        public CallListWindow()
+        public CallListWindow(BO.CallInListField? callFilter = BO.CallInListField.None, object? customFilter = null, BO.CallInListField? callSort = BO.CallInListField.None)
         {
             InitializeComponent();
+
+            _callFilter = callFilter;
+            _obj = customFilter;
+            _callSort = callSort;
+
+            // קריאה לעדכון הרשימה לפי הפילטרים
+            queryCallList();
         }
-        
+
         public IEnumerable<BO.CallInList> CallList
         {
             get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
@@ -37,7 +44,7 @@ namespace PL.Call
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
-        private BO.CallInListField? _callFilter = BO.CallInListField.None;
+        private BO.CallInListField? _callFilter;
         public BO.CallInListField? CallFilter
         {
             get => _callFilter;
@@ -63,17 +70,48 @@ namespace PL.Call
                 }
             }
         }
+        private object? _obj;
+        public object? CustomFilter
+        {
+            get => _obj;
+            set
+            {
+                if (_obj != value)
+                {
+                    _obj = value;
+                    queryCallList(); // Refresh the list based on the new sort
+                }
+            }
+        } 
+
+        private void CustomFilterTextBox_TextChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryCallList(); // Refresh the list whenever the filter changes
+        }
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             queryCallList(); // Refresh the list whenever the filter changes
         }
 
-
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            queryCallList(); // רענון הרשימה כאשר המשתמש לוחץ על "חפש"
+        }
         private void queryCallList()
         {
-            CallList = (CallFilter == BO.CallInListField.None)
-                ? s_bl?.Call.ReadAll(null, null, null)!
-                : s_bl?.Call.ReadAll(null, BO.CallInListField.Id, CallFilter)!;
+            // טיפול בערכים ריקים: 
+            // אם CallFilter הוא None, נשלח null
+            var filter = CallFilter != BO.CallInListField.None ? CallFilter : null;
+
+            // אם CustomFilter ריק או null, נשלח null
+            var customFilter = !string.IsNullOrEmpty(CustomFilter?.ToString()) ? CustomFilter : null;
+
+            // אם CallSort הוא None, נשלח null
+            var sorter = CallSort != BO.CallInListField.None ? CallSort : null;
+
+            // קריאה ל-ReadAll עם הערכים המתוקנים
+            CallList = s_bl?.Call.ReadAll(filter, customFilter, sorter) ?? Enumerable.Empty<BO.CallInList>();
         }
 
         private void callListObserver()
@@ -86,7 +124,7 @@ namespace PL.Call
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             queryCallList();
-            s_bl.Volunteer.AddObserver(callListObserver);
+            s_bl.Call.AddObserver(callListObserver);
 
         }
 

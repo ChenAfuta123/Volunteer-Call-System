@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="חלון שיחה" Height="600" Width="800" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Title="חלון קריאה" Height="600" Width="800" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Background="#FFFFFF">
 
 
@@ -77,7 +77,7 @@
         <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="מזהה קריאה:" Width="120"/>
-                <TextBox  IsEnabled="false" Text="{Binding CurrentCall.Id}" Visibility ="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+                <TextBox  Text="{Binding CurrentCall.Id}" IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="כתובת:" Width="120"/>
