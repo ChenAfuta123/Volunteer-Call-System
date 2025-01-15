@@ -104,7 +104,7 @@ namespace PL.Call
         {
             base.OnSourceInitialized(e);
 
-            if (CurrentCall.Id != 0)
+            if (CurrentCall!.Id != 0)
             {
                 s_bl.Call.AddObserver(CurrentCall.Id, RefreshCall);
             }

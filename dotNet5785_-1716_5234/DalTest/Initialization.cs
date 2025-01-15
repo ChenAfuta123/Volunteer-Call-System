@@ -90,7 +90,7 @@ public static class Initialization
             double longitude = longitudes[i];
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(1, 50);
-            Role role = (i == 0) ? Role.volunteer : Role.manager;
+            Role role = (i == 0) ? Role.manager : Role.volunteer;
             DistanceType distanceType = DistanceType.AirDistance;/* (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);*/
             /// <summary>
             /// Creates a new Volunteer object.

@@ -296,9 +296,8 @@ namespace PL
             callListWindow.ShowDialog();
         }
 
-            // הצגת החלון
-            callListWindow.ShowDialog();
-        }
+        // הצגת החלון
+
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             var callListWindow = new CallListWindow();

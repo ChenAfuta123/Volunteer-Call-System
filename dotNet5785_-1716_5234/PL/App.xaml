@@ -16,10 +16,11 @@
         <!-- סגנון כללי לכפתורים -->
         <Style x:Key="StyledButton" TargetType="Button">
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#87CEEB"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#ECEADB"/>
+            <Setter Property="BorderBrush" Value="#AEC494  "/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Margin" Value="0,5,0,5"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -28,19 +29,16 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                            CornerRadius="5" 
                             BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="1">
+                            BorderThickness="{TemplateBinding BorderThickness}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <!-- שינוי צבע בעת מעבר עכבר -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#6495ED" />
+                                <Setter Property="Background" Value="#D8D4C4" />
                             </Trigger>
-                            <!-- שינוי צבע בעת לחיצה -->
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#4682B4" />
+                                <Setter Property="Background" Value="#C0B8A8" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

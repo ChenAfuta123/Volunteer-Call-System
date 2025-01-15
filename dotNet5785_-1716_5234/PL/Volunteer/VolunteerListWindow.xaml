@@ -9,10 +9,10 @@
 
     <!-- Define Colors -->
     <Window.Resources>
-        <SolidColorBrush x:Key="PrimaryBlue" Color="#1E3A8A"/>
-        <SolidColorBrush x:Key="SecondaryWhite" Color="White"/>
-        <SolidColorBrush x:Key="AccentBlue" Color="#3B82F6"/>
-        <SolidColorBrush x:Key="GrayBorder" Color="#E5E7EB"/>
+        <SolidColorBrush x:Key="PrimaryBlue" Color="#AEC494"/>
+        <SolidColorBrush x:Key="SecondaryWhite" Color="#ECEADB"/>
+        <SolidColorBrush x:Key="AccentBlue" Color="#AEC494"/>
+        <SolidColorBrush x:Key="GrayBorder" Color="Black"/>
         <!-- Hebrew Font -->
         <FontFamily x:Key="HebrewFont">David</FontFamily>
     </Window.Resources>

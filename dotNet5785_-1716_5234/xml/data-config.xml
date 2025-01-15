@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <NextCallId>51</NextCallId>
-  <NextAssignmentId>50</NextAssignmentId>
-  <Clock>1/13/2025 10:46:07 PM</Clock>
+  <NextCallId>41</NextCallId>
+  <NextAssignmentId>0</NextAssignmentId>
+  <Clock>14/01/2025 00:03:26</Clock>
   <NextCallId>0</NextCallId>
   <NextAssignmentId>0</NextAssignmentId>
-  <Clock>12/26/2024 8:34:26 PM</Clock>
+  <Clock>14/01/2025 00:01:26 PM</Clock>
   <RiskRange>12:00:00</RiskRange>
 </config>
