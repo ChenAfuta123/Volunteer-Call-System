@@ -73,11 +73,22 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <!--//         public int Id { get; init; }
+ //public CallType callType { get; set; }
+ //public string? Description { get; set; }
+ //public required string Address { get; set; }
+ //public double Latitude { get; set; }
+ //public double Longitude { get; set; }
+ //public DateTime OpeningTime { get; init; }
+ //public DateTime? MaxEndingTime { get; set; }
+ //public CallStatus callStatus { get; set; }
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+ //public List-->
+        <!--<BO.CallAssignInList>? CallAssignList { get; set; }-->
+            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="מזהה קריאה:" Width="120"/>
-                <TextBox  Text="{Binding CurrentCall.Id}" IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}"/>
+                <TextBox  Text="{Binding CurrentCall.Id}" IsReadOnly="True"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="כתובת:" Width="120"/>
@@ -85,10 +96,10 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="סוג קריאה:" Width="120"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding CurrentCall.callType}" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding  CurrentCall.callType}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="תיאור:" Width="120"/>
+                <Label Content="תיאור:" Width="120"/> 
                 <TextBox Text="{Binding CurrentCall.Description}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -97,11 +108,13 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="זמן פתיחה:" Width="120"/>
-                <DatePicker IsEnabled="false" Visibility ="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}" SelectedDate="{Binding CurrentCall.OpeningTime}"/>
+                <DatePicker IsEnabled="false"  SelectedDate="{Binding CurrentCall.OpeningTime}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="סטטוס קריאה:" Width="120"/>
-                <ComboBox Width="250" ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}" SelectedValue="{Binding CurrentCall.callStatus}" />
+                <ComboBox Width="250" 
+           ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}" SelectedValue="{Binding  CurrentCall.callStatus}"
+                            IsEnabled="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}" />
             </StackPanel>
         </StackPanel>
 

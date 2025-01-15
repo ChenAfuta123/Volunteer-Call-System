@@ -1,122 +1,109 @@
 ﻿using BlApi;
+using BO;
 using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Call
 {
     /// <summary>
     /// Interaction logic for CallWindow.xaml
     /// </summary>
-    public partial class CallWindow : Window, INotifyPropertyChanged
+    public partial class CallWindow : Window
     {
-        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-      
-        private BO.Call? _currentCall;
-        public BO.Call? CurrentCall
+
+        static readonly IBl s_bl = Factory.Get();
+        // Dependency Properties
+        public static readonly DependencyProperty CurrentCallProperty =
+            DependencyProperty.Register(
+                nameof(CurrentCall),
+                typeof(BO.Call),
+                typeof(CallWindow),
+                new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ButtonTextProperty =
+            DependencyProperty.Register(
+                nameof(ButtonText),
+                typeof(string),
+                typeof(CallWindow),
+                new PropertyMetadata("Add"));
+
+        private BO.CallType? _callType;
+        public BO.CallType? CallType
         {
-            get { return _currentCall; }
+            get => _callType;
             set
             {
-                _currentCall = value;
-                OnPropertyChanged(nameof(CurrentCall));
+                if (_callType != value)
+                {
+                    _callType = value;
+
+                }
             }
         }
 
-        private string _buttonText = "Add"; // Default value
+        private BO.CallStatus? _callStatus;
+        public BO.CallStatus? CallStatus
+        {
+            get => _callStatus;
+            set
+            {
+                if (_callStatus != value)
+                {
+                    _callStatus = value;
+
+                }
+            }
+        }
+
+        // Properties
+        public BO.Call CurrentCall
+        {
+            get => (BO.Call)GetValue(CurrentCallProperty);
+            set => SetValue(CurrentCallProperty, value);
+        }
+
         public string ButtonText
         {
-            get => _buttonText;
-            set
-            {
-                _buttonText = value;
-                OnPropertyChanged(nameof(ButtonText));
-            }
+            get => (string)GetValue(ButtonTextProperty);
+            set => SetValue(ButtonTextProperty, value);
         }
 
-        public static readonly DependencyProperty CurrentCallProperty =
-            DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
-
-        public IEnumerable<BO.CallType> CallTypeCollection { get; set; }
-        public IEnumerable<BO.CallStatus> StatusCollection { get; set; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public CallWindow(int id = 0)
         {
             InitializeComponent();
-            DataContext = this; // Set DataContext for data binding
 
-
-            StatusCollection = Enum.GetValues(typeof(BO.CallStatus)).Cast<BO.CallStatus>();
-            CallTypeCollection = Enum.GetValues(typeof(BO.CallType)).Cast<BO.CallType>();
-
-            try
+            if (id == 0)
             {
-                if (id == 0)
+                CurrentCall = new BO.Call
                 {
-                    CurrentCall = new BO.Call
-                    {
-                        Id =0 ,
-                        callType = BO.CallType.None,
-                        Description = null,
-                        Address = "",
-                        Latitude = 0.0,
-                        Longitude = 0.0,
-                        OpeningTime = DateTime.Now,
-                        MaxEndingTime = null,
-                        callStatus = BO.CallStatus.Open,
-                        CallAssignList = null
-                    };
-                    ButtonText = "Add"; // Set initial button text
-                }
-                else
+                    Id = 0,
+                    callType = BO.CallType.None,
+                    Description = null,
+                    Address = "",
+                    Latitude = 0.0,
+                    Longitude = 0.0,
+                    OpeningTime = DateTime.Now,
+                    MaxEndingTime = null,
+                    callStatus = BO.CallStatus.Open,
+                    CallAssignList = null
+                };
+
+
+                ButtonText = "Add";
+            }
+            else
+            {
+                try
                 {
-                    CurrentCall = s_bl.Call.Read(id);
-                    ButtonText = "Update"; // Set button text for updates
+                    CurrentCall = BlApi.Factory.Get().Call.Read(id);
+                    ButtonText = "Update";
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading call data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        private void RefreshCall()
-        {
-            int id = CurrentCall!.Id;
-            CurrentCall = null;
-            CurrentCall = s_bl.Call.Read(id);
-        }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-
-            if (CurrentCall.Id != 0)
-            {
-                s_bl.Call.AddObserver(CurrentCall.Id, RefreshCall);
-            }
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-
-            if (CurrentCall != null && CurrentCall.Id != 0)
-            {
-                s_bl.Call.RemoveObserver(CurrentCall.Id, RefreshCall);
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading call data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -124,29 +111,62 @@ namespace PL.Call
         {
             try
             {
+
                 if (ButtonText == "Add")
                 {
-                    s_bl.Call.Add(CurrentCall!);
+                    s_bl.Call.Add(CurrentCall);
                     MessageBox.Show("Call added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else if (ButtonText == "Update")
                 {
-                    s_bl.Call.Update(CurrentCall!);
+                    s_bl.Call.Update(CurrentCall);
                     MessageBox.Show("Call updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
                 Close();
             }
-            catch (BO.BlDoesNotExistsException ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-     
+
+        // שיטה זו יכולה להיות מופעלת בזמן טעינת המסך
+        private void LoadScreen()
+        {
+            OnScreenLoaded(this, EventArgs.Empty);
+        }
+
+        // שיטה זו יכולה להיות מופעלת בזמן סגירת המסך
+        private void CloseScreen()
+        {
+            OnScreenClosed(this, EventArgs.Empty);
+        }
+        // הגדרת מתודת השקפה שתמלא את הפריט מחדש
+        private void CallObserver()
+        {
+            int id = CurrentCall!.Id;
+            CurrentCall = null;
+            CurrentCall = s_bl.Call.Read(id);
+        }
+
+        // הצטרפות לאירוע טעינת המסך
+        private void OnScreenLoaded(object sender, EventArgs e)
+        {
+            if (CurrentCall!.Id != 0)
+            {
+                s_bl.Call.AddObserver(CurrentCall!.Id, CallObserver);
+            }
+        }
+
+        // הצטרפות לאירוע סגירת המסך
+        private void OnScreenClosed(object sender, EventArgs e)
+        {
+            if (CurrentCall!.Id != 0)
+            {
+                s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
+            }
+        }
 
 
     }

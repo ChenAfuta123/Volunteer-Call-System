@@ -1,4 +1,5 @@
 ﻿using BO;
+using DO;
 namespace BlApi;
 
 /// <summary>Interface for managing call operations.</summary>
@@ -40,6 +41,8 @@ public interface ICall : IObservable
     /// <summary>Get open calls assigned to a specific volunteer.</summary>
     public IEnumerable<BO.OpenCallInList> OpenCallsByVolunteer(int id, BO.CallType? calltype, BO.OpenCallInListField? Sorting);
     public IEnumerable<BO.OpenCallInList> ReadAll(OpenCallInListField? filter, object? obg, OpenCallInListField? sorting, int VolunteerID);
+
+    public int findAssignment(int callID, int? VolunteerID);
 
 
 

@@ -22,13 +22,15 @@ namespace PL.Call
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
 
-        public CallListWindow(BO.CallInListField? callFilter = BO.CallInListField.None, object? customFilter = null, BO.CallInListField? callSort = BO.CallInListField.None)
+        public CallListWindow(BO.CallInListField? callFilter = BO.CallInListField.None,
+        object? customFilter = null, BO.CallInListField? callSort = BO.CallInListField.None)
         {
             InitializeComponent();
 
             _callFilter = callFilter;
             _obj = customFilter;
             _callSort = callSort;
+
 
             // קריאה לעדכון הרשימה לפי הפילטרים
             queryCallList();
@@ -81,7 +83,7 @@ namespace PL.Call
                     queryCallList(); // Refresh the list based on the new sort
                 }
             }
-        } 
+        }
 
         private void CustomFilterTextBox_TextChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -175,6 +177,55 @@ namespace PL.Call
             }
         }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to cancle the treatment for this call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                var button = sender as FrameworkElement;
+                //var callToCancel = button?.DataContext as BO.Call;
+                var callToCancel2 = button?.DataContext as BO.CallInList;
+                int managerID = s_bl.Volunteer.ManagerID();
+
+                if (managerID!=-1 && callToCancel2!=null)
+                {
+                    try
+                    {
+                       
+                        var volunteer = s_bl.Volunteer.Read(callToCancel2!.Id!.Value);
+                        var assignmentID = s_bl.Call.findAssignment(callToCancel2!.CallId, volunteer.Id);
+
+                        if (callToCancel2 != null)
+                        {
+                            s_bl.Call.CanceltreatmentUpdate(managerID, assignmentID);
+                        }
+
+                        // Send email notification
+                        string subject = "Your assignment has been cancelled";
+                        string body = "<h1>Dear Volunteer,</h1><p>We appreciate your help and support!</p>";
+                        List<string> email = new List<string> { volunteer.Email };
+
+                        // Assuming a method SendEmail exists in your BL
+                        s_bl.Volunteer.SendEmailToVolunteers(email, subject, body);
+                    }
+                    catch (BO.BlDoesNotExistsException ex)
+                    {
+                        MessageBox.Show($"Error:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    catch (BO.BlValidationException ex)
+                    {
+                        MessageBox.Show($"Error:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    catch (BO.BlUnauthorizedException ex)
+                    {
+                        MessageBox.Show($"Error:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Manager ID is invalid or call not selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
 
     }
-} 
+}
