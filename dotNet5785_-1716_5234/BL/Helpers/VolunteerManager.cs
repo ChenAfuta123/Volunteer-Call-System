@@ -50,7 +50,8 @@ internal static class VolunteerManager
                         Description = call.Description,
                         maxEndingTime = call.maxEndingTime,
                         EntryTime = Assignment.EntryTime,
-                        CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer.Address, call.Address, volunteer.distanceType),
+                        CallDistanceFromVolunteer =Tools.DistanceCalculator.CalculateDistance(volunteer.Latitude, volunteer.Longitude,
+                        call.Latitude, call.Longitude, volunteer.distanceType),
                         callStatus = CallManager.Status(call.Id)
                     };
                 }

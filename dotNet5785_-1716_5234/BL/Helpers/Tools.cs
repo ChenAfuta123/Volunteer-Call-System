@@ -129,66 +129,55 @@ internal static class Tools
         }
 
 
-        public static double CalculateDistance(string? address1, string? address2, DO.DistanceType distanceType)
+        public static double CalculateDistance(double? latitude1, double? longitude1, double? latitude2, double? longitude2, DO.DistanceType distanceType)
         {
-            if (string.IsNullOrWhiteSpace(address1) || string.IsNullOrWhiteSpace(address2))
+            if (!latitude1.HasValue || !longitude1.HasValue || !latitude2.HasValue || !longitude2.HasValue)
             {
-                throw new BlNullPropertyException("Addresses cannot be null or empty.");
+                throw new BlNullPropertyException("Latitude and Longitude cannot be null.");
             }
 
             switch (distanceType)
             {
                 case DO.DistanceType.AirDistance:
-                    return CalculateAirDistance(address1, address2);
+                    return CalculateAirDistance(latitude1.Value, longitude1.Value, latitude2.Value, longitude2.Value);
 
                 case DO.DistanceType.WalkingDistance:
-                    return CalculateWalkingDistance(address1, address2);
+                    return CalculateWalkingDistance(latitude1.Value, longitude1.Value, latitude2.Value, longitude2.Value);
 
                 case DO.DistanceType.DrivingDistance:
-                    return CalculateDrivingDistance(address1, address2);
+                    return CalculateDrivingDistance(latitude1.Value, longitude1.Value, latitude2.Value, longitude2.Value);
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(distanceType), "Invalid distance type.");
+                    throw new BO.BlValidationException("Invalid distance type.");
             }
         }
 
         /// <summary>
         /// calulate the air distance with the coordinates
         /// </summary>
-        private static double CalculateAirDistance(string address1, string address2)
+        private static double CalculateAirDistance(double latitude1, double longitude1, double latitude2, double longitude2)
         {
-            (double? latitude1, double? longitude1) = GetAddressCoordinates(address1);
-            (double? latitude2, double? longitude2) = GetAddressCoordinates(address2);
-            double lat1 = latitude1 ?? throw new BO.BlNullPropertyException("Latitude1 is null.");
-            double lon1 = longitude1 ?? throw new BO.BlNullPropertyException("Longitude1 is null.");
-            double lat2 = latitude2 ?? throw new BO.BlNullPropertyException("Latitude2 is null.");
-            double lon2 = longitude2 ?? throw new BO.BlNullPropertyException("Longitude2 is null.");
-
-            return CalculateDistanceBetweenCoordinates(lat1, lon1, lat2, lon2);
+            return CalculateDistanceBetweenCoordinates(latitude1, longitude1, latitude2, longitude2);
         }
 
-
-        private static double CalculateWalkingDistance(string address1, string address2)
+        private static double CalculateWalkingDistance(double latitude1, double longitude1, double latitude2, double longitude2)
         {
-            return CalculateTravelDistance(address1, address2, "foot");
+            return CalculateTravelDistance(latitude1, longitude1, latitude2, longitude2, "foot");
         }
 
-        private static double CalculateDrivingDistance(string address1, string address2)
+        private static double CalculateDrivingDistance(double latitude1, double longitude1, double latitude2, double longitude2)
         {
-            return CalculateTravelDistance(address1, address2, "driving");
+            return CalculateTravelDistance(latitude1, longitude1, latitude2, longitude2, "driving");
         }
 
         /// <summary>
         /// calculate driving and waliking distance
         /// </summary>=
 
-        private static double CalculateTravelDistance(string address1, string address2, string mode)
+        private static double CalculateTravelDistance(double latitude1, double longitude1, double latitude2, double longitude2, string mode)
         {
             const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
             const string BaseUrl = "https://us1.locationiq.com/v1/directions/";
-
-            var (latitude1, longitude1) = GetAddressCoordinates(address1);
-            var (latitude2, longitude2) = GetAddressCoordinates(address2);
 
             string requestUrl = $"{BaseUrl}{mode}/{longitude1},{latitude1};{longitude2},{latitude2}?key={LocationIqApiKey}&overview=false";
 
@@ -206,19 +195,20 @@ internal static class Tools
 
                 if (routeData == null || routeData.Routes == null || routeData.Routes.Length == 0)
                 {
-                    throw new Exception("No route data found for the provided addresses.");
+                    throw new Exception("No route data found for the provided coordinates.");
                 }
 
                 return routeData.Routes[0].Distance / 1000.0;
             }
         }
+
         public static (double? Latitude, double? Longitude) GetAddressCoordinates(string? address)
         {
             if (string.IsNullOrWhiteSpace(address))
             {
                 return (null, null);
             }
-            const string LocationIqApiKey = "pk.19fad8ec1f83727b2c89ca67732e304e";
+            const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
             string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
@@ -234,78 +224,20 @@ internal static class Tools
 
                 string responseContent = response.Content.ReadAsStringAsync().Result;
 
-                // חיפוש ידני של "lat" ו-"lon" בתוכן התגובה
-                string latKey = "\"lat\":\"";
-                string lonKey = "\"lon\":\"";
 
-                int latStartIndex = responseContent.IndexOf(latKey);
-                int lonStartIndex = responseContent.IndexOf(lonKey);
+                var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
 
-                if (latStartIndex == -1 || lonStartIndex == -1)
+                if (locationData == null || locationData.Length == 0)
                 {
                     throw new Exception($"No coordinates found for address: {address}");
                 }
 
-                latStartIndex += latKey.Length;
-                lonStartIndex += lonKey.Length;
+                double latitude = double.Parse(locationData[0].Lat);
+                double longitude = double.Parse(locationData[0].Lon);
 
-                int latEndIndex = responseContent.IndexOf("\"", latStartIndex);
-                int lonEndIndex = responseContent.IndexOf("\"", lonStartIndex);
-
-                if (latEndIndex == -1 || lonEndIndex == -1)
-                {
-                    throw new Exception($"Invalid response format for address: {address}");
-                }
-
-                string latString = responseContent.Substring(latStartIndex, latEndIndex - latStartIndex);
-                string lonString = responseContent.Substring(lonStartIndex, lonEndIndex - lonStartIndex);
-
-                if (double.TryParse(latString, out double latitude) && double.TryParse(lonString, out double longitude))
-                {
-                    return (latitude, longitude);
-                }
-                else
-                {
-                    throw new Exception($"Failed to parse coordinates for address: {address}");
-                }
+                return (latitude, longitude);
             }
         }
-        //public static (double? Latitude, double? Longitude) GetAddressCoordinates(string? address)
-        //{
-        //    if (string.IsNullOrWhiteSpace(address))
-        //    {
-        //        return (null, null);
-        //    }
-        //    const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
-        //    const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
-
-        //    string requestUrl = $"{BaseUrl}?key={LocationIqApiKey}&q={Uri.EscapeDataString(address)}&format=json";
-
-        //    using (var client = new HttpClient())
-        //    {
-        //        HttpResponseMessage response = client.GetAsync(requestUrl).Result;
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            throw new Exception($"Error fetching coordinates for address: {response.ReasonPhrase}");
-        //        }
-
-        //        string responseContent = response.Content.ReadAsStringAsync().Result;
-
-
-        //        var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
-
-        //        if (locationData == null || locationData.Length == 0)
-        //        {
-        //            throw new Exception($"No coordinates found for address: {address}");
-        //        }
-
-        //        double latitude = double.Parse(locationData[0].Lat);
-        //        double longitude = double.Parse(locationData[0].Lon);
-
-        //        return (latitude, longitude);
-        //    }
-        //}
         private static double DegreesToRadians(double degrees)
         {
             return degrees * (Math.PI / 180.0);

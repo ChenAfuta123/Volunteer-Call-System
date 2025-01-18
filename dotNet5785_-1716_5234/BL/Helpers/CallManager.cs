@@ -6,12 +6,13 @@ using System.Net;
 using System.Xml.Linq;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualBasic;
+using BlApi;
 
 namespace Helpers;
 
 internal static class CallManager
 {
-    private static IDal s_dal = Factory.Get;
+    private static IDal s_dal =DalApi.Factory.Get;
     internal static ObserverManager Observers = new();
     public static IEnumerable<BO.CallInList> FilterCalls(IEnumerable<BO.CallInList> calls, BO.CallInListField? filterField, object? filterValue)
     {
@@ -201,7 +202,8 @@ internal static class CallManager
                 Address = doCall.Address,
                 OpeningTime = doCall.OpeningTime,
                 maxEndingTime = doCall.maxEndingTime,
-                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(doCall.Address, volunteer.Address, volunteer.distanceType)
+                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                        doCall.Latitude, doCall.Longitude, volunteer.distanceType)
             };
         }
         catch (DO.DalDoesNotExistsException ex)

@@ -221,13 +221,20 @@ public static class Initialization
             string address = addresses[i];
             double latitude = latitudes[i];
             double longitude = longitudes[i];
-            DateTime start = new DateTime(s_dal!.Config.Clock.Year - 2, 1, 1);
-            int range = (s_dal!.Config.Clock - start).Days;
-            DateTime openingTime = start.AddDays(s_rand.Next(range));
+
+            // Base the opening time around the current system clock
+            DateTime now = s_dal!.Config.Clock;
+            int maxOffsetInHours = 24; // Set max offset to 24 hours
+            TimeSpan randomOffset = TimeSpan.FromHours(s_rand.Next(maxOffsetInHours) - maxOffsetInHours / 2);
+            DateTime openingTime = now + randomOffset;
+
+            // Set maximum ending time to 12 hours after opening
             DateTime? maxEndingTime = openingTime.AddHours(12);
+
             Call newCall = new(0, callType, address, latitude, longitude, openingTime, description, maxEndingTime);
             s_dal!.Call.Create(newCall);
         }
+
     }
     /// <summary>
     /// Creates a list of assignments linking volunteers to calls.
@@ -244,9 +251,10 @@ public static class Initialization
         int callsCount = calls.Count();
         int volunteersCount = volunteers.Count();
 
+        Random random = new Random();
+
         for (int i = 0; i < 50; i++) // Generating 50 assignments
         {
-
             // Select a call based on i
             var randomCall = calls.ElementAt(i % callsCount);
 
@@ -254,33 +262,39 @@ public static class Initialization
             var randomVolunteer = volunteers.ElementAt(i % volunteersCount);
 
             // Generate entry time: It should be between call opening and max ending time
-            DateTime entryTime = randomCall.OpeningTime.AddMinutes(i % Math.Max(1, (int)((randomCall.maxEndingTime ?? DateTime.Now) - randomCall.OpeningTime).TotalMinutes));
+            DateTime entryTime = randomCall.OpeningTime.AddMinutes(i % Math.Max(1,
+                (int)((randomCall.maxEndingTime ?? DateTime.Now) - randomCall.OpeningTime).TotalMinutes));
 
-            // Randomly determine the end time for the assignment
+            // Randomly determine if EndTimeType and EndTime should be null
+            bool isNullAssignment = random.NextDouble() < 0.5; // 50% chance
+
             DateTime? endTime = null;
             EndTimeType? endTimeType = null;
 
-            // Decide on treatment type and whether the call was treated or expired
-            double treatmentChance = (i % 100) / 100.0; // Normalized chance based on i
-            if (treatmentChance < 0.7) // 70% chance to be treated
+            if (!isNullAssignment)
             {
-                endTime = entryTime.AddMinutes(15 + (i % 106)); // Time for treatment (15 to 120 minutes)
-                endTimeType = EndTimeType.Treated;
-            }
-            else if (treatmentChance < 0.85) // 15% chance to be canceled by the volunteer
-            {
-                endTimeType = EndTimeType.SelfCancel;
-                endTime = entryTime.AddMinutes(1 + (i % 60)); // Self-cancel time (1 to 60 minutes after entry)
-            }
-            else if (treatmentChance < 0.95) // 10% chance to be canceled by the manager
-            {
-                endTimeType = EndTimeType.ManagerCancel;
-                endTime = entryTime.AddMinutes(1 + (i % 60)); // Manager cancel time
-            }
-            else // 5% chance for the call to expire
-            {
-                endTimeType = EndTimeType.Expired;
-                endTime = randomCall.maxEndingTime; // Call expiration time
+                // Decide on treatment type and whether the call was treated or expired
+                double treatmentChance = random.NextDouble(); // Normalized chance
+                if (treatmentChance < 0.7) // 70% chance to be treated
+                {
+                    endTime = entryTime.AddMinutes(15 + (i % 106)); // Time for treatment (15 to 120 minutes)
+                    endTimeType = EndTimeType.Treated;
+                }
+                else if (treatmentChance < 0.85) // 15% chance to be canceled by the volunteer
+                {
+                    endTimeType = EndTimeType.SelfCancel;
+                    endTime = entryTime.AddMinutes(1 + (i % 60)); // Self-cancel time (1 to 60 minutes after entry)
+                }
+                else if (treatmentChance < 0.95) // 10% chance to be canceled by the manager
+                {
+                    endTimeType = EndTimeType.ManagerCancel;
+                    endTime = entryTime.AddMinutes(1 + (i % 60)); // Manager cancel time
+                }
+                else // 5% chance for the call to expire
+                {
+                    endTimeType = EndTimeType.Expired;
+                    endTime = randomCall.maxEndingTime; // Call expiration time
+                }
             }
 
             // Create a new Assignment object
@@ -297,7 +311,6 @@ public static class Initialization
             s_dal!.Assignment.Create(newAssignment);
         }
     }
-
 
 
     /// <summary>

@@ -1,6 +1,8 @@
 ﻿using BlApi;
 using Helpers;
 using System.Collections.Generic;
+using System.Net.Mail;
+using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace BlImplementation;
 
@@ -33,9 +35,9 @@ internal class VolunteerImplementation : IVolunteer
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
-            Password =BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
+            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
             Address = boVolunteer.Address,
-            Latitude = boVolunteer.Latitude ,
+            Latitude = boVolunteer.Latitude,
             Longitude = boVolunteer.Longitude,
             MaxDistance = boVolunteer.MaxDistance,
             Active = boVolunteer.Active
@@ -100,8 +102,8 @@ internal class VolunteerImplementation : IVolunteer
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {
-  // קריאה ל-DAL
-            var volunteers = _dal.Volunteer.ReadAll();
+        // קריאה ל-DAL
+        var volunteers = _dal.Volunteer.ReadAll();
 
         if (active == null)
         {
@@ -109,10 +111,10 @@ internal class VolunteerImplementation : IVolunteer
 
         }
         // פילטר לפי Active
-        if (active==true)
+        if (active == true)
         {
             volunteers = volunteers.Where(v => v.Active == active.Value);
-           
+
         }
         if (active == false)
         {
@@ -124,7 +126,7 @@ internal class VolunteerImplementation : IVolunteer
         var BOvolunteers = volunteers.Select(v =>
         {
             // הוספת השהייה לפני כל קריאה ל-DOtoBO
-           /* Task.Delay(1000).Wait();*/  // השהייה של שנייה אחת
+            /* Task.Delay(1000).Wait();*/  // השהייה של שנייה אחת
             return VolunteerManager.DOtoBO(v);
         });
 
@@ -132,7 +134,7 @@ internal class VolunteerImplementation : IVolunteer
 
         // המרה לרשימת VolunteerInList
         var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);
- 
+
 
         // מיון
         volunteerList = sort switch
@@ -146,8 +148,8 @@ internal class VolunteerImplementation : IVolunteer
 
         return volunteerList;
     }
- 
-  
+
+
     public DO.Role LoginUser(string name, string password)
     {
         DO.Volunteer? user = _dal.Volunteer.Read(v => v.Name == name);
@@ -163,7 +165,7 @@ internal class VolunteerImplementation : IVolunteer
     {
 
         DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
-        if (existingVolunteer == null) 
+        if (existingVolunteer == null)
             throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
 
         DO.Role newRole = existingVolunteer.role;
@@ -213,6 +215,48 @@ internal class VolunteerImplementation : IVolunteer
         }
     }
 
+    public void SendEmailToVolunteers(IEnumerable<string> volunteerEmails, string subject, string body)
+    {
+        try
+        {
+            // הגדרות ה-SMTP
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("chenafuta@gmail.com", "lgfi iurz fvvy xicc"),
+                EnableSsl = true
+            };
+
+            // יצירת הודעת המייל
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress("chenafuta@gmail.com"),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true // אם את רוצה לשלוח מייל בפורמט HTML
+            };
+
+            // הוספת כל המתנדבים לרשימת הנמענים
+            foreach (string email in volunteerEmails)
+            {
+                mailMessage.To.Add(email);
+            }
 
 
+            // שליחת המייל
+            smtpClient.Send(mailMessage);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }  
+    public int ManagerID()
+    {
+        var manager = _dal.Volunteer.Read(a => (BO.Role)a.role==BO.Role.manager);
+        if (manager != null)
+            return manager.Id;
+        else
+        return -1;
+    }
 }

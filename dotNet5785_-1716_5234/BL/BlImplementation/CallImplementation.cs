@@ -12,9 +12,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 internal class CallImplementation : BlApi.ICall
 {
     public void AddObserver(Action listObserver) =>
-CallManager.Observers.AddListObserver(listObserver); //stage 5
+    CallManager.Observers.AddListObserver(listObserver); //stage 5
     public void AddObserver(int id, Action observer) =>
-   CallManager.Observers.AddObserver(id, observer); //stage 5
+    CallManager.Observers.AddObserver(id, observer); //stage 5
     public void RemoveObserver(Action listObserver) =>
    CallManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
@@ -232,11 +232,11 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
             if (assignment.EndTimeType != null)
             {
                 throw new BO.BlValidationException("The assignment is already closed.");
-            }
-            if (assignment.VolunteerId != requesterId || volunteer.role != DO.Role.manager)
-            {
-                throw new BO.BlUnauthorizedException("Only the assigned volunteer or manager can complete this treatment.");
-            }
+            } 
+            //if (assignment.VolunteerId != requesterId && (BO.Role)volunteer.role == BO.Role.volunteer)
+            //{
+            //    throw new BO.BlUnauthorizedException("Only the assigned volunteer or manager can complete this treatment.");
+            //}
 
             DO.EndTimeType endTimeType = (assignment.VolunteerId == requesterId)
                 ? DO.EndTimeType.SelfCancel
@@ -394,8 +394,9 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
                 OpeningTime = call.OpeningTime,
 
                 maxEndingTime = call.maxEndingTime,
-               
-                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(call.Address, volunteer!.Address, volunteer.distanceType)
+
+                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                        call.Latitude, call.Longitude, volunteer.distanceType)
             });
             if (calls == null || !calls.Any())
             {
@@ -466,5 +467,14 @@ CallManager.Observers.AddListObserver(listObserver); //stage 5
 
         }
 
+    }
+
+    public int findAssignment(int callID,int? VolunteerID)
+    {
+        var assignment = _dal.Assignment.Read(a => a.CallId == callID && a.VolunteerId == VolunteerID&& a.EndTime==null);
+        if (assignment != null)
+            return assignment.Id;
+        return -1;
+         
     }
 }

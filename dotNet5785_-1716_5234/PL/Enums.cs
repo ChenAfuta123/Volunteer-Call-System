@@ -11,20 +11,19 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+
     internal class CallTypeCollection : IEnumerable
     {
-        // יצירת IEnumerable עבור הערכים של ה-enum DistanceType
-        static readonly IEnumerable<Enums.CallType> s_enums =
-            Enum.GetValues(typeof(Enums.CallType)).Cast<Enums.CallType>();
+        static readonly IEnumerable<BO.CallType> s_enums =
+            Enum.GetValues(typeof(BO.CallType)).Cast<BO.CallType>();
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
-
     internal class StatusCollection : IEnumerable
     {
         // יצירת IEnumerable עבור הערכים של ה-enum Role
-        static readonly IEnumerable<Enums.Status> s_enums =
-            Enum.GetValues(typeof(Enums.Status)).Cast<Enums.Status>();
+        static readonly IEnumerable<BO.CallStatus> s_enums =
+            Enum.GetValues(typeof(BO.CallStatus)).Cast<BO.CallStatus>();
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
@@ -38,8 +37,8 @@ namespace PL
     internal class DistanceTypeCollection : IEnumerable
     {
         // יצירת IEnumerable עבור הערכים של ה-enum DistanceType
-        static readonly IEnumerable<Enums.DistanceType> s_enums =
-            Enum.GetValues(typeof(Enums.DistanceType)).Cast<Enums.DistanceType>();
+        static readonly IEnumerable<BO.DistanceType> s_enums =
+            Enum.GetValues(typeof(BO.DistanceType)).Cast<BO.DistanceType>();
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
@@ -47,8 +46,8 @@ namespace PL
     internal class RoleCollection : IEnumerable
     {
         // יצירת IEnumerable עבור הערכים של ה-enum Role
-        static readonly IEnumerable<Enums.Role> s_enums =
-            Enum.GetValues(typeof(Enums.Role)).Cast<Enums.Role>();
+        static readonly IEnumerable<BO.Role> s_enums =
+            Enum.GetValues(typeof(BO.Role)).Cast<BO.Role>();
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
@@ -93,66 +92,67 @@ namespace PL
     public class Enums
     {
 
-        public enum Role
-        {
-            volunteer,
-            manager
-        }
-        public enum DistanceType
-        {
-            AirDistance,
-            WalkingDistance,
-            DrivingDistance
-        }
-        public enum ClosedCallInListField
-        {
-            Id,
-            CallType,
-            Address,
-            OpeningTime,
-            EntryTime,
-            EndTime,
-            EndTimeType
-        }
-        public enum Status
-        {
-            Open,
-            InProgress,
-            Closed,
-            Expired,
-            OpenAtRisk,
-            InProgressAtRisk
-        }
-        public enum CallType
-        {
-            /// <summary>Providing food, drinks, clothing, and essential supplies to evacuees.</summary>
-            EssentialSupplies,
+        //    public enum Role
+        //    {
+        //        volunteer,
+        //        manager
+        //    }
+        //    public enum DistanceType
+        //    {
+        //        AirDistance,
+        //        WalkingDistance,
+        //        DrivingDistance
+        //    }
+        //    public enum ClosedCallInListField
+        //    {
+        //        Id,
+        //        CallType,
+        //        Address,
+        //        OpeningTime,
+        //        EntryTime,
+        //        EndTime,
+        //        EndTimeType
+        //    }
+        //    public enum Status
+        //    {
+        //        Open,
+        //        InProgress,
+        //        Closed,
+        //        Expired,
+        //        OpenAtRisk,
+        //        InProgressAtRisk
+        //    }
+        //    public enum CallType
+        //    {
+        //        /// <summary>Providing food, drinks, clothing, and essential supplies to evacuees.</summary>
+        //        EssentialSupplies,
 
-            /// <summary>Helping evacuees find temporary housing and assisting with relocation and transport.</summary>
-            HousingAndRelocation,
+        //        /// <summary>Helping evacuees find temporary housing and assisting with relocation and transport.</summary>
+        //        HousingAndRelocation,
 
-            /// <summary>Offering emotional support, trauma counseling, and organizing social activities.</summary>
-            EmotionalAndSocialSupport,
+        //        /// <summary>Offering emotional support, trauma counseling, and organizing social activities.</summary>
+        //        EmotionalAndSocialSupport,
 
-            /// <summary>Delivering medications and assisting with access to medical services.</summary>
-            MedicalAndPharmaceuticalAid,
+        //        /// <summary>Delivering medications and assisting with access to medical services.</summary>
+        //        MedicalAndPharmaceuticalAid,
 
-            /// <summary>Providing legal advice and guidance on accessing government aid and support.</summary>
-            LegalAndAdministrativeSupport,
+        //        /// <summary>Providing legal advice and guidance on accessing government aid and support.</summary>
+        //        LegalAndAdministrativeSupport,
 
-            /// <summary>Call does not exist in volunteer's treatment.</summary>
-            None
-        }
-        public enum OpenCallInListField
-        {
-            Id,
-            callType,
-            description,
-            Address,
-            OpeningTime,
-            maxEndingTime,
-            CallDistanceFromVolunteer,
-            None
-        }
+        //        /// <summary>Call does not exist in volunteer's treatment.</summary>
+        //        None
+        //    }
+        //    public enum OpenCallInListField
+        //    {
+        //        Id,
+        //        callType,
+        //        description,
+        //        Address,
+        //        OpeningTime,
+        //        maxEndingTime,
+        //        CallDistanceFromVolunteer,
+        //        None
+        //    }
+        //}
     }
 }
