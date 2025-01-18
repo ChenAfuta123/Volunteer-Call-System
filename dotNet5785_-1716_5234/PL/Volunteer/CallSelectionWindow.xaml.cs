@@ -1,5 +1,4 @@
-﻿
-using BO;
+﻿using BO;
 using PL.Call;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,7 @@ namespace PL.Volunteer
         {
             InitializeComponent();
             UserId = userId;
+            queryOpenCallList();
 
         }
 
@@ -50,7 +50,7 @@ namespace PL.Volunteer
                 if (callFilter != value)
                 {
                     callFilter = value;
-                    /*  OnPropertyChanged();*/ // Notify the UI about the change
+                    // Notify the UI about the change
                     queryOpenCallList(); // Refresh the list based on the new sort
                 }
             }
@@ -88,7 +88,7 @@ namespace PL.Volunteer
 
         private void dgCallList_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            // הוסף את הלוגיקה לטיפול בלחיצה כפולה על רשומה
+          
         }
 
 
@@ -107,12 +107,13 @@ namespace PL.Volunteer
             if (MessageBox.Show("Are you sure you want to treat call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 var button = sender as FrameworkElement;
-                var callToTreat = button?.DataContext as BO.Call;
+                var callToTreat = button?.DataContext as BO.OpenCallInList;
                 try
                 {
                     if (callToTreat != null)
                     {
                         s_bl.Call.ChooseCallForTreatment(UserId, callToTreat.Id);
+                        queryOpenCallList();
 
                     }
                 }
@@ -127,61 +128,15 @@ namespace PL.Volunteer
                         "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
+
             }
         }
         private void ChangeAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (MessageBox.Show("Are you sure you want to treat call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            //{
-            //    var button = sender as FrameworkElement;
-            //    var callToTreat = button?.DataContext as BO.Call;
-            //    try
-            //    {
-            //        if (callToTreat != null)
-            //        {
-            //            s_bl.Call.ChooseCallForTreatment(UserId, callToTreat.Id);
-
-            //        }
-            //    }
-            //    catch (BO.BlDoesNotExistsException ex)
-            //    {
-            //        MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
-            //            "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    }
-            //    catch (BO.BlValidationException ex)
-            //    {
-            //        MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
-            //            "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    }
-
-            //}
+            
         }
         private void DescriptionButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (MessageBox.Show("Are you sure you want to treat call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            //{
-            //    var button = sender as FrameworkElement;
-            //    var callToTreat = button?.DataContext as BO.Call;
-            //    try
-            //    {
-            //        if (callToTreat != null)
-            //        {
-            //            s_bl.Call.ChooseCallForTreatment(UserId, callToTreat.Id);
-
-            //        }
-            //    }
-            //    catch (BO.BlDoesNotExistsException ex)
-            //    {
-            //        MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
-            //            "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    }
-            //    catch (BO.BlValidationException ex)
-            //    {
-            //        MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
-            //            "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    }
-
-            //}
-        }
+        }
     }
 }

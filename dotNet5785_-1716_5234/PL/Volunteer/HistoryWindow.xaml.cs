@@ -63,7 +63,7 @@ namespace PL.Volunteer
 
             ClosedCallInList = s_bl.Call.ClosedCallsByVolunteer(UserId, CallFilter, CallSort);
 
-          
+
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -83,8 +83,8 @@ namespace PL.Volunteer
 
         }
 
-      
-    }
+
+    }
 
 
 }

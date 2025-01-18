@@ -72,12 +72,12 @@ namespace PL.Call
         }
 
 
-        public CallWindow(int id = 0)
+        public CallWindow(int id = -1)
         {
             InitializeComponent();
             DataContext = this;
 
-            if (id == 0)
+            if (id == -1)
             {
                 CurrentCall = new BO.Call
                 {
@@ -160,7 +160,7 @@ namespace PL.Call
         // הצטרפות לאירוע טעינת המסך
         private void OnScreenLoaded(object sender, EventArgs e)
         {
-            if (CurrentCall!.Id != 0)
+            if (CurrentCall!.Id != -1)
             {
                 s_bl.Call.AddObserver(CurrentCall!.Id, CallObserver);
             }
@@ -169,7 +169,7 @@ namespace PL.Call
         // הצטרפות לאירוע סגירת המסך
         private void OnScreenClosed(object sender, EventArgs e)
         {
-            if (CurrentCall!.Id != 0)
+            if (CurrentCall!.Id != -1)
             {
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
             }

@@ -33,7 +33,8 @@ namespace PL.Volunteer
             {
                 var volunteer = s_bl.Volunteer.Read(UserId);
 
-                if ((volunteer.VolunteerHandledCall!.callStatus == BO.CallStatus.InProgress|| volunteer.VolunteerHandledCall.callStatus == BO.CallStatus.InProgressAtRisk)& volunteer.VolunteerHandledCall!= null)
+                if ((volunteer.VolunteerHandledCall!.callStatus == BO.CallStatus.InProgress ||
+                    volunteer.VolunteerHandledCall.callStatus == BO.CallStatus.InProgressAtRisk) && volunteer.VolunteerHandledCall != null)
                 {
 
                     var callid = volunteer.VolunteerHandledCall!.CallId;
@@ -91,20 +92,44 @@ namespace PL.Volunteer
 
         private void ButtonCallSelection_Click(object sender, RoutedEventArgs e)
         {
-            var callSelectionWindow = new CallSelectionWindow(UserId);
-            callSelectionWindow.Show();
+            try
+            {
+                var callSelectionWindow = new CallSelectionWindow(UserId);
+                callSelectionWindow.Show();
+                LoadCallDetails();
+
+            }
+            catch (BO.BlNullPropertyException ex)
+            {
+                MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void FinishCallButton_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Call.EndOftreatmentUpdate(UserId, s_bl.Volunteer.Read(UserId).VolunteerHandledCall!.CallId);
+            try
+            {
+                s_bl.Call.EndOftreatmentUpdate(UserId, s_bl.Volunteer.Read(UserId).VolunteerHandledCall!.CallId);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                MessageBox.Show($"Error:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
             LoadCallDetails(); // טען מחדש את פרטי הקריאה לאחר סיום הטיפול
         }
 
         private void CancelCallButton_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Call.CanceltreatmentUpdate(UserId, s_bl.Volunteer.Read(UserId).VolunteerHandledCall!.CallId);
+            try
+            {
+                s_bl.Call.CanceltreatmentUpdate(UserId, s_bl.Volunteer.Read(UserId).VolunteerHandledCall!.CallId);
+            }
+            catch (BO.BlValidationException ex)
+            {
+                MessageBox.Show($"Error:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
             LoadCallDetails(); // טען מחדש את פרטי הקריאה לאחר ביטול הטיפול
-        }
+        }
     }
 }

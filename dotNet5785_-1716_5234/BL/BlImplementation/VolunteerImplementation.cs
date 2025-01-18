@@ -35,7 +35,7 @@ internal class VolunteerImplementation : IVolunteer
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
-            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
+            Password = /*BCrypt.Net.BCrypt.HashPassword(*/boVolunteer.Password/*)*/,
             Address = boVolunteer.Address,
             Latitude = boVolunteer.Latitude,
             Longitude = boVolunteer.Longitude,
@@ -129,12 +129,7 @@ internal class VolunteerImplementation : IVolunteer
         }
 
         // המרה מ-DO ל-BO
-        var BOvolunteers = volunteers.Select(v =>
-        {
-            // הוספת השהייה לפני כל קריאה ל-DOtoBO
-            /* Task.Delay(1000).Wait();*/  // השהייה של שנייה אחת
-            return VolunteerManager.DOtoBO(v);
-        });
+        var BOvolunteers = volunteers.Select(VolunteerManager.DOtoBO);
 
 
 
@@ -194,7 +189,7 @@ internal class VolunteerImplementation : IVolunteer
             Name = boVolunteer.Name,
             PhoneNumber = boVolunteer.PhoneNumber,
             Email = boVolunteer.Email,
-            Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
+            Password =/* BCrypt.Net.BCrypt.HashPassword(*/boVolunteer.Password/*)*/,
             Address = boVolunteer.Address,
             Latitude = boVolunteer.Latitude,
             Longitude = boVolunteer.Longitude,

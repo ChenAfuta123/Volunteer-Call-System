@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="Personal Volunteer Window" Height="600" Width="800" FlowDirection="RightToLeft">
+        Title="Personal Volunteer Window" Height="600" Width="800" FlowDirection="RightToLeft" Background="#ECEADB">
     <Grid>
         <!-- כפתורים ראשיים -->
-        <Button Content="היסטוריית קריאות" HorizontalAlignment="Right" Margin="10,20,20,0" VerticalAlignment="Top" Click="HistoryButton_Click" Height="44" Width="114"/>
-        <Button Content="פרטים אישיים" HorizontalAlignment="Right" Margin="10,80,20,0" VerticalAlignment="Top" Click="VolunteerButton_Click" Height="44" Width="114"/>
+        <Button Content="היסטוריית קריאות" HorizontalAlignment="Right" Margin="0,220,20,0" VerticalAlignment="Top" Click="HistoryButton_Click" Height="53" Width="150"  Style="{StaticResource StyledButton}"/>
+        <Button Content="פרטים אישיים" HorizontalAlignment="Right" Margin="0,158,20,0" VerticalAlignment="Top" Click="VolunteerButton_Click" Height="53" Width="150"  Style="{StaticResource StyledButton}"/>
 
         <!-- כותרת פרטי קריאה -->
-        <TextBlock Text="פרטי קריאה" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+        <TextBlock Text="פרטי קריאה" FontWeight="Bold" FontSize="14" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Foreground="#AE90B6"/>
+
 
         <!-- פרטי קריאה -->
-        <StackPanel Orientation="Vertical" Margin="10,50,20,0">
+        <StackPanel Orientation="Vertical" Margin="10,80,207,0">
             <!-- מזהה קריאה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="מזהה קריאה:" Width="100" />
@@ -45,7 +46,7 @@
                 <Label Content="כתובת קריאה:" Width="100" />
                 <TextBox Name="CallAddressTextBox" Width="200" IsReadOnly="True" />
             </StackPanel>
-         
+
 
             <!-- זמן פתיחה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
@@ -75,5 +76,6 @@
             <Button Content="ביטול טיפול" Width="100" Margin="10" Click="CancelCallButton_Click" />
             <Button x:Name="CallSelectionButton" Content="בחירת קריאה" Height="37" Width="146" Click="ButtonCallSelection_Click" IsEnabled="False"/>
         </StackPanel>
+        <Image HorizontalAlignment="Left" Height="100" Margin="690,10,0,0" VerticalAlignment="Top" Width="100" Source="C:\Users\halle\OneDrive\שולחן העבודה\לוגו גדול.jpg" />
     </Grid>
 </Window>

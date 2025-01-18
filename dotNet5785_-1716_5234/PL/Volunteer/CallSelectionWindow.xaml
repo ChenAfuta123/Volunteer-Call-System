@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#FFFFFF"   
+        Title="בחירת קריאה לטיפול" Height="600" Width="800" Background="#ECEADB"   
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <Window.Resources>
         <!-- הגדרת CollectionViewSource עבור OpenCalls -->
-        <CollectionViewSource x:Key="OpenCallsCollectionKey" Source="{Binding OpenCallList}" />
+
     </Window.Resources>
 
     <Grid>
@@ -18,7 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- אזור הסינון והמיון -->
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Margin="10,10,0,10" Grid.Row="0" HorizontalAlignment="Left" Width="521">
             <TextBlock Text="סינון לפי:" VerticalAlignment="Center" Margin="0,0,5,0"/>
             <ComboBox x:Name="FiltererComboBox" SelectedValue="{Binding CallFilter, Mode=TwoWay}" 
           SelectedValuePath="Tag" Width="200" Margin="5">
@@ -41,12 +41,12 @@
                 <ComboBoxItem Content="Opening Time" Tag="OpeningTime"/>
                 <ComboBoxItem Content="Max Ending Time" Tag="MaxEndingTime"/>
                 <ComboBoxItem Content="Call Distance From Volunteer" Tag="CallDistanceFromVolunteer"/>
-                 <ComboBoxItem Content="None" Tag="None"/>
-                </ComboBox>
+                <ComboBoxItem Content="None" Tag="None"/>
+            </ComboBox>
         </StackPanel>
 
         <!-- DataGrid -->
-        <DataGrid x:Name="OpenCallsDataGrid" Grid.Row="1" AutoGenerateColumns="False" Margin="10" CanUserAddRows="False">
+        <DataGrid ItemsSource="{Binding OpenCallList}" Grid.Row="1" AutoGenerateColumns="False" Margin="10,61,10,10" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="מזהה" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="סוג הקריאה" Binding="{Binding callType}" />
@@ -58,11 +58,12 @@
                 <DataGridTemplateColumn Header="פעולה">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="טיפול" Click="TreatmentButton_Click" Tag="{Binding}" />
+                            <Button Content="טיפול" Click="TreatmentButton_Click"  />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Image HorizontalAlignment="Left" Height="100" Margin="697,10,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="100" Source="C:\Users\halle\OneDrive\שולחן העבודה\לוגו גדול.jpg"/>
     </Grid>
 </Window>

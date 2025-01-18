@@ -184,9 +184,9 @@ namespace PL.Call
                 var button = sender as FrameworkElement;
                 //var callToCancel = button?.DataContext as BO.Call;
                 var callToCancel2 = button?.DataContext as BO.CallInList;
-                int managerID = s_bl.Volunteer.ManagerID();
+                //int managerID = s_bl.Volunteer.ManagerID();
 
-                if (managerID != -1 && callToCancel2 != null)
+                if (callToCancel2 != null)
                 {
                     try
                     {
@@ -196,7 +196,7 @@ namespace PL.Call
 
                         if (callToCancel2 != null)
                         {
-                            s_bl.Call.CanceltreatmentUpdate(managerID, assignmentID);
+                            s_bl.Call.CanceltreatmentUpdate(200123456, assignmentID);
                         }
 
                         // Send email notification

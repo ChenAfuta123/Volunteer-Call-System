@@ -20,12 +20,61 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public int OpenCallsCount { get; set; }
-        public int ClosedCallsCount { get; set; }
-        public int InProgressCallsCount { get; set; }
-        public int ExpiredCallsCount { get; set; }
-        public int AtRiskOpenCallsCount { get; set; }
-        public int AtRiskInProgressCallsCount { get; set; }
+        public static readonly DependencyProperty OpenCallsCountProperty =
+     DependencyProperty.Register("OpenCallsCount", typeof(int), typeof(MainWindow));
+
+        public static readonly DependencyProperty ClosedCallsCountProperty =
+            DependencyProperty.Register("ClosedCallsCount", typeof(int), typeof(MainWindow));
+
+        public static readonly DependencyProperty InProgressCallsCountProperty =
+            DependencyProperty.Register("InProgressCallsCount", typeof(int), typeof(MainWindow));
+
+        public static readonly DependencyProperty ExpiredCallsCountProperty =
+            DependencyProperty.Register("ExpiredCallsCount", typeof(int), typeof(MainWindow));
+
+        public static readonly DependencyProperty AtRiskOpenCallsCountProperty =
+            DependencyProperty.Register("AtRiskOpenCallsCount", typeof(int), typeof(MainWindow));
+
+        public static readonly DependencyProperty AtRiskInProgressCallsCountProperty =
+            DependencyProperty.Register("AtRiskInProgressCallsCount", typeof(int), typeof(MainWindow));
+
+        public int OpenCallsCount
+        {
+            get { return (int)GetValue(OpenCallsCountProperty); }
+            set { SetValue(OpenCallsCountProperty, value); }
+        }
+
+        public int ClosedCallsCount
+        {
+            get { return (int)GetValue(ClosedCallsCountProperty); }
+            set { SetValue(ClosedCallsCountProperty, value); }
+        }
+
+        public int InProgressCallsCount
+        {
+            get { return (int)GetValue(InProgressCallsCountProperty); }
+            set { SetValue(InProgressCallsCountProperty, value); }
+        }
+
+        public int ExpiredCallsCount
+        {
+            get { return (int)GetValue(ExpiredCallsCountProperty); }
+            set { SetValue(ExpiredCallsCountProperty, value); }
+        }
+
+        public int AtRiskOpenCallsCount
+        {
+            get { return (int)GetValue(AtRiskOpenCallsCountProperty); }
+            set { SetValue(AtRiskOpenCallsCountProperty, value); }
+        }
+
+        public int AtRiskInProgressCallsCount
+        {
+            get { return (int)GetValue(AtRiskInProgressCallsCountProperty); }
+            set { SetValue(AtRiskInProgressCallsCountProperty, value); }
+        }
+
+
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -37,13 +86,7 @@ namespace PL
             get { return (TimeSpan)GetValue(RiskRangeProperty); }
             set { SetValue(RiskRangeProperty, value); }
         }
-        //public IEnumerable<BO.CallInList> CallList
-        //{
-        //    get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
-        //    set { SetValue(CallListProperty, value); }
-        //}
-        //public static readonly DependencyProperty CallListProperty =
-        //    DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
+
 
         public static readonly DependencyProperty CurrentTimeProperty =
         DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
@@ -61,7 +104,7 @@ namespace PL
         {
             try
             {
-                
+
                 // קריאה למתודת BO כדי לקבל את הנתונים
                 var statusCounts = s_bl.Call.CallQuantities();
                 Dispatcher.Invoke(() =>
@@ -73,10 +116,11 @@ namespace PL
                     ExpiredCallsCount = statusCounts[3];
                     AtRiskOpenCallsCount = statusCounts[4];
                     AtRiskInProgressCallsCount = statusCounts[5];
+                    this.DataContext = this;
                 });
 
                 // עידכון התצוגה
-                this.DataContext = this; // עדכון מחדש של ה-DataContext
+                // עדכון מחדש של ה-DataContext
 
                 CurrentTime = s_bl.Admin.getClockTime();
 
@@ -222,16 +266,9 @@ namespace PL
                 s_bl.Admin.setDatabase();
 
                 MessageBox.Show("Database initialized successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show($"An error occurred while initializing the database: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //}
-                //finally
-                //{
-                // החזרת סמן העכבר לברירת המחדל
+
                 Mouse.OverrideCursor = null;
-                //}
+
             }
 
 
