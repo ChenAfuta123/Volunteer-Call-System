@@ -186,11 +186,11 @@ namespace PL.Call
                 var callToCancel2 = button?.DataContext as BO.CallInList;
                 int managerID = s_bl.Volunteer.ManagerID();
 
-                if (managerID!=-1 && callToCancel2!=null)
+                if (managerID != -1 && callToCancel2 != null)
                 {
                     try
                     {
-                       
+
                         var volunteer = s_bl.Volunteer.Read(callToCancel2!.Id!.Value);
                         var assignmentID = s_bl.Call.findAssignment(callToCancel2!.CallId, volunteer.Id);
 

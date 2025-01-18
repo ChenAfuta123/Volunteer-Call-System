@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DalApi;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -8,6 +9,7 @@ namespace PL;
 
 public class ConvertUpdateToVisible : IValueConverter
 {
+   
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         string? buttonText = value as string;
@@ -52,5 +54,25 @@ public class ConvertUpdateToTrue : IValueConverter
     //        throw new NotImplementedException();
     //    }
     //}
+    //public class DeleteButtonEnabledConverter : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        if (value is BO.VolunteerInList volunteer)
+    //        {
+    //            return CanBeDeleted(volunteer.Id); // קרא לפונקציה לבדוק אם אפשר למחוק את המתנדב
+    //        }
+    //        return false; // אם לא נמצא מתנדב, ננטרל את הכפתור
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException(); // לא נחוץ במידה ואנחנו רק קוראים את הערך
+    //    }
+
+      
+    //}
+
+
 
 }

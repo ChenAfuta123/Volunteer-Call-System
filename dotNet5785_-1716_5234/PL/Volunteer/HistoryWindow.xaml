@@ -10,24 +10,33 @@
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="FilterComboBox" SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
-                    <ComboBoxItem Content="כל הקריאות" Tag="All"/>
-                    <ComboBoxItem Content="לפי סוג" Tag="ByType"/>
-                    <ComboBoxItem Content="לפי כתובת" Tag="ByAddress"/>
-                    <ComboBoxItem Content="לפי זמן פתיחה" Tag="ByOpeningTime"/>
-                    <ComboBoxItem Content="לפי סוג זמן סיום" Tag="ByEndTimeType"/>
+                <!-- Label for Filter ComboBox -->
+                <Label Content="סינון" VerticalAlignment="Center" Margin="5"/>
+                <ComboBox x:Name="FilterComboBox" 
+          SelectedValue="{Binding filterCriteria, Mode=TwoWay}"
+          SelectedValuePath="Tag"
+          SelectionChanged="ComboBox_SelectionChanged" 
+          Width="200" Margin="5">
+                    <ComboBoxItem Content="כל הקריאות" Tag="None"/>
+                    <ComboBoxItem Content="אספקה חיונית" Tag="EssentialSupplies"/>
+                    <ComboBoxItem Content="דיור והעברה" Tag="HousingAndRelocation"/>
+                    <ComboBoxItem Content="תמיכה רגשית-חברתית" Tag="EmotionalAndSocialSupport"/>
+                    <ComboBoxItem Content="סיוע רפואי-תרופתי" Tag="MedicalAndPharmaceuticalAid"/>
+                    <ComboBoxItem Content="סיוע משפטי-מנהלתי" Tag="LegalAndAdministrativeSupport"/>
                 </ComboBox>
 
+                <!-- Label for Sort ComboBox -->
+                <Label Content="מיון" VerticalAlignment="Center" Margin="5"/>
                 <ComboBox x:Name="SortComboBox" SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
                     <ComboBoxItem Content="ללא מיון" Tag="None"/>
-                    <ComboBoxItem Content="לפי מזהה" Tag="ById"/>
-                    <ComboBoxItem Content="לפי סוג" Tag="ByType"/>
-                    <ComboBoxItem Content="לפי כתובת" Tag="ByAddress"/>
-                    <ComboBoxItem Content="לפי זמן פתיחה" Tag="ByOpeningTime"/>
-                    <ComboBoxItem Content="לפי זמן סיום" Tag="ByEndTime"/>
+                    <ComboBoxItem Content="לפי תז" Tag="Id"/>
+                    <ComboBoxItem Content="לפי כתובת" Tag="Address"/>
+                    <ComboBoxItem Content="לפי זמן פתיחה" Tag="OpeningTime"/>
+                    <ComboBoxItem Content="לפי זמן סיום" Tag="EndTime"/>
                 </ComboBox>
             </StackPanel>
 
+            <!-- DataGrid -->
             <DataGrid x:Name="HistoryDataGrid" AutoGenerateColumns="False"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
                 <DataGrid.Columns>

@@ -1,6 +1,8 @@
 ﻿using BlApi;
 using BO;
 using System;
+using System.Globalization;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -114,8 +116,12 @@ namespace PL.Call
 
                 if (ButtonText == "Add")
                 {
+                    int newCallId = CurrentCall.Id;
                     s_bl.Call.Add(CurrentCall);
                     MessageBox.Show("Call added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    sendEmail(sender, e, newCallId);
+
                 }
                 else if (ButtonText == "Update")
                 {
@@ -167,7 +173,35 @@ namespace PL.Call
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
             }
         }
+        private void sendEmail(object sender, EventArgs e, int newCallId)
+        {
+
+            var callToSend = s_bl.Call.Read(newCallId);
+            List<string> emailAddresses = s_bl.Volunteer.CloseVolunteersToCallEmails(newCallId);
+
+            if (emailAddresses.Any())
+            {
+                // יצירת נושא ההודעה בעברית
+                string subject = "נפתחה קריאה חדשה באזור שלך";
+
+                // יצירת תוכן ההודעה בעברית
+                string body = $@"
+                     <h1>שלום ,</h1>
+                    <p>נפתחה קריאה חדשה באזור שלך. להלן פרטי הקריאה:</p>
+                     <ul>
+                    <li><strong>כתובת:</strong> {callToSend.Address}</li>
+                    <li><strong>סוג קריאה:</strong> {callToSend.callType}</li>
+                    <li><strong>תיאור:</strong> {callToSend.Description}</li>
+                </ul>
+                <p>תודה על העזרה והתמיכה שלך!</p>";
 
 
+
+                // Assuming a method SendEmail exists in your BL
+                s_bl.Volunteer.SendEmailToVolunteers(emailAddresses, subject, body);
+            }
+
+        }
     }
+
 }
