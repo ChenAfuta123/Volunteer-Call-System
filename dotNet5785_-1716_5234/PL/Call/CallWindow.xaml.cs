@@ -75,6 +75,7 @@ namespace PL.Call
         public CallWindow(int id = 0)
         {
             InitializeComponent();
+            DataContext = this;
 
             if (id == 0)
             {

@@ -60,6 +60,12 @@ internal class VolunteerImplementation : IVolunteer
 
 
     }
+    public bool CanBeDeleted(int id)
+    { 
+            var volunteer = _dal.Volunteer.Read(id);
+
+            return VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null;
+    }
     public void Delete(int id)
     {
         try

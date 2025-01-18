@@ -28,4 +28,6 @@ public interface IVolunteer : IObservable
     public int ManagerID();
     public List<string> CloseVolunteersToCallEmails(int callId);
    
+    public bool CanBeDeleted(int id);
+
 }

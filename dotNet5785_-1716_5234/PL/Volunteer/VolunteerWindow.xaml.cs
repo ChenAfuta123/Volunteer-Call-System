@@ -47,9 +47,7 @@ namespace PL.Volunteer
         public VolunteerWindow(int id = 0)
         {
             InitializeComponent();
-           
-
-           
+            DataContext = this;
 
             // Initialize the CurrentVolunteer property and ButtonText based on the id
             if (id == 0)
@@ -88,6 +86,7 @@ namespace PL.Volunteer
                 }
             }
         }
+          
         private void LoadScreen()
         {
             OnScreenLoaded(this, EventArgs.Empty);
@@ -113,6 +112,7 @@ namespace PL.Volunteer
             {
                 s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, VolunteerObserver);
             }
+            
         }
 
         // Remove the observer when the window is closed
@@ -129,13 +129,16 @@ namespace PL.Volunteer
         {
             try
             {
+
                 if (ButtonText == "Add")
                 {
+                    
                     s_bl.Volunteer.Add(CurrentVolunteer);
                     MessageBox.Show("Volunteer added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else if (ButtonText == "Update")
                 {
+                   
                     s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }

@@ -374,10 +374,42 @@ namespace PL
         {
 
         }
+        private void TextBlock_OpenCalls_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var statusCounts = s_bl.Call.CallQuantities();
+            (sender as TextBlock)!.Text = statusCounts[0].ToString();
+        }
+
+        private void TextBlock_ClosedCalls_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var statusCounts = s_bl.Call.CallQuantities();
+            (sender as TextBlock)!.Text = statusCounts[2].ToString();
+        }
+
+        private void TextBlock_ExpiredCalls_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var statusCounts = s_bl.Call.CallQuantities();
+            (sender as TextBlock)!.Text = statusCounts[3].ToString();
+        }
+
+        private void TextBlock_InProcessCalls_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var statusCounts = s_bl.Call.CallQuantities();
+            (sender as TextBlock)!.Text = statusCounts[1].ToString();
+        }
+
+        private void TextBlock_InProcessRiskCalls_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var statusCounts = s_bl.Call.CallQuantities();
+            (sender as TextBlock)!.Text = statusCounts[5].ToString();
+        }
+
+        private void TextBlock_OpenRiskCalls_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var statusCounts = s_bl.Call.CallQuantities();
+            (sender as TextBlock)!.Text = statusCounts[4].ToString();
+        }
 
 
-       
-
-      
-    }
+    }
 }
