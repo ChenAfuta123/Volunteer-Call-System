@@ -9,12 +9,12 @@
 
     <!-- Define Colors -->
     <Window.Resources>
-        <SolidColorBrush x:Key="PrimaryBlue" Color="#AEC494"/>
+        <SolidColorBrush x:Key="PrimaryBlue" Color="Black"/>
         <SolidColorBrush x:Key="SecondaryWhite" Color="#ECEADB"/>
-        <SolidColorBrush x:Key="AccentBlue" Color="#AEC494"/>
+        <SolidColorBrush x:Key="AccentBlue" Color="#AE90B6"/>
         <SolidColorBrush x:Key="GrayBorder" Color="Black"/>
         <!-- Hebrew Font -->
-        <FontFamily x:Key="HebrewFont">David</FontFamily>
+        <FontFamily x:Key="HebrewFont">Arial</FontFamily>
     </Window.Resources>
 
     <!--External Grid-->
@@ -37,22 +37,23 @@
             </Grid.ColumnDefinitions>
 
             <!--Sorting-->
-            <Label Grid.Row="0" Grid.Column="0" Margin="10" Content="מיון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
+            <Label Grid.Row="0" Grid.Column="1" Margin="701,6,37,0" Content=":מיון לפי" VerticalAlignment="Top" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}" Grid.RowSpan="2"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Top" Margin="427,8,104,0" 
                       ItemsSource="{Binding Source={StaticResource VolunteersCollectionKey}}" 
                       SelectedValue="{Binding VolunteerSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       SelectionChanged="ComboBox_SelectionChanged"
                       Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
-                      FontFamily="{DynamicResource HebrewFont}"/>
+                      FontFamily="{DynamicResource HebrewFont}" Grid.RowSpan="2"/>
 
             <!--Filtering-->
-            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="סינון לפי:" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}"/>
-            <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" 
+            <Label Grid.Column="1" Margin="701,32,23,0" Content=":סינון לפי" VerticalAlignment="Top" Foreground="{DynamicResource PrimaryBlue}" FontFamily="{DynamicResource HebrewFont}" Grid.RowSpan="2" Height="24"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="427,32,104,0" 
                       ItemsSource="{Binding Source={StaticResource IsActiveFilterCollectionKey}}" 
                       SelectedValue="{Binding VolunteerFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       SelectionChanged="ComboBox_FilterSelectionChanged"
                       Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
                       FontFamily="{DynamicResource HebrewFont}"/>
+            <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="56" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
         </Grid>
 
         <!--DataGrid Section-->
@@ -76,10 +77,10 @@
                                         <Setter Property="Background" Value="Transparent"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Active}" Value="True">
-                                                <Setter Property="Background" Value="Green"/>
+                                                <Setter Property="Background" Value="#32CD32"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Active}" Value="False">
-                                                <Setter Property="Background" Value="Red"/>
+                                                <Setter Property="Background" Value="#FF6347"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

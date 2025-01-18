@@ -28,6 +28,7 @@ namespace PL.Volunteer
         {
             InitializeComponent();
             UserId = userId;
+            queryOpenCallList();
 
         }
 
@@ -50,7 +51,7 @@ namespace PL.Volunteer
                 if (callFilter != value)
                 {
                     callFilter = value;
-                    /*  OnPropertyChanged();*/ // Notify the UI about the change
+                                          // Notify the UI about the change
                     queryOpenCallList(); // Refresh the list based on the new sort
                 }
             }
@@ -107,12 +108,13 @@ namespace PL.Volunteer
             if (MessageBox.Show("Are you sure you want to treat call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 var button = sender as FrameworkElement;
-                var callToTreat = button?.DataContext as BO.Call;
+                var callToTreat = button?.DataContext as BO.OpenCallInList;
                 try
                 {
                     if (callToTreat != null)
                     {
                         s_bl.Call.ChooseCallForTreatment(UserId, callToTreat.Id);
+                        queryOpenCallList();
 
                     }
                 }
@@ -126,7 +128,8 @@ namespace PL.Volunteer
                     MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
                         "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
+              
+               
             }
         }
         private void ChangeAddressButton_Click(object sender, RoutedEventArgs e)

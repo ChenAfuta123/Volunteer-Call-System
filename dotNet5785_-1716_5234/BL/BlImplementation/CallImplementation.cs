@@ -95,44 +95,44 @@ internal class CallImplementation : BlApi.ICall
     }
     public IEnumerable<BO.CallInList> ReadAll(CallInListField? filter, object? obg, CallInListField? sorting)
     {
-      
-            
-            var calls = _dal.Call.ReadAll();
+
+
+        var calls = _dal.Call.ReadAll();
 
 
         IEnumerable<BO.CallInList> CallsInList = calls.Select(CallManager.DOToBOCallInList);
 
-            // סינון
-            if (filter != null && obg != null)
-            {
-                CallsInList = CallManager.FilterCalls(CallsInList, filter, obg);
-            }
+        // סינון
+        if (filter != null && obg != null)
+        {
+            CallsInList = CallManager.FilterCalls(CallsInList, filter, obg);
+        }
 
-            // מיון
-            if (sorting == null)
+        // מיון
+        if (sorting == null)
+        {
+            CallsInList = CallsInList.OrderBy(c => c.Id);
+        }
+        else
+        {
+            CallsInList = sorting switch
             {
-                CallsInList = CallsInList.OrderBy(c => c.Id);
-            }
-            else
-            {
-                CallsInList = sorting switch
-                {
-                    CallInListField.CallId => CallsInList.OrderBy(c => c.CallId),
-                    CallInListField.Id => CallsInList.OrderBy(c => c.Id),
-                    CallInListField.CallType => CallsInList.OrderBy(c => c.callType),
-                    CallInListField.OpeningTime => CallsInList.OrderBy(c => c.OpeningTime),
-                    CallInListField.RemainingCallTime => CallsInList.OrderBy(c => c.RemainingCallTime),
-                    CallInListField.LastVolunteerName => CallsInList.OrderBy(c => c.LastVolunteerName),
-                    CallInListField.TotalHandlingTime => CallsInList.OrderBy(c => c.TotalHandlingTime),
-                    CallInListField.CallStatus => CallsInList.OrderBy(c => c.callStatus),
-                    CallInListField.TotalAllocations => CallsInList.OrderBy(c => c.TotalAllocations),
-                    _ => CallsInList.OrderBy(c => c.Id)
-                };
-            }
+                CallInListField.CallId => CallsInList.OrderBy(c => c.CallId),
+                CallInListField.Id => CallsInList.OrderBy(c => c.Id),
+                CallInListField.CallType => CallsInList.OrderBy(c => c.callType),
+                CallInListField.OpeningTime => CallsInList.OrderBy(c => c.OpeningTime),
+                CallInListField.RemainingCallTime => CallsInList.OrderBy(c => c.RemainingCallTime),
+                CallInListField.LastVolunteerName => CallsInList.OrderBy(c => c.LastVolunteerName),
+                CallInListField.TotalHandlingTime => CallsInList.OrderBy(c => c.TotalHandlingTime),
+                CallInListField.CallStatus => CallsInList.OrderBy(c => c.callStatus),
+                CallInListField.TotalAllocations => CallsInList.OrderBy(c => c.TotalAllocations),
+                _ => CallsInList.OrderBy(c => c.Id)
+            };
+        }
 
-            return CallsInList;
-        
-       
+        return CallsInList;
+
+
     }
 
     public void Update(BO.Call boCall)
@@ -149,8 +149,8 @@ internal class CallImplementation : BlApi.ICall
             Id = boCall.Id,
             callType = (DO.CallType)boCall.callType,
             Address = boCall.Address,
-            Latitude =boCall.Latitude,
-            Longitude =boCall.Longitude,
+            Latitude = boCall.Latitude,
+            Longitude = boCall.Longitude,
             OpeningTime = boCall.OpeningTime,
             Description = boCall.Description,
             maxEndingTime = boCall.MaxEndingTime,
@@ -232,7 +232,7 @@ internal class CallImplementation : BlApi.ICall
             if (assignment.EndTimeType != null)
             {
                 throw new BO.BlValidationException("The assignment is already closed.");
-            } 
+            }
             //if (assignment.VolunteerId != requesterId && (BO.Role)volunteer.role == BO.Role.volunteer)
             //{
             //    throw new BO.BlUnauthorizedException("Only the assigned volunteer or manager can complete this treatment.");
@@ -296,7 +296,7 @@ internal class CallImplementation : BlApi.ICall
     }
 
 
-    public IEnumerable<BO.ClosedCallInList> ClosedCallsByVolunteer(int volunteerId, BO.CallType? callType=null, BO.ClosedCallInListField? sorting=null)
+    public IEnumerable<BO.ClosedCallInList> ClosedCallsByVolunteer(int volunteerId, BO.CallType? callType = null, BO.ClosedCallInListField? sorting = null)
     {
 
         IEnumerable<DO.Call> allCalls = _dal.Call.ReadAll();
@@ -315,11 +315,11 @@ internal class CallImplementation : BlApi.ICall
             .Cast<BO.ClosedCallInList>();
 
 
-        if (callType!=null)
+        if (callType != null)
         {
             boCalls = boCalls.Where(c => c.callType == callType.Value);
         }
-      
+
 
         boCalls = sorting switch
         {
@@ -364,110 +364,103 @@ internal class CallImplementation : BlApi.ICall
         };
         return boCalls;
     }
-    public IEnumerable<BO.OpenCallInList> ReadAll(OpenCallInListField? filter, object? obg, OpenCallInListField? sorting,int VolunteerID)
+    public IEnumerable<BO.OpenCallInList> ReadAll(OpenCallInListField? filter, object? obg, OpenCallInListField? sorting, int VolunteerID)
 
     {
-        var volunteer=_dal.Volunteer.Read(VolunteerID);
-        try
+        var volunteer = _dal.Volunteer.Read(VolunteerID);
 
+        bool ifIsOpen(DO.Call? call)
         {
-            bool ifIsOpen(DO.Call? call)
-            {
-               
-                return CallManager.Status(call!.Id) == CallStatus.Open || CallManager.Status(call.Id) == CallStatus.OpenAtRisk;
-            }
-            var calls = _dal.Call.ReadAll(ifIsOpen);
-          
 
-            IEnumerable<BO.OpenCallInList> openCallsInList = calls.Select(call => new BO.OpenCallInList
+            return CallManager.Status(call!.Id) == CallStatus.Open || CallManager.Status(call.Id) == CallStatus.OpenAtRisk;
+        }
+        var calls = _dal.Call.ReadAll(ifIsOpen);
+        if (calls == null || !calls.Any())
+        {
 
-            {
-
-                Id = call.Id,
-
-                callType = (BO.CallType)call.callType,
-
-                description = call.Description,
-
-                Address = call.Address,
-
-                OpeningTime = call.OpeningTime,
-
-                maxEndingTime = call.maxEndingTime,
-
-                CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
-                        call.Latitude, call.Longitude, volunteer.distanceType)
-            });
-            if (calls == null || !calls.Any())
-            {
-
-                throw new BO.BlNullPropertyException("No calls found in the database.");
-
-            }
-
-
-
-            if (filter != null)
-
-            {
-
-                openCallsInList = CallManager.FilterCalls(openCallsInList, filter, obg);
-
-            }
-
-
-
-            if (sorting == null)
-
-            {
-
-                openCallsInList = openCallsInList.OrderBy(c => c.Id);
-
-            }
-
-            else
-
-            {
-
-                openCallsInList = sorting switch
-
-                {
-
-                    OpenCallInListField.Id => openCallsInList.OrderBy(c => c.Id),
-
-                    OpenCallInListField.callType => openCallsInList.OrderBy(c => c.callType),
-
-                    OpenCallInListField.description => openCallsInList.OrderBy(c => c.description),
-
-                    OpenCallInListField.Address => openCallsInList.OrderBy(c => c.Address),
-
-                    OpenCallInListField.OpeningTime => openCallsInList.OrderBy(c => c.OpeningTime),
-
-                    OpenCallInListField.maxEndingTime => openCallsInList.OrderBy(c => c.maxEndingTime),
-
-                    OpenCallInListField.CallDistanceFromVolunteer => openCallsInList.OrderBy(c => c.CallDistanceFromVolunteer),
-
-                    _ => openCallsInList.OrderBy(c => c.Id) // מיון ברירת מחדל לפי Id
-
-                };
-
-            }
-
-
-
-            return openCallsInList;
+            throw new BO.BlNullPropertyException("No calls found in the database.");
 
         }
 
-        catch (Exception ex)
+
+        IEnumerable<BO.OpenCallInList> openCallsInList = calls.Select(call => new BO.OpenCallInList
 
         {
 
-            throw new InvalidOperationException("Failed to read, filter, and sort the calls.", ex);
+            Id = call.Id,
+
+            callType = (BO.CallType)call.callType,
+
+            description = call.Description,
+
+            Address = call.Address,
+
+            OpeningTime = call.OpeningTime,
+
+            maxEndingTime = call.maxEndingTime,
+
+            CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                    call.Latitude, call.Longitude, volunteer.distanceType)
+        });
+     
+
+
+        if (filter != null)
+
+        {
+
+            openCallsInList = CallManager.FilterCalls(openCallsInList, filter, obg);
 
         }
+
+
+
+        if (sorting == null)
+
+        {
+
+            openCallsInList = openCallsInList.OrderBy(c => c.Id);
+
+        }
+
+        else
+
+        {
+
+            openCallsInList = sorting switch
+
+            {
+
+                OpenCallInListField.Id => openCallsInList.OrderBy(c => c.Id),
+
+                OpenCallInListField.callType => openCallsInList.OrderBy(c => c.callType),
+
+                OpenCallInListField.description => openCallsInList.OrderBy(c => c.description),
+
+                OpenCallInListField.Address => openCallsInList.OrderBy(c => c.Address),
+
+                OpenCallInListField.OpeningTime => openCallsInList.OrderBy(c => c.OpeningTime),
+
+                OpenCallInListField.maxEndingTime => openCallsInList.OrderBy(c => c.maxEndingTime),
+
+                OpenCallInListField.CallDistanceFromVolunteer => openCallsInList.OrderBy(c => c.CallDistanceFromVolunteer),
+
+                _ => openCallsInList.OrderBy(c => c.Id) // מיון ברירת מחדל לפי Id
+
+            };
+
+        }
+
+
+
+        return openCallsInList;
 
     }
+
+        
+
+    
+    
 
     public int findAssignment(int callID,int? VolunteerID)
     {

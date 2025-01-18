@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="היסטוריית קריאות" Height="600" Width="800" FlowDirection="RightToLeft" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Title="היסטוריית קריאות" Height="600" Width="800" FlowDirection="RightToLeft" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Background="#ECEADB">
 
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Height="77" Width="793">
                 <!-- Label for Filter ComboBox -->
                 <Label Content="סינון" VerticalAlignment="Center" Margin="5"/>
                 <ComboBox 
-          SelectedValue="{Binding CallFilter, Mode=TwoWay }"
+          SelectedValue="{Binding CallFilter, Mode=TwoWay}"
           SelectedValuePath="Tag"
           SelectionChanged="ComboBox_SelectionChanged" 
-          Width="200" Margin="5">
+          Width="195" Height="27">
                     <ComboBoxItem Content="כל הקריאות" Tag="None"/>
                     <ComboBoxItem Content="אספקה חיונית" Tag="EssentialSupplies"/>
                     <ComboBoxItem Content="דיור והעברה" Tag="HousingAndRelocation"/>
@@ -28,7 +28,7 @@
                 <!-- Label for Sort ComboBox -->
                 <Label Content="מיון" VerticalAlignment="Center" Margin="5"/>
                 <ComboBox x:Name="SortComboBox"  SelectedValue="{Binding CallSort, Mode=TwoWay}"  SelectedValuePath="Tag" 
-                          SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
+                          SelectionChanged="ComboBox_SelectionChanged" Width="191" Margin="5" Height="28">
                     <ComboBoxItem Content="ללא מיון" Tag="None"/>
                     <ComboBoxItem Content="לפי תז" Tag="Id"/>
                     <ComboBoxItem Content="לפי כתובת" Tag="Address"/>
@@ -36,10 +36,8 @@
                     <ComboBoxItem Content="לפי זמן סיום" Tag="EndTime"/>
                 </ComboBox>
             </StackPanel>
-
-            <!-- DataGrid -->
             <DataGrid ItemsSource="{Binding ClosedCallInList}" AutoGenerateColumns="False"      
-                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+                      >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="מזהה קריאה" Binding="{Binding Id}" Width="*"/>
                     <DataGridTextColumn Header="סוג קריאה" Binding="{Binding callType}" Width="*"/>
@@ -49,6 +47,9 @@
                     <DataGridTextColumn Header="סוג סיום" Binding="{Binding EndTimeType}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <!-- DataGrid -->
         </StackPanel>
+        <Image HorizontalAlignment="Left" Height="81" Margin="725,0,0,0" VerticalAlignment="Top" Width="108" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
     </Grid>
 </Window>

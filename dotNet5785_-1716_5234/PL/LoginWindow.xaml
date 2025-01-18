@@ -20,6 +20,6 @@
             <Button Content="כניסה" Click="LoginButton_Click" Foreground="Black" Background="#AE90B6" Width="100" Height="30" HorizontalAlignment="Center"/>
 
         </StackPanel>
-        <Image HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="C:\Users\halle\OneDrive\שולחן העבודה\לוגו גדול.jpg"/>
+        <Image HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
     </Grid>
 </Window>

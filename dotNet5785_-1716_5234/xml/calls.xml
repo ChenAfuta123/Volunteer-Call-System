@@ -6,9 +6,9 @@
     <Address>Tel Aviv, Dizengoff St 50</Address>
     <Latitude>32.08048</Latitude>
     <Longitude>34.77561</Longitude>
-    <OpeningTime>2025-01-18T01:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T18:34:36</OpeningTime>
     <Description>Providing hot meals to evacuees in shelters, ensuring nutritional needs are met.</Description>
-    <maxEndingTime>2025-01-18T13:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T06:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>1</Id>
@@ -16,9 +16,9 @@
     <Address>Jerusalem, Jaffa St 10</Address>
     <Latitude>31.78318</Latitude>
     <Longitude>35.21936</Longitude>
-    <OpeningTime>2025-01-17T23:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T17:34:36</OpeningTime>
     <Description>Delivering snacks, such as pastries and cakes, to brighten the evacuees' day.</Description>
-    <maxEndingTime>2025-01-18T11:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T05:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>2</Id>
@@ -26,9 +26,9 @@
     <Address>Rishon LeZion, Herzl St 28</Address>
     <Latitude>31.9646</Latitude>
     <Longitude>34.8044</Longitude>
-    <OpeningTime>2025-01-17T11:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T15:34:36</OpeningTime>
     <Description>Distributing bottled water to evacuees to ensure hydration in shelters.</Description>
-    <maxEndingTime>2025-01-17T23:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T03:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>3</Id>
@@ -36,9 +36,9 @@
     <Address>Tel Aviv, Dizengoff St 50</Address>
     <Latitude>32.08048</Latitude>
     <Longitude>34.77561</Longitude>
-    <OpeningTime>2025-01-17T05:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T21:34:36</OpeningTime>
     <Description>Providing ready-to-eat dry food packs for evacuees in temporary shelters.</Description>
-    <maxEndingTime>2025-01-17T17:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T09:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>4</Id>
@@ -46,9 +46,9 @@
     <Address>Bat Yam, Ben Gurion Blvd 15</Address>
     <Latitude>32.017136</Latitude>
     <Longitude>34.745441</Longitude>
-    <OpeningTime>2025-01-17T16:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T02:34:36</OpeningTime>
     <Description>Distributing blankets, sweaters, and socks to evacuees for warmth.</Description>
-    <maxEndingTime>2025-01-18T04:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T14:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>5</Id>
@@ -56,9 +56,9 @@
     <Address>Petah Tikva, Em Hamoshavot Rd 45</Address>
     <Latitude>32.0918</Latitude>
     <Longitude>34.8875</Longitude>
-    <OpeningTime>2025-01-17T07:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T12:34:36</OpeningTime>
     <Description>Delivering tables and chairs to temporary housing to improve comfort.</Description>
-    <maxEndingTime>2025-01-17T19:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T00:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>6</Id>
@@ -66,9 +66,9 @@
     <Address>Netanya, Herzl St 12</Address>
     <Latitude>32.3329</Latitude>
     <Longitude>34.8599</Longitude>
-    <OpeningTime>2025-01-17T08:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T08:34:36</OpeningTime>
     <Description>Transporting food supplies to remote shelter locations for easier access.</Description>
-    <maxEndingTime>2025-01-17T20:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T20:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>7</Id>
@@ -76,9 +76,9 @@
     <Address>Safed, HaAri St 20</Address>
     <Latitude>32.968</Latitude>
     <Longitude>35.494</Longitude>
-    <OpeningTime>2025-01-17T15:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T16:34:36</OpeningTime>
     <Description>Distributing thermoses with hot tea or coffee to evacuees for warmth.</Description>
-    <maxEndingTime>2025-01-18T03:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T04:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>8</Id>
@@ -86,9 +86,9 @@
     <Address>Jerusalem, Jaffa St 20</Address>
     <Latitude>31.7836</Latitude>
     <Longitude>35.2198</Longitude>
-    <OpeningTime>2025-01-17T05:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T03:34:36</OpeningTime>
     <Description>Bringing groceries and hygiene products to shelters for immediate use.</Description>
-    <maxEndingTime>2025-01-17T17:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T15:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>9</Id>
@@ -96,9 +96,9 @@
     <Address>Holon, Sokolov St 1</Address>
     <Latitude>32.0152</Latitude>
     <Longitude>34.7748</Longitude>
-    <OpeningTime>2025-01-17T10:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T22:34:36</OpeningTime>
     <Description>Providing nutrition packages that cater to specific dietary needs (e.g., gluten-free).</Description>
-    <maxEndingTime>2025-01-17T22:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T10:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>10</Id>
@@ -106,9 +106,9 @@
     <Address>Bat Yam, Ben Gurion Blvd 15</Address>
     <Latitude>32.017136</Latitude>
     <Longitude>34.745441</Longitude>
-    <OpeningTime>2025-01-17T19:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T20:34:36</OpeningTime>
     <Description>Helping evacuees find safe and comfortable temporary accommodation.</Description>
-    <maxEndingTime>2025-01-18T07:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T08:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>11</Id>
@@ -116,9 +116,9 @@
     <Address>Rishon LeZion, Herzl St 28</Address>
     <Latitude>31.9646</Latitude>
     <Longitude>34.8044</Longitude>
-    <OpeningTime>2025-01-17T03:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T06:34:36</OpeningTime>
     <Description>Assisting with the relocation of evacuees' personal belongings to new housing.</Description>
-    <maxEndingTime>2025-01-17T15:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T18:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>12</Id>
@@ -126,9 +126,9 @@
     <Address>Ramat Gan, Abba Hillel Silver Rd 100</Address>
     <Latitude>32.0908</Latitude>
     <Longitude>34.804</Longitude>
-    <OpeningTime>2025-01-17T06:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T04:34:36</OpeningTime>
     <Description>Coordinating transport for evacuees from temporary shelters to more secure locations.</Description>
-    <maxEndingTime>2025-01-17T18:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T16:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>13</Id>
@@ -136,9 +136,9 @@
     <Address>Herzliya, Ben Yehuda St 55</Address>
     <Latitude>32.165</Latitude>
     <Longitude>34.842</Longitude>
-    <OpeningTime>2025-01-17T13:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T15:34:36</OpeningTime>
     <Description>Arranging temporary shelters for families, ensuring privacy and security.</Description>
-    <maxEndingTime>2025-01-18T01:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T03:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>14</Id>
@@ -146,9 +146,9 @@
     <Address>Kfar Saba, Weizmann St 28</Address>
     <Latitude>32.175</Latitude>
     <Longitude>34.906</Longitude>
-    <OpeningTime>2025-01-17T20:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T03:34:36</OpeningTime>
     <Description>Providing support in finding accessible housing for evacuees with disabilities.</Description>
-    <maxEndingTime>2025-01-18T08:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T15:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>15</Id>
@@ -156,9 +156,9 @@
     <Address>Herzliya, Ben Yehuda St 20</Address>
     <Latitude>32.164</Latitude>
     <Longitude>34.841</Longitude>
-    <OpeningTime>2025-01-17T07:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T12:34:36</OpeningTime>
     <Description>Helping evacuees set up basic living spaces in temporary shelters.</Description>
-    <maxEndingTime>2025-01-17T19:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T00:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>16</Id>
@@ -166,9 +166,9 @@
     <Address>TelAviv, Yigal Alon St 50</Address>
     <Latitude>32.069</Latitude>
     <Longitude>34.794</Longitude>
-    <OpeningTime>2025-01-17T09:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T17:34:36</OpeningTime>
     <Description>Organizing transportation for evacuees to move to safer regions within the country.</Description>
-    <maxEndingTime>2025-01-17T21:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T05:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>17</Id>
@@ -176,9 +176,9 @@
     <Address>Yavne, HaGefen St 15</Address>
     <Latitude>31.876</Latitude>
     <Longitude>34.738</Longitude>
-    <OpeningTime>2025-01-17T10:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T12:34:36</OpeningTime>
     <Description>Setting up community kitchens in temporary housing to foster a sense of normalcy.</Description>
-    <maxEndingTime>2025-01-17T22:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T00:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>18</Id>
@@ -186,9 +186,9 @@
     <Address>Nahariya, Sokolov St 18</Address>
     <Latitude>33.005</Latitude>
     <Longitude>35.094</Longitude>
-    <OpeningTime>2025-01-17T03:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T22:34:36</OpeningTime>
     <Description>Helping evacuees navigate local housing systems and rental assistance.</Description>
-    <maxEndingTime>2025-01-17T15:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T10:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>19</Id>
@@ -196,9 +196,9 @@
     <Address>Safed, HaAri St 15</Address>
     <Latitude>32.968</Latitude>
     <Longitude>35.494</Longitude>
-    <OpeningTime>2025-01-17T11:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T08:34:36</OpeningTime>
     <Description>Providing relocation assistance for evacuees needing to move to a permanent home.</Description>
-    <maxEndingTime>2025-01-17T23:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T20:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>20</Id>
@@ -206,9 +206,9 @@
     <Address>Karmiel, HaGalil St 7</Address>
     <Latitude>32.917</Latitude>
     <Longitude>35.305</Longitude>
-    <OpeningTime>2025-01-17T15:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T22:34:36</OpeningTime>
     <Description>Providing trauma counseling services to evacuees affected by the war.</Description>
-    <maxEndingTime>2025-01-18T03:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T10:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>21</Id>
@@ -216,9 +216,9 @@
     <Address>Tiberias, HaGalil St 20</Address>
     <Latitude>32.792</Latitude>
     <Longitude>35.54</Longitude>
-    <OpeningTime>2025-01-18T01:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T18:34:36</OpeningTime>
     <Description>Organizing recreational activities such as games and crafts for children in shelters.</Description>
-    <maxEndingTime>2025-01-18T13:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T06:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>22</Id>
@@ -226,9 +226,9 @@
     <Address>Tel Aviv, Dizengoff St 48</Address>
     <Latitude>32.0804</Latitude>
     <Longitude>34.7755</Longitude>
-    <OpeningTime>2025-01-17T11:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T13:34:36</OpeningTime>
     <Description>Offering group therapy sessions to evacuees dealing with emotional stress.</Description>
-    <maxEndingTime>2025-01-17T23:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T01:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>23</Id>
@@ -236,9 +236,9 @@
     <Address>Jerusalem, Hertzel St 10</Address>
     <Latitude>31.786207</Latitude>
     <Longitude>35.1984677</Longitude>
-    <OpeningTime>2025-01-17T19:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T08:34:36</OpeningTime>
     <Description>Connecting evacuees with support groups for shared experiences and healing.</Description>
-    <maxEndingTime>2025-01-18T07:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T20:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>24</Id>
@@ -246,9 +246,9 @@
     <Address>Kfar Saba, Weizmann St 20</Address>
     <Latitude>32.174</Latitude>
     <Longitude>34.905</Longitude>
-    <OpeningTime>2025-01-17T16:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T09:34:36</OpeningTime>
     <Description>Facilitating discussions and workshops about mental health coping strategies.</Description>
-    <maxEndingTime>2025-01-18T04:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T21:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>25</Id>
@@ -256,9 +256,9 @@
     <Address>Tiberias, HaBanim St 15</Address>
     <Latitude>32.792</Latitude>
     <Longitude>35.537</Longitude>
-    <OpeningTime>2025-01-17T05:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T15:34:36</OpeningTime>
     <Description>Providing social workers and counselors on-site in shelters to assist evacuees.</Description>
-    <maxEndingTime>2025-01-17T17:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T03:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>26</Id>
@@ -266,9 +266,9 @@
     <Address>Sderot, HaDekel St 3</Address>
     <Latitude>31.522</Latitude>
     <Longitude>34.595</Longitude>
-    <OpeningTime>2025-01-17T15:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T06:34:36</OpeningTime>
     <Description>Setting up quiet spaces for evacuees to rest and de-stress after traumatic experiences.</Description>
-    <maxEndingTime>2025-01-18T03:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T18:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>27</Id>
@@ -276,9 +276,9 @@
     <Address>Ramat HaSharon, Sokolov St 38</Address>
     <Latitude>32.147</Latitude>
     <Longitude>34.841</Longitude>
-    <OpeningTime>2025-01-17T15:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T11:34:36</OpeningTime>
     <Description>Bringing in volunteer groups to engage evacuees in creative arts and self-expression.</Description>
-    <maxEndingTime>2025-01-18T03:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T23:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>28</Id>
@@ -286,9 +286,9 @@
     <Address>Ramat HaSharon, Sokolov St 40</Address>
     <Latitude>32.147</Latitude>
     <Longitude>34.841</Longitude>
-    <OpeningTime>2025-01-17T18:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T07:34:36</OpeningTime>
     <Description>Coordinating with local religious leaders to offer spiritual support to evacuees.</Description>
-    <maxEndingTime>2025-01-18T06:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T19:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>29</Id>
@@ -296,9 +296,9 @@
     <Address>Holon, Sokolov St 10</Address>
     <Latitude>32.0155</Latitude>
     <Longitude>34.7749</Longitude>
-    <OpeningTime>2025-01-17T04:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T15:34:36</OpeningTime>
     <Description>Arranging buddy systems in shelters to ensure evacuees have someone to rely on.</Description>
-    <maxEndingTime>2025-01-17T16:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T03:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>30</Id>
@@ -306,9 +306,9 @@
     <Address>Even Yehuda, HaShaked St 17</Address>
     <Latitude>32.27</Latitude>
     <Longitude>34.888</Longitude>
-    <OpeningTime>2025-01-17T23:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T13:34:36</OpeningTime>
     <Description>Coordinating medical teams to provide basic health services in evacuation centers.</Description>
-    <maxEndingTime>2025-01-18T11:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T01:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>31</Id>
@@ -316,9 +316,9 @@
     <Address>Even Yehuda, HaShaked St 13</Address>
     <Latitude>32.27</Latitude>
     <Longitude>34.888</Longitude>
-    <OpeningTime>2025-01-18T00:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T04:34:36</OpeningTime>
     <Description>Delivering essential medications to evacuees who have lost access to pharmacies.</Description>
-    <maxEndingTime>2025-01-18T12:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T16:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>32</Id>
@@ -326,9 +326,9 @@
     <Address>Gedera, HaZayit St 12</Address>
     <Latitude>31.814</Latitude>
     <Longitude>34.779</Longitude>
-    <OpeningTime>2025-01-17T22:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T09:34:36</OpeningTime>
     <Description>Arranging transportation for evacuees needing urgent medical care.</Description>
-    <maxEndingTime>2025-01-18T10:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T21:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>33</Id>
@@ -336,9 +336,9 @@
     <Address>Yavne, HaGefen St 4</Address>
     <Latitude>31.876</Latitude>
     <Longitude>34.737</Longitude>
-    <OpeningTime>2025-01-17T10:25:09</OpeningTime>
+    <OpeningTime>2025-01-18T13:34:36</OpeningTime>
     <Description>Providing emergency first aid and triage for injured evacuees in shelters.</Description>
-    <maxEndingTime>2025-01-17T22:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T01:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>34</Id>
@@ -346,9 +346,9 @@
     <Address>Kiryat Shmona, HaBanim St 14</Address>
     <Latitude>33.209</Latitude>
     <Longitude>35.57</Longitude>
-    <OpeningTime>2025-01-17T04:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T02:34:36</OpeningTime>
     <Description>Facilitating doctor consultations for evacuees with chronic health conditions.</Description>
-    <maxEndingTime>2025-01-17T16:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T14:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>35</Id>
@@ -356,9 +356,9 @@
     <Address>Petah Tikva, Em Hamoshavot Rd 40</Address>
     <Latitude>32.0915</Latitude>
     <Longitude>34.8872</Longitude>
-    <OpeningTime>2025-01-17T08:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T09:34:36</OpeningTime>
     <Description>Ensuring the timely delivery of prescription medications to evacuees in need.</Description>
-    <maxEndingTime>2025-01-17T20:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T21:34:36</maxEndingTime>
   </Call>
   <Call>
     <Id>36</Id>
@@ -366,18 +366,148 @@
     <Address>Karmiel, HaGalil St 10</Address>
     <Latitude>32.917</Latitude>
     <Longitude>35.305</Longitude>
-    <OpeningTime>2025-01-17T03:25:09</OpeningTime>
+    <OpeningTime>2025-01-19T11:34:36</OpeningTime>
     <Description>Setting up mobile health clinics in temporary shelters for on-site medical assistance.</Description>
-    <maxEndingTime>2025-01-17T15:25:09</maxEndingTime>
+    <maxEndingTime>2025-01-19T23:34:36</maxEndingTime>
   </Call>
   <Call>
-    <Id>51</Id>
-    <callType>EssentialSupplies</callType>
+    <Id>37</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Bet Shemesh, HaGefen St 20</Address>
+    <Latitude>31.749</Latitude>
+    <Longitude>34.987</Longitude>
+    <OpeningTime>2025-01-18T16:34:36</OpeningTime>
+    <Description>Providing basic medical supplies such as bandages and pain relief to evacuees.</Description>
+    <maxEndingTime>2025-01-19T04:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>38</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Rosh HaAyin, HaHagana St 3</Address>
+    <Latitude>32.095</Latitude>
+    <Longitude>34.95</Longitude>
+    <OpeningTime>2025-01-18T13:34:36</OpeningTime>
+    <Description>Coordinating with local pharmacies to ensure medical needs are met for evacuees.</Description>
+    <maxEndingTime>2025-01-19T01:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>39</Id>
+    <callType>MedicalAndPharmaceuticalAid</callType>
+    <Address>Rosh HaAyin, HaHagana St 1</Address>
+    <Latitude>32.095</Latitude>
+    <Longitude>34.95</Longitude>
+    <OpeningTime>2025-01-19T04:34:36</OpeningTime>
+    <Description>Offering mental health consultations in shelters for those affected by the trauma.</Description>
+    <maxEndingTime>2025-01-19T16:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>40</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Jerusalem, Hillel St 20</Address>
+    <Latitude>31.78</Latitude>
+    <Longitude>35.22</Longitude>
+    <OpeningTime>2025-01-19T03:34:36</OpeningTime>
+    <Description>Providing legal guidance on obtaining government assistance and financial support.</Description>
+    <maxEndingTime>2025-01-19T15:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>41</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Lod, HaHistadrut St 30</Address>
+    <Latitude>31.951</Latitude>
+    <Longitude>34.895</Longitude>
+    <OpeningTime>2025-01-19T00:34:36</OpeningTime>
+    <Description>Assisting evacuees in filling out forms for emergency relief and aid programs.</Description>
+    <maxEndingTime>2025-01-19T12:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>42</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Ramla, Herzl St 27</Address>
+    <Latitude>31.929</Latitude>
+    <Longitude>34.869</Longitude>
+    <OpeningTime>2025-01-18T15:34:36</OpeningTime>
+    <Description>Helping evacuees understand their rights regarding property and compensation claims.</Description>
+    <maxEndingTime>2025-01-19T03:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>43</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Bet Shemesh, HaGalil St 10</Address>
+    <Latitude>31.749</Latitude>
+    <Longitude>34.987</Longitude>
+    <OpeningTime>2025-01-18T18:34:36</OpeningTime>
+    <Description>Providing assistance with the submission of claims for damages to property.</Description>
+    <maxEndingTime>2025-01-19T06:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>44</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Bet Shemesh, HaGalil St 20</Address>
+    <Latitude>31.749</Latitude>
+    <Longitude>34.987</Longitude>
+    <OpeningTime>2025-01-19T00:34:36</OpeningTime>
+    <Description>Advising evacuees on how to navigate legal processes to apply for housing benefits.</Description>
+    <maxEndingTime>2025-01-19T12:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>45</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Ma'alot Tarshiha, HaTeena St 12</Address>
+    <Latitude>33.016</Latitude>
+    <Longitude>35.275</Longitude>
+    <OpeningTime>2025-01-19T02:34:36</OpeningTime>
+    <Description>Coordinating with legal aid organizations to offer free consultations to evacuees.</Description>
+    <maxEndingTime>2025-01-19T14:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>46</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Ma'alot Tarshiha, HaTeena St 19</Address>
+    <Latitude>33.016</Latitude>
+    <Longitude>35.275</Longitude>
+    <OpeningTime>2025-01-18T16:34:36</OpeningTime>
+    <Description>Helping evacuees access social security benefits and other state-sponsored programs.</Description>
+    <maxEndingTime>2025-01-19T04:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>47</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Tel Mond, HaGoren St 10</Address>
+    <Latitude>32.249</Latitude>
+    <Longitude>34.918</Longitude>
+    <OpeningTime>2025-01-19T04:34:36</OpeningTime>
+    <Description>Offering advice on how to obtain identity documents and replacement papers after losing them.</Description>
+    <maxEndingTime>2025-01-19T16:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>48</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
     <Address>Tel Mond, HaGoren St 15</Address>
-    <Latitude>32.061606</Latitude>
-    <Longitude>32.061606</Longitude>
-    <OpeningTime>2025-01-15T20:41:30.2206679+02:00</OpeningTime>
-    <Description>gfdsdf</Description>
-    <maxEndingTime>2025-01-16T00:00:00</maxEndingTime>
+    <Latitude>32.249</Latitude>
+    <Longitude>34.918</Longitude>
+    <OpeningTime>2025-01-19T07:34:36</OpeningTime>
+    <Description>Providing legal counseling to evacuees who need to resolve employment or housing issues.</Description>
+    <maxEndingTime>2025-01-19T19:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>49</Id>
+    <callType>LegalAndAdministrativeSupport</callType>
+    <Address>Mazkeret Batya, HaDekel St 3</Address>
+    <Latitude>31.853</Latitude>
+    <Longitude>34.836</Longitude>
+    <OpeningTime>2025-01-19T06:34:36</OpeningTime>
+    <Description>Helping evacuees understand the process for applying for long-term housing support.</Description>
+    <maxEndingTime>2025-01-19T18:34:36</maxEndingTime>
+  </Call>
+  <Call>
+    <Id>50</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Kfar Saba, Weizmann St 30</Address>
+    <Latitude>32.1786202</Latitude>
+    <Longitude>32.1786202</Longitude>
+    <OpeningTime>2025-01-19T00:35:28.6263665+02:00</OpeningTime>
+    <Description> dfghjhg</Description>
+    <maxEndingTime>2025-01-20T00:00:00</maxEndingTime>
   </Call>
 </ArrayOfCall>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="1070" Height="2048"  
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Title="CallListWindow">
-    <Grid>
+    <Grid Background="#ECEADB">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -11,7 +11,7 @@
         </Grid.RowDefinitions>
 
         <!-- Internal, Upper Grid -->
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#ECEADB">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -23,30 +23,31 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sorting -->
-            <Label Grid.Row="0" Grid.Column="0" Margin="10" Content="מיון לפי:" VerticalAlignment="Center"/>
+            <Label Grid.Row="0" Grid.Column="0" Margin="10" Content=":מיון לפי" VerticalAlignment="Center"/>
             <ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="10,0,731,0" 
                       ItemsSource="{Binding Source={StaticResource CallsCollectionKey}}"
                       SelectedValue="{Binding CallSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       SelectionChanged="ComboBox_SelectionChanged"/>
 
             <!-- Filtering -->
-            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="סינון לפי:" VerticalAlignment="Center"/>
+            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content=":סינון לפי" VerticalAlignment="Center"/>
             <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,731,0" 
               ItemsSource="{Binding Source={StaticResource CallsCollectionKey}}"
               SelectedValue="{Binding CallFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
               SelectionChanged="ComboBox_SelectionChanged"/>
 
             <!-- Additional Filtering -->
-            <Label Grid.Row="2" Grid.Column="0" Margin="10" Content="סינון מותאם:" VerticalAlignment="Center"/>
+            <Label Grid.Row="2" Grid.Column="0" Margin="10" Content=":סינון מותאם" VerticalAlignment="Center"/>
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,731,0">
                 <TextBox Width="200" VerticalAlignment="Center" Margin="5"
                  Text="{Binding CustomFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            <Image Grid.Column="1" HorizontalAlignment="Left" Height="122" Margin="834,12,0,0" Grid.RowSpan="3" VerticalAlignment="Top" Width="122" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
 
         </Grid>
 
         <!-- DataGrid Section -->
-        <DataGrid Grid.Row="1" ItemsSource="{Binding CallList}" IsReadOnly="True" AutoGenerateColumns="False" 
+        <DataGrid Grid.Row="1"  Background="#ECEADB" ItemsSource="{Binding CallList}" IsReadOnly="True" AutoGenerateColumns="False" 
                   EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
                   MouseDoubleClick="dgCallList_MouseDoubleClick" SelectedItem="{Binding SelectedCall}" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
@@ -61,18 +62,18 @@
                 <DataGridTextColumn Binding="{Binding TotalHandlingTime}" Header="Total Handling Time" Width="*"/>
                 <DataGridTextColumn Binding="{Binding TotalAllocations}" Header="Total Allocations" Width="*"/>
 
-                <DataGridTemplateColumn Header="Actions" Width="Auto">
+                <DataGridTemplateColumn Header="Delete" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete" Click="DeleteButton_Click" Width="75"/>
+                            <Button Content="Delete" Background="#AE90B6" Foreground="#ECEADB" BorderBrush="#AE90B6" Click="DeleteButton_Click" Width="75"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Actions2" Width="Auto">
+                <DataGridTemplateColumn Header="Cencel" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Cencel" Click="CancelButton_Click" Width="75"/>
+                            <Button Content="Cencel"  Background="#AEC494" Foreground="#ECEADB" BorderBrush="#AEC494" Click="CancelButton_Click" Width="75"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

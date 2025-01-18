@@ -122,7 +122,8 @@ internal static class VolunteerManager
                 throw new Exception("Invalid Email.");
 
             if (!IsValidPassword(volunteer.Password))
-                throw new Exception("Invalid Password.");
+                throw new Exception("\"Password must be at least 6 characters long and contain" +
+                    " at least one special character.\"");
 
             if (!Enum.IsDefined(typeof(BO.DistanceType), volunteer.distanceType))
                 throw new Exception("Invalid distance type.");

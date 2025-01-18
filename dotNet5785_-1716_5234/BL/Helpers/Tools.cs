@@ -201,13 +201,13 @@ internal static class Tools
                 return routeData.Routes[0].Distance / 1000.0;
             }
         }
-
         public static (double? Latitude, double? Longitude) GetAddressCoordinates(string? address)
         {
             if (string.IsNullOrWhiteSpace(address))
             {
                 return (null, null);
             }
+
             const string LocationIqApiKey = "pk.67d4c5ff0db38922a88ae34ae0522e52";
             const string BaseUrl = "https://us1.locationiq.com/v1/search.php";
 
@@ -224,45 +224,41 @@ internal static class Tools
 
                 string responseContent = response.Content.ReadAsStringAsync().Result;
 
-                // פענוח ידני של התשובה
-                // נניח שהתשובה היא מערך JSON של אובייקטים
-                int startIndex = responseContent.IndexOf("[") + 1;
-                int endIndex = responseContent.IndexOf("]");
-
-                if (startIndex < 0 || endIndex < 0 || startIndex >= endIndex)
+                // בדיקה שה-JSON מתחיל ומסתיים כמצופה
+                if (responseContent.StartsWith("[") && responseContent.EndsWith("]"))
                 {
-                    throw new Exception($"No coordinates found for address: {address}");
-                }
+                    // חיפוש המופעים הראשונים של lat ו-lon
+                    int latIndex = responseContent.IndexOf("\"lat\":\"") + 7;
+                    int lonIndex = responseContent.IndexOf("\"lon\":\"") + 7;
 
-                string locationJson = responseContent.Substring(startIndex, endIndex - startIndex);
+                    if (latIndex < 7 || lonIndex < 7)
+                    {
+                        throw new Exception("Latitude or Longitude not found in response.");
+                    }
 
-                // כאן אנחנו מנסים לחלץ את הערכים מתוך השרשור
-                int latIndex = locationJson.IndexOf("\"lat\":\"") + 7;
-                int lonIndex = locationJson.IndexOf("\"lon\":\"") + 7;
+                    int latEndIndex = responseContent.IndexOf("\"", latIndex);
+                    int lonEndIndex = responseContent.IndexOf("\"", lonIndex);
 
-                if (latIndex < 7 || lonIndex < 7)
-                {
-                    throw new Exception("Latitude or Longitude not found in response.");
-                }
+                    if (latEndIndex < 0 || lonEndIndex < 0)
+                    {
+                        throw new Exception("Invalid format for latitude or longitude.");
+                    }
 
-                int latEndIndex = locationJson.IndexOf("\"", latIndex);
-                int lonEndIndex = locationJson.IndexOf("\"", lonIndex);
+                    string latString = responseContent.Substring(latIndex, latEndIndex - latIndex);
+                    string lonString = responseContent.Substring(lonIndex, lonEndIndex - lonIndex);
 
-                if (latEndIndex < 0 || lonEndIndex < 0)
-                {
-                    throw new Exception("Invalid format for latitude or longitude.");
-                }
-
-                string latString = locationJson.Substring(latIndex, latEndIndex - latIndex);
-                string lonString = locationJson.Substring(lonIndex, lonEndIndex - lonIndex);
-
-                if (double.TryParse(latString, out double latitude) && double.TryParse(lonString, out double longitude))
-                {
-                    return (latitude, longitude);
+                    if (double.TryParse(latString, out double latitude) && double.TryParse(lonString, out double longitude))
+                    {
+                        return (latitude, longitude);
+                    }
+                    else
+                    {
+                        throw new Exception($"Unable to parse coordinates for address: {address}");
+                    }
                 }
                 else
                 {
-                    throw new Exception($"Unable to parse coordinates for address: {address}");
+                    throw new Exception("Response is not in expected JSON array format.");
                 }
             }
         }
