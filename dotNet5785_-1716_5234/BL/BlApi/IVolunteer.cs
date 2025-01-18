@@ -26,4 +26,6 @@ public interface IVolunteer : IObservable
     public void Delete(int id);
     public void SendEmailToVolunteers(IEnumerable<string> volunteerEmails, string subject, string body);
     public int ManagerID();
+    public List<string> CloseVolunteersToCallEmails(int callId);
+   
 }

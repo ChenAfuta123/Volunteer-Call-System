@@ -25,32 +25,45 @@ namespace PL.Volunteer
         }
 
         public static readonly DependencyProperty ClosedCallInListProperty =
-            DependencyProperty.Register("History", typeof(IEnumerable<BO.ClosedCallInList>), typeof(HistoryWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("ClosedCallInList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(HistoryWindow), new PropertyMetadata(null));
 
-        // משתנה לסינון
-        private BO.ClosedCallInListField? sortCriteria { get; set; } = BO.ClosedCallInListField.None;
-        public IEnumerable<BO.CallType> CallType
+        private BO.CallType? _callFilter;
+        public BO.CallType? CallFilter
         {
-            get { return (IEnumerable<BO.CallType>)GetValue(CallTypeProperty); }
-            set { SetValue(CallTypeProperty, value); }
+            get => _callFilter;
+            set
+            {
+                if (_callFilter != value)
+                {
+                    _callFilter = value;
+                    queryCallList(); // Refresh the list based on the new filter
+                }
+            }
+        }
+        private BO.ClosedCallInListField? _callSort;
+        public BO.ClosedCallInListField? CallSort
+        {
+            get => _callSort;
+            set
+            {
+                if (_callSort != value)
+                {
+                    _callSort = value;
+                    queryCallList(); // Refresh the list based on the new sort
+                }
+            }
         }
 
-        public static readonly DependencyProperty CallTypeProperty =
-            DependencyProperty.Register("CallType", typeof(IEnumerable<BO.CallType>), typeof(HistoryWindow), new PropertyMetadata(null));
 
-
-        // משתנה לסינון
-        private BO.CallType? filterCriteria { get; set; } = BO.CallType.None;
         private void queryCallList()
         {
-            if (filterCriteria == BO.CallType.None)
-                filterCriteria = null;
-            if (sortCriteria == BO.ClosedCallInListField.None)
-                sortCriteria = null;
-            var closedCalls = s_bl.Call.ClosedCallsByVolunteer(UserId, filterCriteria, sortCriteria);
+            var filter = CallFilter != BO.CallType.None ? CallFilter : null;
+            // אם CallSort הוא None, נשלח null
+            var sorter = CallSort != BO.ClosedCallInListField.None ? CallSort : null;
 
-            // הצגת הנתונים ב-DataGrid
-            HistoryDataGrid.ItemsSource = closedCalls;
+            ClosedCallInList = s_bl.Call.ClosedCallsByVolunteer(UserId, CallFilter, CallSort);
+
+          
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -71,33 +84,6 @@ namespace PL.Volunteer
         }
 
       
-        //private void LoadClosedCalls(BO.CallType? filterCriteria = null, BO.ClosedCallInListField? sortCriteria = null)
-        //{
-        //    try
-        //    {
-        //        // קבלת כל הקריאות הסגורות של המתנדב מהשכבה הלוגית עם אפשרויות סינון ומיון
-        //        var closedCalls = s_bl.Call.ClosedCallsByVolunteer(UserId, filterCriteria, sortCriteria);
-
-        //        // הצגת הנתונים ב-DataGrid
-        //        HistoryDataGrid.ItemsSource = closedCalls;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Error loading closed calls: {ex.Message}");
-        //    }
-        //}
-
-        //private void OnFilterChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    var selectedFilter = (CallType)((ComboBoxItem)((ComboBox)sender).SelectedItem).Tag;
-        //    LoadClosedCalls(selectedFilter, null);
-        //}
-
-        //private void OnSortChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    var selectedSort = (ClosedCallInListField)((ComboBoxItem)((ComboBox)sender).SelectedItem).Tag;
-        //    LoadClosedCalls(null, selectedSort);
-        //}
     }
 
 

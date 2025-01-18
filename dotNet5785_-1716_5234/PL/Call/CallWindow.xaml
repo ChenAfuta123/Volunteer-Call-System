@@ -73,19 +73,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!--//         public int Id { get; init; }
- //public CallType callType { get; set; }
- //public string? Description { get; set; }
- //public required string Address { get; set; }
- //public double Latitude { get; set; }
- //public double Longitude { get; set; }
- //public DateTime OpeningTime { get; init; }
- //public DateTime? MaxEndingTime { get; set; }
- //public CallStatus callStatus { get; set; }
 
- //public List-->
-        <!--<BO.CallAssignInList>? CallAssignList { get; set; }-->
-            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="מזהה קריאה:" Width="120"/>
                 <TextBox  Text="{Binding CurrentCall.Id}" IsReadOnly="True"/>
@@ -99,7 +88,7 @@
                 <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding  CurrentCall.callType}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label Content="תיאור:" Width="120"/> 
+                <Label Content="תיאור:" Width="120"/>
                 <TextBox Text="{Binding CurrentCall.Description}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">

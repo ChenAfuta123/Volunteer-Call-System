@@ -259,4 +259,30 @@ internal class VolunteerImplementation : IVolunteer
         else
         return -1;
     }
+    private bool IfisClose(DO.Volunteer v, DO.Call call)
+    {
+        double distance = Tools.DistanceCalculator.CalculateDistance(v.Latitude, v.Longitude, 
+            call.Latitude, call.Longitude,v.distanceType);
+        return v.MaxDistance<=distance;
+    }
+    public List<string> CloseVolunteersToCallEmails(int callId)
+    {
+        var call = _dal.Call.Read(callId);
+        
+       
+        if (call != null)
+        {
+            // שליפת כל המתנדבים מה-DAL
+            var volunteers = _dal.Volunteer.ReadAll();
+
+            // סינון המתנדבים שנמצאים קרוב לקריאה
+            var closeVolunteers = volunteers.Where(v => IfisClose(v, call));
+
+            // שליפת כתובות האימייל של המתנדבים הקרובים
+            return closeVolunteers.Select(v => v.Email).ToList();
+        }
+        return new List<string>();
+
+    }
+   
 }

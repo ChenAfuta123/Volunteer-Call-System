@@ -19,9 +19,16 @@
         </Grid.RowDefinitions>
 
         <!-- Logo Addition -->
-        <!--<Image Source="C:\Users\halle\OneDrive\שולחן העבודה\לוגו גדול.jpg"
+        <Image Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg "
        HorizontalAlignment="Left" VerticalAlignment="Top" Width="305" Height="195" Margin="-24,-40,0,0"
-       Panel.ZIndex="1"/>-->
+       Panel.ZIndex="1"/>
+        <!-- רשימת כמות קריאות לפי סטטוסים -->
+        <TextBlock Text="{Binding OpenCallsCount}" />
+        <TextBlock Text="{Binding ClosedCallsCount}" />
+        <TextBlock Text="{Binding InProgressCallsCount}" />
+        <TextBlock Text="{Binding ExpiredCallsCount}" />
+        <TextBlock Text="{Binding AtRiskOpenCallsCount}" />
+        <TextBlock Text="{Binding AtRiskInProgressCallsCount}" />
 
 
         <!-- System Clock Area -->
@@ -52,60 +59,73 @@
                 <Button Content="הוסף שנה" Click="btnAddOneYear_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0"/>
             </StackPanel>
         </Grid>
-        <Rectangle  Margin="842,0,110,-57" Fill="#AEC494 " Grid.Row="1"/>
+        <Rectangle Margin="952,0,0,0" Fill="#AEC494" Stroke="Black" StrokeThickness="1" Grid.Row="1"/>
+
 
 
 
         <!-- Configuration Variables Area -->
-        <Border Grid.Row="1" CornerRadius="10"  Padding="10" BorderThickness="1">
+        <Border Grid.Row="1" CornerRadius="10"  Padding="10" BorderBrush="Black" BorderThickness="1">
             <Grid Margin="-11,11,11,-11">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="142*"/>
+                    <ColumnDefinition Width="11*"/>
+                    <ColumnDefinition Width="518*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- Configuration Settings -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Margin="205,0,0,0">
                     <TextBox x:Name="txtTimeSpan" Width="200" Height="30" VerticalAlignment="Center" Margin="0,5,0,5"/>
                     <Label Content="{Binding RiskRange}" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#AEC494 "/>
                     <Button Content="עדכון" Click="btRiskRangeUpdate_Click" Style="{StaticResource StyledButton}" Width="100"/>
                 </StackPanel>
 
                 <!-- Action Buttons -->
-                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Height="352" Width="178" Margin="659,5,0,0">
+                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Height="440" Width="172" Margin="353,5,0,0" Grid.Column="2">
                     <Button Content="פתח תצוגת רשימה" Width="160" Style="{StaticResource StyledButton}" Click="Button_Click" Height="70"/>
                     <Button Content="אתחול מסד נתונים" Click="btnInitializeDB_Click" Width="160" Style="{StaticResource StyledButton}" Height="70"/>
                     <Button Content="איפוס מסד נתונים" Click="btnResetDB_Click" Width="160" Style="{StaticResource StyledButton}" Margin="0,5,0,5" Height="70"/>
                     <Button Content="טיפול בקריאות" Click="btnCalls_Click" Width="160" Style="{StaticResource StyledButton}" Margin="0,5,0,5" Height="70"/>
                     <Button Content="טיפול בהתנדבות" Click="btnVolunteers_Click" Width="160" Style="{StaticResource StyledButton}" Margin="0,5,0,5" Height="70"/>
                 </StackPanel>
+                <!-- קריאות פתוחות -->
+                <TextBlock Text="{Binding OpenCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,20,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות פתוחות" HorizontalAlignment="Left" Margin="789,20,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,18,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_1" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <!-- Various Calls Info -->
-                <!-- Various Calls Info -->
-                <Label Content="קריאות פתוחות" HorizontalAlignment="Left" Margin="957,10,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White"/>
-                <TextBox HorizontalAlignment="Left" Margin="910,10,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,10,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_1" Style="{StaticResource StyledButton}"/>
+                <!-- קריאות סגורות -->
+                <TextBlock Text="{Binding ClosedCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,63,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות סגורות" HorizontalAlignment="Left" Margin="784,63,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,61,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_2" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <Label Content="קריאות סגורות" HorizontalAlignment="Left" Margin="957,45,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White"/>
-                <TextBox HorizontalAlignment="Left" Margin="910,45,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,45,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_2" Style="{StaticResource StyledButton}"/>
+                <!-- קריאות שפגו -->
+                <TextBlock Text="{Binding ExpiredCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,103,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות שפגו" HorizontalAlignment="Left" Margin="789,103,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,101,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_4" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <Label Content="קריאות שפגו" HorizontalAlignment="Left" Margin="964,85,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White"/>
-                <TextBox HorizontalAlignment="Left" Margin="910,85,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,85,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_4" Style="{StaticResource StyledButton}"/>
+                <!-- קריאות בטיפול -->
+                <TextBlock Text="{Binding InProgressCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,146,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות בטיפול" HorizontalAlignment="Left" Margin="789,146,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Width="113" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,142,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_3" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <Label Content="קריאות בטיפול" HorizontalAlignment="Left" Margin="976,128,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Width="113"/>
-                <TextBox HorizontalAlignment="Left" Margin="910,125,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,125,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_3" Style="{StaticResource StyledButton}"/>
+                <!-- קריאות בטיפול בסיכון -->
+                <TextBlock Text="{Binding AtRiskInProgressCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,223,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות בטיפול בסיכון" Margin="787,223,-165,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Height="39" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,223,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_6" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <Label Content="קריאות בטיפול בסיכון" Margin="967,215,-39,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Height="39"/>
-                <TextBox HorizontalAlignment="Left" Margin="910,215,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,215,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_6" Style="{StaticResource StyledButton}"/>
+                <!-- קריאות פתוחות בסיכון -->
+                <TextBlock Text="{Binding AtRiskOpenCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,183,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות פתוחות בסיכון" Margin="784,183,-168,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Height="31" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,183,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_5" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <Label Content="קריאות פתוחות בסיכון" Margin="961,170,-39,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Height="31"/>
-                <TextBox HorizontalAlignment="Left" Margin="910,170,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="26"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="842,170,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_5" Style="{StaticResource StyledButton}"/>
-                <!--<Image HorizontalAlignment="Left" Height="565" Margin="0,10,0,0" VerticalAlignment="Top" Width="559" Grid.RowSpan="2" Source="C:\Users\halle\OneDrive\שולחן העבודה\תמונה של מתנדבים.jpg"/>-->
+                <Rectangle HorizontalAlignment="Left" Height="436" Margin="10,-14,0,0" Stroke="Black" Fill="#AE90B6 " VerticalAlignment="Top" Width="296" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+               
+                <Image HorizontalAlignment="Left" Margin="39,0,0,78" Width="341" Grid.RowSpan="2" Source="C:\Users\User\OneDrive\Desktop\תמונת מתנדבים.jpg" Grid.ColumnSpan="3"/>
+
 
             </Grid>
         </Border>

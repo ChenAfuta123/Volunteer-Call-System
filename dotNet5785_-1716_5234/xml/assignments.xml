@@ -9,14 +9,6 @@
     <EndTime xsi:nil="true" />
   </Assignment>
   <Assignment>
-    <Id>1</Id>
-    <CallId>1</CallId>
-    <VolunteerId>201234567</VolunteerId>
-    <EntryTime>2025-01-16T02:10:30</EntryTime>
-    <EndTimeType xsi:nil="true" />
-    <EndTime xsi:nil="true" />
-  </Assignment>
-  <Assignment>
     <Id>2</Id>
     <CallId>2</CallId>
     <VolunteerId>202345678</VolunteerId>
@@ -399,5 +391,13 @@
     <EntryTime>2025-01-15T22:58:30</EntryTime>
     <EndTimeType xsi:nil="true" />
     <EndTime xsi:nil="true" />
+  </Assignment>
+  <Assignment>
+    <Id>1</Id>
+    <CallId>1</CallId>
+    <VolunteerId>201234567</VolunteerId>
+    <EntryTime>2025-01-16T02:10:30</EntryTime>
+    <EndTimeType>Treated</EndTimeType>
+    <EndTime>2025-01-15T20:09:30</EndTime>
   </Assignment>
 </ArrayOfAssignment>
