@@ -47,7 +47,7 @@ namespace PL.Volunteer
         public VolunteerWindow(int id = 0)
         {
             InitializeComponent();
-            
+            DataContext = this;
 
             // Initialize the CurrentVolunteer property and ButtonText based on the id
             if (id == 0)
