@@ -36,14 +36,14 @@ public static class Initialization
         };
 
         string[] names = {
-            "Manager", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
+            "ChenAfuta", "HallelOchana", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
             "Tamar Avni", "Noam Baruch", "Yael Tzur", "Yonatan Gilad", "Lior Hadad", "Maya Zohar",
             "Idan Sasson", "Avigail Shani", "Eden Bar", "Nadav Shavit", "Gal Mor", "Adi Nir",
             "Tal Shaked", "Ofek Azulai"
         };
 
         string[] emails = {
-            "Manager@example.com", "eli@example.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com",
+            "ChenAfuta@gmail.com", "HallelOchana@gmail.com", "yair@example.com", "ariela@example.com", "dina@example.com", "shira@example.com",
             "tamar@example.com", "noam@example.com", "yael@example.com", "yonatan@example.com", "lior@example.com", "maya@example.com",
             "idan@example.com", "avigail@example.com", "eden@example.com", "nadav@example.com", "gal@example.com", "adi@example.com",
             "tal@example.com", "ofek@example.com"
@@ -89,7 +89,7 @@ public static class Initialization
             double latitude = latitudes[i];
             double longitude = longitudes[i];
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
-            double maxDistance = s_rand.Next(1, 50);
+            double maxDistance = s_rand.Next(10, 150);
             Role role = (i == 0) ? Role.manager : Role.volunteer;
             DistanceType distanceType = DistanceType.AirDistance;/* (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);*/
             /// <summary>

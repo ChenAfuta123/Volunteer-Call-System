@@ -296,7 +296,7 @@ internal class CallImplementation : BlApi.ICall
     }
 
 
-    public IEnumerable<BO.ClosedCallInList> ClosedCallsByVolunteer(int volunteerId, BO.CallType? callType, BO.ClosedCallInListField? sorting)
+    public IEnumerable<BO.ClosedCallInList> ClosedCallsByVolunteer(int volunteerId, BO.CallType? callType=null, BO.ClosedCallInListField? sorting=null)
     {
 
         IEnumerable<DO.Call> allCalls = _dal.Call.ReadAll();
@@ -315,11 +315,11 @@ internal class CallImplementation : BlApi.ICall
             .Cast<BO.ClosedCallInList>();
 
 
-        if (callType.HasValue)
+        if (callType!=null)
         {
             boCalls = boCalls.Where(c => c.callType == callType.Value);
         }
-
+      
 
         boCalls = sorting switch
         {

@@ -20,7 +20,12 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        public int OpenCallsCount { get; set; }
+        public int ClosedCallsCount { get; set; }
+        public int InProgressCallsCount { get; set; }
+        public int ExpiredCallsCount { get; set; }
+        public int AtRiskOpenCallsCount { get; set; }
+        public int AtRiskInProgressCallsCount { get; set; }
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -56,6 +61,22 @@ namespace PL
         {
             try
             {
+                
+                // קריאה למתודת BO כדי לקבל את הנתונים
+                var statusCounts = s_bl.Call.CallQuantities();
+                Dispatcher.Invoke(() =>
+                {
+                    // עדכון כמויות הקריאות
+                    OpenCallsCount = statusCounts[0];
+                    ClosedCallsCount = statusCounts[1];
+                    InProgressCallsCount = statusCounts[2];
+                    ExpiredCallsCount = statusCounts[3];
+                    AtRiskOpenCallsCount = statusCounts[4];
+                    AtRiskInProgressCallsCount = statusCounts[5];
+                });
+
+                // עידכון התצוגה
+                this.DataContext = this; // עדכון מחדש של ה-DataContext
 
                 CurrentTime = s_bl.Admin.getClockTime();
 

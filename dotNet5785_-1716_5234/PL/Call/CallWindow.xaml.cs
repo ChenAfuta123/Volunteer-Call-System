@@ -195,7 +195,7 @@ namespace PL.Call
                 </ul>
                 <p>תודה על העזרה והתמיכה שלך!</p>";
 
-
+    
 
                 // Assuming a method SendEmail exists in your BL
                 s_bl.Volunteer.SendEmailToVolunteers(emailAddresses, subject, body);
@@ -203,5 +203,7 @@ namespace PL.Call
 
         }
     }
-
+    
 }
+
+

@@ -370,4 +370,14 @@
     <Description>Setting up mobile health clinics in temporary shelters for on-site medical assistance.</Description>
     <maxEndingTime>2025-01-17T15:25:09</maxEndingTime>
   </Call>
+  <Call>
+    <Id>51</Id>
+    <callType>EssentialSupplies</callType>
+    <Address>Tel Mond, HaGoren St 15</Address>
+    <Latitude>32.061606</Latitude>
+    <Longitude>32.061606</Longitude>
+    <OpeningTime>2025-01-15T20:41:30.2206679+02:00</OpeningTime>
+    <Description>gfdsdf</Description>
+    <maxEndingTime>2025-01-16T00:00:00</maxEndingTime>
+  </Call>
 </ArrayOfCall>

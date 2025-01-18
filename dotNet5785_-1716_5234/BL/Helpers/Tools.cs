@@ -224,20 +224,49 @@ internal static class Tools
 
                 string responseContent = response.Content.ReadAsStringAsync().Result;
 
+                // פענוח ידני של התשובה
+                // נניח שהתשובה היא מערך JSON של אובייקטים
+                int startIndex = responseContent.IndexOf("[") + 1;
+                int endIndex = responseContent.IndexOf("]");
 
-                var locationData = System.Text.Json.JsonSerializer.Deserialize<LocationIqResponse[]>(responseContent);
-
-                if (locationData == null || locationData.Length == 0)
+                if (startIndex < 0 || endIndex < 0 || startIndex >= endIndex)
                 {
                     throw new Exception($"No coordinates found for address: {address}");
                 }
 
-                double latitude = double.Parse(locationData[0].Lat);
-                double longitude = double.Parse(locationData[0].Lon);
+                string locationJson = responseContent.Substring(startIndex, endIndex - startIndex);
 
-                return (latitude, longitude);
+                // כאן אנחנו מנסים לחלץ את הערכים מתוך השרשור
+                int latIndex = locationJson.IndexOf("\"lat\":\"") + 7;
+                int lonIndex = locationJson.IndexOf("\"lon\":\"") + 7;
+
+                if (latIndex < 7 || lonIndex < 7)
+                {
+                    throw new Exception("Latitude or Longitude not found in response.");
+                }
+
+                int latEndIndex = locationJson.IndexOf("\"", latIndex);
+                int lonEndIndex = locationJson.IndexOf("\"", lonIndex);
+
+                if (latEndIndex < 0 || lonEndIndex < 0)
+                {
+                    throw new Exception("Invalid format for latitude or longitude.");
+                }
+
+                string latString = locationJson.Substring(latIndex, latEndIndex - latIndex);
+                string lonString = locationJson.Substring(lonIndex, lonEndIndex - lonIndex);
+
+                if (double.TryParse(latString, out double latitude) && double.TryParse(lonString, out double longitude))
+                {
+                    return (latitude, longitude);
+                }
+                else
+                {
+                    throw new Exception($"Unable to parse coordinates for address: {address}");
+                }
             }
         }
+
         private static double DegreesToRadians(double degrees)
         {
             return degrees * (Math.PI / 180.0);

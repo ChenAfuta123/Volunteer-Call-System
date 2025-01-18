@@ -12,8 +12,8 @@
             <StackPanel Orientation="Horizontal">
                 <!-- Label for Filter ComboBox -->
                 <Label Content="סינון" VerticalAlignment="Center" Margin="5"/>
-                <ComboBox x:Name="FilterComboBox" 
-          SelectedValue="{Binding filterCriteria, Mode=TwoWay}"
+                <ComboBox 
+          SelectedValue="{Binding CallFilter, Mode=TwoWay }"
           SelectedValuePath="Tag"
           SelectionChanged="ComboBox_SelectionChanged" 
           Width="200" Margin="5">
@@ -27,7 +27,8 @@
 
                 <!-- Label for Sort ComboBox -->
                 <Label Content="מיון" VerticalAlignment="Center" Margin="5"/>
-                <ComboBox x:Name="SortComboBox" SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
+                <ComboBox x:Name="SortComboBox"  SelectedValue="{Binding CallSort, Mode=TwoWay}"  SelectedValuePath="Tag" 
+                          SelectionChanged="ComboBox_SelectionChanged" Width="200" Margin="5">
                     <ComboBoxItem Content="ללא מיון" Tag="None"/>
                     <ComboBoxItem Content="לפי תז" Tag="Id"/>
                     <ComboBoxItem Content="לפי כתובת" Tag="Address"/>
@@ -37,7 +38,7 @@
             </StackPanel>
 
             <!-- DataGrid -->
-            <DataGrid x:Name="HistoryDataGrid" AutoGenerateColumns="False"
+            <DataGrid ItemsSource="{Binding ClosedCallInList}" AutoGenerateColumns="False"      
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="מזהה קריאה" Binding="{Binding Id}" Width="*"/>

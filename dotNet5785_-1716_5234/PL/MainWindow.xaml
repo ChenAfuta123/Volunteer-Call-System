@@ -85,6 +85,20 @@
                     <Button Content="טיפול בקריאות" Click="btnCalls_Click" Width="160" Style="{StaticResource StyledButton}" Margin="0,5,0,5" Height="70"/>
                     <Button Content="טיפול בהתנדבות" Click="btnVolunteers_Click" Width="160" Style="{StaticResource StyledButton}" Margin="0,5,0,5" Height="70"/>
                 </StackPanel>
+                <!-- קריאות פתוחות -->
+                <TextBlock Text="{Binding OpenCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,20,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות פתוחות" HorizontalAlignment="Left" Margin="789,20,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,18,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_1" Style="{StaticResource StyledButton}" Grid.Column="2"/>
+
+                <!-- קריאות סגורות -->
+                <TextBlock Text="{Binding ClosedCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,63,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות סגורות" HorizontalAlignment="Left" Margin="784,63,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,61,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_2" Style="{StaticResource StyledButton}" Grid.Column="2"/>
+
+                <!-- קריאות שפגו -->
+                <TextBlock Text="{Binding ExpiredCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,103,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                <Label Content="קריאות שפגו" HorizontalAlignment="Left" Margin="789,103,0,0" VerticalAlignment="Top" Grid.Row="1" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="677,101,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_4" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
                 <!-- Various Calls Info -->
                 <!-- Various Calls Info -->
