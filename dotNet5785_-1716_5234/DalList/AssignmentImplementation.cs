@@ -1,5 +1,6 @@
 ﻿using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 
@@ -11,6 +12,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Creates a new assignment and adds it to the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         int id = Config.NextAssignmentId;
@@ -21,6 +23,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes an assignment with the specified ID from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         Assignment? existId = Read(id);
@@ -34,6 +37,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes all assignments from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         if (DataSource.Assignments.Any())
@@ -45,6 +49,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Reads an assignment by its ID from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(int id)
     {
         return DataSource.Assignments.FirstOrDefault(item => item.Id == id);
@@ -53,6 +58,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Reads an assignment that matches a specific filter from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         return DataSource.Assignments.FirstOrDefault(item => filter(item));
@@ -61,6 +67,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Reads all assignments from the data source, with an optional filter.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
         => filter == null
             ? DataSource.Assignments.Select(item => item)
@@ -69,6 +76,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Updates an existing assignment in the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Assignment item)
     {
         Assignment? existId = Read(item.Id);

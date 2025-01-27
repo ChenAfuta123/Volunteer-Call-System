@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800" Background="#ECEADB">
+        Title="LoginWindow" Height="450" Width="800" Background="#ECEADB" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid Margin="10">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="מסך כניסה למערכת" FontSize="20" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,20" Foreground="#AEC494"/>
+            <TextBlock Text="מסך כניסה למערכת" FontSize="20" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,20" Foreground="#AEC494" />
 
 
             <TextBlock Text="תעודת זהות:"/>

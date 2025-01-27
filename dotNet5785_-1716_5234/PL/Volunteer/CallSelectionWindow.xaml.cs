@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -77,10 +78,16 @@ namespace PL.Volunteer
                 ? s_bl?.Call.ReadAll(null, null, null, UserId)!
                 : s_bl?.Call.ReadAll(CallFilter, null, CallSorter, UserId)!;
         }
-
+        private volatile DispatcherOperation? _observerOperation = null;
         private void callListObserver()
-            => queryOpenCallList();
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryOpenCallList();
+                });
 
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
             => s_bl.Call.AddObserver(callListObserver);
 
@@ -128,8 +135,8 @@ namespace PL.Volunteer
                     MessageBox.Show($"Error: The requested item does not exist.\nDetails: {ex.Message}",
                         "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-              
-               
+
+                s_bl.Call.AddObserver(callListObserver);
             }
         }
         private void ChangeAddressButton_Click(object sender, RoutedEventArgs e)

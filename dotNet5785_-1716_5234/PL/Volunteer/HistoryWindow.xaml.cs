@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -69,8 +70,20 @@ namespace PL.Volunteer
         {
             queryCallList(); // Refresh the list whenever the filter changes
         }
+        private volatile DispatcherOperation? _observerOperation = null;
+
+        // Observer method for volunteer list
         private void callListObserver()
-           => queryCallList();
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryCallList();
+                });
+
+        }
+      
+        
 
 
         private void Window_Closed(object sender, EventArgs e)

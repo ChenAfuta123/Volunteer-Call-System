@@ -28,4 +28,5 @@ public interface IObservable //stage 5
     /// <param name="id">the identifier of the entity instance that was observed</param>
     /// <param name="observer">the observer method to be unregistered</param>
     void RemoveObserver(int id, Action observer);
+
 }

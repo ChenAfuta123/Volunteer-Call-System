@@ -1,5 +1,6 @@
 ﻿using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 
@@ -12,6 +13,7 @@ internal class CallImplementation : ICall
     /// Creates a new Call entity with a unique auto-generated ID and adds it to the data source.
     /// </summary>
     /// <param name="item">The Call entity to be created.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Call item)
     {
         int id =Config.NextCallId;
@@ -24,6 +26,7 @@ internal class CallImplementation : ICall
     /// Throws an exception if the entity does not exist.
     /// </summary>
     /// <param name="id">The ID of the Call entity to be deleted.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         Call? existId = Read(id);
@@ -37,6 +40,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Deletes all Call entities from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         if (DataSource.Calls.Any())
@@ -52,10 +56,13 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">The ID of the Call entity to be read.</param>
     /// <returns>The Call entity if found, otherwise null.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(int id)
     {
         return DataSource.Calls.FirstOrDefault(item => item.Id == id);
     }
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(Func<Call, bool> filter)
     {
         return DataSource.Calls.FirstOrDefault(item => filter(item));
@@ -65,6 +72,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <returns>A list of all Call entities.</returns>
     /// 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) //stage 2
      => filter == null
          ? DataSource.Calls.Select(item => item)
@@ -74,6 +82,7 @@ internal class CallImplementation : ICall
     /// Throws an exception if the entity does not exist.
     /// </summary>
     /// <param name="item">The Call entity to be updated.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Call item)
     {
         Call? existId = Read(item.Id);

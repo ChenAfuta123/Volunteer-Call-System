@@ -27,22 +27,25 @@ public interface ICall : IObservable
     public int[] CallQuantities();
 
     /// <summary>Assign a call for treatment by a volunteer.</summary>
-    public void ChooseCallForTreatment(int volunteerId, int AssignmentId);
+    public void ChooseCallForTreatment(int volunteerId, int callId);
 
     /// <summary>Cancel a treatment for a specific call.</summary>
     public void CanceltreatmentUpdate(int id, int AssignmentId);
 
     /// <summary>Mark a treatment as completed for a specific call.</summary>
-    public void EndOftreatmentUpdate(int requesterId, int callId);
+    public void EndOftreatmentUpdate(int requesterId, int AssignmentId);
 
     /// <summary>Get closed calls handled by a specific volunteer.</summary>
     public IEnumerable<BO.ClosedCallInList> ClosedCallsByVolunteer(int volunteerId, BO.CallType? callType, BO.ClosedCallInListField? sorting);
 
     /// <summary>Get open calls assigned to a specific volunteer.</summary>
     public IEnumerable<BO.OpenCallInList> OpenCallsByVolunteer(int id, BO.CallType? calltype, BO.OpenCallInListField? Sorting);
-    public IEnumerable<BO.OpenCallInList> ReadAll(OpenCallInListField? filter, object? obg, OpenCallInListField? sorting, int VolunteerID);
+    public  IEnumerable<BO.OpenCallInList> ReadAll(OpenCallInListField? filter, object? obg, OpenCallInListField? sorting, int VolunteerID);
 
     public int findAssignment(int callID, int? VolunteerID);
+
+    public bool CanBeDeleted(int callId);
+
 
 
 

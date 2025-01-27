@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -29,7 +30,7 @@ namespace PL.Volunteer
                 new PropertyMetadata("Add"));
 
         // Properties
-        public BO.Volunteer CurrentVolunteer
+        public BO.Volunteer? CurrentVolunteer
         {
             get => (BO.Volunteer)GetValue(CurrentVolunteerProperty);
             set => SetValue(CurrentVolunteerProperty, value);
@@ -47,7 +48,7 @@ namespace PL.Volunteer
         public VolunteerWindow(int id = 0)
         {
             InitializeComponent();
-            DataContext = this;
+            
 
             // Initialize the CurrentVolunteer property and ButtonText based on the id
             if (id == 0)
@@ -98,13 +99,23 @@ namespace PL.Volunteer
             OnScreenClosed(this, EventArgs.Empty);
         }
         // Method for observing and updating the volunteer data
+        private volatile DispatcherOperation? _observerOperation = null;
+
+        // Observer method for volunteer list
         private void VolunteerObserver()
         {
-            int id = CurrentVolunteer.Id;
-            CurrentVolunteer = null;
-            CurrentVolunteer = s_bl.Volunteer.Read(id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+
+                    int id = CurrentVolunteer!.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.Read(id);
+                });
+
         }
 
+     
         // Register the observer when the window is loaded
         private void OnScreenLoaded(object sender, EventArgs e)
         {
@@ -133,13 +144,13 @@ namespace PL.Volunteer
                 if (ButtonText == "Add")
                 {
                     
-                    s_bl.Volunteer.Add(CurrentVolunteer);
+                    s_bl.Volunteer.Add(CurrentVolunteer!);
                     MessageBox.Show("Volunteer added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else if (ButtonText == "Update")
                 {
                    
-                    s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
+                    s_bl.Volunteer.Update(CurrentVolunteer!.Id, CurrentVolunteer);
                     MessageBox.Show("Volunteer updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
@@ -160,7 +171,7 @@ namespace PL.Volunteer
         {
             if (DataContext is VolunteerWindow window)
             {
-                window.CurrentVolunteer.Password = ((PasswordBox)sender).Password;
+                window.CurrentVolunteer!.Password = ((PasswordBox)sender).Password;
             }
         }
 

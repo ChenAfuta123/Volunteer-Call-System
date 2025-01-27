@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 internal class VolunteerImplementation : IVolunteer
@@ -14,6 +15,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="volunteer">The volunteer object to be converted.</param>
     /// <returns>An XElement representing the Volunteer.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     private XElement createVolunteerElement(Volunteer volunteer)
     {
         return new XElement("Volunteer",
@@ -36,6 +38,7 @@ internal class VolunteerImplementation : IVolunteer
     /// Creates a new volunteer record in the data source.
     /// </summary>
     /// <param name="item">The volunteer object to be created.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Volunteer item)
     {
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -52,6 +55,7 @@ internal class VolunteerImplementation : IVolunteer
     /// Deletes a volunteer record by its ID from the data source.
     /// </summary>
     /// <param name="id">The ID of the volunteer to be deleted.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         Volunteer? volunteer = Read(id);
@@ -72,6 +76,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <summary>
     /// Deletes all volunteer records from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -86,6 +91,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">An optional filter function to filter the list of volunteers.</param>
     /// <returns>An enumerable list of Volunteer objects.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
     {
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -97,11 +103,12 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="s">The XElement to convert.</param>
     /// <returns>The Volunteer object.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     static Volunteer getVolunteer(XElement s)
     {
         return new DO.Volunteer()
         {
-            Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
+            Id = s.ToIntNullable("Id") ?? throw new FormatException("Can't convert Id"),
             Name = (string?)s.Element("Name") ?? "",
             PhoneNumber = (string?)s.Element("PhoneNumber") ?? "",
             Email = (string?)s.Element("Email") ?? "",
@@ -110,17 +117,19 @@ internal class VolunteerImplementation : IVolunteer
             Active = (bool?)s.Element("Active") ?? false,
             role = s.ToEnumNullable<Role>("role") ?? Role.volunteer,
             distanceType = s.ToEnumNullable<DistanceType>("distanceType") ?? DistanceType.AirDistance,
-            Latitude = s.ToDoubleNullable("Latitude") ?? throw new FormatException("can't convert Latitude"),
-            Longitude = s.ToDoubleNullable("Longitude") ?? throw new FormatException("can't convert Longitude"),
-            MaxDistance = s.ToDoubleNullable("MaxDistance") ?? throw new FormatException("can't convert MaxDistance"),
+            Latitude = s.ToDoubleNullable("Latitude") ?? 0, 
+            Longitude = s.ToDoubleNullable("Longitude") ?? 0, 
+            MaxDistance = s.ToDoubleNullable("MaxDistance") ?? 0, 
         };
     }
+
 
     /// <summary>
     /// Retrieves a volunteer by its ID from the data source.
     /// </summary>
     /// <param name="id">The ID of the volunteer to retrieve.</param>
     /// <returns>The Volunteer object if found, otherwise null.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Volunteer? Read(int id)
     {
         XElement? volunteerElem =
@@ -133,6 +142,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">A function to filter the volunteers.</param>
     /// <returns>The first volunteer matching the filter, or null if no match is found.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml).Elements().Select(s => getVolunteer(s)).FirstOrDefault(filter);
@@ -142,6 +152,7 @@ internal class VolunteerImplementation : IVolunteer
     /// Updates an existing volunteer record in the data source.
     /// </summary>
     /// <param name="item">The volunteer object with updated information.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Volunteer item)
     {
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);

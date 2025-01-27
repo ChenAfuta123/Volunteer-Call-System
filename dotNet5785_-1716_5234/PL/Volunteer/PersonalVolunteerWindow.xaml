@@ -1,9 +1,9 @@
-﻿<Window x:Class="PL.Volunteer.PersonalVolunteerWindow"
+﻿<Window x:Class="PL.Volunteer.PersonalVolunteerWindow" Loaded="OnScreenLoaded" Closed="OnScreenClosed"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Volunteer"
+        xmlns:local="clr-namespace:PL.Volunteer" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         mc:Ignorable="d"
         Title="Personal Volunteer Window" Height="600" Width="800" FlowDirection="RightToLeft" Background="#ECEADB ">
     <Grid>
@@ -20,44 +20,44 @@
             <!-- מזהה קריאה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="מזהה קריאה:" Width="100" />
-                <TextBox Name="CallIdTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.Id}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
             <!-- סטטוס קריאה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="סטטוס קריאה:" Width="100" />
-                <TextBox Name="CallStatusTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.callStatus}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
             <!-- סוג קריאה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="סוג קריאה:" Width="100" />
-                <TextBox Name="CallTypeTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.callType}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
             <!-- מרחק מכתובת נוכחית -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="מרחק מכתובת:" Width="100" />
-                <TextBox Name="CallDistanceTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.Address}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
             <!-- כתובת קריאה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="כתובת קריאה:" Width="100" />
-                <TextBox Name="CallAddressTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.Address}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
 
             <!-- זמן פתיחה -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="זמן פתיחה:" Width="100" />
-                <TextBox Name="CallOpeningTimeTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.OpeningTime}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
             <!-- זמן סיום מקסימלי -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Label Content="זמן סיום מקסימלי:" Width="100" />
-                <TextBox Name="CallMaxEndingTimeTextBox" Width="200" IsReadOnly="True" />
+                <TextBox Text="{Binding CurrentCall.MaxEndingTime}" Width="200" IsReadOnly="True" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             </StackPanel>
 
             <!-- פרטי קריאה מוקצה -->
@@ -72,9 +72,9 @@
 
         <!-- כפתורי פעולה -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-            <Button Content="סיום טיפול" Width="100" Margin="10" Click="FinishCallButton_Click" Background="#AE90B6"/>
-            <Button Content="ביטול טיפול" Width="100" Margin="10" Click="CancelCallButton_Click" Background="#AE90B6" />
-            <Button x:Name="CallSelectionButton" Content="בחירת קריאה" Background="#AE90B6" Height="37" Width="146" Click="ButtonCallSelection_Click" IsEnabled="False"/>
+            <Button Content="סיום טיפול" Width="100" Margin="10" Click="FinishCallButton_Click" Background="#AE90B6" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
+            <Button Content="ביטול טיפול" Width="100" Margin="10" Click="CancelCallButton_Click" Background="#AE90B6" Visibility="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
+            <Button Content="בחירת קריאה" Background="#AE90B6" Height="37" Width="146" Click="ButtonCallSelection_Click"  Visibility="{Binding IsCallAnableToSelect, Converter={StaticResource BooleanToVisibilityConverterKey}}" />
         </StackPanel>
         <Image HorizontalAlignment="Left" Height="100" Margin="690,10,0,0" VerticalAlignment="Top" Width="100" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg" />
     </Grid>

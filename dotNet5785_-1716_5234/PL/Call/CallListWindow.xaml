@@ -65,7 +65,7 @@
                 <DataGridTemplateColumn Header="Delete" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete" Background="#AE90B6" Foreground="#ECEADB" BorderBrush="#AE90B6" Click="DeleteButton_Click" Width="75"/>
+                            <Button Content="Delete" Background="#AE90B6" Foreground="#ECEADB" BorderBrush="#AE90B6" Click="DeleteButton_Click" Width="75" IsEnabled="{Binding CallId, Converter={StaticResource CanBeDeletedConverterKey}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

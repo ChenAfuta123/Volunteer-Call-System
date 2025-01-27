@@ -4,12 +4,14 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 public class AssignmentImplementation : IAssignment
 {
     /// <summary>
     /// Creates a new assignment and saves it to the XML file.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -22,6 +24,7 @@ public class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes an assignment by ID from the XML file.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -33,6 +36,7 @@ public class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes all assignments from the XML file.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Assignment>(), Config.s_assignments_xml);
@@ -41,6 +45,7 @@ public class AssignmentImplementation : IAssignment
     /// <summary>
     /// Reads an assignment from the XML file that matches the given filter.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -50,6 +55,7 @@ public class AssignmentImplementation : IAssignment
     /// <summary>
     /// Reads an assignment by its ID from the XML file.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(int id)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -61,6 +67,7 @@ public class AssignmentImplementation : IAssignment
     /// <summary>
     /// Reads all assignments from the XML file, with an optional filter.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -72,6 +79,7 @@ public class AssignmentImplementation : IAssignment
     /// <summary>
     /// Updates an existing assignment in the XML file.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Assignment item)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);

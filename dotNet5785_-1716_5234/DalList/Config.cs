@@ -1,4 +1,6 @@
-﻿namespace Dal;
+﻿using System.Runtime.CompilerServices;
+
+namespace Dal;
 
 /// <summary>
 /// Configuration class for managing IDs and default settings for various entities in the system.
@@ -18,7 +20,7 @@ static internal class Config
     /// <summary>
     /// Property to retrieve the next available Call ID, which increments each time it's accessed.
     /// </summary>
-    internal static int NextCallId { get => nextCallId++; }
+    internal static int NextCallId { [MethodImpl(MethodImplOptions.Synchronized)] get => nextCallId++; }
 
     /// <summary>
     /// Initial ID for Assignment entities, set to 0.
@@ -33,12 +35,13 @@ static internal class Config
     /// <summary>
     /// Property to retrieve the next available Assignment ID, which increments each time it's accessed.
     /// </summary>
-    internal static int NextAssignmentId { get => next_assignment_id++; }
+    internal static int NextAssignmentId { [MethodImpl(MethodImplOptions.Synchronized)] get => next_assignment_id++; }
 
     /// <summary>
     /// Represents the current date and time in the system, initialized to the current date and time.
     /// </summary>
-    internal static DateTime Clock { get; set; } = DateTime.Now;
+    internal static DateTime Clock { [MethodImpl(MethodImplOptions.Synchronized)] get; 
+        [MethodImpl(MethodImplOptions.Synchronized)] set; } = DateTime.Now;
 
     /// <summary>
     /// Time range within which a call is considered at risk, set to 12 hours by default.
@@ -47,13 +50,13 @@ static internal class Config
     
     private static Dictionary<string, string> configVariables = new Dictionary<string, string>();
 
-  
+    [MethodImpl(MethodImplOptions.Synchronized)]
     internal static void SetConfigValue(string variableName, string newValue)
     {
         configVariables[variableName] = newValue;
     }
 
-    
+    [MethodImpl(MethodImplOptions.Synchronized)]
     internal static string GetConfigValue(string variableName)
     {
         return configVariables.TryGetValue(variableName, out var value) ? value : "Variable not found";
@@ -62,6 +65,7 @@ static internal class Config
     /// <summary>
     /// Resets configuration values to their initial states, including IDs, clock, and risk range.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     internal static void Reset()
     {
         nextCallId = startCallId;

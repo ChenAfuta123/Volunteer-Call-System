@@ -98,7 +98,7 @@
                 <DataGridTemplateColumn Header="Actions" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete" Click="DeleteButton_Click" Width="75" Background="{DynamicResource AccentBlue}" Foreground="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource AccentBlue}" BorderThickness="1" />
+                            <Button Content="Delete" Background="#AE90B6" Foreground="#ECEADB" BorderBrush="#AE90B6" Click="DeleteButton_Click" Width="75" IsEnabled="{Binding Id, Converter={StaticResource CanBeDeletedConverterVKey}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

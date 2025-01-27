@@ -52,4 +52,9 @@
     {
         public BlObjectNotFoundException(string? message) : base(message) { }
     }
+   
+    public class BLTemporaryNotAvailableException : BOException
+    {
+        public BLTemporaryNotAvailableException(string? message) : base(message) { }
+    }
 }

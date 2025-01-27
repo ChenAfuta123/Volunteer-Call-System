@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using PL.Call;
 using PL.Volunteer;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -38,6 +40,22 @@ namespace PL
         public static readonly DependencyProperty AtRiskInProgressCallsCountProperty =
             DependencyProperty.Register("AtRiskInProgressCallsCount", typeof(int), typeof(MainWindow));
 
+        public static readonly DependencyProperty IntervalProperty =
+          DependencyProperty.Register("Interval", typeof(int), typeof(MainWindow));
+
+        public static readonly DependencyProperty IsSimulatorRunningProperty =
+          DependencyProperty.Register("IsSimulatorRunning", typeof(bool), typeof(MainWindow),
+              new PropertyMetadata(false));
+        public int Interval
+        {
+            get => (int)GetValue(IntervalProperty);
+            set => SetValue(IntervalProperty, value);
+        }
+        public bool IsSimulatorRunning
+        {
+            get => (bool)GetValue(IsSimulatorRunningProperty);
+            set => SetValue(IsSimulatorRunningProperty, value);
+        }
         public int OpenCallsCount
         {
             get { return (int)GetValue(OpenCallsCountProperty); }
@@ -86,7 +104,7 @@ namespace PL
             get { return (TimeSpan)GetValue(RiskRangeProperty); }
             set { SetValue(RiskRangeProperty, value); }
         }
-      
+
 
         public static readonly DependencyProperty CurrentTimeProperty =
         DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
@@ -104,7 +122,7 @@ namespace PL
         {
             try
             {
-                
+
                 // קריאה למתודת BO כדי לקבל את הנתונים
                 var statusCounts = s_bl.Call.CallQuantities();
                 Dispatcher.Invoke(() =>
@@ -116,7 +134,7 @@ namespace PL
                     ExpiredCallsCount = statusCounts[3];
                     AtRiskOpenCallsCount = statusCounts[4];
                     AtRiskInProgressCallsCount = statusCounts[5];
-                    this.DataContext = this;
+            
                 });
 
                 // עידכון התצוגה
@@ -156,31 +174,39 @@ namespace PL
                 MessageBox.Show($"Error during initialization: {ex.Message}");
             }
         }
+        private volatile DispatcherOperation? _observerOperation = null;
         private void clockObserver()
         {
-            try
-            {
-                CurrentTime = s_bl.Admin.getClockTime();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        CurrentTime = s_bl.Admin.getClockTime();
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating clock: {ex.Message}");
-            }
-
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error updating clock: {ex.Message}");
+                    }
+                });
         }
         private void configObserver()
         {
-            try
-            {
-                // כאן ניתן לקרוא למתודה רלוונטית מה-BL לעדכון משתני התצורה
-                var configValues = s_bl.Admin.getRiskTimeRange();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        // כאן ניתן לקרוא למתודה רלוונטית מה-BL לעדכון משתני התצורה
+                        var configValues = s_bl.Admin.getRiskTimeRange();
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating configuration: {ex.Message}");
-            }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error updating configuration: {ex.Message}");
+                    }
+                });
         }
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
@@ -266,9 +292,9 @@ namespace PL
                 s_bl.Admin.setDatabase();
 
                 MessageBox.Show("Database initialized successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-               
+
                 Mouse.OverrideCursor = null;
-               
+
             }
 
 
@@ -410,6 +436,26 @@ namespace PL
             (sender as TextBlock)!.Text = statusCounts[4].ToString();
         }
 
+        private void TextBox_TextSimulator(object sender, TextChangedEventArgs e)
+        {
 
+        }
+
+        private void Button_Click_Simulator(object sender, RoutedEventArgs e)
+        {
+            if (IsSimulatorRunning)
+            {
+                // עצירת הסימולטור
+                s_bl.Admin.StopSimulator();
+            }
+            else
+            {
+                // הפעלת הסימולטור
+                s_bl.Admin.StartSimulator(Interval);
+            }
+
+            // עדכון הדגל
+            IsSimulatorRunning = !IsSimulatorRunning;
+        }
     }
 }
