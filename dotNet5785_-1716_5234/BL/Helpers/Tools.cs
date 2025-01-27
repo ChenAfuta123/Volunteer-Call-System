@@ -72,7 +72,7 @@ internal static class Tools
 
     public static class DistanceCalculator
     {
-        public static async Task<bool> IsValidAddressAsync(string? address, double? longitude, double? latitude)
+        public static bool IsValidAddress(string? address, double? longitude, double? latitude)
         {
             if (longitude.HasValue)
             {
@@ -96,11 +96,11 @@ internal static class Tools
 
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpResponseMessage response = await httpClient.GetAsync(url);
+                HttpResponseMessage response = httpClient.GetAsync(url).Result;
                 if (!response.IsSuccessStatusCode)
                     return false;
 
-                string jsonResponse = await response.Content.ReadAsStringAsync();
+                string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
                 // שימוש ב-Regex לחיפוש lat ו-lon
                 var latMatch = System.Text.RegularExpressions.Regex.Match(jsonResponse, "\"lat\":\"(?<lat>-?\\d+(?:\\.\\d+)?)\"");
@@ -124,6 +124,7 @@ internal static class Tools
                 return false;
             }
         }
+
 
         public static async Task<(double? Latitude, double? Longitude)> GetAddressCoordinatesAsync(string? address)
         {

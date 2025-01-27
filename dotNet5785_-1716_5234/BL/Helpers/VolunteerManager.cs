@@ -141,8 +141,8 @@ internal static class VolunteerManager
             if (volunteer.MaxDistance.HasValue && volunteer.MaxDistance.Value <= 0)
                 throw new Exception("Max distance must be a positive value.");
 
-            //if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
-            //    throw new Exception("Invalid Address.");
+            if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
+                throw new Exception("Invalid Address.");
 
             if (volunteer.TotalHandledCalls < 0 || volunteer.TotalCanceledCalls < 0 || volunteer.TotalExpiredCalls < 0)
                 throw new Exception("Total handled, canceled, and expired calls must be non-negative.");
