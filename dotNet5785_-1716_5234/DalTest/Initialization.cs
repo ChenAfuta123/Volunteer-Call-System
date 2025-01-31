@@ -91,7 +91,7 @@ public static class Initialization
             string phoneNumber = $"05{s_rand.Next(0, 10)}-{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(10, 150);
             Role role = (i == 0) ? Role.manager : Role.volunteer;
-            DistanceType distanceType = DistanceType.AirDistance;/* (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);*/
+            DistanceType distanceType =  (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>
@@ -244,64 +244,77 @@ public static class Initialization
 
     private static void create_assignment()
     {
-        // Assuming s_dal.Call.Read() returns a list of calls, and s_dal.Volunteer.Read() returns a list of volunteers
-        var calls = s_dal!.Call.ReadAll(); // Get all calls
-        var volunteers = s_dal!.Volunteer.ReadAll(); // Get all volunteers
+        var calls = s_dal!.Call.ReadAll().ToList(); // Get all calls
+        var volunteers = s_dal!.Volunteer.ReadAll().ToList(); // Get all volunteers
 
-        int callsCount = calls.Count();
-        int volunteersCount = volunteers.Count();
+        int callsCount = calls.Count;
+        int volunteersCount = volunteers.Count;
+        
+        if (callsCount == 0 || volunteersCount == 0)
+            throw new InvalidOperationException("No calls or volunteers available.");
 
         Random random = new Random();
 
-        for (int i = 0; i < 50; i++) // Generating 50 assignments
+        // Shuffle calls and take 50% for assignment
+        var shuffledCalls = calls.OrderBy(_ => random.Next()).ToList();
+        var assignedCalls = shuffledCalls.Take(callsCount / 2).ToList(); // 50% assigned
+        var unassignedCalls = shuffledCalls.Skip(callsCount / 2).ToList(); // Remaining calls
+
+        foreach (var call in assignedCalls)
         {
-            // Select a call based on i
-            var randomCall = calls.ElementAt(i % callsCount);
+            // Filter volunteers to ensure no volunteer has more than one active assignment
+            var availableVolunteers = volunteers.Where(v =>
+            {
+                var assignments = s_dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
+                return assignments.All(a => a.EndTimeType != null); // Volunteer has no active call
+            }).ToList();
 
-            // Select a volunteer based on i
-            var randomVolunteer = volunteers.ElementAt(i % volunteersCount);
+            if (availableVolunteers.Count == 0)
+                break; // No available volunteers left for assignment
 
-            // Generate entry time: It should be between call opening and max ending time
-            DateTime entryTime = randomCall.OpeningTime.AddMinutes(i % Math.Max(1,
-                (int)((randomCall.maxEndingTime ?? DateTime.Now) - randomCall.OpeningTime).TotalMinutes));
+            // Select a random volunteer
+            var volunteer = availableVolunteers[random.Next(availableVolunteers.Count)];
+
+            // Generate entry time between call opening and max ending time
+            DateTime entryTime = call.OpeningTime.AddMinutes(random.Next(1,
+                Math.Max(1, (int)((call.maxEndingTime ?? DateTime.Now) - call.OpeningTime).TotalMinutes)));
 
             // Randomly determine if EndTimeType and EndTime should be null
-            bool isNullAssignment = random.NextDouble() < 0.5; // 50% chance
+            bool isNullAssignment = random.NextDouble() < 0.5; // 50% chance for null assignment
 
             DateTime? endTime = null;
             EndTimeType? endTimeType = null;
 
             if (!isNullAssignment)
             {
-                // Decide on treatment type and whether the call was treated or expired
-                double treatmentChance = random.NextDouble(); // Normalized chance
+                double treatmentChance = random.NextDouble();
                 if (treatmentChance < 0.7) // 70% chance to be treated
                 {
-                    endTime = entryTime.AddMinutes(15 + (i % 106)); // Time for treatment (15 to 120 minutes)
+                    endTime = entryTime.AddMinutes(15 + random.Next(106)); // Time for treatment (15 to 120 minutes)
                     endTimeType = EndTimeType.Treated;
                 }
-                else if (treatmentChance < 0.85) // 15% chance to be canceled by the volunteer
+                else if (treatmentChance < 0.85) // 15% chance to be self-canceled
                 {
+                    endTime = entryTime.AddMinutes(1 + random.Next(60)); // Self-cancel time (1 to 60 minutes after entry)
                     endTimeType = EndTimeType.SelfCancel;
-                    endTime = entryTime.AddMinutes(1 + (i % 60)); // Self-cancel time (1 to 60 minutes after entry)
                 }
-                else if (treatmentChance < 0.95) // 10% chance to be canceled by the manager
+                else if (treatmentChance < 0.95) // 10% chance to be manager-canceled
                 {
+                    endTime = entryTime.AddMinutes(1 + random.Next(60)); // Manager cancel time
                     endTimeType = EndTimeType.ManagerCancel;
-                    endTime = entryTime.AddMinutes(1 + (i % 60)); // Manager cancel time
                 }
-                else // 5% chance for the call to expire
+                else // 5% chance to expire
                 {
+                    endTime = call.maxEndingTime; // Expiration time
                     endTimeType = EndTimeType.Expired;
-                    endTime = randomCall.maxEndingTime; // Call expiration time
                 }
             }
 
             // Create a new Assignment object
             Assignment newAssignment = new(
                 0,
-                randomCall.Id,
-                randomVolunteer.Id,
+                call.Id,
+                volunteer.Id,
                 entryTime,
                 endTimeType,
                 endTime

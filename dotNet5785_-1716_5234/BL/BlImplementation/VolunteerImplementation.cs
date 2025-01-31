@@ -17,15 +17,30 @@ internal class VolunteerImplementation : IVolunteer
    VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
     VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+
+
+    private  async Task updateCoordinatesForVolunteerAddressAsync(DO.Volunteer doVolunteer)
+    {
+        if (doVolunteer.Address is not null)
+        {
+            var loc = await Tools.DistanceCalculator.GetAddressCoordinatesAsync(doVolunteer.Address);
+            double Long = loc.Longitude ?? 0.0;
+            double Lat = loc.Latitude ?? 0.0;
+
+            doVolunteer = doVolunteer with { Latitude = Lat, Longitude = Long };
+            lock (AdminManager.BlMutex)
+                _dal.Volunteer.Update(doVolunteer);
+            CallManager.Observers.NotifyListUpdated();
+            CallManager.Observers.NotifyItemUpdated(doVolunteer.Id);
+
+        }
+    }
     public void Add(BO.Volunteer? boVolunteer)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
 
-        var (Latitude, Longitude) = Tools.DistanceCalculator.GetAddressCoordinates(boVolunteer.Address);
-        double longtitude = Longitude ?? 0.0;
-        double latitude = Latitude ?? 0.0;
-        boVolunteer.Latitude = latitude;
-        boVolunteer.Longitude = longtitude;
+     
         VolunteerManager.ValidateVolunteer(boVolunteer);
         DO.Volunteer doVolunteer = new DO.Volunteer
         {
@@ -44,10 +59,11 @@ internal class VolunteerImplementation : IVolunteer
         };
         try
         {
-
-            _dal.Volunteer.Create(doVolunteer);
+            lock (AdminManager.BlMutex)
+                _dal.Volunteer.Create(doVolunteer);
             VolunteerManager.Observers.NotifyItemUpdated(doVolunteer.Id);
             VolunteerManager.Observers.NotifyListUpdated();
+            _ = updateCoordinatesForVolunteerAddressAsync(doVolunteer);
         }
 
         catch (DO.DalAlreadyExistsException ex)
@@ -61,25 +77,27 @@ internal class VolunteerImplementation : IVolunteer
 
     }
     public bool CanBeDeleted(int id)
-    { 
+    {
+        lock (AdminManager.BlMutex)
+        {
             var volunteer = _dal.Volunteer.Read(id);
 
-            return VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null;
+            return VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) == 0 &&VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall == null;
+        }
     }
     public void Delete(int id)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
         try
         {
-
-            var volunteer = _dal.Volunteer.Read(id);
-
-
-            if (VolunteerManager.TotalEndTimeType(id, DO.EndTimeType.Treated) > 0 || VolunteerManager.DOtoBO(volunteer).VolunteerHandledCall != null)
-            {
-                throw new BO.BlCannotBeDeletedException("The volunteer cannot be deleted as they are handling or have handled calls.");
-            }
-
-            _dal.Volunteer.Delete(id);
+            
+                if (!CanBeDeleted(id))
+                {
+                    throw new BO.BlCannotBeDeletedException("The volunteer cannot be deleted as they are handling or have handled calls.");
+                }
+            lock (AdminManager.BlMutex)
+                _dal.Volunteer.Delete(id);
+            
             VolunteerManager.Observers.NotifyItemUpdated(id);
             VolunteerManager.Observers.NotifyListUpdated();
         }
@@ -92,9 +110,11 @@ internal class VolunteerImplementation : IVolunteer
     {
         try
         {
-
-            DO.Volunteer? volunteer = _dal.Volunteer.Read(id);
-            return VolunteerManager.DOtoBO(volunteer);
+            lock (AdminManager.BlMutex)
+            {
+                DO.Volunteer? volunteer = _dal.Volunteer.Read(id);
+                return VolunteerManager.DOtoBO(volunteer);
+            }
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -108,120 +128,135 @@ internal class VolunteerImplementation : IVolunteer
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {
-        // קריאה ל-DAL
-        var volunteers = _dal.Volunteer.ReadAll();
-
-        if (active == null)
+        lock (AdminManager.BlMutex)
         {
-            volunteers = _dal.Volunteer.ReadAll();
+            var volunteers = _dal.Volunteer.ReadAll();
 
+            if (active == null)
+            {
+                volunteers = _dal.Volunteer.ReadAll();
+
+            }
+            // פילטר לפי Active
+            if (active == true)
+            {
+                volunteers = volunteers.Where(v => v.Active == active.Value);
+
+            }
+            if (active == false)
+            {
+                volunteers = volunteers.Where(v => v.Active == active.Value);
+
+            }
+
+            // המרה מ-DO ל-BO
+            var BOvolunteers = volunteers.Select(v =>
+            {
+                return VolunteerManager.DOtoBO(v);
+            });
+
+
+
+            // המרה לרשימת VolunteerInList
+            var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);
+
+
+            // מיון
+            volunteerList = sort switch
+            {
+                BO.VolunteerInListFields.Name => volunteerList.OrderBy(v => v.Name),
+                BO.VolunteerInListFields.HandledCallId => volunteerList.OrderBy(v => v.HandledCallId),
+                BO.VolunteerInListFields.TotalHandledCalls => volunteerList.OrderBy(v => v.TotalHandledCalls),
+                _ => volunteerList.OrderBy(v => v.Id)
+            };
+
+
+            return volunteerList;
         }
-        // פילטר לפי Active
-        if (active == true)
-        {
-            volunteers = volunteers.Where(v => v.Active == active.Value);
-
-        }
-        if (active == false)
-        {
-            volunteers = volunteers.Where(v => v.Active == active.Value);
-
-        }
-
-        // המרה מ-DO ל-BO
-        var BOvolunteers = volunteers.Select(VolunteerManager.DOtoBO);
-
-
-
-        // המרה לרשימת VolunteerInList
-        var volunteerList = BOvolunteers.Select(VolunteerManager.VolunteerToVolunteerList);
-
-
-        // מיון
-        volunteerList = sort switch
-        {
-            BO.VolunteerInListFields.Name => volunteerList.OrderBy(v => v.Name),
-            BO.VolunteerInListFields.HandledCallId => volunteerList.OrderBy(v => v.HandledCallId),
-            BO.VolunteerInListFields.TotalHandledCalls => volunteerList.OrderBy(v => v.TotalHandledCalls),
-            _ => volunteerList.OrderBy(v => v.Id)
-        };
-
-
-        return volunteerList;
     }
 
 
     public DO.Role LoginUser(string name, string password)
     {
-        DO.Volunteer? user = _dal.Volunteer.Read(v => v.Name == name);
+        lock (AdminManager.BlMutex)
+        {
+            DO.Volunteer? user = _dal.Volunteer.Read(v => v.Name == name);
 
-        if (user == null)
-            throw new BO.BlObjectNotFoundException("User not found.");
-        //if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
-
-        //    throw new BO.BlValidationException("Incorrect password.");
-        return user.role;
+            if (user == null)
+                throw new BO.BlObjectNotFoundException("User not found.");
+            if (user.Password != "")
+            {
+                if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+                    throw new BO.BlValidationException("Incorrect password.");
+            }
+            return user.role;
+        }
     }
     public void Update(int id, BO.Volunteer boVolunteer)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
+        lock (AdminManager.BlMutex)
+        {
+            DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
+            if (existingVolunteer == null)
+                throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
 
-        DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
-        if (existingVolunteer == null)
-            throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
+            DO.Role newRole = existingVolunteer.role;
+            if (existingVolunteer.role == DO.Role.manager)
+            {
+                newRole = (DO.Role)boVolunteer.role;
+            }
+            else if (existingVolunteer.Id != id)
+            {
+                throw new BO.BlUnauthorizedException("Volunteer cannot update other volunteer");
+            }
+            else if (existingVolunteer.role != DO.Role.manager && existingVolunteer.role != (DO.Role)boVolunteer.role)
+            {
+                throw new BO.BlUnauthorizedException("Volunteer cannot update role");
+            }
 
-        DO.Role newRole = existingVolunteer.role;
-        if (existingVolunteer.role == DO.Role.manager)
-        {
-            newRole = (DO.Role)boVolunteer.role;
-        }
-        else if (existingVolunteer.Id != id)
-        {
-            throw new BO.BlUnauthorizedException("Volunteer cannot update other volunteer");
-        }
-        else if (existingVolunteer.role != DO.Role.manager && existingVolunteer.role != (DO.Role)boVolunteer.role)
-        {
-            throw new BO.BlUnauthorizedException("Volunteer cannot update role");
-        }
-
-        DO.Volunteer updatedVolunteer = new DO.Volunteer
-        {
-            Id = existingVolunteer.Id,
-            Name = boVolunteer.Name,
-            PhoneNumber = boVolunteer.PhoneNumber,
-            Email = boVolunteer.Email,
-            Password =/* BCrypt.Net.BCrypt.HashPassword(*/boVolunteer.Password/*)*/,
-            Address = boVolunteer.Address,
-            Latitude = boVolunteer.Latitude,
-            Longitude = boVolunteer.Longitude,
-            MaxDistance = boVolunteer.MaxDistance,
-            Active = boVolunteer.Active,
-            distanceType = (DO.DistanceType)boVolunteer.distanceType,
-            role = newRole
-        };
+            DO.Volunteer updatedVolunteer = new DO.Volunteer
+            {
+                Id = existingVolunteer.Id,
+                Name = boVolunteer.Name,
+                PhoneNumber = boVolunteer.PhoneNumber,
+                Email = boVolunteer.Email,
+                Password = boVolunteer.Password/* BCrypt.Net.BCrypt.HashPassword(doVolunteer.Password)*/,
+                Address = boVolunteer.Address,
+                Latitude = boVolunteer.Latitude,
+                Longitude = boVolunteer.Longitude,
+                MaxDistance = boVolunteer.MaxDistance,
+                Active = boVolunteer.Active,
+                distanceType = (DO.DistanceType)boVolunteer.distanceType,
+                role = newRole
+            };
 
 
-        try
-        {
-            _dal.Volunteer.Update(updatedVolunteer);
-            VolunteerManager.Observers.NotifyItemUpdated(existingVolunteer.Id);
-            VolunteerManager.Observers.NotifyListUpdated();
-        }
-        catch (DO.DalDoesNotExistsException ex)
-        {
-            throw new BO.BlDoesNotExistsException("Error occurred while attempting to update the volunteer.", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Unexpected error while updating the volunteer: {ex.Message}");
+            try
+            {
+                lock (AdminManager.BlMutex)
+                    _dal.Volunteer.Update(updatedVolunteer);
+                VolunteerManager.Observers.NotifyItemUpdated(existingVolunteer.Id);
+                VolunteerManager.Observers.NotifyListUpdated();
+                _ = updateCoordinatesForVolunteerAddressAsync(existingVolunteer);
+            }
+            catch (DO.DalDoesNotExistsException ex)
+            {
+                throw new BO.BlDoesNotExistsException("Error occurred while attempting to update the volunteer.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Unexpected error while updating the volunteer: {ex.Message}");
+            }
         }
     }
 
-    public void SendEmailToVolunteers(IEnumerable<string> volunteerEmails, string subject, string body)
+    public async Task SendEmailToVolunteersAsync(IEnumerable<string> volunteerEmails, string subject, string body)
     {
         try
         {
             // הגדרות ה-SMTP
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            using SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
                 Credentials = new NetworkCredential("chenafuta@gmail.com", "lgfi iurz fvvy xicc"),
@@ -229,7 +264,7 @@ internal class VolunteerImplementation : IVolunteer
             };
 
             // יצירת הודעת המייל
-            MailMessage mailMessage = new MailMessage
+            using MailMessage mailMessage = new MailMessage
             {
                 From = new MailAddress("chenafuta@gmail.com"),
                 Subject = subject,
@@ -243,46 +278,47 @@ internal class VolunteerImplementation : IVolunteer
                 mailMessage.To.Add(email);
             }
 
-
             // שליחת המייל
-            smtpClient.Send(mailMessage);
+            await smtpClient.SendMailAsync(mailMessage);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
-    }  
+    }
+
     public int ManagerID()
     {
-        var manager = _dal.Volunteer.Read(a => (BO.Role)a.role==BO.Role.manager);
-        if (manager != null)
-            return manager.Id;
-        else
-        return -1;
+        lock (AdminManager.BlMutex)
+        {
+            var manager = _dal.Volunteer.Read(a => (BO.Role)a.role == BO.Role.manager);
+            if (manager != null)
+                return manager.Id;
+            else
+                return -1;
+        }
     }
-    private bool IfisClose(DO.Volunteer v, DO.Call call)
-    {
-        double distance = Tools.DistanceCalculator.CalculateDistance(v.Latitude, v.Longitude, 
-            call.Latitude, call.Longitude,v.distanceType);
-        return v.MaxDistance<=distance;
-    }
+   
     public List<string> CloseVolunteersToCallEmails(int callId)
     {
-        var call = _dal.Call.Read(callId);
-        
-       
-        if (call != null)
+        lock (AdminManager.BlMutex)
         {
-            // שליפת כל המתנדבים מה-DAL
-            var volunteers = _dal.Volunteer.ReadAll();
+            var call = _dal.Call.Read(callId);
 
-            // סינון המתנדבים שנמצאים קרוב לקריאה
-            var closeVolunteers = volunteers.Where(v => IfisClose(v, call));
 
-            // שליפת כתובות האימייל של המתנדבים הקרובים
-            return closeVolunteers.Select(v => v.Email).ToList();
+            if (call != null)
+            {
+                // שליפת כל המתנדבים מה-DAL
+                var volunteers = _dal.Volunteer.ReadAll();
+
+                // סינון המתנדבים שנמצאים קרוב לקריאה
+                var closeVolunteers = volunteers.Where(v =>VolunteerManager.IfisClose(v, call));
+
+                // שליפת כתובות האימייל של המתנדבים הקרובים
+                return closeVolunteers.Select(v => v.Email).ToList();
+            }
+            return new List<string>();
         }
-        return new List<string>();
 
     }
    

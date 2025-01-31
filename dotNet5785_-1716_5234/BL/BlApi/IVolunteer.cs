@@ -15,7 +15,7 @@ public interface IVolunteer : IObservable
     /// Get a list of volunteers, with optional filtering and sorting.
     /// </summary>
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sortByField);
-
+     
     /// <summary>Read a volunteer by their ID.</summary>
     public BO.Volunteer Read(int id);
 
@@ -24,7 +24,7 @@ public interface IVolunteer : IObservable
 
     /// <summary>Delete a volunteer by their ID.</summary>
     public void Delete(int id);
-    public void SendEmailToVolunteers(IEnumerable<string> volunteerEmails, string subject, string body);
+    public Task SendEmailToVolunteersAsync(IEnumerable<string> volunteerEmails, string subject, string body);
     public int ManagerID();
     public List<string> CloseVolunteersToCallEmails(int callId);
    

@@ -13,6 +13,13 @@
         <local:IsActiveFilterCollection x:Key="IsActiveFilterCollectionKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey" />
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterKey"/>
+        <local:BoolToTextConverter x:Key="BoolToTextConverterKey" />
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey"/>
+        <local:CanBeDeletedConverter x:Key="CanBeDeletedConverterKey" />
+        <local:CanBeDeletedConverterV x:Key="CanBeDeletedConverterVKey" />
+
+
         <!-- סגנון כללי לכפתורים -->
         <Style x:Key="StyledButton" TargetType="Button">
             <Setter Property="FontSize" Value="16"/>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -70,11 +71,17 @@ namespace PL.Volunteer
         {
             queryVolunteerList();
         }
-
+        private volatile DispatcherOperation? _observerOperation = null;
+      
         // Observer method for volunteer list
         private void volunteerListObserver()
         {
-            queryVolunteerList();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryVolunteerList();
+                });
+
         }
 
         // Register the observer on Window Loaded

@@ -52,11 +52,11 @@
 
             <!-- Time Advancement Buttons -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Button Content="הוסף דקה" Click="btnAddOneMinute_Click" Style="{StaticResource StyledButton}" Width="82" Margin="5,0,5,0"/>
-                <Button Content="הוסף שעה" Click="btnAddOneHour_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0"/>
-                <Button Content="הוסף יום" Click="btnAddOneDay_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0"/>
-                <Button Content="הוסף חודש" Click="btnAddOneMonth_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0"/>
-                <Button Content="הוסף שנה" Click="btnAddOneYear_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0"/>
+                <Button Content="הוסף דקה" Click="btnAddOneMinute_Click" Style="{StaticResource StyledButton}" Width="82" Margin="5,0,5,0" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
+                <Button Content="הוסף שעה" Click="btnAddOneHour_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
+                <Button Content="הוסף יום" Click="btnAddOneDay_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
+                <Button Content="הוסף חודש" Click="btnAddOneMonth_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
+                <Button Content="הוסף שנה" Click="btnAddOneYear_Click" Style="{StaticResource StyledButton}" Margin="5,0,5,0" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
             </StackPanel>
         </Grid>
         <Rectangle Margin="952,0,0,0" Fill="#AEC494" Stroke="Black" StrokeThickness="1" Grid.Row="1"/>
@@ -81,7 +81,7 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Margin="205,0,0,174" Width="413">
                     <TextBox x:Name="txtTimeSpan" Width="200" Height="30" VerticalAlignment="Center" Margin="0,5,0,5"/>
                     <Label Content="{Binding RiskRange}" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#AEC494 "/>
-                    <Button Content="עדכון" Click="btRiskRangeUpdate_Click" Style="{StaticResource StyledButton}" Width="100"/>
+                    <Button Content="עדכון" Click="btRiskRangeUpdate_Click" Style="{StaticResource StyledButton}" Width="100" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
                 </StackPanel>
 
                 <!-- Action Buttons -->

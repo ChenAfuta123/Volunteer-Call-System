@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -16,12 +17,12 @@ namespace PL.Call
 
         static readonly IBl s_bl = Factory.Get();
         // Dependency Properties
-        public static readonly DependencyProperty CurrentCallProperty =
-            DependencyProperty.Register(
-                nameof(CurrentCall),
-                typeof(BO.Call),
-                typeof(CallWindow),
-                new PropertyMetadata(null));
+        //public static readonly DependencyProperty CurrentCallProperty =
+        //    DependencyProperty.Register(
+        //        nameof(CurrentCall),
+        //        typeof(BO.Call),
+        //        typeof(CallWindow),
+        //        new PropertyMetadata(null));
 
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register(
@@ -59,11 +60,19 @@ namespace PL.Call
         }
 
         // Properties
+        //public BO.Call? CurrentCall
+        //{
+        //    get => (BO.Call)GetValue(CurrentCallProperty);
+        //    set => SetValue(CurrentCallProperty, value);
+        //}
         public BO.Call CurrentCall
         {
-            get => (BO.Call)GetValue(CurrentCallProperty);
-            set => SetValue(CurrentCallProperty, value);
+            get { return (BO.Call)GetValue(CurrentCallProperty); }
+            set { SetValue(CurrentCallProperty, value); }
         }
+
+        public static readonly DependencyProperty CurrentCallProperty =
+            DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
 
         public string ButtonText
         {
@@ -75,8 +84,6 @@ namespace PL.Call
         public CallWindow(int id = -1)
         {
             InitializeComponent();
-            DataContext = this;
-
             if (id == -1)
             {
                 CurrentCall = new BO.Call
@@ -100,7 +107,7 @@ namespace PL.Call
             {
                 try
                 {
-                    CurrentCall = BlApi.Factory.Get().Call.Read(id);
+                    CurrentCall = s_bl.Call.Read(id);
                     ButtonText = "Update";
                 }
                 catch (Exception ex)
@@ -108,35 +115,41 @@ namespace PL.Call
                     MessageBox.Show($"Error loading call data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
 
-        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        }
+        private void queryCall()
         {
-            try
-            {
-
-                if (ButtonText == "Add")
-                {
-                    int newCallId = CurrentCall.Id;
-                    s_bl.Call.Add(CurrentCall);
-                    MessageBox.Show("Call added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    sendEmail(sender, e, newCallId);
-
-                }
-                else if (ButtonText == "Update")
-                {
-                    s_bl.Call.Update(CurrentCall);
-                    MessageBox.Show("Call updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            var updatedCall = s_bl.Call.Read(CurrentCall!.Id);
+            CurrentCall = updatedCall;  // עדכון ה-CurrentCall עם המידע החדש
         }
+
+       private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+{
+    try
+    {
+        if (ButtonText == "Add")
+        {
+            int newCallId = CurrentCall!.Id;
+            s_bl.Call.Add(CurrentCall);
+            MessageBox.Show("Call added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            queryCall();  // לעדכן את המידע אחרי הוספה
+            sendEmail(sender, e, newCallId);
+        }
+        else if (ButtonText == "Update")
+        {
+            s_bl.Call.Update(CurrentCall!);
+            MessageBox.Show("Call updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            queryCall();  // לעדכן את המידע אחרי עדכון
+        }
+
+        Close();
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+}
+
 
         // שיטה זו יכולה להיות מופעלת בזמן טעינת המסך
         private void LoadScreen()
@@ -150,21 +163,30 @@ namespace PL.Call
             OnScreenClosed(this, EventArgs.Empty);
         }
         // הגדרת מתודת השקפה שתמלא את הפריט מחדש
+       
+        private volatile DispatcherOperation? _observerOperation = null;
+
+        // Observer method for volunteer list
         private void CallObserver()
         {
-            int id = CurrentCall!.Id;
-            CurrentCall = null;
-            CurrentCall = s_bl.Call.Read(id);
-        }
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryCall();
+                });
 
+        }
+   
         // הצטרפות לאירוע טעינת המסך
         private void OnScreenLoaded(object sender, EventArgs e)
         {
             if (CurrentCall!.Id != -1)
             {
                 s_bl.Call.AddObserver(CurrentCall!.Id, CallObserver);
+              
             }
         }
+
 
         // הצטרפות לאירוע סגירת המסך
         private void OnScreenClosed(object sender, EventArgs e)
@@ -199,7 +221,7 @@ namespace PL.Call
     
 
                 // Assuming a method SendEmail exists in your BL
-                s_bl.Volunteer.SendEmailToVolunteers(emailAddresses, subject, body);
+                s_bl.Volunteer.SendEmailToVolunteersAsync(emailAddresses, subject, body);
             }
 
         }

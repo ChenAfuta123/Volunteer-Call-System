@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlApi;
+using BO;
 using PL.Call;
 using PL.Volunteer;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -156,31 +158,39 @@ namespace PL
                 MessageBox.Show($"Error during initialization: {ex.Message}");
             }
         }
+        private volatile DispatcherOperation? _observerOperation = null;
         private void clockObserver()
         {
-            try
-            {
-                CurrentTime = s_bl.Admin.getClockTime();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        CurrentTime = s_bl.Admin.getClockTime();
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating clock: {ex.Message}");
-            }
-
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error updating clock: {ex.Message}");
+                    }
+                });
         }
         private void configObserver()
         {
-            try
-            {
-                // כאן ניתן לקרוא למתודה רלוונטית מה-BL לעדכון משתני התצורה
-                var configValues = s_bl.Admin.getRiskTimeRange();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        // כאן ניתן לקרוא למתודה רלוונטית מה-BL לעדכון משתני התצורה
+                        var configValues = s_bl.Admin.getRiskTimeRange();
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating configuration: {ex.Message}");
-            }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error updating configuration: {ex.Message}");
+                    }
+                });
         }
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
@@ -410,6 +420,26 @@ namespace PL
             (sender as TextBlock)!.Text = statusCounts[4].ToString();
         }
 
+        private void TextBox_TextSimulator(object sender, TextChangedEventArgs e)
+        {
 
+        }
+
+        private void Button_Click_Simulator(object sender, RoutedEventArgs e)
+        {
+            if (IsSimulatorRunning)
+            {
+                // עצירת הסימולטור
+                s_bl.Admin.StopSimulator();
+            }
+            else
+            {
+                // הפעלת הסימולטור
+                s_bl.Admin.StartSimulator(Interval);
+            }
+
+            // עדכון הדגל
+            IsSimulatorRunning = !IsSimulatorRunning;
+        }
     }
 }

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -114,9 +115,17 @@ namespace PL.Call
             // קריאה ל-ReadAll עם הערכים המתוקנים
             CallList = s_bl?.Call.ReadAll(filter, customFilter, sorter) ?? Enumerable.Empty<BO.CallInList>();
         }
+        private volatile DispatcherOperation? _observerOperation = null;
+        private void callListObserver() 
+        {
 
-        private void callListObserver()
-            => queryCallList();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryCallList();
+                });
+
+         }
 
 
         private void Window_Closed(object sender, EventArgs e)
@@ -155,12 +164,12 @@ namespace PL.Call
             if (MessageBox.Show("Are you sure you want to delete call?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 var button = sender as FrameworkElement;
-                var callToDelete = button?.DataContext as BO.Call;
+                var callToDelete = button?.DataContext as BO.CallInList;
                 try
                 {
                     if (callToDelete != null)
                     {
-                        s_bl.Call.Delete(callToDelete.Id);
+                        s_bl.Call.Delete(callToDelete.CallId);
 
                     }
                 }
@@ -183,29 +192,33 @@ namespace PL.Call
             {
                 var button = sender as FrameworkElement;
                 //var callToCancel = button?.DataContext as BO.Call;
-                var callToCancel2 = button?.DataContext as BO.CallInList;
+                BO.CallInList? callToCancel2 = button?.DataContext as BO.CallInList;
                 //int managerID = s_bl.Volunteer.ManagerID();
 
                 if (callToCancel2 != null)
                 {
                     try
                     {
-
-                        var volunteer = s_bl.Volunteer.Read(callToCancel2!.Id!.Value);
-                        var assignmentID = s_bl.Call.findAssignment(callToCancel2!.CallId, volunteer.Id);
-
-                        if (callToCancel2 != null)
+                        if (callToCancel2.Id == null)
+                            MessageBox.Show($"There is No assignment for this Call", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        else
                         {
-                            s_bl.Call.CanceltreatmentUpdate(200123456, assignmentID);
+                            var volunteer = s_bl.Volunteer.Read(callToCancel2.Id!.Value!);
+                            var assignmentID = s_bl.Call.findAssignment(callToCancel2!.CallId, volunteer.Id);
+
+                            if (callToCancel2 != null)
+                            {
+                                s_bl.Call.CanceltreatmentUpdate(200123456, assignmentID);
+                            }
+
+                            // Send email notification
+                            string subject = "Your assignment has been cancelled";
+                            string body = "<h1>Dear Volunteer,</h1><p>We appreciate your help and support!</p>";
+                            List<string> email = new List<string> { volunteer.Email };
+
+                            // Assuming a method SendEmail exists in your BL
+                            s_bl.Volunteer.SendEmailToVolunteersAsync(email, subject, body);
                         }
-
-                        // Send email notification
-                        string subject = "Your assignment has been cancelled";
-                        string body = "<h1>Dear Volunteer,</h1><p>We appreciate your help and support!</p>";
-                        List<string> email = new List<string> { volunteer.Email };
-
-                        // Assuming a method SendEmail exists in your BL
-                        s_bl.Volunteer.SendEmailToVolunteers(email, subject, body);
                     }
                     catch (BO.BlDoesNotExistsException ex)
                     {

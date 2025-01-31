@@ -11,7 +11,7 @@ internal class AdminImplementation : IAdmin
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
     public void AdvanceClock(TimeUnit timeUnit)
     {
-
+        AdminManager.ThrowOnSimulatorIsRunning();
         var currentTime = AdminManager.Now;
 
 
@@ -42,11 +42,13 @@ internal class AdminImplementation : IAdmin
 
     public void resetDatabase()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
         _dal.ResetDB();
     }
 
     public void setDatabase()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
         _dal.ResetDB();
         Initialization.Do();
         AdminManager.UpdateClock(AdminManager.Now);
@@ -55,9 +57,18 @@ internal class AdminImplementation : IAdmin
 
     public void setRiskTimeRange(TimeSpan riskTimeRange)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
         _dal.Config.RiskRange = riskTimeRange;
     }
-    
+
+    public void StartSimulator(int interval)  //stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.Start(interval); //stage 7
+    }
+
+    public void StopSimulator()
+    => AdminManager.Stop(); //stage 7
     public void AddClockObserver(Action clockObserver) =>
     AdminManager.ClockUpdatedObservers += clockObserver;
     public void RemoveClockObserver(Action clockObserver) =>

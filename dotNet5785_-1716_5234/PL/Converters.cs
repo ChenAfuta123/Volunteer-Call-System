@@ -9,7 +9,7 @@ namespace PL;
 
 public class ConvertUpdateToVisible : IValueConverter
 {
-   
+
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         string? buttonText = value as string;
@@ -70,9 +70,104 @@ public class ConvertUpdateToTrue : IValueConverter
     //        throw new NotImplementedException(); // לא נחוץ במידה ואנחנו רק קוראים את הערך
     //    }
 
-      
+
     //}
 
 
 
+
+
+}
+public class BoolToTextConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return (bool)value ? "עצור סימולטור" : "הפעל סימולטור";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class BoolToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        // Ensure the input is a boolean
+        if (value is bool boolValue)
+        {
+            return !boolValue; // Return the negated value
+        }
+
+        return false; // Default value if the input is not a boolean
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+public class BooleanToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return (bool)value ? Visibility.Visible : Visibility.Hidden;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+public class BoolToIsEnabledConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+
+        return (bool)value ? Visibility.Visible : Visibility.Hidden; // If true, the button will be enabled
+
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+public class CanBeDeletedConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is int callId)
+        {
+            return s_bl?.Call.CanBeDeleted(callId) ?? false;
+        }
+        return false;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+public class CanBeDeletedConverterV : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is int volunteerId)
+        {
+            return s_bl?.Volunteer.CanBeDeleted(volunteerId) ?? false;
+        }
+        return false;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
 }
