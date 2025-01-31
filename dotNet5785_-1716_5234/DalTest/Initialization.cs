@@ -101,7 +101,7 @@ public static class Initialization
             string phoneNumber = $"05{s_rand.Next(0, 10)}{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(10, 150);
             Role role = (i == 0) ? Role.manager : Role.volunteer;
-            DistanceType distanceType =  (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);
+            DistanceType distanceType = (DistanceType)(i % Enum.GetValues(typeof(DistanceType)).Length);
             /// <summary>
             /// Creates a new Volunteer object.
             /// </summary>

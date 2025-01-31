@@ -73,7 +73,7 @@ namespace PL.Volunteer
         public VolunteerWindow(int id = 0)
         {
             InitializeComponent();
-            
+
 
             // Initialize the CurrentVolunteer property and ButtonText based on the id
             if (id == 0)
@@ -191,7 +191,7 @@ namespace PL.Volunteer
             {
                 s_bl.Volunteer.AddObserver(CurrentVolunteer.Id, VolunteerObserver);
             }
-            
+
         }
 
         // Remove the observer when the window is closed
@@ -214,6 +214,6 @@ namespace PL.Volunteer
             }
         }
 
-      
+
     }
 }

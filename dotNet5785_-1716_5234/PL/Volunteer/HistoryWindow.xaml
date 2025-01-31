@@ -17,7 +17,7 @@
           SelectedValuePath="Tag"
           SelectionChanged="ComboBox_SelectionChanged" 
           Width="195" Height="27">
-                    <ComboBoxItem Content="כל הקריאות" Tag="None"/>
+
                     <ComboBoxItem Content="אספקה חיונית" Tag="EssentialSupplies"/>
                     <ComboBoxItem Content="דיור והעברה" Tag="HousingAndRelocation"/>
                     <ComboBoxItem Content="תמיכה רגשית-חברתית" Tag="EmotionalAndSocialSupport"/>
@@ -50,6 +50,6 @@
 
             <!-- DataGrid -->
         </StackPanel>
-        <Image HorizontalAlignment="Left" Height="81" Margin="725,0,0,0" VerticalAlignment="Top" Width="108" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
+        <Image HorizontalAlignment="Left" Height="81" Margin="709,0,0,0" VerticalAlignment="Top" Width="108" Source="/Image/לוגו גדול.jpg"/>
     </Grid>
 </Window>

@@ -53,7 +53,7 @@
                       SelectionChanged="ComboBox_FilterSelectionChanged"
                       Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
                       FontFamily="{DynamicResource HebrewFont}"/>
-            <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="56" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
+            <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="56" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" Source="/Image/לוגו גדול.jpg"/>
         </Grid>
 
         <!--DataGrid Section-->

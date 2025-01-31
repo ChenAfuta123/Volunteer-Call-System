@@ -42,7 +42,7 @@
                 <TextBox Width="200" VerticalAlignment="Center" Margin="5"
                  Text="{Binding CustomFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            <Image Grid.Column="1" HorizontalAlignment="Left" Height="122" Margin="834,12,0,0" Grid.RowSpan="3" VerticalAlignment="Top" Width="122" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
+            <Image Grid.Column="1" HorizontalAlignment="Left" Height="122" Margin="834,12,0,0" Grid.RowSpan="3" VerticalAlignment="Top" Width="122" Source="/Image/לוגו גדול.jpg"/>
 
         </Grid>
 

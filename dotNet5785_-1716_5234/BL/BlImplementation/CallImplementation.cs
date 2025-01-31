@@ -8,7 +8,7 @@ using System;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-internal class CallImplementation :ICall
+internal class CallImplementation : ICall
 {
     public void AddObserver(Action listObserver) =>
     CallManager.Observers.AddListObserver(listObserver); //stage 5
@@ -42,7 +42,7 @@ internal class CallImplementation :ICall
     {
         AdminManager.ThrowOnSimulatorIsRunning();
         CallManager.ValidateCall(boCall);
-    ;
+        ;
 
         DO.Call doCall = new DO.Call
         {
@@ -59,7 +59,7 @@ internal class CallImplementation :ICall
         try
         {
             lock (AdminManager.BlMutex)
-              _dal.Call.Create(doCall);
+                _dal.Call.Create(doCall);
             CallManager.Observers.NotifyItemUpdated(doCall.Id);
             CallManager.Observers.NotifyListUpdated();
             _ = updateCoordinatesForCallAddressAsync(doCall);
@@ -80,8 +80,6 @@ internal class CallImplementation :ICall
         AdminManager.ThrowOnSimulatorIsRunning();
         lock (AdminManager.BlMutex)
         {
-            DO.Call? call = _dal.Call.Read(callId);
-            CallStatus callStatus = CallManager.Status(callId);
 
             try
             {
@@ -164,7 +162,7 @@ internal class CallImplementation :ICall
     {
         AdminManager.ThrowOnSimulatorIsRunning();
         CallManager.ValidateCall(boCall);
-       
+
 
         DO.Call doCall = new DO.Call
         {
@@ -184,7 +182,7 @@ internal class CallImplementation :ICall
                 _dal.Call.Update(doCall);
             CallManager.Observers.NotifyItemUpdated(doCall.Id);
             CallManager.Observers.NotifyListUpdated();
-                _ = updateCoordinatesForCallAddressAsync(doCall);
+            _ = updateCoordinatesForCallAddressAsync(doCall);
 
         }
         catch (DO.DalDoesNotExistsException ex)
@@ -218,6 +216,7 @@ internal class CallImplementation :ICall
 
     public void ChooseCallForTreatment(int volunteerId, int callId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();
 
         AdminManager.ThrowOnSimulatorIsRunning();
         var callStatus = CallManager.Status(callId);
@@ -277,11 +276,11 @@ internal class CallImplementation :ICall
                 assignment = assignment with
                 {
 
-                    EndTime = AdminManager.Now,   
+                    EndTime = AdminManager.Now,
                     EndTimeType = endTimeType
                 };
 
-                
+
                 _dal.Assignment.Update(assignment);
                 CallManager.Observers.NotifyItemUpdated(assignment.Id);
                 CallManager.Observers.NotifyListUpdated();
@@ -523,5 +522,13 @@ internal class CallImplementation :ICall
 
 
     }
+    public bool IfCallCloseToVolunteer(int Vid, DO.Call call)
+    {
+        var volunteer = _dal.Volunteer.Read(Vid);
+        var distance = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+            call.Latitude, call.Longitude, volunteer.distanceType);
+        return distance <= volunteer.MaxDistance;
 
+
+    }
 }

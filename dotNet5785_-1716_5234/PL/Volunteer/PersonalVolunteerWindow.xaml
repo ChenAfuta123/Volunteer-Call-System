@@ -76,6 +76,6 @@
             <Button Content="ביטול טיפול" Width="100" Margin="10" Click="CancelCallButton_Click" Background="#AE90B6" IsEnabled="{Binding IsCallInProgress, Converter={StaticResource BooleanToVisibilityConverterKey}}"/>
             <Button Content="בחירת קריאה" Background="#AE90B6" Height="37" Width="146" Click="ButtonCallSelection_Click"  IsEnabled="{Binding IsCallAnableToSelect, Converter={StaticResource BooleanToVisibilityConverterKey}}" />
         </StackPanel>
-        <Image HorizontalAlignment="Left" Height="100" Margin="690,10,0,0" VerticalAlignment="Top" Width="100" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg" />
+        <Image HorizontalAlignment="Left" Height="100" Margin="690,10,0,0" VerticalAlignment="Top" Width="100" Source="/Image/לוגו גדול.jpg"/>
     </Grid>
 </Window>

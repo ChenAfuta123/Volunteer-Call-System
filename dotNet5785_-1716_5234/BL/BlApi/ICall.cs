@@ -45,8 +45,8 @@ public interface ICall : IObservable
     public int findAssignment(int callID, int? VolunteerID);
 
     public bool CanBeDeleted(int callId);
-    public bool IfCallCloseToVolunteer(int Vid, DO.Call call);
 
+    public bool IfCallCloseToVolunteer(int Vid, DO.Call call);
 
 
 }

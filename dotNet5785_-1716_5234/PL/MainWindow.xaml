@@ -19,8 +19,8 @@
         </Grid.RowDefinitions>
 
         <!-- Logo Addition -->
-        <Image Source="C:\Users\halle\OneDrive\שולחן העבודה\לוגו גדול.jpg"
-       HorizontalAlignment="Left" VerticalAlignment="Top" Width="305" Height="195" Margin="-24,-40,0,0"
+        <Image Source="/Image/לוגו גדול.jpg"
+        HorizontalAlignment="Left" VerticalAlignment="Top" Width="305" Height="176" Margin="-24,-21,0,0"
        Panel.ZIndex="1"/>
         <!-- רשימת כמות קריאות לפי סטטוסים -->
         <TextBlock Text="{Binding OpenCallsCount}" />
@@ -135,7 +135,8 @@
                 </Button>
                 <TextBox Height="29" VerticalAlignment="Top" Margin="754,143,144,0" Grid.Column="2" Grid.Row="1" Text="{Binding Interval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}" FontSize="18"/>
                 <Label Content="קריאות בטיפול בסיכון" Margin="825,218,-203,0" VerticalAlignment="Top" Foreground="White" Height="39" Grid.Column="2" Grid.RowSpan="2"/>
-                <Image HorizontalAlignment="Left" Margin="69,-2,0,80" Width="265" Grid.RowSpan="2" Source="C:\Users\halle\OneDrive\שולחן העבודה\תמונה של מתנדבים.jpg" Grid.ColumnSpan="3"/>
+                <Image Source="/Image/תמונה של מתנדבים.jpg"
+                HorizontalAlignment="Left" Margin="69,-2,0,80" Width="265" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
 
 
             </Grid>

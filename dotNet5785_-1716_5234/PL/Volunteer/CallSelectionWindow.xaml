@@ -64,6 +64,8 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Image HorizontalAlignment="Left" Height="100" Margin="697,10,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="100" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="697,10,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="100" Source="/Image/לוגו גדול.jpg"/>
+        <TextBox HorizontalAlignment="Left" Margin="74,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="188" Grid.Row="1" Height="21"  Text="{Binding CustomFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content=":סינון מותאם" HorizontalAlignment="Left" Margin="0,7,0,0" Grid.Row="1" VerticalAlignment="Top"/>
     </Grid>
 </Window>

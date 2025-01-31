@@ -25,6 +25,14 @@ namespace PL.Volunteer
              typeof(PersonalVolunteerWindow),
              new PropertyMetadata(null));
 
+        public static readonly DependencyProperty CallDistanceFromVolunteerProperty =
+     DependencyProperty.Register(
+         nameof(CallDistanceFromVolunteer),
+         typeof(double),
+         typeof(PersonalVolunteerWindow),
+         new PropertyMetadata(null));
+
+
         public bool IsCallAnableToSelect
         {
             get { return (bool)GetValue(IsCallAnableToSelectProperty); }
@@ -75,6 +83,8 @@ namespace PL.Volunteer
                     CallAssignList = null
                 };
 
+            CallDistanceFromVolunteer = s_bl.Volunteer.CallDistanceFromvolunteer(userId);
+
             try
             {
                 try
@@ -118,6 +128,7 @@ namespace PL.Volunteer
                     IsCallInProgress = false;
                     //CurrentCall = null;
                     IsCallAnableToSelect = volunteer.Active;
+                    CallDistanceFromVolunteer = null;
                 }
                 else
                 {

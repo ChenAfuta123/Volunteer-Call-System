@@ -54,8 +54,8 @@ internal static class VolunteerManager
                             Description = call.Description,
                             maxEndingTime = call.maxEndingTime,
                             EntryTime = assignment.EntryTime,
-                            CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer.Latitude, volunteer.Longitude,
-                            call.Latitude, call.Longitude, volunteer.distanceType),
+                            CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                               call.Latitude, call.Longitude, volunteer.distanceType),
                             callStatus = CallManager.Status(call.Id)
                         };
                     }
@@ -295,9 +295,13 @@ internal static class VolunteerManager
       }
       private static bool IsValidPassword(string? password)
       {
-           if (string.IsNullOrWhiteSpace(password))
-                return false;
+          if (string.IsNullOrWhiteSpace(password))
+               return false;
 
+        if (password.Length < 5)
+        {
+            return false;
+        }
 
 
         if (password.Length < 5)
@@ -330,6 +334,26 @@ internal static class VolunteerManager
     return letterCount >= 2 && digitCount >=/* password.Length - 2*/3;
      }
 
- }      
-    
+    private static DO.Call? IfHandledCall(DO.Volunteer volunteer)
+    {
+        var assignment = s_dal.Assignment.Read(assignment => assignment.VolunteerId == volunteer.Id && assignment.EndTime == null);
+        if (assignment != null)
+        {
+            return s_dal.Call.Read(call => call.Id == assignment.CallId);
+        }
+        return null;
+    }
+    private static void CancelTreatment(Assignment assignment)
+    {
+        assignment = assignment with
+        {
+            EndTime = AdminManager.Now,
+            EndTimeType = DO.EndTimeType.ManagerCancel
+        };
+        s_dal.Assignment.Update(assignment);
+        CallManager.Observers.NotifyItemUpdated(assignment.CallId);
+        CallManager.Observers.NotifyListUpdated();
+    }
+}
+
 

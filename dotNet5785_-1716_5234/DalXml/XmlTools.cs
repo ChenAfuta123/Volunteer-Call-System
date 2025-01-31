@@ -12,7 +12,6 @@ static class XMLTools
         if (!Directory.Exists(s_xmlDir))
             Directory.CreateDirectory(s_xmlDir);
     }
-
     #region SaveLoadWithXMLSerializer
     private static readonly object _fileLock = new();
 

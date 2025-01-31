@@ -108,6 +108,6 @@
         </StackPanel>
 
         <Button Grid.Row="1" Content="{Binding ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,42,0,0"/>
-        <Image HorizontalAlignment="Left" Height="115" Margin="721,-26,0,0" VerticalAlignment="Top" Width="115" Source="C:\Users\User\OneDrive\Desktop\לוגו גדול.jpg"/>
+        <Image HorizontalAlignment="Left" Height="115" Margin="721,-26,0,0" VerticalAlignment="Top" Width="115" Source="/Image/לוגו גדול.jpg"/>
     </Grid>
 </Window>
