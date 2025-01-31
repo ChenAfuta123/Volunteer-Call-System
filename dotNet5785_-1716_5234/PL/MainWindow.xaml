@@ -121,7 +121,7 @@
                 <Label Content="קריאות פתוחות בסיכון" Margin="819,186,-203,0" VerticalAlignment="Top" Foreground="White" Height="31" Grid.Column="2"/>
                 <Button Content="צפייה" HorizontalAlignment="Left" Margin="703,182,0,0" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_5" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
-                <Rectangle HorizontalAlignment="Left" Height="436" Margin="10,-14,0,0" Stroke="Black" Fill="#AE90B6 " VerticalAlignment="Top" Width="296" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                <Rectangle HorizontalAlignment="Left" Height="530" Margin="10,-14,0,0" Stroke="Black" Fill="#AE90B6 " VerticalAlignment="Top" Width="296" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
 
                 <Button Content="{Binding IsSimulatorRunning, Converter={StaticResource BoolToTextConverterKey}}" HorizontalAlignment="Left" Margin="756,33,0,0" VerticalAlignment="Top" Height="104" Width="132"  Style="{StaticResource StyledButton}" Grid.Column="2" Grid.Row="1" Click="Button_Click_Simulator" RenderTransformOrigin="0.5,0.5">
                     <Button.RenderTransform>
@@ -133,10 +133,10 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
-                <TextBox Height="29" VerticalAlignment="Top" Margin="754,143,144,0" Grid.Column="2" Grid.Row="1" Text="{Binding Interval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}" FontSize="18"/>
+                <TextBox Height="29" VerticalAlignment="Top" Margin="754,143,162,0" Grid.Column="2" Grid.Row="1" Text="{Binding Interval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}" FontSize="18"/>
                 <Label Content="קריאות בטיפול בסיכון" Margin="825,218,-203,0" VerticalAlignment="Top" Foreground="White" Height="39" Grid.Column="2" Grid.RowSpan="2"/>
                 <Image Source="/Image/תמונה של מתנדבים.jpg"
-                HorizontalAlignment="Left" Margin="69,-2,0,80" Width="265" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+                HorizontalAlignment="Left" Margin="78,20,0,29" Width="335" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
 
 
             </Grid>

@@ -50,12 +50,6 @@ namespace PL.Volunteer
             set => SetValue(CurrentCallProperty, value);
         }
 
-        public static readonly DependencyProperty CallDistanceFromVolunteerProperty =
-   DependencyProperty.Register(
-       nameof(CallDistanceFromVolunteer),
-       typeof(double),
-       typeof(PersonalVolunteerWindow),
-       new PropertyMetadata(null));
 
 
         public double? CallDistanceFromVolunteer

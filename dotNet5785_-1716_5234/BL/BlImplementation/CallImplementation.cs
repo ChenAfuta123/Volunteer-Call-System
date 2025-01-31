@@ -522,13 +522,5 @@ internal class CallImplementation : ICall
 
 
     }
-    public bool IfCallCloseToVolunteer(int Vid, DO.Call call)
-    {
-        var volunteer = _dal.Volunteer.Read(Vid);
-        var distance = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
-            call.Latitude, call.Longitude, volunteer.distanceType);
-        return distance <= volunteer.MaxDistance;
-
-
-    }
+   
 }
