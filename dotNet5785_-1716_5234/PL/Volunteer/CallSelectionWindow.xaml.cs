@@ -74,9 +74,11 @@ namespace PL.Volunteer
 
         private void queryOpenCallList()
         {
+            var volunteer=s_bl.Volunteer.Read(UserId);
             OpenCallList = (CallFilter == BO.OpenCallInListField.None)
                 ? s_bl?.Call.ReadAll(null, null, null, UserId)!
                 : s_bl?.Call.ReadAll(CallFilter, null, CallSorter, UserId)!;
+           
         }
         private volatile DispatcherOperation? _observerOperation = null;
         private void callListObserver()

@@ -85,7 +85,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="סוג קריאה:" Width="120"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding  CurrentCall.callType}" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding CurrentCall.callType}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="תיאור:" Width="120"/>

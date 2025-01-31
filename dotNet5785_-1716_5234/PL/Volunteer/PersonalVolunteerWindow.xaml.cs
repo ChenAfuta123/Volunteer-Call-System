@@ -42,14 +42,26 @@ namespace PL.Volunteer
             set => SetValue(CurrentCallProperty, value);
         }
 
+        public static readonly DependencyProperty CallDistanceFromVolunteerProperty =
+   DependencyProperty.Register(
+       nameof(CallDistanceFromVolunteer),
+       typeof(double),
+       typeof(PersonalVolunteerWindow),
+       new PropertyMetadata(null));
 
+
+        public double? CallDistanceFromVolunteer
+        {
+            get => (double)GetValue(CallDistanceFromVolunteerProperty);
+            set => SetValue(CallDistanceFromVolunteerProperty, value);
+        }
 
         public PersonalVolunteerWindow(int userId)
         {
             InitializeComponent();
             UserId = userId;
-
-                CurrentCall = new BO.Call
+            CallDistanceFromVolunteer = s_bl.Volunteer.CallDistanceFromvolunteer(userId);
+            CurrentCall = new BO.Call
                 {
                     Id = 0,
                     callType = BO.CallType.None,
@@ -104,11 +116,12 @@ namespace PL.Volunteer
                 if (volunteerHandledCall == null)
                 {
                     IsCallInProgress = false;
-                    CurrentCall = null;
+                    //CurrentCall = null;
                     IsCallAnableToSelect = volunteer.Active;
                 }
                 else
                 {
+                    IsCallAnableToSelect = false;
                     IsCallInProgress = true;
                     int callId = volunteerHandledCall.CallId;
                     CurrentCall = s_bl.Call.Read(callId);
@@ -141,8 +154,8 @@ namespace PL.Volunteer
                 _observerOperation = Dispatcher.BeginInvoke(() =>
                 {
                     int id = CurrentCall!.Id;
-                    CurrentCall = null;
                     CurrentCall = s_bl.Call.Read(id);
+                    CallDistanceFromVolunteer = s_bl.Volunteer.CallDistanceFromvolunteer(UserId);
                 });
 
         }
@@ -159,10 +172,10 @@ namespace PL.Volunteer
         // הצטרפות לאירוע סגירת המסך
         private void OnScreenClosed(object sender, EventArgs e)
         {
-            if (CurrentCall!.Id != -1)
-            {
+            if (CurrentCall!.Id != -1 )
+            
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
-            }
+            
         }
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {

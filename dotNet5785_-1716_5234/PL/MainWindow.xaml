@@ -1,11 +1,11 @@
-﻿<Window x:Class="PL.MainWindow" Loaded="MainWindow_Loaded"
+﻿<Window x:Class="PL.MainWindow" Loaded="MainWindow_Loaded" Closed="MainWindow_Close"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="818" Width="1404" WindowState="Maximized" ResizeMode="NoResize" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Title="MainWindow" Height="818" Width="1404" WindowState="Maximized" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <!-- Background Color Update -->
     <Window.Background>
@@ -78,8 +78,8 @@
                 </Grid.RowDefinitions>
 
                 <!-- Configuration Settings -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Margin="205,0,0,174" Width="413">
-                    <TextBox x:Name="txtTimeSpan" Width="200" Height="30" VerticalAlignment="Center" Margin="0,5,0,5"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Margin="213,0,0,174" Width="413">
+                    <TextBox Text="{Binding TxtTimeSpan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="98" Height="30" VerticalAlignment="Center" Margin="0,5,0,5"  FontSize="18" />
                     <Label Content="{Binding RiskRange}" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#AEC494 "/>
                     <Button Content="עדכון" Click="btRiskRangeUpdate_Click" Style="{StaticResource StyledButton}" Width="100" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
                 </StackPanel>
@@ -98,8 +98,8 @@
 
                 <!-- קריאות סגורות -->
                 <TextBlock Text="{Binding ClosedCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,63,0,0" VerticalAlignment="Top" Grid.Column="2"/>
-                <Label Content="קריאות סגורות" HorizontalAlignment="Left" Margin="851,61,0,0" VerticalAlignment="Top" Foreground="White" Grid.Column="2"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="703,58,0,0" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_2" Style="{StaticResource StyledButton}" Grid.Column="2"/>
+                <Label Content="קריאות סגורות" HorizontalAlignment="Left" Margin="856,143,0,0" VerticalAlignment="Top" Foreground="White" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="703,140,0,0" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_2" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
                 <!-- קריאות שפגו -->
                 <TextBlock Text="{Binding ExpiredCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,103,0,0" VerticalAlignment="Top" Grid.Column="2"/>
@@ -108,8 +108,8 @@
 
                 <!-- קריאות בטיפול -->
                 <TextBlock Text="{Binding InProgressCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,146,0,0" VerticalAlignment="Top" Grid.Column="2"/>
-                <Label Content="קריאות בטיפול" HorizontalAlignment="Left" Margin="851,140,0,0" VerticalAlignment="Top" Foreground="White" Width="113" Grid.Column="2"/>
-                <Button Content="צפייה" HorizontalAlignment="Left" Margin="703,142,0,0" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_3" Style="{StaticResource StyledButton}" Grid.Column="2"/>
+                <Label Content="קריאות בטיפול" HorizontalAlignment="Left" Margin="847,59,0,0" VerticalAlignment="Top" Foreground="White" Width="113" Grid.Column="2"/>
+                <Button Content="צפייה" HorizontalAlignment="Left" Margin="703,59,0,0" VerticalAlignment="Top" Height="31" Width="60" Click="Button_Click_3" Style="{StaticResource StyledButton}" Grid.Column="2"/>
 
                 <!-- קריאות בטיפול בסיכון -->
                 <TextBlock Text="{Binding AtRiskInProgressCallsCount}" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="789,223,0,0" VerticalAlignment="Top" Grid.Column="2"/>
@@ -133,8 +133,9 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
-                <TextBox Height="46" VerticalAlignment="Top" Margin="747,167,137,0" Grid.Column="2" Grid.Row="1" Text="{Binding Interval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}"/>
-                <Image HorizontalAlignment="Left" Margin="39,0,0,78" Width="341" Grid.RowSpan="2" Source="C:\Users\User\OneDrive\Desktop\תמונת המתנדבים.jpg" Grid.ColumnSpan="3"/>
+                <TextBox Height="29" VerticalAlignment="Top" Margin="754,143,144,0" Grid.Column="2" Grid.Row="1" Text="{Binding Interval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource BoolToVisibilityConverterKey}}" FontSize="18"/>
+                <Label Content="קריאות בטיפול בסיכון" Margin="825,218,-203,0" VerticalAlignment="Top" Foreground="White" Height="39" Grid.Column="2" Grid.RowSpan="2"/>
+                <Image HorizontalAlignment="Left" Margin="69,-2,0,80" Width="265" Grid.RowSpan="2" Source="C:\Users\halle\OneDrive\שולחן העבודה\תמונה של מתנדבים.jpg" Grid.ColumnSpan="3"/>
 
 
             </Grid>

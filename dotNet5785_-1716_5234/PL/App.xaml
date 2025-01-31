@@ -18,15 +18,15 @@
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey"/>
         <local:CanBeDeletedConverter x:Key="CanBeDeletedConverterKey" />
         <local:CanBeDeletedConverterV x:Key="CanBeDeletedConverterVKey" />
+        <local:BoolToIsEnabledConverter x:Key="BoolToIsEnabledConverterKey"/>
 
 
-        <!-- סגנון כללי לכפתורים -->
         <Style x:Key="StyledButton" TargetType="Button">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="Light"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="#ECEADB"/>
-            <Setter Property="BorderBrush" Value="#AEC494  "/>
+            <Setter Property="BorderBrush" Value="#AEC494"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Margin" Value="0,5,0,5"/>
@@ -35,9 +35,17 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Border 
+                    Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                            <Border.Effect>
+                                <DropShadowEffect 
+                            Color="Black" 
+                            ShadowDepth="3" 
+                            Opacity="0.5" 
+                            BlurRadius="5" />
+                            </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>

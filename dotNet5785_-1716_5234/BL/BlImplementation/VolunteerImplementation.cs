@@ -41,7 +41,7 @@ internal class VolunteerImplementation : IVolunteer
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
 
      
-        VolunteerManager.ValidateVolunteer(boVolunteer);
+        VolunteerManager.ValidateVolunteer(boVolunteer,true);
         DO.Volunteer doVolunteer = new DO.Volunteer
         {
             Id = boVolunteer.Id,
@@ -120,11 +120,7 @@ internal class VolunteerImplementation : IVolunteer
         {
             throw new BO.BlDoesNotExistsException($"Error while reading a volunteer:", ex);
         }
-        //catch (Exception ex)
-        //{
-        //    throw new Exception($"Unexpected error while  reading a volunteer: {ex.Message}");
-
-        //}
+      
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? active, BO.VolunteerInListFields? sort)
     {
@@ -197,6 +193,7 @@ internal class VolunteerImplementation : IVolunteer
         AdminManager.ThrowOnSimulatorIsRunning();
         lock (AdminManager.BlMutex)
         {
+            
             DO.Volunteer? existingVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
             if (existingVolunteer == null)
                 throw new BO.BlDoesNotExistsException($"Volunteer with ID {id} does not exist.");
@@ -208,7 +205,7 @@ internal class VolunteerImplementation : IVolunteer
             }
             else if (existingVolunteer.Id != id)
             {
-                throw new BO.BlUnauthorizedException("Volunteer cannot update other volunteer");
+                throw new BO.BlUnauthorizedException("Volunteer ca  nnot update other volunteer");
             }
             else if (existingVolunteer.role != DO.Role.manager && existingVolunteer.role != (DO.Role)boVolunteer.role)
             {
@@ -221,7 +218,7 @@ internal class VolunteerImplementation : IVolunteer
                 Name = boVolunteer.Name,
                 PhoneNumber = boVolunteer.PhoneNumber,
                 Email = boVolunteer.Email,
-                Password = boVolunteer.Password/* BCrypt.Net.BCrypt.HashPassword(doVolunteer.Password)*/,
+                Password = BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
                 Address = boVolunteer.Address,
                 Latitude = boVolunteer.Latitude,
                 Longitude = boVolunteer.Longitude,
@@ -234,11 +231,13 @@ internal class VolunteerImplementation : IVolunteer
 
             try
             {
+                VolunteerManager.ValidateVolunteer(boVolunteer,false);
+
                 lock (AdminManager.BlMutex)
                     _dal.Volunteer.Update(updatedVolunteer);
                 VolunteerManager.Observers.NotifyItemUpdated(existingVolunteer.Id);
                 VolunteerManager.Observers.NotifyListUpdated();
-                _ = updateCoordinatesForVolunteerAddressAsync(existingVolunteer);
+                _ = updateCoordinatesForVolunteerAddressAsync(updatedVolunteer);
             }
             catch (DO.DalDoesNotExistsException ex)
             {
@@ -321,5 +320,21 @@ internal class VolunteerImplementation : IVolunteer
         }
 
     }
-   
+
+    public double CallDistanceFromvolunteer(int Vid)
+    {
+        var volunteer = _dal.Volunteer.Read(Vid);
+        var assignment = _dal.Assignment.Read(a => a.VolunteerId == Vid && a.EndTime == null);
+        if (assignment != null)
+        {
+
+            var call = _dal.Call.Read(call => call.Id == assignment.CallId);
+            if (call != null)
+                return Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                               call.Latitude, call.Longitude, volunteer.distanceType);
+
+        }
+        return 0;
+    }
+
 }

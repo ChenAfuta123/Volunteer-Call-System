@@ -16,22 +16,15 @@ namespace PL.Call
     {
 
         static readonly IBl s_bl = Factory.Get();
-        // Dependency Properties
-        //public static readonly DependencyProperty CurrentCallProperty =
-        //    DependencyProperty.Register(
-        //        nameof(CurrentCall),
-        //        typeof(BO.Call),
-        //        typeof(CallWindow),
-        //        new PropertyMetadata(null));
-
+    
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register(
                 nameof(ButtonText),
                 typeof(string),
                 typeof(CallWindow),
-                new PropertyMetadata("Add"));
+                new PropertyMetadata("הוספה"));
 
-        private BO.CallType? _callType;
+        private BO.CallType? _callType; 
         public BO.CallType? CallType
         {
             get => _callType;
@@ -101,14 +94,14 @@ namespace PL.Call
                 };
 
 
-                ButtonText = "Add";
+                ButtonText = "הוספה";
             }
             else
             {
                 try
                 {
                     CurrentCall = s_bl.Call.Read(id);
-                    ButtonText = "Update";
+                    ButtonText = "עדכון";
                 }
                 catch (Exception ex)
                 {
@@ -127,7 +120,7 @@ namespace PL.Call
 {
     try
     {
-        if (ButtonText == "Add")
+        if (ButtonText == "הוספה")
         {
             int newCallId = CurrentCall!.Id;
             s_bl.Call.Add(CurrentCall);
@@ -135,7 +128,7 @@ namespace PL.Call
             queryCall();  // לעדכן את המידע אחרי הוספה
             sendEmail(sender, e, newCallId);
         }
-        else if (ButtonText == "Update")
+        else if (ButtonText == "עדכון")
         {
             s_bl.Call.Update(CurrentCall!);
             MessageBox.Show("Call updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

@@ -85,7 +85,7 @@ internal class CallImplementation :ICall
 
             try
             {
-                if (callStatus == BO.CallStatus.Open && !_dal.Assignment.ReadAll(a => a.CallId == callId).Any())
+                if (CanBeDeleted(callId))
                 {
                     _dal.Call.Delete(callId);
                     CallManager.Observers.NotifyItemUpdated(callId);
@@ -219,7 +219,7 @@ internal class CallImplementation :ICall
     public void ChooseCallForTreatment(int volunteerId, int callId)
     {
 
-
+        AdminManager.ThrowOnSimulatorIsRunning();
         var callStatus = CallManager.Status(callId);
 
 
@@ -418,8 +418,9 @@ internal class CallImplementation :ICall
 
                 return CallManager.Status(call!.Id) == CallStatus.Open || CallManager.Status(call.Id) == CallStatus.OpenAtRisk;
             }
-            var calls = _dal.Call.ReadAll(ifIsOpen);
+            var calls = _dal.Call.ReadAll(call => ifIsOpen(call) && IfCallCloseToVolunteer(VolunteerID, call));
 
+            
 
             IEnumerable<BO.OpenCallInList> openCallsInList = calls.Select(call => new BO.OpenCallInList
 
@@ -510,7 +511,17 @@ internal class CallImplementation :ICall
     }
     public bool CanBeDeleted(int callId)
     {
-        return (CallManager.Status(callId) == BO.CallStatus.Open || CallManager.Status(callId) == BO.CallStatus.OpenAtRisk) && !_dal.Assignment.ReadAll(a => a.CallId == callId).Any();
+        return (CallManager.Status(callId) == BO.CallStatus.Open || CallManager.Status(callId) == BO.CallStatus.OpenAtRisk) 
+            && !_dal.Assignment.ReadAll(a => a.CallId == callId).Any();
+    }
+    public bool IfCallCloseToVolunteer(int Vid,DO.Call call)
+    {
+        var volunteer= _dal.Volunteer.Read(Vid);
+        var distance = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+            call.Latitude, call.Longitude, volunteer.distanceType);
+        return distance <= volunteer.MaxDistance;
+
+
     }
 
 }

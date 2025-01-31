@@ -29,5 +29,5 @@ public interface IVolunteer : IObservable
     public List<string> CloseVolunteersToCallEmails(int callId);
    
     public bool CanBeDeleted(int id);
-
+    public double CallDistanceFromvolunteer(int Vid);
 }

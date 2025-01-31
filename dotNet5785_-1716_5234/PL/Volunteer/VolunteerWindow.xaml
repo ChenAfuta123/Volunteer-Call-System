@@ -99,7 +99,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="תפקיד:" Width="120"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}" SelectedValue="{Binding CurrentVolunteer.role}"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}" 
+                 SelectedValue="{Binding CurrentVolunteer.role, Mode=TwoWay}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="כתובת:" Width="120"/>
@@ -118,7 +119,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="סוג מרחק:" Width="120"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}" SelectedValue="{Binding CurrentVolunteer.distanceType}"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}" 
+          SelectedValue="{Binding CurrentVolunteer.distanceType, Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
 

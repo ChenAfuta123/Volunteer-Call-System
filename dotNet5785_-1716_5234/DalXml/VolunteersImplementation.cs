@@ -104,8 +104,29 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="s">The XElement to convert.</param>
     /// <returns>The Volunteer object.</returns>
     [MethodImpl(MethodImplOptions.Synchronized)]
+   
     static Volunteer getVolunteer(XElement s)
     {
+        // קבלת הערך של distanceType כ- string ישירות מ-XML
+        var distanceTypeStr = (string?)s.Element("DistanceType");
+        DistanceType distanceType = DistanceType.DrivingDistance; // ערך ברירת מחדל במקרה שאין ערך
+
+        // המרה ידנית אם קיים ערך ב- XML
+        if (!string.IsNullOrEmpty(distanceTypeStr) && Enum.TryParse(distanceTypeStr, true, out DistanceType result))
+        {
+            distanceType = result;
+        }
+
+        // קבלת הערך של role כ- string
+        var roleStr = (string?)s.Element("Role");
+        Role role = Role.manager; // ערך ברירת מחדל במקרה שאין ערך
+
+        // המרה ידנית אם קיים ערך ב- XML
+        if (!string.IsNullOrEmpty(roleStr) && Enum.TryParse(roleStr, true, out Role roleResult))
+        {
+            role = roleResult;
+        }
+
         return new DO.Volunteer()
         {
             Id = s.ToIntNullable("Id") ?? throw new FormatException("Can't convert Id"),
@@ -115,13 +136,14 @@ internal class VolunteerImplementation : IVolunteer
             Password = (string?)s.Element("Password") ?? "",
             Address = (string?)s.Element("Address") ?? "",
             Active = (bool?)s.Element("Active") ?? false,
-            role = s.ToEnumNullable<Role>("role") ?? Role.volunteer,
-            distanceType = s.ToEnumNullable<DistanceType>("distanceType") ?? DistanceType.AirDistance,
-            Latitude = s.ToDoubleNullable("Latitude") ?? 0, 
-            Longitude = s.ToDoubleNullable("Longitude") ?? 0, 
-            MaxDistance = s.ToDoubleNullable("MaxDistance") ?? 0, 
+            role = role,  // שמירת הערך כ- Role
+            distanceType = distanceType,  // שמירת הערך כ- DistanceType
+            Latitude = s.ToDoubleNullable("Latitude") ?? 0,
+            Longitude = s.ToDoubleNullable("Longitude") ?? 0,
+            MaxDistance = s.ToDoubleNullable("MaxDistance") ?? 0,
         };
     }
+
 
 
     /// <summary>

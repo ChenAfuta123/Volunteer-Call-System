@@ -14,20 +14,26 @@ static class XMLTools
     }
 
     #region SaveLoadWithXMLSerializer
+    private static readonly object _fileLock = new();
+
     public static void SaveListToXMLSerializer<T>(List<T> list, string xmlFileName) where T : class
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
 
-        try
+        lock (_fileLock)
         {
-            using FileStream file = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            new XmlSerializer(typeof(List<T>)).Serialize(file, list);
-        }
-        catch (Exception ex)
-        {
-            throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+            try
+            {
+                using FileStream file = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                new XmlSerializer(typeof(List<T>)).Serialize(file, list);
+            }
+            catch (Exception ex)
+            {
+                throw new DalXMLFileLoadCreateException($"Fail to create xml file: {xmlFilePath}, {ex.Message}");
+            }
         }
     }
+
     public static List<T> LoadListFromXMLSerializer<T>(string xmlFileName) where T : class
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
