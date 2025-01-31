@@ -47,11 +47,26 @@ namespace PL
                 }
                 else if (V_role == DO.Role.manager)
                 {
-                    // הצגת אפשרות לבחירת מסך
-                    MainWindow managerChoiceWindow = new MainWindow();
-                    managerChoiceWindow.Show();
+                    MessageBoxResult result = MessageBox.Show("האם ברצונך להיכנס בתור מנהל?", "כניסת מנהל",
+                                                              MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // מעבר לחלון המנהל
+                        MainWindow managerChoiceWindow = new MainWindow();
+                        managerChoiceWindow.Show();
+                    }
+                    else
+                    {
+                        // מעבר לחלון האישי
+                        PersonalVolunteerWindow volunteerWindow = new PersonalVolunteerWindow(userId);
+                        volunteerWindow.Show();
+                    }
+
+                    // סגירת החלון הנוכחי
                     Close();
                 }
+
             }
             catch (BO.BlObjectNotFoundException ex)
             {

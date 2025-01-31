@@ -41,6 +41,7 @@ namespace PL.Volunteer
         public static readonly DependencyProperty OpenCallListProperty =
             DependencyProperty.Register("OpenCallList", typeof(IEnumerable<BO.OpenCallInList>), typeof(CallSelectionWindow), new PropertyMetadata(null));
 
+
         // משתנה לסינון
         private BO.OpenCallInListField? callFilter { get; set; } = BO.OpenCallInListField.None;
         public BO.OpenCallInListField? CallFilter
@@ -70,12 +71,25 @@ namespace PL.Volunteer
                 }
             }
         }
+        private object? _obj { get; set; } = null;
+        public object? CustomFilter
+        {
+            get => _obj;
+            set
+            {
+                if (_obj != value)
+                {
+                    _obj = value;
+                    queryOpenCallList(); // Refresh the list based on the new sort
+                }
+            }
+        }
 
         private void queryOpenCallList()
         {
             OpenCallList = (CallFilter == BO.OpenCallInListField.None)
                 ? s_bl?.Call.ReadAll(null, null, null, UserId)!
-                : s_bl?.Call.ReadAll(CallFilter, null, CallSorter, UserId)!;
+                : s_bl?.Call.ReadAll(CallFilter, CustomFilter, CallSorter, UserId)!;
         }
         private volatile DispatcherOperation? _observerOperation = null;
         private void callListObserver()

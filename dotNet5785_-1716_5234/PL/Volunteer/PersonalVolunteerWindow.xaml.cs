@@ -25,6 +25,14 @@ namespace PL.Volunteer
              typeof(PersonalVolunteerWindow),
              new PropertyMetadata(null));
 
+        public static readonly DependencyProperty CallDistanceFromVolunteerProperty =
+     DependencyProperty.Register(
+         nameof(CallDistanceFromVolunteer),
+         typeof(double),
+         typeof(PersonalVolunteerWindow),
+         new PropertyMetadata(null));
+
+
         public bool IsCallAnableToSelect
         {
             get { return (bool)GetValue(IsCallAnableToSelectProperty); }
@@ -42,7 +50,11 @@ namespace PL.Volunteer
             set => SetValue(CurrentCallProperty, value);
         }
 
-
+        public double? CallDistanceFromVolunteer
+        {
+            get => (double)GetValue(CallDistanceFromVolunteerProperty);
+            set => SetValue(CallDistanceFromVolunteerProperty, value);
+        }
 
         public PersonalVolunteerWindow(int userId)
         {
@@ -62,6 +74,8 @@ namespace PL.Volunteer
                     callStatus = BO.CallStatus.Open,
                     CallAssignList = null
                 };
+
+            CallDistanceFromVolunteer = s_bl.Volunteer.CallDistanceFromvolunteer(userId);
 
             try
             {
@@ -106,9 +120,11 @@ namespace PL.Volunteer
                     IsCallInProgress = false;
                     CurrentCall = null;
                     IsCallAnableToSelect = volunteer.Active;
+                    CallDistanceFromVolunteer = null;
                 }
                 else
                 {
+                    IsCallAnableToSelect = false;
                     IsCallInProgress = true;
                     int callId = volunteerHandledCall.CallId;
                     CurrentCall = s_bl.Call.Read(callId);
@@ -143,6 +159,7 @@ namespace PL.Volunteer
                     int id = CurrentCall!.Id;
                     CurrentCall = null;
                     CurrentCall = s_bl.Call.Read(id);
+                    CallDistanceFromVolunteer = s_bl.Volunteer.CallDistanceFromvolunteer(UserId);
                 });
 
         }

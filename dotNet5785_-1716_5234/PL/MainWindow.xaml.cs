@@ -40,6 +40,28 @@ namespace PL
         public static readonly DependencyProperty AtRiskInProgressCallsCountProperty =
             DependencyProperty.Register("AtRiskInProgressCallsCount", typeof(int), typeof(MainWindow));
 
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register("Interval", typeof(int), typeof(MainWindow), new PropertyMetadata(100));
+
+
+        public static readonly DependencyProperty IsSimulatorRunningProperty =
+          DependencyProperty.Register("IsSimulatorRunning", typeof(bool), typeof(MainWindow),
+              new PropertyMetadata(false));
+
+
+        public static readonly DependencyProperty TxtTimeSpanProperty =
+            DependencyProperty.Register(nameof(TxtTimeSpan), typeof(TimeSpan), typeof(MainWindow),
+                new PropertyMetadata(TimeSpan.FromHours(12)));
+        public int Interval
+        {
+            get => (int)GetValue(IntervalProperty);
+            set => SetValue(IntervalProperty, value);
+        }
+        public bool IsSimulatorRunning
+        {
+            get => (bool)GetValue(IsSimulatorRunningProperty);
+            set => SetValue(IsSimulatorRunningProperty, value);
+        }
         public int OpenCallsCount
         {
             get { return (int)GetValue(OpenCallsCountProperty); }
@@ -76,7 +98,6 @@ namespace PL
             set { SetValue(AtRiskInProgressCallsCountProperty, value); }
         }
 
-
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -88,17 +109,21 @@ namespace PL
             get { return (TimeSpan)GetValue(RiskRangeProperty); }
             set { SetValue(RiskRangeProperty, value); }
         }
-
-
+        public TimeSpan TxtTimeSpan
+        {
+            get { return (TimeSpan)GetValue(TxtTimeSpanProperty); }
+            set { SetValue(TxtTimeSpanProperty, value); }
+        }
         public static readonly DependencyProperty CurrentTimeProperty =
         DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
 
 
         public static readonly DependencyProperty RiskRangeProperty =
-       DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow));
+       DependencyProperty.Register("RiskRange", typeof(TimeSpan), typeof(MainWindow), new PropertyMetadata(TimeSpan.FromHours(12)));
         public MainWindow()
         {
             InitializeComponent();
+            UpdteCallQuantities();
 
 
         }
@@ -107,22 +132,6 @@ namespace PL
             try
             {
 
-                // קריאה למתודת BO כדי לקבל את הנתונים
-                var statusCounts = s_bl.Call.CallQuantities();
-                Dispatcher.Invoke(() =>
-                {
-                    // עדכון כמויות הקריאות
-                    OpenCallsCount = statusCounts[0];
-                    ClosedCallsCount = statusCounts[1];
-                    InProgressCallsCount = statusCounts[2];
-                    ExpiredCallsCount = statusCounts[3];
-                    AtRiskOpenCallsCount = statusCounts[4];
-                    AtRiskInProgressCallsCount = statusCounts[5];
-                    this.DataContext = this;
-                });
-
-                // עידכון התצוגה
-                // עדכון מחדש של ה-DataContext
 
                 CurrentTime = s_bl.Admin.getClockTime();
 
@@ -134,6 +143,8 @@ namespace PL
 
                 s_bl.Admin.AddConfigObserver(configObserver);
 
+                s_bl.Call.AddObserver(CallQuantitiesObserver);
+
 
             }
             catch (Exception ex)
@@ -141,15 +152,42 @@ namespace PL
                 MessageBox.Show($"Error during initialization: {ex.Message}");
             }
         }
-        private void MainWindow_Close(object sender, RoutedEventArgs e)
+        private volatile DispatcherOperation? _observerCallQuantities = null;
+        private void CallQuantitiesObserver()
+        {
+            if (_observerCallQuantities is null || _observerCallQuantities.Status == DispatcherOperationStatus.Completed)
+                _observerCallQuantities = Dispatcher.BeginInvoke(() =>
+                {
+                    UpdteCallQuantities();
+                });
+
+        }
+        private void UpdteCallQuantities()
+        {
+            // קריאה למתודת BO כדי לקבל את הנתונים
+            var statusCounts = s_bl.Call.CallQuantities();
+
+            // עדכון כמויות הקריאות
+            OpenCallsCount = statusCounts[0];
+            ClosedCallsCount = statusCounts[1];
+            InProgressCallsCount = statusCounts[2];
+            ExpiredCallsCount = statusCounts[3];
+            AtRiskOpenCallsCount = statusCounts[4];
+            AtRiskInProgressCallsCount = statusCounts[5];
+
+
+        }
+
+        private void MainWindow_Close(object sender, EventArgs e)
         {
             try
             {
-
+                s_bl.Admin.StopSimulator();
 
                 s_bl.Admin.RemoveClockObserver(clockObserver);
 
                 s_bl.Admin.RemoveConfigObserver(configObserver);
+                s_bl.Call.RemoveObserver(CallQuantitiesObserver);
 
 
             }
@@ -175,10 +213,13 @@ namespace PL
                     }
                 });
         }
+
+        private volatile DispatcherOperation? _configOperation = null;
+
         private void configObserver()
         {
-            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
-                _observerOperation = Dispatcher.BeginInvoke(() =>
+            if (_configOperation is null || _configOperation.Status == DispatcherOperationStatus.Completed)
+                _configOperation = Dispatcher.BeginInvoke(() =>
                 {
                     try
                     {
@@ -224,13 +265,14 @@ namespace PL
             try
             {
 
-                if (TimeSpan.TryParse(txtTimeSpan.Text, out TimeSpan timeSpanValue))
+                if (TimeSpan.TryParse(TxtTimeSpan.ToString(), out TimeSpan timeSpanValue))
                 {
-
+                    TxtTimeSpan = timeSpanValue;
                     s_bl.Admin.setRiskTimeRange(timeSpanValue);
                     RiskRange = s_bl.Admin.getRiskTimeRange();
-
                 }
+
+
                 else
                 {
                     MessageBox.Show("Invalid TimeSpan format. Please use HH:mm:ss.");
@@ -274,6 +316,7 @@ namespace PL
 
                 // קריאה למתודה לאתחול בסיס הנתונים
                 s_bl.Admin.setDatabase();
+                UpdteCallQuantities();
 
                 MessageBox.Show("Database initialized successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -309,6 +352,7 @@ namespace PL
 
                     // קריאה למתודה לאיפוס בסיס הנתונים
                     s_bl.Admin.resetDatabase();
+                    UpdteCallQuantities();
 
                     MessageBox.Show("Database reset successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -380,10 +424,7 @@ namespace PL
             callListWindow.ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
         private void TextBlock_OpenCalls_TextChanged(object sender, TextChangedEventArgs e)
         {
             var statusCounts = s_bl.Call.CallQuantities();
@@ -440,6 +481,7 @@ namespace PL
 
             // עדכון הדגל
             IsSimulatorRunning = !IsSimulatorRunning;
+            UpdteCallQuantities();
         }
     }
 }

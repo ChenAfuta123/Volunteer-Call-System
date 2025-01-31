@@ -104,43 +104,49 @@ internal static class CallManager
     {
         try
         {
+            Assignment? lastAssignment;
+            DO.Volunteer? lastVolunteer;
+            TimeSpan? remainingCallTime;
+            TimeSpan? totalHandlingTime;
+            int totalAllocations;
             lock (AdminManager.BlMutex)
             {
                 var assignments = s_dal.Assignment.ReadAll(a => a.CallId == doCall.Id).ToList();
 
-                var lastAssignment = assignments
+                lastAssignment = assignments
                     .OrderByDescending(a => a.EntryTime)
                     .FirstOrDefault();
 
 
-                var lastVolunteer = lastAssignment != null
-                    ? s_dal.Volunteer.Read(lastAssignment.VolunteerId)
-                    : null;
+                lastVolunteer = lastAssignment != null
+                   ? s_dal.Volunteer.Read(lastAssignment.VolunteerId)
+                   : null;
 
 
-                var remainingCallTime = doCall.maxEndingTime.HasValue
-                    ? doCall.maxEndingTime.Value - AdminManager.Now
-                    : (TimeSpan?)null;
+                remainingCallTime = doCall.maxEndingTime.HasValue && doCall.maxEndingTime.Value > AdminManager.Now
+                   ? doCall.maxEndingTime.Value - AdminManager.Now
+                   : (TimeSpan?)null;
 
-                var totalHandlingTime = lastAssignment?.EndTime.HasValue == true
-                    ? lastAssignment.EndTime.Value - doCall.OpeningTime
-                    : (TimeSpan?)null;
+                totalHandlingTime = lastAssignment?.EndTime.HasValue == true && lastAssignment.EndTime.Value > doCall.OpeningTime
+                   ? lastAssignment.EndTime.Value - doCall.OpeningTime
+                   : (TimeSpan?)null;
 
-                var totalAllocations = assignments.Count;
-
-                return new BO.CallInList
-                {
-                    Id = lastVolunteer?.Id,
-                    CallId = doCall.Id,
-                    callType = (BO.CallType)doCall.callType,
-                    OpeningTime = doCall.OpeningTime,
-                    RemainingCallTime = remainingCallTime,
-                    LastVolunteerName = lastVolunteer?.Name,
-                    TotalHandlingTime = totalHandlingTime,
-                    callStatus = Status(doCall.Id),
-                    TotalAllocations = totalAllocations
-                };
+                totalAllocations = assignments.Count;
             }
+
+            return new BO.CallInList
+            {
+                Id = lastVolunteer?.Id,
+                CallId = doCall.Id,
+                callType = (BO.CallType)doCall.callType,
+                OpeningTime = doCall.OpeningTime,
+                RemainingCallTime = remainingCallTime,
+                LastVolunteerName = lastVolunteer?.Name,
+                TotalHandlingTime = totalHandlingTime,
+                callStatus = Status(doCall.Id),
+                TotalAllocations = totalAllocations
+            };
+
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -288,11 +294,11 @@ internal static class CallManager
     {
         try
         {
+            BO.CallStatus status = BO.CallStatus.Open;
             lock (AdminManager.BlMutex)
             {
                 DO.Call? call = s_dal.Call.Read(a => a.Id == callId);
                 if (call == null) throw new BO.BlObjectNotFoundException("Call not found.\"");
-
 
 
                 var now = AdminManager.Now;
@@ -300,31 +306,28 @@ internal static class CallManager
 
                 if (s_dal.Assignment.Read(a => a.CallId == call.Id && a.EndTime == null) != null)
                 {
-                    return BO.CallStatus.InProgress;
+                    status = BO.CallStatus.InProgress;
                 }
 
-
-                if (call.maxEndingTime.HasValue && now > call.maxEndingTime.Value)
+                else if (s_dal.Assignment.Read(a => a.CallId == call.Id && a.EndTime != null) != null)
                 {
-                    return BO.CallStatus.Expired;
+                    status = BO.CallStatus.Closed;
                 }
 
-
-                if (s_dal.Assignment.Read(a => a.CallId == call.Id && a.EndTime != null) != null)
+                else if (call.maxEndingTime.HasValue && now > call.maxEndingTime.Value)
                 {
-                    return BO.CallStatus.Closed;
+                    status = BO.CallStatus.Expired;
                 }
 
-
-                if (call.maxEndingTime.HasValue && now > call.OpeningTime.AddHours(1))
+                else if (call.maxEndingTime.HasValue && now > call.OpeningTime.AddHours(1))
                 {
-                    return BO.CallStatus.OpenAtRisk;
+                    status = BO.CallStatus.OpenAtRisk;
                 }
-
-
-                return BO.CallStatus.Open;
-
             }
+
+            return status;
+
+
         }
         catch (DO.DalDoesNotExistsException ex)
         {
@@ -339,6 +342,7 @@ internal static class CallManager
         Thread.CurrentThread.Name = $"Periodic{++s_periodicCounter}";
         bool callUpdated;
 
+        LinkedList<int> updatedCallList = new LinkedList<int>();
         List<DO.Call> allCalls;
         lock (AdminManager.BlMutex)
             allCalls = s_dal.Call.ReadAll().ToList();
@@ -346,46 +350,52 @@ internal static class CallManager
         callUpdated = false;
         foreach (DO.Call call in allCalls)
         {
-
-            if (call.maxEndingTime != null && call.maxEndingTime.Value < newClock)
+            lock (AdminManager.BlMutex)
             {
-                BO.Call currentCall = DOtoBO(call);
-
-
-                if (currentCall.callStatus != CallStatus.Closed)
+                if (call.maxEndingTime != null && call.maxEndingTime.Value < newClock)
                 {
-                    List<Assignment>? assignments;
-                    lock (AdminManager.BlMutex)
+                    BO.Call currentCall = DOtoBO(call);
+
+
+                    if (currentCall.callStatus != CallStatus.Closed)
+                    {
+                        List<Assignment>? assignments;
+                        //lock (AdminManager.BlMutex)
                         assignments = s_dal.Assignment.ReadAll(a => a.CallId == call.Id).ToList();
 
-                    if (assignments.Count() > 0)
-                    {
-
-                        var assignment = assignments.LastOrDefault(a => !a.EndTime.HasValue);
-                        if (assignment != null)
+                        if (assignments.Count() > 0)
                         {
-                            var updatedAssignment = assignment with
+
+                            var assignment = assignments.LastOrDefault(a => !a.EndTime.HasValue);
+                            if (assignment != null)
                             {
-                                EndTime = newClock,
-                                EndTimeType = DO.EndTimeType.Expired
-                            };
-                            lock (AdminManager.BlMutex)
+                                var updatedAssignment = assignment with
+                                {
+                                    EndTime = newClock,
+                                    EndTimeType = DO.EndTimeType.Expired
+                                };
+                                //lock (AdminManager.BlMutex)
                                 s_dal.Assignment.Update(updatedAssignment);
+                            }
                         }
+
+                        currentCall.callStatus = CallStatus.Closed;
+                        callUpdated = true;
+                        //lock (AdminManager.BlMutex)
+                        //    s_dal.Call.Update(call);
+                        //Observers.NotifyItemUpdated(call.Id); //stage 5
+                        updatedCallList.AddLast(call.Id);
                     }
-
-
-
-                    currentCall.callStatus = CallStatus.Closed;
-                    callUpdated = true;
-                    lock (AdminManager.BlMutex)
-                        s_dal.Call.Update(call);
-                    Observers.NotifyItemUpdated(call.Id); //stage 5
                 }
+
             }
         }
-        bool yearChanged = oldClock.Year != newClock.Year; //stage 5
-        if (yearChanged || callUpdated) //stage 5
+
+        foreach (int callId in updatedCallList)
+            Observers.NotifyItemUpdated(callId); //stage 5
+
+        //bool yearChanged = oldClock.Year != newClock.Year; //stage 5
+        if (callUpdated) //stage 5
             Observers.NotifyListUpdated(); //stage 5
     }
     public static IEnumerable<BO.OpenCallInList> FilterCalls(IEnumerable<BO.OpenCallInList> calls, BO.OpenCallInListField? filterField, object? filterValue)

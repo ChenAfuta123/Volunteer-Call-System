@@ -15,7 +15,7 @@ public class ConvertUpdateToVisible : IValueConverter
         string? buttonText = value as string;
 
         // אם מדובר במצב "Update", השדה יהיה גלוי, אחרת מוסתר
-        return buttonText == "Update" ? Visibility.Visible : Visibility.Collapsed;
+        return buttonText == "עדכון" ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -31,7 +31,7 @@ public class ConvertUpdateToTrue : IValueConverter
         string? buttonText = value as string;
 
         // אם מדובר במצב "Update", שדה ה-Id יהיה לקריאה בלבד
-        return buttonText == "Update";
+        return buttonText == "עדכון";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -113,7 +113,7 @@ public class BooleanToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return (bool)value ? Visibility.Visible : Visibility.Hidden;
+        return (bool)value;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -101,14 +101,14 @@ namespace PL.Call
                 };
 
 
-                ButtonText = "Add";
+                ButtonText = "הוספה";
             }
             else
             {
                 try
                 {
                     CurrentCall = s_bl.Call.Read(id);
-                    ButtonText = "Update";
+                    ButtonText = "עדכון";
                 }
                 catch (Exception ex)
                 {
@@ -127,7 +127,7 @@ namespace PL.Call
 {
     try
     {
-        if (ButtonText == "Add")
+        if (ButtonText == "הוספה")
         {
             int newCallId = CurrentCall!.Id;
             s_bl.Call.Add(CurrentCall);
@@ -135,7 +135,7 @@ namespace PL.Call
             queryCall();  // לעדכן את המידע אחרי הוספה
             sendEmail(sender, e, newCallId);
         }
-        else if (ButtonText == "Update")
+        else if (ButtonText == "עדכון")
         {
             s_bl.Call.Update(CurrentCall!);
             MessageBox.Show("Call updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

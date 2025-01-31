@@ -41,7 +41,7 @@ internal class VolunteerImplementation : IVolunteer
         if (boVolunteer == null) throw new BO.BlObjectNotFoundException("volunteer not found.");
 
      
-        VolunteerManager.ValidateVolunteer(boVolunteer);
+        VolunteerManager.ValidateVolunteer(boVolunteer,true);
         DO.Volunteer doVolunteer = new DO.Volunteer
         {
             Id = boVolunteer.Id,
@@ -221,7 +221,7 @@ internal class VolunteerImplementation : IVolunteer
                 Name = boVolunteer.Name,
                 PhoneNumber = boVolunteer.PhoneNumber,
                 Email = boVolunteer.Email,
-                Password = boVolunteer.Password/* BCrypt.Net.BCrypt.HashPassword(doVolunteer.Password)*/,
+                Password =BCrypt.Net.BCrypt.HashPassword(boVolunteer.Password),
                 Address = boVolunteer.Address,
                 Latitude = boVolunteer.Latitude,
                 Longitude = boVolunteer.Longitude,
@@ -234,11 +234,12 @@ internal class VolunteerImplementation : IVolunteer
 
             try
             {
+                VolunteerManager.ValidateVolunteer(boVolunteer,false);
                 lock (AdminManager.BlMutex)
                     _dal.Volunteer.Update(updatedVolunteer);
                 VolunteerManager.Observers.NotifyItemUpdated(existingVolunteer.Id);
                 VolunteerManager.Observers.NotifyListUpdated();
-                _ = updateCoordinatesForVolunteerAddressAsync(existingVolunteer);
+                _ = updateCoordinatesForVolunteerAddressAsync(updatedVolunteer);
             }
             catch (DO.DalDoesNotExistsException ex)
             {
@@ -321,5 +322,19 @@ internal class VolunteerImplementation : IVolunteer
         }
 
     }
-   
+   public double CallDistanceFromvolunteer(int Vid)
+    {
+       var volunteer=_dal.Volunteer.Read(Vid);
+        var assignment = _dal.Assignment.Read(a => a.VolunteerId == Vid && a.EndTime == null);
+        if (assignment != null)
+        {
+
+            var call = _dal.Call.Read(call => call.Id == assignment.CallId);
+            if (call != null)
+                return Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                               call.Latitude, call.Longitude, volunteer.distanceType);
+
+        }
+        return 0;
+    }
 }

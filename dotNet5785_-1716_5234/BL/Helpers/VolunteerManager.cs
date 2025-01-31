@@ -53,8 +53,8 @@ internal static class VolunteerManager
                             Description = call.Description,
                             maxEndingTime = call.maxEndingTime,
                             EntryTime = assignment.EntryTime,
-                            CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer.Latitude, volunteer.Longitude,
-                            call.Latitude, call.Longitude, volunteer.distanceType),
+                            CallDistanceFromVolunteer = Tools.DistanceCalculator.CalculateDistance(volunteer!.Latitude, volunteer.Longitude,
+                               call.Latitude, call.Longitude, volunteer.distanceType),
                             callStatus = CallManager.Status(call.Id)
                         };
                     }
@@ -111,7 +111,7 @@ internal static class VolunteerManager
             HandledCallId=volunteer.VolunteerHandledCall?.Id
         };
     }
-    public static bool ValidateVolunteer(BO.Volunteer volunteer)
+    public static bool ValidateVolunteer(BO.Volunteer volunteer, bool flag)
     {
         try
         {
@@ -126,10 +126,12 @@ internal static class VolunteerManager
 
             if (!IsValidEmail(volunteer.Email))
                 throw new Exception("Invalid Email.");
-
-            if (!IsValidPassword(volunteer.Password))
-                throw new Exception("\"Password must be at least 6 characters long and contain" +
-                    " at least one special character.\"");
+            if (flag)
+            {
+                if (!IsValidPassword(volunteer.Password))
+                    throw new Exception("\"Weak password: Password must be at least 5 characters long and contain only letters and digits. " +
+                        "It must also include at least 2 letters and 3 digits.\"");
+            }
 
             if (!Enum.IsDefined(typeof(BO.DistanceType), volunteer.distanceType))
                 throw new Exception("Invalid distance type.");
@@ -141,8 +143,8 @@ internal static class VolunteerManager
             if (volunteer.MaxDistance.HasValue && volunteer.MaxDistance.Value <= 0)
                 throw new Exception("Max distance must be a positive value.");
 
-            if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
-                throw new Exception("Invalid Address.");
+            //if (!Tools.DistanceCalculator.IsValidAddress(volunteer.Address, volunteer.Longitude, volunteer.Latitude))
+            //    throw new Exception("Invalid Address.");
 
             if (volunteer.TotalHandledCalls < 0 || volunteer.TotalCanceledCalls < 0 || volunteer.TotalExpiredCalls < 0)
                 throw new Exception("Total handled, canceled, and expired calls must be non-negative.");
@@ -193,20 +195,133 @@ internal static class VolunteerManager
       }
       private static bool IsValidPassword(string? password)
       {
-           if (string.IsNullOrWhiteSpace(password))
+          if (string.IsNullOrWhiteSpace(password))
+               return false;
+
+        if (password.Length < 5)
+        {
+            return false;
+        }
+
+        int letterCount = 0;
+        int digitCount = 0;
+
+        // סורקים כל תו בסיסמא
+        foreach (var ch in password)
+        {
+            if (char.IsLetter(ch))
+            {
+                letterCount++;  // סופרים את האותיות
+            }
+            else if (char.IsDigit(ch))
+            {
+                digitCount++;   // סופרים את הספרות
+            }
+            else
+            {
+                // אם יש תו שלא אות או ספרה, נחזיר false
                 return false;
+            }
+        }
+
+        // בודקים אם יש לפחות 2 אותיות ושהסיסמא מכילה רק אותיות וספרות
+        return letterCount >= 2 && digitCount >=/* password.Length - 2*/3;
+    }
+
+    private static int s_simulatorCounter = 0;
+    private static readonly Random s_rand = new Random();
+    internal static void SimulateVolunteerCallHandling() //stage 7
+    {
+        Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+
+        LinkedList<int> volunteersToUpdate = new(); //stage 7
+        List<DO.Volunteer> doVolunteerList;
+
+        lock (AdminManager.BlMutex) //stage 7
+            doVolunteerList = s_dal.Volunteer.ReadAll(st => st.Active == true).ToList();
+
+        foreach (var doVolunteer in doVolunteerList)
+        {
+            int VolunteerId = doVolunteer.Id;
+
+            //stage 7
+
+            var Call = IfHandledCall(doVolunteer);
+
+            if (Call == null)
+            {
+                //BO.Year studentYear = GetStudentCurrentYear(doVolunteer.RegistrationDate);
+
+                //the above method, includes network requests to compute the distances
+                //between courses address and current student address
+                //these network requests are done synchronically
+                //var coursesNotRegistered = CallManager.GetUnRegisteredCallForValunteer(doStudent.Id, studentYear);
+                IEnumerable<DO.Call> calls;
+                    calls = s_dal.Call.ReadAll(call => (CallManager.Status(call.Id) == BO.CallStatus.Open ||
+               CallManager.Status(call.Id) == BO.CallStatus.OpenAtRisk) && IfisClose(doVolunteer, call));
+                int size = calls.Count();
+                if (size != 0)
+                {
+                    int callId = calls.Skip(s_rand.Next(0, size)).First()!.Id;
+                    CallManager.HandleOpenCall(callId, doVolunteer.Id, CallManager.Status(callId));
+                    VolunteerId = doVolunteer.Id;
+                }
+            }
+            else
+            {
+                var Assignment = s_dal.Assignment.Read(assignment => assignment.CallId == Call.Id);
+                if (Assignment!.EntryTime <= DateTime.Now.AddHours(-10))
+                {
+                    Assignment = Assignment with
+                    {
+                        EndTime = AdminManager.Now,
+                        EndTimeType = DO.EndTimeType.Treated
+                    };
 
 
-        if (password.Length < 6 || password.Length > 100)
-            return false;
+                    s_dal.Assignment.Update(Assignment);
+                    Observers.NotifyItemUpdated(Assignment.CallId);
+                    CallManager.Observers.NotifyListUpdated();
+                }
+                else
+                {
+                    if (s_rand.NextDouble() <= 0.1)
+                    {
+                        // ביטול הטיפול בקריאה
+                        CancelTreatment(Assignment);
+                    }
+                }
 
+            } 
 
-        if (!password.Any(c => !char.IsLetterOrDigit(c)))
-            return false;
+        }
 
-      return true;
-      }
+        foreach (int id in volunteersToUpdate)
+        {
+            Observers.NotifyItemUpdated(id);
+        }
+    }
 
- }      
-    
+    private static DO.Call? IfHandledCall(DO.Volunteer volunteer)
+    {
+        var assignment = s_dal.Assignment.Read(assignment => assignment.VolunteerId == volunteer.Id && assignment.EndTime == null);
+        if (assignment != null)
+        {
+            return s_dal.Call.Read(call => call.Id == assignment.CallId);
+        }
+        return null;
+    }
+    private static void CancelTreatment(Assignment assignment)
+    {
+        assignment = assignment with
+        {
+            EndTime = AdminManager.Now,
+            EndTimeType = DO.EndTimeType.ManagerCancel
+        };
+        s_dal.Assignment.Update(assignment);
+        CallManager.Observers.NotifyItemUpdated(assignment.CallId);
+        CallManager.Observers.NotifyListUpdated();
+    }
+}
+
 

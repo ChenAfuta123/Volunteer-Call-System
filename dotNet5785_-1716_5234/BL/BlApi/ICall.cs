@@ -46,7 +46,7 @@ public interface ICall : IObservable
 
     public bool CanBeDeleted(int callId);
 
-
+    public bool IfCallCloseToVolunteer(int Vid, DO.Call call);
 
 
 }

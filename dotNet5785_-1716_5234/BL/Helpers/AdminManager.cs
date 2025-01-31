@@ -147,9 +147,7 @@ internal static class AdminManager //stage 4
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
             if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-                //_simulateTask = Task.Run(() => AdminManager.SimulateCourseRegistrationAndGrade());
-
-            //etc...
+                _simulateTask = Task.Run(() => VolunteerManager.SimulateVolunteerCallHandling());
 
             try
             {
