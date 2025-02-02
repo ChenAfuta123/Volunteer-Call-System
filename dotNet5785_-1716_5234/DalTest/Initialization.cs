@@ -91,13 +91,15 @@ public static class Initialization
             string password;
             if (i == 0)
                 password = BCrypt.Net.BCrypt.HashPassword("AB123");
-            if (i == 1)
+            else if (i == 1)
                 password = BCrypt.Net.BCrypt.HashPassword("CD123");
-            if (i == 2)
+            else if (i == 2)
                 password = BCrypt.Net.BCrypt.HashPassword("EF123");
 
             else
+            {
                 password = BCrypt.Net.BCrypt.HashPassword($"{(char)s_rand.Next('A', 'Z' + 1)}{(char)s_rand.Next('A', 'Z' + 1)}{s_rand.Next(100, 999)}");
+            }
             string phoneNumber = $"05{s_rand.Next(0, 10)}{s_rand.Next(1000000, 9999999)}";
             double maxDistance = s_rand.Next(10, 150);
             Role role = (i == 0) ? Role.manager : Role.volunteer;

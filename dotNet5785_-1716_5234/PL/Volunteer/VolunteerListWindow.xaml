@@ -62,7 +62,7 @@
                   MouseDoubleClick="dgVolunteerList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" 
                   Background="{DynamicResource SecondaryWhite}" BorderBrush="{DynamicResource GrayBorder}" BorderThickness="1"
-                  FontFamily="{DynamicResource HebrewFont}">
+                  FontFamily="{DynamicResource HebrewFont}" SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="*"/>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="*"/>

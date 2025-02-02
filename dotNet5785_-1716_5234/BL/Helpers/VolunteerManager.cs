@@ -284,11 +284,6 @@ internal static class VolunteerManager
         }
 
 
-        if (password.Length < 5)
-         {
-        return false;
-         }
-
     int letterCount = 0;
     int digitCount = 0;
 
@@ -311,7 +306,7 @@ internal static class VolunteerManager
     }
    
     // בודקים אם יש לפחות 2 אותיות ושהסיסמא מכילה רק אותיות וספרות
-    return letterCount >= 2 && digitCount >=/* password.Length - 2*/3;
+    return letterCount >= 2 && digitCount >=3;
      }
 
  
