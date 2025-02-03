@@ -41,8 +41,8 @@ internal class CallImplementation : ICall
     public void Add(BO.Call boCall)
     {
         AdminManager.ThrowOnSimulatorIsRunning();
-        CallManager.ValidateCall(boCall);
-        ;
+        //CallManager.ValidateCall(boCall);
+        
 
         DO.Call doCall = new DO.Call
         {

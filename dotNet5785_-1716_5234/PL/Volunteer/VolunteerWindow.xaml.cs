@@ -143,7 +143,7 @@ namespace PL.Volunteer
 
                     s_bl.Volunteer.Update(CurrentVolunteer!.Id, CurrentVolunteer);
                     var checkVolunteer = s_bl.Volunteer.Read(CurrentVolunteer.Id);
-                    MessageBox.Show($"Updated DistanceType: {checkVolunteer.distanceType}");
+                   
                     MessageBox.Show("Volunteer updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     queryVolunteer();
                 }

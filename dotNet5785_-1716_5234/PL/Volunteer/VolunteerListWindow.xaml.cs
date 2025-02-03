@@ -100,7 +100,7 @@ namespace PL.Volunteer
         private void dgVolunteerList_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
             if (SelectedVolunteer != null)
-                new VolunteerWindow(SelectedVolunteer.Id).Show();
+                new PersonalVolunteerWindow(SelectedVolunteer.Id).Show();
             queryVolunteerList();
         }
 
